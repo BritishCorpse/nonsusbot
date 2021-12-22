@@ -5,8 +5,8 @@
     "js-levenshtein": "^1.1.6",
     "node-html-parser": "^3.1.2",
     "request": "^2.88.2",
-    "sequelize": "^6.12.1",
-    "sqlite3": "^5.0.2"
+    "sequelize": "^6.12.2",
+    "sqlite3": "^4.2.0"
   },
   "name": "nonsusbot",
   "version": "1.0.0",

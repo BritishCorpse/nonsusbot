@@ -237,6 +237,7 @@ client.on('message', async message => {
                 code: true
             },
         );
+
     } else if (command === 'gamble') {
 
         message.channel.send('Would you like to enter the casino? (cost: 100)').then(() => {
@@ -278,131 +279,118 @@ client.on('message', async message => {
                                             max: 1,
                                             errors: ['time']
                                         })
-
                                         .then(messages => {
                                             if (messages.first().content.toLowerCase() === "dice") {
 
-                                                message.channel.send("🎲Roll of the dice it is! We will both roll a 6 sided die, the person who rolls the higher number wins! Very simple.🎲")
-                                                message.channel.send(`🎲How much are you willing to bet? You currently have: ${currency.getBalance(message.author.id)}💰. (Please enter a number.)🎲`).then(() => {
+                                                message.channel.send("🎲Roll of the dice it is! We will both roll a 6 sided die, the person who rolls the higher number wins! Very simple.🎲");
+                                                message.channel.send(`🎲How much are you willing to bet? You currently have: ${currency.getBalance(message.author.id)}💰. (Please enter a number.)🎲`)
+                                                .then(async () => {
 
-                                                    var filter = m => message.author.id === m.author.id;
-                                                    message.channel.awaitMessages(filter, {
-                                                            time: 60000,
-                                                            max: 1,
-                                                            errors: ['time']
+                                                    const filter = m => message.author.id === m.author.id;
+
+                                                    // Get user input for bet amount. Ask for it twice, then kick them out.
+                                                    let userBet = '';
+
+                                                    for (let i = 0; i < 2; ++i) {
+                                                        await message.channel.awaitMessages(filter, {
+                                                          time: 60000,
+                                                          max: 1,
+                                                          errors: ['time']
                                                         })
+                                                        .then(messages => {
+                                                            userBet = messages.first().content;
+                                                        });
 
-                                                        .then(async messages => {
-                                                            var userBet = messages.first().content
+                                                        if (userBet.match(regex)) {
+                                                          break;
+                                                        }
 
+                                                        if (i === 1) {
+                                                            message.channel.send("You are too dumb for this. *Kicks you out of the casino.*");
+                                                            return;
+                                                        } else {
+                                                            message.channel.send("It seems that the input you have given is not a number. Please try again.");
+                                                        }
+                                                    }
 
-                                                            if (!userBet.match(regex)) {
-                                                                var userBet = 0
-                                                                await message.channel.send("It seems that the input you have given is not a number. Please try again.")
-                                                                await message.channel.send(`Maximum allowed bet is your balance.`).then(() => {
+                                                    //State users bet, if bet is higher than balance, return.
+                                                    message.channel.send(`Your bet is now: ${userBet}💰`)
 
-                                                                    var filter = m => message.author.id === m.author.id;
-                                                                    message.channel.awaitMessages(filter, {
-                                                                            time: 60000,
-                                                                            max: 1,
-                                                                            errors: ['time']
-                                                                        })
+                                                    if (userBet > currency.getBalance(message.author.id)) {
 
-                                                                        .then(async messages => {
-                                                                            var userBet = messages.first().content
+                                                        message.channel.send(`Oh my! It seems you have bet a higher amount than your balance, that just won't do. Here's your last chance to type a correct number, or the manager will kick you out!`)
+                                                        .then(() => {
 
-                                                                            if (!userBet.match(regex)) {
-                                                                                return message.channel.send("What in the world? How did you manage that lol (The casino's manager kicked you out.)")
-                                                                            } else if (userBet.match(regex)) {
-                                                                                return message.channel.send("TEST1")
-                                                                            } else {
-                                                                                return message.channel.send("what?")
-                                                                            }
-                                                                        }).catch(() => {
-                                                                            message.channel.send("testpart3")
-                                                                        })
-
-                                                                })
-                                                            }
-
-
-                                                            //State users bet, if bet is higher than balance, return.
-                                                            message.channel.send(`Your bet is now: ${userBet}💰`)
-
-                                                            if (userBet > currency.getBalance(message.author.id)) {
-
-                                                                message.channel.send(`Oh my! It seems you have bet a higher amount than your balance, that just won't do. Here's your last chance to type a correct number, or the manager will kick you out!`).then(() => {
-
-                                                                    var filter = m => message.author.id === m.author.id;
-                                                                    message.channel.awaitMessages(filter, {
-                                                                            time: 60000,
-                                                                            max: 1,
-                                                                            errors: ['time']
-                                                                        })
-
-                                                                        .then(messages => {
-                                                                            var userBet = Number(messages.first().content)
-
-                                                                            if (userBet > currency.getBalance(message.author.id)) {
-                                                                                return message.reply("I told you this would happen! (You were kicked out of the casino.")
-                                                                            }
-
-                                                                        })
+                                                            var filter = m => message.author.id === m.author.id;
+                                                            message.channel.awaitMessages(filter, {
+                                                                    time: 60000,
+                                                                    max: 1,
+                                                                    errors: ['time']
                                                                 })
 
-                                                            } else {
+                                                                .then(messages => {
+                                                                    var userBet = Number(messages.first().content)
 
-                                                                currency.add(message.author.id, -userBet);
+                                                                    if (userBet > currency.getBalance(message.author.id)) {
+                                                                        return message.reply("I told you this would happen! (You were kicked out of the casino.")
+                                                                    }
 
-                                                                const diceRollComputer = dice()
-                                                                const diceRollUser = dice()
-
-                                                                const embed = new MessageEmbed()
-                                                                    .setColor('ORANGE')
-                                                                    .setTitle('Roll of the dice!')
-                                                                    .setURL('https://www.youtube.com/watch?v=RvBwypGUkPo')
-                                                                    .setAuthor("Satan's casino.", 'https://static.vecteezy.com/system/resources/previews/001/194/117/non_2x/cross-png.png', 'https://pornhub.com')
-                                                                    .setDescription(`Your bet was ${userBet}`)
-                                                                    .setThumbnail('https://images.emojiterra.com/google/noto-emoji/v2.028/128px/1f4b8.png')
-                                                                    .addFields({
-                                                                        name: '🎲Roll the dice!🎲',
-                                                                        value: `6 sided die.`
-                                                                    }, {
-                                                                        name: '\u200B',
-                                                                        value: '\u200B'
-                                                                    }, {
-                                                                        name: `The computer rolled!🎲`,
-                                                                        value: diceRollComputer,
-                                                                        inline: true
-                                                                    }, {
-                                                                        name: 'You rolled!🎲',
-                                                                        value: diceRollUser,
-                                                                        inline: true
-                                                                    }, )
-                                                                    .setTimestamp()
-                                                                    .setFooter('Provided by corpse#4655');
-
-                                                                message.reply(embed);
-
-                                                                if (diceRollComputer > diceRollUser) {
-                                                                    message.channel.send(`It seems you have lost the game. (You lost ${userBet}💰)`);
-                                                                } else if (diceRollUser > diceRollComputer) {
-
-                                                                    let userProfit = userBet * 2
-                                                                    message.channel.send(`Congratulations! You won: ${userProfit}💰 (Your bet x2)`);
-
-                                                                    currency.add(message.author.id, userProfit);
-                                                                } else if (diceRollComputer === diceRollUser) {
-
-                                                                    currency.add(message.author.id, userBet);
-                                                                    return message.channel.send(`Its.. a draw?\nYou got back ${userBet}💰`);
-                                                                } else {
-                                                                    message.channel.send("Im.. not quite sure what happened. My apologies, here's your money back, plus some extra for the inconvenience.");
-                                                                    currency.add(message, author.id, userBet + 1000)
-                                                                }
-
-                                                            }
+                                                                })
                                                         })
+
+                                                    } else {
+
+                                                        currency.add(message.author.id, -userBet);
+
+                                                        const diceRollComputer = dice()
+                                                        const diceRollUser = dice()
+
+                                                        const embed = new MessageEmbed()
+                                                            .setColor('ORANGE')
+                                                            .setTitle('Roll of the dice!')
+                                                            .setURL('https://www.youtube.com/watch?v=RvBwypGUkPo')
+                                                            .setAuthor("Satan's casino.", 'https://static.vecteezy.com/system/resources/previews/001/194/117/non_2x/cross-png.png', 'https://pornhub.com')
+                                                            .setDescription(`Your bet was ${userBet}`)
+                                                            .setThumbnail('https://images.emojiterra.com/google/noto-emoji/v2.028/128px/1f4b8.png')
+                                                            .addFields({
+                                                                name: '🎲Roll the dice!🎲',
+                                                                value: `6 sided die.`
+                                                            }, {
+                                                                name: '\u200B',
+                                                                value: '\u200B'
+                                                            }, {
+                                                                name: `The computer rolled!🎲`,
+                                                                value: diceRollComputer,
+                                                                inline: true
+                                                            }, {
+                                                                name: 'You rolled!🎲',
+                                                                value: diceRollUser,
+                                                                inline: true
+                                                            }, )
+                                                            .setTimestamp()
+                                                            .setFooter('Provided by corpse#4655');
+
+                                                        message.reply(embed);
+
+                                                        if (diceRollComputer > diceRollUser) {
+                                                            message.channel.send(`It seems you have lost the game. (You lost ${userBet}💰)`);
+                                                        } else if (diceRollUser > diceRollComputer) {
+
+                                                            let userProfit = userBet * 2
+                                                            message.channel.send(`Congratulations! You won: ${userProfit}💰 (Your bet x2)`);
+
+                                                            currency.add(message.author.id, userProfit);
+                                                        } else if (diceRollComputer === diceRollUser) {
+
+                                                            currency.add(message.author.id, userBet);
+                                                            return message.channel.send(`Its.. a draw?\nYou got back ${userBet}💰`);
+                                                        } else {
+                                                            message.channel.send("Im.. not quite sure what happened. My apologies, here's your money back, plus some extra for the inconvenience.");
+                                                            currency.add(message, author.id, userBet + 1000)
+                                                        }
+
+                                                    }
+
                                                 })
                                             }
 
