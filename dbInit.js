@@ -1,0 +1,31 @@
+const Sequelize = require('sequelize');
+
+const sequelize = new Sequelize('database', 'username', 'password', {
+	host: 'localhost',
+	dialect: 'sqlite',
+	logging: false,
+	storage: 'database.sqlite',
+});
+
+const CurrencyShop = require('./models/CurrencyShop')(sequelize, Sequelize.DataTypes);
+require('./models/Users')(sequelize, Sequelize.DataTypes);
+require('./models/UserItems')(sequelize, Sequelize.DataTypes);
+
+const force = process.argv.includes('--force') || process.argv.includes('-f');
+
+sequelize.sync({ force }).then(async () => {
+	const shop = [
+		CurrencyShop.upsert({ name: 'Cookie', cost: 1 }),
+		CurrencyShop.upsert({ name: 'Premium Cookie', cost: 100 }),
+		CurrencyShop.upsert({ name: 'Bible', cost: 20 }),
+		CurrencyShop.upsert({ name: "Moses' Wand", cost: 500 }),
+		CurrencyShop.upsert({ name: 'Demon', cost: 666}),
+		CurrencyShop.upsert({ name: 'Lost Soul', cost: 10000}),
+		CurrencyShop.upsert({ name: 'Woman', cost: 30000000}),
+		CurrencyShop.upsert({ name: 'Man', cost: 30000000}),
+		CurrencyShop.upsert({ name: 'Doritoes', cost: 7000})
+	];
+	await Promise.all(shop);
+	console.log('Database synced');
+	sequelize.close();
+}).catch(console.error);
