@@ -86,7 +86,7 @@ module.exports = {
         .setColor("BLUE")
         .setDescription(descriptionString);
 
-      message.channel.send(embed);
+      message.channel.send({embeds: [embed]});
 
     } else {
       message.channel.send("Options are: set, list");

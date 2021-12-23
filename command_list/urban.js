@@ -49,7 +49,7 @@ module.exports = {
       }
 
       for (const embed of embeds) {
-        message.channel.send(embed);
+        message.channel.send({embeds: [embed]});
       }
     });
   }

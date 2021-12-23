@@ -15,15 +15,14 @@ module.exports = {
             message.guild.members.unban(unbanUser);
 
             const { MessageEmbed } = require("discord.js");
-            var embed = new MessageEmbed()
-
+            const embed = new MessageEmbed()
                 .setAuthor(`${message.author.username}`, message.author.avatarURL())
                 .setDescription(`The moderators have spoken, the ban hammer has been lifted, ${unbanUser.tag} has been unbanned! ` + "Welcome back soldier.")
                 .addField("Unban reason", unbanReason)
                 .addField("Moderator", message.author.tag)
-                .setColor("ORANGE")
+                .setColor("ORANGE");
             
-            message.channel.send(embed)
+            message.channel.send({embeds: [embed]})
         }
     }
 }

@@ -22,7 +22,7 @@ module.exports = {
             .replace("&ldquo;", "\"")
             .replace(/<\/?.+?>/g, ""))
           .setURL(verse.querySelector("a").getAttribute("href"));
-        message.channel.send(embed);
+        message.channel.send({embeds: [embed]});
       }
     });
   }

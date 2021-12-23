@@ -54,13 +54,13 @@ module.exports = {
                 .setDescription(embedDescription)
                 .setFooter(`Do ${prefix}help <category> to see the commands in each category.`);
 
-            message.channel.send(embed);
+            message.channel.send({embeds: [embed]});
             
         } else {
             const possibleCategory = args[0].toLowerCase().replace(/^\w/, c => c.toUpperCase())
             if (categories.hasOwnProperty(possibleCategory)) {
                 // One category given
-                message.channel.send(createEmbedFromCategory(possibleCategory));
+                message.channel.send({embeds: [createEmbedFromCategory(possibleCategory)]});
             } else {
                 // One command given
                 let commandName = args[0].replace(/^_/, "");
@@ -89,7 +89,7 @@ module.exports = {
                     .setThumbnail(botAvatarUrl)
                     .setDescription(command.description)
                     .addField('Category', command.category);
-                message.channel.send(embed);
+                message.channel.send({embeds: [embed]});
             }
         }
     }

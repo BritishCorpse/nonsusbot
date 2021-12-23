@@ -17,7 +17,7 @@ module.exports = {
       }
     }
 
-    client.on("message", message => {
+    client.on("messageCreate", message => {
       verifyUser(message);
     });
 

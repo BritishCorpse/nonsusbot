@@ -62,7 +62,7 @@ module.exports = {
 
             let index = 0; // index in the allFood array
 
-            message.channel.send(embedFromFoodData(allFoods[index], index + 1, allFoods.length))
+            message.channel.send({embeds: [embedFromFoodData(allFoods[index], index + 1, allFoods.length)]})
             .then(sentMessage => {
                 sentMessage.react("⏪");
                 sentMessage.react("◀️");

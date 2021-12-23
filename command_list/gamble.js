@@ -29,7 +29,7 @@ module.exports = {
                             .setFooter("Maximum bets on all games is the money you have on your account. (!balance)");
 
                         message.reply("Welcome to the casino dear guest! We request that you be on your best behavior, this is a very strict establishment. Here are our available games. If you'd like more information on a game, please type !help {game}. \n If you'd like to select a game, please type !{gamename}")
-                        message.channel.send(embed)
+                        message.channel.send({embeds: [embed]})
                         .then(() => {
                             const filter = m => message.author.id === m.author.id;
                             message.channel.awaitMessages(filter, {
@@ -126,7 +126,7 @@ module.exports = {
                                                 message.client.currency.add(message.author.id, userBet);
                                                 return message.channel.send(`Its.. a draw?\nYou got back ${userBet}💰`);
                                             } else {
-                                                message.channel.send("Im.. not quite sure what happened. My apologies, here's your money back, plus some extra for the inconvenience.");
+                                                message.channel.send("I'm... not quite sure what happened. My apologies, here's your money back, plus some extra for the inconvenience.");
                                                 message.client.currency.add(message, author.id, userBet + 1000);
                                             }
 
