@@ -1,6 +1,7 @@
 const fs = require("fs");
 const { MessageEmbed } = new require("discord.js");
-
+const Discord = require('discord.js');
+const client = new Discord.Client();
 
 module.exports = {
     name: 'help',
@@ -32,7 +33,7 @@ module.exports = {
             }
 
             return new MessageEmbed()
-                .setColor("RED")
+                .setColor("ORANGE")
                 .setThumbnail(botAvatarUrl)
                 .setTitle(category)
                 .setDescription(embedDescription);
@@ -48,7 +49,7 @@ module.exports = {
             }
 
             const embed = new MessageEmbed()
-                .setColor("RED")
+                .setColor("ORANGE")
                 .setThumbnail(botAvatarUrl)
                 .setTitle("Categories")
                 .setDescription(embedDescription)
@@ -85,10 +86,11 @@ module.exports = {
 
                 const embed = new MessageEmbed()
                     .setTitle(command.name)
-                    .setColor("RED")
+                    .setColor("ORANGE")
                     .setThumbnail(botAvatarUrl)
                     .setDescription(command.description)
                     .addField('Category', command.category);
+
                 message.channel.send({embeds: [embed]});
             }
         }
