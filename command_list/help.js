@@ -7,8 +7,8 @@ module.exports = {
     category: "General",
     description: "Help page for commands.",
     execute (message, args) {
-
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
+        const botAvatarUrl = message.client.user.displayAvatarURL();
 
         // Create categories dictionary with all the commands
         const categories = {};
@@ -33,6 +33,7 @@ module.exports = {
 
             return new MessageEmbed()
                 .setColor("RED")
+                .setThumbnail(botAvatarUrl)
                 .setTitle(category)
                 .setDescription(embedDescription);
         }
@@ -48,6 +49,7 @@ module.exports = {
 
             const embed = new MessageEmbed()
                 .setColor("RED")
+                .setThumbnail(botAvatarUrl)
                 .setTitle("Categories")
                 .setDescription(embedDescription)
                 .setFooter(`Do ${prefix}help <category> to see the commands in each category.`);
@@ -84,6 +86,7 @@ module.exports = {
                 const embed = new MessageEmbed()
                     .setTitle(command.name)
                     .setColor("RED")
+                    .setThumbnail(botAvatarUrl)
                     .setDescription(command.description)
                     .addField('Category', command.category);
                 message.channel.send(embed);
