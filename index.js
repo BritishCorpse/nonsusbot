@@ -165,6 +165,7 @@ client.on("messageCreate", message => {
     const date = new Date(message.createdTimestamp);
     console.log(date.toGMTString() + " | " + message.guild.name + " | " + "#" + message.channel.name + " | " + message.author.tag + ": " + message.content, message.type);
 
+    message.client.currency.add(message.author.id, 1);
     const prefix = client.serverConfig.get(message.guild.id).prefix;
 
     // don't do commands if they come from a bot
