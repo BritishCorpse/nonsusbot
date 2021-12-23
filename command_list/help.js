@@ -1,7 +1,7 @@
 const fs = require("fs");
 const { MessageEmbed } = new require("discord.js");
 const Discord = require('discord.js');
-const client = new Discord.Client();
+
 
 module.exports = {
     name: 'help',
