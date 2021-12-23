@@ -4,6 +4,7 @@ const { MessageAttachment, MessageEmbed } = require("discord.js");
 
 module.exports = {
   name: "mp4",
+  category: "Tool",
   description: "Search the MP4 URL for a video",
   execute (message, args) {
     let content

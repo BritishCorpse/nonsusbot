@@ -2,6 +2,7 @@ const request = require("request");
 
 module.exports = {
   name: "chat",
+  category: "Fun",
   description: "Chat with the bot.",
   execute (message, args) {
     if (/@/m.test(args.join(" "))) {

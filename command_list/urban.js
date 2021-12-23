@@ -6,6 +6,7 @@ const max_number_of_definitions = 2;
 
 module.exports = {
   name: ["urban", "ud"],
+  category: "Tool",
   description: "Search the word in the first argument in urban dictionary.",
   execute (message, args) {
     const options = {

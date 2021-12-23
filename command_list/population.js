@@ -5,6 +5,7 @@ const max_number_of_results = 1;
 
 module.exports = {
   name: "population",
+  category: "Tool",
   description: "Find the population of a country.",
   execute (message, args) {
     let apiURL;

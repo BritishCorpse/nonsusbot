@@ -1,5 +1,6 @@
 module.exports = {
   name: "ping",
+  category: "Configuration",
   description: "Get this bot's ping",
   execute (message, args) {
     message.channel.send("Calculating ping...")

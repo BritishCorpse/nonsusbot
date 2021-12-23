@@ -3,6 +3,7 @@ const x_rapidapi_key = require("../config.json").x_rapidapi_key;
 
 module.exports = {
   name: ["youtube", "yt"],
+  category: "Tool",
   description: "Search videos on youtube.",
   execute (message, args) {
     const options = {

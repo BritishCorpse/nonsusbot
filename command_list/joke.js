@@ -10,6 +10,7 @@ const offensive = [];
 
 module.exports = {
   name: 'joke',
+  category: "Fun",
   description: "Find a joke.",
   execute (message, args) {
     let joke_length = 0;

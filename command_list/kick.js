@@ -1,42 +1,48 @@
-let funnyReplies = ["101 0011 0001 1000 0000 0000 1000", "Guess they should've followed the rules.", "Ouch! That hurt.", "You wont be missed!", "Farewell, traveler.", "You will be forever missed!", "Adiós fuckboy.", "I never really liked that guy."]
+const { MessageEmbed } = require("discord.js");
+
+
+const funnyReplies = [
+    "101 0011 0001 1000 0000 0000 1000",
+    "Guess they should've followed the rules.",
+    "Ouch! That hurt.",
+    "You wont be missed!",
+    "Farewell, traveler.",
+    "You will be forever missed!",
+    "Adiós fuckboy.",
+    "I never really liked that guy."
+];
 
 
 module.exports = {
     name: 'kick',
+    category: "Moderation",
     description: 'Kicks a user from the guild.',
-    execute(message, args){
+    execute(message, args) {
+        const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
-        if(!message.guild.member(message.author).hasPermission(['KICK_MEMBERS'])){
-
+        if (!message.guild.member(message.author).hasPermission(['KICK_MEMBERS'])) {
             return message.channel.send("Insufficient permissions.");
-        }
-        
-        else {
+        } else {
+            const kickUser = message.mentions.users.first();
+            const kickReason = args.slice(1).join(" ");
 
-            let kickUser = message.mentions.users.first();
-            let kickReasons = args.slice(1)
-            let kickReason = kickReasons.join(" ")
-
-            if(!kickUser){
-                return message.channel.send(`Incorrect usage. Proper usage, _kick {user}, reason`)
+            if (!kickUser) {
+                return message.channel.send(`Incorrect usage. Proper usage, ${prefix}kick ${user} reason`);
             }
 
-            var funnyReply = funnyReplies[Math.floor(Math.random()*funnyReplies.length)];
-            const { MessageEmbed } = require("discord.js");
-            var embed = new MessageEmbed()
-
+            const funnyReply = funnyReplies[Math.floor(Math.random()*funnyReplies.length)];
+            const embed = new MessageEmbed()
                 .setAuthor(`${message.author.username}`, message.author.avatarURL())
                 .setDescription(`The moderators have spoken, ${kickUser.tag} has been kicked from ${message.guild.name}! ` + funnyReply)
                 .addField("Ban reason", kickReason)
                 .addField("Moderator", message.author.tag)  
-                .setColor("ORANGE")
-            
-            message.channel.send(embed)
-            message.channel.send(kickReason)
-            message.guild.member(kickUser).kick({ reason: kickReason})
+                .setColor("ORANGE");
+
+            message.channel.send(embed);
+            message.channel.send(kickReason);
+            message.guild.member(kickUser).kick({reason: kickReason})
                 .then(console.log)
                 .catch(console.error);
-            
         }
     }
 }

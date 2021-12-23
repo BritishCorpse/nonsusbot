@@ -6,6 +6,7 @@ const max_number_of_definitions = 2;
 
 module.exports = {
   name: 'define',
+  category: "Tool",
   description: "Define the first argument. Optionally include the type of the word (noun, verb, adjective, adverb, etc) as the second argument.",
   execute (message, args) {
     request("https://dictionaryapi.com/api/v3/references/collegiate/json/" + args[0] + "?key=" + dictionary_api_key, (error, response, body) => {
