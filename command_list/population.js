@@ -1,5 +1,5 @@
 const request = require("request");
-const x_rapidapi_key = require("../config.json").x_rapidapi_key;
+const { x_rapidapi_key } = require("../config.json");
 
 const max_number_of_results = 1;
 

@@ -5,7 +5,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
   name: "config",
   category: "Configuration",
-  description: "Change server settings for this bot",
+  description: "Change server settings for this bot.",
   execute (message, args) {
     if (!message.member.hasPermission("ADMINISTRATOR")) {
       message.channel.send("You do not have the required permissions.");

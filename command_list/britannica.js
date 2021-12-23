@@ -1,12 +1,12 @@
 const request = require("request");
-const parse = require("node-html-parser").parse;
+const { parse } = require("node-html-parser");
 
 const max_number_of_articles = 1;
 
 module.exports = {
   name: "britannica",
   category: "Tool",
-  description: "Search articles on Britannica",
+  description: "Search articles on Britannica.",
   execute (message, args) {
     request("https://www.britannica.com/search?query=test" + args.join(" "), (error, response, body) => {
       const root = parse(body);

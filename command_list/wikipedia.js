@@ -3,6 +3,7 @@ const request = require("request");
 module.exports = {
   name: ["wikipedia", "wiki"],
   category: "Tool",
+  description: "Search Wikipedia for something.",
   execute (message, args) {
     request("https://en.wikipedia.org/w/api.php?action=opensearch&limit=1&namespace=0&format=json&search=" + args.join(" "), (error, response, body) => {
       parsed_body = JSON.parse(body);

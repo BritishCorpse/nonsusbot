@@ -4,7 +4,6 @@ const stupidstuff = require("../data/jokes/stupidstuff.json");
 const wocka = require("../data/jokes/wocka.json");
 const jokes = redditjokes.concat(stupidstuff, wocka);
 
-// remove stuff that makes people angry
 //const offensive = ["horny", "penis", "vagine", "dick", "cock", "sex", "porn", "screw", "baby", "racist", "semen", "fuck", "shit", "sperm"];
 const offensive = [];
 

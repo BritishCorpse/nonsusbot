@@ -4,58 +4,81 @@ const { MessageEmbed } = new require("discord.js");
 
 module.exports = {
     name: 'help',
-    category: "Help",
+    category: "General",
     description: "Help page for commands.",
     execute (message, args) {
+
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
-        const commandFiles = fs.readdirSync('./command_list').filter(file => file.endsWith('.js'));
-        
-        const embed = new MessageEmbed()
-          .setColor("RED");
 
-        if (args[0] === undefined || args[0] === "") { // if it is not specifying any command
-            let responseMessage = "";
-          
-            for (const file of commandFiles) {
-                const command = require(`./${file}`);
+        // Create categories dictionary with all the commands
+        const categories = {};
+        message.client.commands.each(command => {
+            if (!categories.hasOwnProperty(command.category)) {
+                categories[command.category] = [];
+            }
+
+            categories[command.category].push(command);
+        });
+
+        function createEmbedFromCategory(category) {
+            let embedDescription = "";
+            for (const command of categories[category]) {
                 if (typeof command.name === "string") {
-                    responseMessage += `**${command.name}**: `;
+                    embedDescription += `**${command.name}**: `;
                 } else { // if it has multiple names (aliases)
-                    responseMessage += `**${command.name.join(", ")}**: `;
+                    embedDescription += `**${command.name.join(", ")}**: `;
                 }
-                responseMessage += command.description + "\n";
+                embedDescription += command.description + "\n";
             }
 
-            embed.setTitle("Help")
-                .setDescription(responseMessage)
-                .setFooter("Do " + prefix + "help <command> for more information");
-        } else {
-            let commandName = args[0];
-            if (commandName.startsWith(prefix)) {
-              commandName = commandName.slice(1, commandName.length); // remove the prefix if it has one
-            }
-
-            let command;
-            let exists = false;
-            for (const file of commandFiles) {
-              command = require(`./${file}`);
-              if ((typeof command.name === "string" && command.name === commandName)
-                  || (typeof command.name === "object" && command.name.includes(commandName))) {
-                exists = true;
-                break;
-              }
-            }
-            
-            if (!exists) {
-              message.channel.send(`The command ${commandName} was not found.`);
-              return;
-            }
-
-            embed.setTitle(command.name)
-              .setDescription(command.description)
-              .addField('Category', command.category);
+            return new MessageEmbed()
+                .setColor("RED")
+                .setTitle(category)
+                .setDescription(embedDescription);
         }
 
-        message.channel.send(embed);
+        // Show help in different ways (all categories, just one category, or just one command)
+
+        // All categories (no argument given)
+        if (args[0] === undefined || args[0] === "") {
+            for (const category in categories) {
+                message.channel.send(createEmbedFromCategory(category));
+            }
+            
+        } else {
+            const possibleCategory = args[0].toLowerCase().replace(/^\w/, c => c.toUpperCase())
+            if (categories.hasOwnProperty(possibleCategory)) {
+                // One category given
+                message.channel.send(createEmbedFromCategory(possibleCategory));
+            } else {
+                // One command given
+                let commandName = args[0].replace(/^_/, "");
+
+                const command = message.client.commands.find(c => {
+                    if (typeof c.name === "string") {
+                      if (commandName === c.name) {
+                          return true;
+                      }
+                    } else {
+                      if (c.name.includes(commandName)) {
+                        return true;
+                      }
+                    }
+                    return false;
+                });
+                
+                if (command === undefined) {
+                  message.channel.send(`The command ${prefix}${commandName} was not found.`);
+                  return;
+                }
+
+                const embed = new MessageEmbed()
+                    .setTitle(command.name)
+                    .setColor("RED")
+                    .setDescription(command.description)
+                    .addField('Category', command.category);
+                message.channel.send(embed);
+            }
+        }
     }
 }

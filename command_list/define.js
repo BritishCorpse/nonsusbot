@@ -1,6 +1,6 @@
 const request = require("request");
 const { MessageEmbed } = new require("discord.js");
-const dictionary_api_key = require("../config.json").dictionary_api_key;
+const { dictionary_api_key } = require("../config.json");
 
 const max_number_of_definitions = 2;
 

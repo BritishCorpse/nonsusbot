@@ -1,6 +1,6 @@
 const request = require("request");
 const { MessageEmbed } = new require("discord.js");
-const x_rapidapi_key = require("../config.json").x_rapidapi_key;
+const { x_rapidapi_key } = require("../config.json");
 
 const max_number_of_definitions = 2;
 
