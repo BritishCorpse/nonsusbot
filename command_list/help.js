@@ -39,11 +39,20 @@ module.exports = {
 
         // Show help in different ways (all categories, just one category, or just one command)
 
-        // All categories (no argument given)
+        // List all categories (no argument given)
         if (args[0] === undefined || args[0] === "") {
+            let embedDescription = "";
             for (const category in categories) {
-                message.channel.send(createEmbedFromCategory(category));
+                embedDescription += `**${category}**\n`;
             }
+
+            const embed = new MessageEmbed()
+                .setColor("RED")
+                .setTitle("Categories")
+                .setDescription(embedDescription)
+                .setFooter(`Do ${prefix}help <category> to see the commands in each category.`);
+
+            message.channel.send(embed);
             
         } else {
             const possibleCategory = args[0].toLowerCase().replace(/^\w/, c => c.toUpperCase())
