@@ -15,6 +15,6 @@ module.exports = {
               {name: 'Main library', value: 'discord.js'}
           );
 
-      message.channel.send(embed);
+      message.channel.send({embeds: [embed]});
     }
 }

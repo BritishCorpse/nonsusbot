@@ -14,7 +14,15 @@ const config = require("./config.json");
 const defaultServerConfig = require("./default_server_config.json");
 
 
-const client = new Discord.Client();
+const client = new Discord.Client({
+    intents: [
+        Discord.Intents.FLAGS.GUILDS,
+        Discord.Intents.FLAGS.GUILD_MESSAGES,
+        Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+        Discord.Intents.FLAGS.DIRECT_MESSAGES,
+        Discord.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+    ]
+});
 client.commands = new Discord.Collection();
 client.backgroundTasks = new Discord.Collection();
 client.serverConfig = new Discord.Collection();
@@ -40,12 +48,15 @@ for (const guildId in serverConfigJSON) {
 
 
 function getCommandObjectByName(commandName) {
-    for (const commandObj of client.commands.array()) {
+    let returnValue;
+    client.commands.forEach(commandObj => {
         if ((typeof commandObj.name === "string" && commandObj.name === commandName) || (typeof commandObj.name === "object" && commandObj.name.includes(commandName))) {
-            return commandObj;
+            returnValue = commandObj;
+            return;
         }
-    }
-    return undefined;
+    });
+
+    return returnValue;
 }
 
 
@@ -93,9 +104,9 @@ client.on("guildCreate", addServerConfigs);
 
 
 // start the background tasks once
-for (const backgroundTaskObj of client.backgroundTasks.array()) {
+client.backgroundTasks.forEach(backgroundTaskObj => {
     doBackgroundTask(backgroundTaskObj, client);
-}
+});
 
 
 Reflect.defineProperty(client.currency, 'add', {
@@ -141,12 +152,12 @@ client.on("messageDelete", message => {
         .setDescription(message.content);
 
     const channel = client.channels.cache.get("825726316817023016");
-    channel.send(embed);
+    channel.send({embeds: [embed]});
 });
 
 
 //For handling commands
-client.on("message", message => {
+client.on("messageCreate", message => {
     // disable DMs
     if (message.guild === null) return;
 
@@ -171,7 +182,7 @@ client.on("message", message => {
     if (commandObject === undefined) { // if the command doesn't exist
         // turn sub arrays into larger array (since some commands have multiple names in an array)
         let allCommands = []; // list of all command names (including aliases)
-        for (const commandObj of client.commands.array()) {
+        client.commands.forEach(commandObj => {
             if (typeof commandObj.name === "object") {
                 for (const commandAlias of commandObj.name) {
                     allCommands.push(commandAlias);
@@ -179,7 +190,8 @@ client.on("message", message => {
             } else {
                 allCommands.push(commandObj.name);
             }
-        }
+        });
+        console.log(allCommands);
 
         let topCommands = []; // list of top command matches
 

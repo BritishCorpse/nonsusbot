@@ -38,7 +38,7 @@ module.exports = {
                 .addField("Moderator", message.author.tag)  
                 .setColor("ORANGE");
 
-            message.channel.send(embed);
+            message.channel.send({embeds: [embed]});
             message.channel.send(kickReason);
             message.guild.member(kickUser).kick({reason: kickReason})
                 .then(console.log)

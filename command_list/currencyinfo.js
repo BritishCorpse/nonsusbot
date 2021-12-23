@@ -16,6 +16,6 @@ module.exports = {
             .addField("Transfer money: ", "!tranfer {amount}")
             .setColor("ORANGE");
 
-        message.channel.send(embed);
+        message.channel.send({embeds: [embed]});
     }
 }

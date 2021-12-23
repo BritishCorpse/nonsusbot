@@ -38,7 +38,7 @@ module.exports = {
       .setDescription(jokes[index].body)
       .setColor("ORANGE");
 
-    message.channel.send(embed) .then(sentMessage => {
+    message.channel.send({embeds: [embed]}) .then(sentMessage => {
       sentMessage.react("👍");
       sentMessage.react("👎");
     });

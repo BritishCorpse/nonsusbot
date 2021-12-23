@@ -40,7 +40,7 @@ module.exports = {
                 .addField("Moderator", message.author.tag)
                 .setColor("ORANGE");
 
-            message.channel.send(embed);
+            message.channel.send({embeds: [embed]});
             message.guild.member(banUser).ban({reason: banReason})
                 .then(console.log)
                 .catch(console.error);

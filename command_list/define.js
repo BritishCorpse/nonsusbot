@@ -58,7 +58,7 @@ module.exports = {
       }
 
       for (const embed of embeds) {
-        message.channel.send(embed);
+        message.channel.send({embeds: [embed]});
       }
 
       //if (embeds.length < parsed_body.length) {
