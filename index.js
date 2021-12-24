@@ -21,7 +21,11 @@ const defaultServerConfig = require("./default_server_config.json");
 
 const client = new Discord.Client({
     intents: [
-        Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Discord.Intents.FLAGS.DIRECT_MESSAGES, Discord.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+        Discord.Intents.FLAGS.GUILDS,
+        Discord.Intents.FLAGS.GUILD_MESSAGES,
+        Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+        Discord.Intents.FLAGS.DIRECT_MESSAGES,
+        Discord.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
     ]
 });
 client.commands = new Discord.Collection();
@@ -168,12 +172,9 @@ client.on("messageCreate", message => {
 
     // log messages
     const date = new Date(message.createdTimestamp);
-//    console.log(date.toGMTString() + " | " + message.guild.name + " | " + "#" + message.channel.name + " | " + message.author.tag + ": " + message.content + " " + message.type);
     console.log(`${date.toGMTString()} | ${message.guild.name} | #${message.channel.name} | ${message.author.tag}: ${message.content} ${message.type}`);
 
-
-    const prefix = client.serverConfig.get(message.guild.id)
-        .prefix;
+    const prefix = client.serverConfig.get(message.guild.id).prefix;
 
     // don't do commands if they come from a bot
     if (!message.content.startsWith(prefix) || message.author.bot) return;
