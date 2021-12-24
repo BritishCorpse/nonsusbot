@@ -30,8 +30,8 @@ module.exports = {
             if (userVIP === undefined) {
                 message.channel.send("It appears you have the VIP pass. Welcome to the VIP Group!");
 
-                const vipRole = message.guild.roles.cache.find(role => role.name === '<role name>');
-                target.addRole(vipRole)
+                const vipRole = await message.guild.roles.fetch('923864196444209182');
+                target.roles.add(vipRole)
             }
 
             else {
