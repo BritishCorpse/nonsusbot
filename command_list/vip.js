@@ -31,11 +31,9 @@ module.exports = {
                 message.channel.send("It appears you have the VIP pass. Welcome to the VIP Group!");
 
                 const vipRole = await message.guild.roles.fetch('923864196444209182');
-                target.roles.add(vipRole)
-            }
-
-            else {
-                return message.channel.send("you have vip")
+                target.roles.add(vipRole);
+            } else {
+                return message.channel.send("you have vip");
             }
         };
 
