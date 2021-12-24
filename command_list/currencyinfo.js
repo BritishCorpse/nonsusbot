@@ -7,7 +7,7 @@ module.exports = {
     description: "Information about Graveyard's currency system.",
     execute (message, args) {
         const embed = new MessageEmbed()
-            .setAuthor(`${message.author.username}`, message.author.avatarURL()) // remove the string and just put the variable??
+            .setAuthor(`${message.author.username}`, message.author.avatarURL()) // see i would do that but i have developed ptsd from the shop command not working without quotations
             .setTitle("Graveyard currency system.")
             //.addField("Prefix:", "!")
             .addField("NOTE: FIX THIS COMMAND")
