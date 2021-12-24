@@ -6,9 +6,7 @@ const levenshtein = require("js-levenshtein");
 //const { Op } = require('sequelize');
 
 // Remove this once not needed anymore:
-const {
-    MessageEmbed
-} = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 
 const {
     Users,
