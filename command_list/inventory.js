@@ -12,10 +12,9 @@ module.exports = {
                 user_id: target.id
             }
         });
-        
+
         const items = await user.getItems();
-        console.log(items
-            )
+
         if (!items.length) return message.channel.send(`${target.tag} has nothing!`);
         return message.channel.send(`${target.tag} currently has ${items.map(t => `${t.amount} ${t.item.name}`).join(', ')}`);
     }
