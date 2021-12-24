@@ -25,7 +25,7 @@ module.exports = {
 
         const userItems = await user.getItems();
         for (const userItem of userItems) {
-            const userVIP = userItems.find(userItem => userItem.name === item.name);
+            const userVIP = userItems.find(userItem => userItem.item_id == item.id);
 
             if (userVIP === undefined) {
                 const prefix = message.client.serverConfig.get(message.guild.id).prefix;
@@ -35,10 +35,6 @@ module.exports = {
 
                 const vipRole = await message.guild.roles.cache.get(message.client.serverConfig.get(message.guild.id).vip_role_id);
                 message.member.roles.add(vipRole);
-            }
-
-            else {
-                return message.channel.send("It appears you do not possess the VIP pass. Please go to the _shop to buy it.");
             }
         };
 
