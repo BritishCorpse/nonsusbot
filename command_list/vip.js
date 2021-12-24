@@ -33,7 +33,7 @@ module.exports = {
             if (userVIP === undefined) {
                 return message.channel.send("Im complaining cause you dont have vip stupid idiot i hate you");
             } else {
-                return message.channel.send("you have vip"):
+                return message.channel.send("you have vip");
             }
         };
 
