@@ -12,7 +12,7 @@ module.exports = {
   category: "Fun",
   description: "Find a joke.",
   execute (message, args) {
-    let joke_length = 0;
+    //let joke_length = 0;
     let content = "";
     let good_joke = false;
 
