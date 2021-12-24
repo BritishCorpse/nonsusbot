@@ -19,7 +19,7 @@ sequelize.sync({ force }).then(async () => {
 		CurrencyShop.upsert({ name: 'Premium Cookie', cost: 100 }),
 		CurrencyShop.upsert({ name: 'Coke E Cola', cost: 3}),
 		CurrencyShop.upsert({ name: 'Bible', cost: 20 }),
-		CurrencyShop.upsert({ name: "Moses' Wand", cost: 500 }),
+		CurrencyShop.upsert({ name: "Biblically Accurate Angel", cost: 5000000 }),
 		CurrencyShop.upsert({ name: 'Demon', cost: 666}),
 		CurrencyShop.upsert({ name: 'Lost Soul', cost: 10000}),
 		CurrencyShop.upsert({ name: 'Doritoes', cost: 7000}),
