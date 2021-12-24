@@ -7,7 +7,7 @@ module.exports = {
   category: "Configuration",
   description: "Change server settings for this bot.",
   execute (message, args) {
-    if (!message.member.hasPermission("ADMINISTRATOR")) {
+    if (!message.member.permissionsIn(message.channel).has("ADMINISTRATOR")) {
       message.channel.send("You do not have the required permissions.");
       return
     }
@@ -45,6 +45,14 @@ module.exports = {
             return;
           }
         }
+
+        else if (args[1] == "vip_role_id") {
+          const role = message.guild.roles.cache.get(args[2]);
+          if (args[2] !== undefined && role === undefined) {
+            message.channel.send("Role ID is invalid");
+            return;
+          }
+        }
         
         else if (args[1] === "prefix") {
           if (args[2] === "" || args[2] === undefined || args[2].length > 3) {
@@ -57,6 +65,7 @@ module.exports = {
 
         // write it to the file
         let serverConfigJSON = {};
+        console.log(client.serverConfig.toJSON());
         for (const [key, value] of client.serverConfig) {
           serverConfigJSON[key] = value;
         }
