@@ -48,7 +48,6 @@ for (const file of backgroundTasksFiles) {
 }
 
 const serverConfigJSON = require("./server_config.json");
-const UserItems = require("./models/UserItems");
 for (const guildId in serverConfigJSON) {
     client.serverConfig.set(guildId, serverConfigJSON[guildId]);
 }
