@@ -3,6 +3,11 @@ const { MessageEmbed } = new require("discord.js");
 const Discord = require('discord.js');
 
 
+function formatCategoryName(category) {
+    return category.toLowerCase().replace(/^\w/, c => c.toUpperCase());
+}
+
+
 module.exports = {
     name: 'help',
     category: "General",
@@ -14,16 +19,17 @@ module.exports = {
         // Create categories dictionary with all the commands
         const categories = {};
         message.client.commands.each(command => {
-            if (!categories.hasOwnProperty(command.category.toLowerCase())) {
-                categories[command.category] = [];
+            const category = formatCategoryName(command.category)
+            if (!categories.hasOwnProperty(category)) {
+                categories[category] = [];
             }
 
-            categories[command.category].push(command);
+            categories[category].push(command);
         });
 
         function createEmbedFromCategory(category) {
             let embedDescription = "";
-            for (const command of categories[category.toLowerCase()]) {
+            for (const command of categories[formatCategoryName(category)]) {
                 if (typeof command.name === "string") {
                     embedDescription += `**${command.name}**: `;
                 } else { // if it has multiple names (aliases)
@@ -35,7 +41,7 @@ module.exports = {
             return new MessageEmbed()
                 .setColor("ORANGE")
                 .setThumbnail(botAvatarUrl)
-                .setTitle(category.toLowerCase().replace(/^\w/, c => c.toUpperCase()))
+                .setTitle(formatCategoryName(category))
                 .setDescription(embedDescription);
         }
 
@@ -58,7 +64,7 @@ module.exports = {
             message.channel.send({embeds: [embed]});
             
         } else {
-            const possibleCategory = args[0].toLowerCase().replace(/^\w/, c => c.toUpperCase())
+            const possibleCategory = formatCategoryName(args[0])
             if (categories.hasOwnProperty(possibleCategory)) {
                 // One category given
                 message.channel.send({embeds: [createEmbedFromCategory(possibleCategory)]});
