@@ -28,7 +28,10 @@ module.exports = {
             const userVIP = userItems.find(userItem => userItem.name === item.name);
 
             if (userVIP === undefined) {
-                return message.channel.send("Im complaining cause you dont have vip stupid idiot i hate you");
+                message.channel.send("It appears you have the VIP pass. Welcome to the VIP Group!");
+
+                const vipRole = message.guild.roles.cache.find(role => role.id === '<role name>');
+                target.addRole(vipRole)
             }
 
             else {
