@@ -10,7 +10,7 @@ module.exports = {
         const item = await CurrencyShop.findOne({
             where: {
                 name: {
-                    [Op.like]: args[0] 
+                    [Op.like]: args.join(" ")
                 }
             }
         });
