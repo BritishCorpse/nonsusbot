@@ -1,6 +1,6 @@
-const { CurrencyShop } = require('../dbObjects');
 const { Op } = require('sequelize');
-const { Users } = require('../dbObjects')
+const { Users, CurrencyShop } = require('../db_objects')
+
 
 module.exports = {
     name: 'buy',

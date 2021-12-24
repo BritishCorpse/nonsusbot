@@ -8,10 +8,7 @@ const levenshtein = require("js-levenshtein");
 // Remove this once not needed anymore:
 const { MessageEmbed } = require("discord.js");
 
-const {
-    Users,
-    CurrencyShop
-} = require('./dbObjects');
+const { Users, CurrencyShop } = require('./db_objects');
 
 const config = require("./config.json");
 const defaultServerConfig = require("./default_server_config.json");

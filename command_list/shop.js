@@ -1,5 +1,6 @@
-const { CurrencyShop } = require('../dbObjects');
 const { MessageEmbed } = require('discord.js');
+const { CurrencyShop } = require('../db_objects');
+
 
 module.exports = {
     name: 'shop',
