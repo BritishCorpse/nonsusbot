@@ -20,7 +20,7 @@ module.exports = {
     execute (message, args) {
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
-        if (!message.guild.member(message.author).hasPermission(['BAN_MEMBERS'])) {
+        if (!message.member.permissionsIn(message.channel).has('BAN_MEMBERS')) {
             return message.channel.send("Insufficient permissions.");
         } else {
             const banUser = message.mentions.users.first();
