@@ -6,9 +6,14 @@ const levenshtein = require("js-levenshtein");
 //const { Op } = require('sequelize');
 
 // Remove this once not needed anymore:
-const { MessageEmbed } = require("discord.js");
+const {
+    MessageEmbed
+} = require("discord.js");
 
-const { Users, CurrencyShop } = require('./dbObjects');
+const {
+    Users,
+    CurrencyShop
+} = require('./dbObjects');
 
 const config = require("./config.json");
 const defaultServerConfig = require("./default_server_config.json");
@@ -16,11 +21,7 @@ const defaultServerConfig = require("./default_server_config.json");
 
 const client = new Discord.Client({
     intents: [
-        Discord.Intents.FLAGS.GUILDS,
-        Discord.Intents.FLAGS.GUILD_MESSAGES,
-        Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-        Discord.Intents.FLAGS.DIRECT_MESSAGES,
-        Discord.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+        Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Discord.Intents.FLAGS.DIRECT_MESSAGES, Discord.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
     ]
 });
 client.commands = new Discord.Collection();
@@ -28,13 +29,15 @@ client.backgroundTasks = new Discord.Collection();
 client.serverConfig = new Discord.Collection();
 client.currency = new Discord.Collection();
 
-const commandFiles = fs.readdirSync("./command_list").filter(file => file.endsWith(".js"));
+const commandFiles = fs.readdirSync("./command_list")
+    .filter(file => file.endsWith(".js"));
 for (const file of commandFiles) {
     const command = require(`./command_list/${file}`);
     client.commands.set(command.name, command);
 }
 
-const backgroundTasksFiles = fs.readdirSync("./background_tasks").filter(file => file.endsWith(".js"));
+const backgroundTasksFiles = fs.readdirSync("./background_tasks")
+    .filter(file => file.endsWith(".js"));
 for (const file of backgroundTasksFiles) {
     const backgroundTask = require(`./background_tasks/${file}`);
     client.backgroundTasks.set(backgroundTask.name, backgroundTask);
@@ -85,7 +88,7 @@ function addServerConfigs() {
         }
         fs.writeFileSync("./server_config.json", JSON.stringify(serverConfigJSON));
     });
-}
+};
 
 
 function collectionToJSON(collection) {
@@ -94,7 +97,7 @@ function collectionToJSON(collection) {
         result[key] = value;
     }
     return result;
-}
+};
 
 
 client.login(config.bot_token)
@@ -144,7 +147,7 @@ client.once("ready", async () => {
     console.log("\u0007"); // bell sound
 });
 
- 
+
 // Deleted message logging (MOVE THIS TO BACKGROUND TASKS??)
 client.on("messageDelete", message => {
     const embed = new MessageEmbed()
@@ -152,7 +155,9 @@ client.on("messageDelete", message => {
         .setDescription(message.content);
 
     const channel = client.channels.cache.get("825726316817023016");
-    channel.send({embeds: [embed]});
+    channel.send({
+        embeds: [embed]
+    });
 });
 
 
@@ -165,8 +170,9 @@ client.on("messageCreate", message => {
     const date = new Date(message.createdTimestamp);
     console.log(date.toGMTString() + " | " + message.guild.name + " | " + "#" + message.channel.name + " | " + message.author.tag + ": " + message.content, message.type);
 
-    message.client.currency.add(message.author.id, 1);
-    const prefix = client.serverConfig.get(message.guild.id).prefix;
+
+    const prefix = client.serverConfig.get(message.guild.id)
+        .prefix;
 
     // don't do commands if they come from a bot
     if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -176,7 +182,10 @@ client.on("messageCreate", message => {
     //  return message.channel.send("you do not withold the powers to use the kek bot... try again later! L");
     //}
 
-    const args = message.content.slice(prefix.length).replace(/\s+/, " ").trim().split(" ");
+    const args = message.content.slice(prefix.length)
+        .replace(/\s+/, " ")
+        .trim()
+        .split(" ");
     let command = args.shift();
 
     const commandObject = getCommandObjectByName(command);
