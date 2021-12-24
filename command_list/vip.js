@@ -6,7 +6,6 @@ module.exports = {
     category: 'currency',
     description: 'Join the V.I.P group for a low price of 10 million coins!',
     async execute(message, args){
-        //Here we'll add a cool thing which checks if the user has a VIP pass in their inventory.
         const item = await CurrencyShop.findOne({
             where: {
                 name: {
@@ -15,6 +14,7 @@ module.exports = {
             }
         });
 
+
         const target = message.mentions.users.first() || message.author;
         const user = await Users.findOne({
             where: {
@@ -22,20 +22,20 @@ module.exports = {
             }
         });
 
-        const userItems = await user.getItems();
 
+        const userItems = await user.getItems();
         for (const userItem of userItems) {
             const userVIP = userItems.find(userItem => userItem.name === item.name);
 
             if (userVIP === undefined) {
                 message.channel.send("It appears you have the VIP pass. Welcome to the VIP Group!");
 
-                const vipRole = await message.guild.roles.fetch('923864196444209182');
-                target.roles.add(vipRole)
+                let role = message.member.guild.roles.cache.find(role => role.name === "VIP");
+                if (role) message.guild.members.cache.get(target.id).roles.add(role);
             }
 
             else {
-                return message.channel.send("you have vip")
+                return message.channel.send("It appears you do not possess the VIP pass. Please go to the _shop to buy it.");
             }
         };
 
