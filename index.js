@@ -168,7 +168,8 @@ client.on("messageCreate", message => {
 
     // log messages
     const date = new Date(message.createdTimestamp);
-    console.log(date.toGMTString() + " | " + message.guild.name + " | " + "#" + message.channel.name + " | " + message.author.tag + ": " + message.content, message.type);
+//    console.log(date.toGMTString() + " | " + message.guild.name + " | " + "#" + message.channel.name + " | " + message.author.tag + ": " + message.content + " " + message.type);
+    console.log(`${date.toGMTString()} | ${message.guild.name} | #${message.channel.name} | ${message.author.tag}: ${message.content} ${message.type}`);
 
 
     const prefix = client.serverConfig.get(message.guild.id)
