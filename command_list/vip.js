@@ -17,10 +17,9 @@ module.exports = {
             }
         });
 
-        const target = message.mentions.users.first() || message.author;
         const user = await Users.findOne({
             where: {
-                user_id: target.id
+                user_id: message.member.id
             }
         });
 
@@ -30,12 +29,13 @@ module.exports = {
             const userVIP = userItems.find(userItem => userItem.item_id == item.id);
 
             if (userVIP === undefined) {
+                const prefix = message.client.serverConfig.get(message.guild.id).prefix;
+                message.channel.send(`You do not have the VIP pass. See the ${prefix}shop to buy it.`);
+            } else {
                 message.channel.send("It appears you have the VIP pass. Welcome to the VIP Group!");
 
-                const vipRole = await message.guild.roles.fetch(client.serverConfig.get(message.guild.id).vip_role_id);
-                target.roles.add(vipRole);
-            } else {
-                return message.channel.send("you have vip");
+                const vipRole = await message.guild.roles.fetch(message.client.serverConfig.get(message.guild.id).vip_role_id);
+                message.member.roles.add(vipRole);
             }
         };
 
