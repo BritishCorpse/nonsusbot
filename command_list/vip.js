@@ -22,9 +22,10 @@ module.exports = {
             }
         });
 
+
         const userItems = await user.getItems();
         for (const userItem of userItems) {
-            const userVIP = userItems.find(userItem => userItem.item_id == item.id);
+            const userVIP = userItems.find(userItem => userItem.name === item.name);
 
             if (userVIP === undefined) {
                 const prefix = message.client.serverConfig.get(message.guild.id).prefix;
@@ -36,6 +37,9 @@ module.exports = {
                 message.member.roles.add(vipRole);
             }
 
+            else {
+                return message.channel.send("It appears you do not possess the VIP pass. Please go to the _shop to buy it.");
+            }
         };
 
     }
