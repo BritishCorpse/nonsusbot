@@ -9,16 +9,16 @@ module.exports = {
         const item = await CurrencyShop.findOne({
             where: {
                 name: {
-                    [Op.like]: "Cookie" 
+                    [Op.like]: "VIP pass" 
                 }
             }
         });
 
 
-        const target = message.mentions.users.first() || message.author;
+  
         const user = await Users.findOne({
             where: {
-                user_id: target.id
+                user_id: message.author.id
             }
         });
 
@@ -27,11 +27,11 @@ module.exports = {
         for (const userItem of userItems) {
             const userVIP = userItems.find(userItem => userItem.name === item.name);
 
-            if (userVIP === undefined) {
+            if (userVIP !== undefined) {
                 message.channel.send("It appears you have the VIP pass. Welcome to the VIP Group!");
 
                 let role = message.member.guild.roles.cache.find(role => role.name === "VIP");
-                if (role) message.guild.members.cache.get(target.id).roles.add(role);
+                if (role) message.guild.members.cache.get(message.author.id).roles.add(role);
             }
 
             else {
