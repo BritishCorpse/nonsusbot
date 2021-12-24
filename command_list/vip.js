@@ -1,14 +1,11 @@
 const { CurrencyShop } = require('../dbObjects');
 const { Op } = require('sequelize');
 const { Users } = require('../dbObjects')
-
-
 module.exports = {
     name: 'vip',
     category: 'currency',
     description: 'Join the V.I.P group for a low price of 10 million coins!',
     async execute(message, args){
-        //Here we'll add a cool thing which checks if the user has a VIP pass in their inventory.
         const item = await CurrencyShop.findOne({
             where: {
                 name: {
@@ -24,7 +21,6 @@ module.exports = {
         });
 
         const userItems = await user.getItems();
-
         for (const userItem of userItems) {
             const userVIP = userItems.find(userItem => userItem.item_id == item.id);
 
@@ -34,9 +30,10 @@ module.exports = {
             } else {
                 message.channel.send("It appears you have the VIP pass. Welcome to the VIP Group!");
 
-                const vipRole = await message.guild.roles.fetch(message.client.serverConfig.get(message.guild.id).vip_role_id);
+                const vipRole = await message.guild.roles.cache.get(message.client.serverConfig.get(message.guild.id).vip_role_id);
                 message.member.roles.add(vipRole);
             }
+
         };
 
     }
