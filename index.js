@@ -26,11 +26,13 @@ const client = new Discord.Client({
         Discord.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
     ]
 });
+
 client.commands = new Discord.Collection();
 client.backgroundTasks = new Discord.Collection();
 client.serverConfig = new Discord.Collection();
 client.currency = new Discord.Collection();
 
+// Load commands from the command_list folder
 const commandFiles = fs.readdirSync("./command_list")
     .filter(file => file.endsWith(".js"));
 for (const file of commandFiles) {
@@ -38,6 +40,7 @@ for (const file of commandFiles) {
     client.commands.set(command.name, command);
 }
 
+// Load background tasks from the background_tasks folder
 const backgroundTasksFiles = fs.readdirSync("./background_tasks")
     .filter(file => file.endsWith(".js"));
 for (const file of backgroundTasksFiles) {
@@ -45,6 +48,7 @@ for (const file of backgroundTasksFiles) {
     client.backgroundTasks.set(backgroundTask.name, backgroundTask);
 }
 
+// Load server-specific configs from the server_config.json file
 const serverConfigJSON = require("./server_config.json");
 for (const guildId in serverConfigJSON) {
     client.serverConfig.set(guildId, serverConfigJSON[guildId]);
@@ -54,7 +58,10 @@ for (const guildId in serverConfigJSON) {
 function getCommandObjectByName(commandName) {
     let returnValue;
     client.commands.forEach(commandObj => {
-        if ((typeof commandObj.name === "string" && commandObj.name === commandName) || (typeof commandObj.name === "object" && commandObj.name.includes(commandName))) {
+        if ((typeof commandObj.name === "string"
+             && commandObj.name === commandName)
+            || (typeof commandObj.name === "object"
+                && commandObj.name.includes(commandName))) {
             returnValue = commandObj;
             return;
         }
@@ -74,31 +81,30 @@ function doCommand(commandObj, message, args) {
 }
 
 
-function doBackgroundTask(backgroundTaskObj, client) {
+function doBackgroundTask(backgroundTaskObj/*, client*/) {
     backgroundTaskObj.execute(client);
+}
+
+
+function collectionToJSON(collection) {
+    // turns a discord collection to a JSON {key: value} dictionary
+    let result = {};
+    for (const [key, value] of collection) {
+        result[key] = value;
+    }
+    return result;
 }
 
 
 function addServerConfigs() {
     // add new guilds to the server_config.json file
     client.guilds.cache.each(guild => {
-        let serverConfigJSON = {};
         if (client.serverConfig.get(guild.id) === undefined) {
             client.serverConfig.set(guild.id, defaultServerConfig);
-            serverConfigJSON[guild.id] = defaultServerConfig;
         }
-        fs.writeFileSync("./server_config.json", JSON.stringify(serverConfigJSON));
+        fs.writeFileSync("./server_config.json", JSON.stringify(collectionToJSON(client.serverConfig)));
     });
-};
-
-
-function collectionToJSON(collection) {
-    let result = {};
-    for (const [key, value] of collection) {
-        result[key] = value;
-    }
-    return result;
-};
+}
 
 
 client.login(config.bot_token)

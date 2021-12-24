@@ -2,6 +2,7 @@ const fs = require("fs");
 const defaultServerConfig = require("../default_server_config.json");
 const { MessageEmbed } = require("discord.js");
 
+
 module.exports = {
   name: "config",
   category: "Configuration",
@@ -64,13 +65,13 @@ module.exports = {
         client.serverConfig.get(message.guild.id)[args[1]] = args[2];
 
         // write it to the file
+        // TODO: replace this with shared function to write to server_config.json
         let serverConfigJSON = {};
-        console.log(client.serverConfig.toJSON());
         for (const [key, value] of client.serverConfig) {
           serverConfigJSON[key] = value;
         }
-
         fs.writeFile("./server_config.json", JSON.stringify(serverConfigJSON), err => console.error);
+
         message.channel.send("Set value `" + args[1] + "` to `" + args[2] + "`");
       } else {
         message.channel.send("The value `" + args[1] + "` doesn't exist")
@@ -81,13 +82,13 @@ module.exports = {
       let config = client.serverConfig.get(message.guild.id);
       for (const key in defaultServerConfig) {
         let value;
-        if (config[key] === "") {
-          value = undefined;
+        if (config[key] === "" || config[key] === undefined) {
+          value = "not defined";
         } else {
           value = config[key];
         }
         
-        descriptionString += key + ": `" + value + "`\n";
+        descriptionString += `${key}: \`${value}\`\n`;
       }
 
       const embed = new MessageEmbed()
