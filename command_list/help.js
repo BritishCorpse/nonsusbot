@@ -14,7 +14,7 @@ module.exports = {
         // Create categories dictionary with all the commands
         const categories = {};
         message.client.commands.each(command => {
-            if (!categories.hasOwnProperty(command.category)) {
+            if (!categories.hasOwnProperty(command.category.toLowerCase())) {
                 categories[command.category] = [];
             }
 
@@ -23,7 +23,7 @@ module.exports = {
 
         function createEmbedFromCategory(category) {
             let embedDescription = "";
-            for (const command of categories[category]) {
+            for (const command of categories[category.toLowerCase()]) {
                 if (typeof command.name === "string") {
                     embedDescription += `**${command.name}**: `;
                 } else { // if it has multiple names (aliases)
@@ -35,7 +35,7 @@ module.exports = {
             return new MessageEmbed()
                 .setColor("ORANGE")
                 .setThumbnail(botAvatarUrl)
-                .setTitle(category)
+                .setTitle(category.toLowerCase().replace(/^\w/, c => c.toUpperCase()))
                 .setDescription(embedDescription);
         }
 
