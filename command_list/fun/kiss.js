@@ -1,9 +1,8 @@
 const { Message, MessageEmbed, Client } = require("discord.js");
-const botinfo = require("./botinfo");
+
 
 module.exports = {
     name: 'kiss',
-    category: 'fun',
     description: "Kiss whoever you'd like to.",
     async execute(message, args){
         images = [

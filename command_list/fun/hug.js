@@ -3,7 +3,6 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     name: 'hug',
-    category: 'fun',
     description: "Hug whoever you'd want to.",
     async execute(message, args){
         // Maybe make a library accessible always out of this???

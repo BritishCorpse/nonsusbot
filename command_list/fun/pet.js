@@ -1,7 +1,8 @@
 const { MessageEmbed } = require('discord.js');
+
+
 module.exports = {
     name: 'pet',
-    category: 'fun',
     description: "Pet whoever you'd like to.",
     execute(message, args){
         images = [
