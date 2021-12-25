@@ -34,7 +34,7 @@ const { MessageEmbed/*, DiscordAPIError*/ } = require("discord.js");
 module.exports = {
     name: 'blackjack',
     description: 'Play against the computer in a game of blacjack.',
-    execute(message, args){
+    async execute(message, args){
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
         //thingy checks gamble pass
         //remember to do later kthx
@@ -223,30 +223,6 @@ module.exports = {
         
         collector.on('collect', (reaction) => {
 
-            console.log(reaction)
-            if (reaction.emoji.name === '🏳️') {
-                message.channel.send("white flag");
-            }
-
-            
-            else if (reaction.emoji.name === '🚩') {
-                message.channel.send("red flag")
-            }
-        });
-        
-        collector.on('end', collected => {
-            if(collected.size < 1) {
-                message.channel.send("Hello? Did you fall asleep?");
-                message.channel.send(`You can't escape the loss, ${userBet}💰`);
-
-                message.client.currency.add(message.author.id, -userBet);
-                return;
-            }
-
-            else {
-                console.log("Collection successful.")
-            };
-        }); 
 
 
     }
