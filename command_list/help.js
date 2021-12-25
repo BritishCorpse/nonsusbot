@@ -91,11 +91,17 @@ module.exports = {
                 }
 
                 const embed = new MessageEmbed()
-                    .setTitle(command.name)
                     .setColor("ORANGE")
                     .setThumbnail(botAvatarUrl)
                     .setDescription(command.description)
                     .addField('Category', command.category);
+
+                // Format embed title
+                if (typeof command.name === "string") {
+                    embed.setTitle(`**${command.name}`);
+                } else { // if it has multiple names (aliases)
+                    embed.setTitle(`**${command.name.join(", ")}**`);
+                }
 
                 message.channel.send({embeds: [embed]});
             }

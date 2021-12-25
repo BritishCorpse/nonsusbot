@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const { Users, CurrencyShop } = require('../db_objects')
+const { Users, CurrencyShop } = require('../db_objects');
 
 
 module.exports = {
@@ -15,7 +15,7 @@ module.exports = {
             }
         });
 
-        if (!item) return message.channel.send('That item doesn\'t exist.');
+        if (!item) return message.channel.send("That item doesn't exist.");
 
         if (item.cost > message.client.currency.getBalance(message.author.id)) {
             return message.channel.send(`You don't have enough currency, ${message.author.username}`);

@@ -1,5 +1,5 @@
 module.exports = {
-    name: 'balance',
+    name: ['balance', 'bal'],
     category: "Currency",
     description: "Shows your balance, or someone else's balance.",
     execute (message, args) {
