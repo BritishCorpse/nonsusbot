@@ -161,7 +161,7 @@ client.on("messageDelete", message => {
     const channel = client.channels.cache.get("825726316817023016");
     channel.send({
         embeds: [embed]
-    }); 
+    });
 });
 
 
