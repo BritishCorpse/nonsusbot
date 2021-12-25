@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const { paginateEmbeds } = require(`${__basedir}/paginator`);
+const { paginateEmbeds } = require(`${__basedir}/functions`);
 
 
 module.exports = {

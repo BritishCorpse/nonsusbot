@@ -1,5 +1,5 @@
-// Idea from https://www.npmjs.com/package/discord.js-pagination
 const { MessageEmbed } = require('discord.js');
+const fs = require('fs');
 
 
 function addPageNumbersToFooter(embed, page, maxPage) {
@@ -7,12 +7,32 @@ function addPageNumbersToFooter(embed, page, maxPage) {
 }
 
 
+function collectionToJSON(collection) {
+    // turns a discord collection to a JSON {key: value} dictionary
+    let result = {};
+    for (const [key, value] of collection) {
+        result[key] = value;
+    }
+    return result;
+}
+
+
 module.exports = {
+    saveServerConfig (serverConfig) {
+        fs.writeFile(`${__basedir}/server_config.json`, JSON.stringify(collectionToJSON(serverConfig)),
+                     error => {
+                         if (error !== null) console.error(error);
+                     });
+    },
+
     async paginateEmbeds (channel, allowedUser, embeds, messageToEdit=null, previousEmoji='◀️', nextEmoji='▶️', addPagesInFooter=true, timeout=120000) {
+        // Idea from https://www.npmjs.com/package/discord.js-pagination
+
         // channel is the channel to send to
         // allowedUser is the user who can flip the pages
         // if messageToEdit is given, it will edit that message instead of sending a new one
         // if addPagesInFooter is true, it adds page number before the footer
+
 
         let maxIndex = embeds.length - 1;
         let currentIndex = 0;

@@ -8,13 +8,17 @@ const levenshtein = require("js-levenshtein");
 //const Sequelize = require('sequelize');
 //const { Op } = require('sequelize');
 
-// Remove this once not needed anymore:
+// Remove this once not needed anymore (MessageEmbed):
 const { MessageEmbed } = require("discord.js");
 
 const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
 
+// for common functions
+const functions = require(`${__basedir}/functions`);
+
 const config = require(`${__basedir}/config.json`);
 const defaultServerConfig = require(`${__basedir}/default_server_config.json`);
+
 
 
 const client = new Discord.Client({
@@ -107,8 +111,8 @@ function addServerConfigs() {
         if (client.serverConfig.get(guild.id) === undefined) {
             client.serverConfig.set(guild.id, defaultServerConfig);
         }
-        fs.writeFileSync("./server_config.json", JSON.stringify(collectionToJSON(client.serverConfig)));
     });
+    functions.saveServerConfig(client.serverConfig);
 }
 
 

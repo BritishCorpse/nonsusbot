@@ -1,6 +1,7 @@
 const fs = require("fs");
-const defaultServerConfig = require(`${__basedir}/default_server_config.json`);
 const { MessageEmbed } = require("discord.js");
+const defaultServerConfig = require(`${__basedir}/default_server_config.json`);
+const functions = require(`${__basedir}/functions`);
 
 
 module.exports = {
@@ -64,12 +65,7 @@ module.exports = {
         client.serverConfig.get(message.guild.id)[args[1]] = args[2];
 
         // write it to the file
-        // TODO: replace this with shared function to write to server_config.json
-        let serverConfigJSON = {};
-        for (const [key, value] of client.serverConfig) {
-          serverConfigJSON[key] = value;
-        }
-        fs.writeFile("./server_config.json", JSON.stringify(serverConfigJSON), err => console.error);
+        functions.saveServerConfig(client.serverConfig);
 
         message.channel.send("Set value `" + args[1] + "` to `" + args[2] + "`");
       } else {
