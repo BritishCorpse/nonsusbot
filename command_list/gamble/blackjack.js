@@ -1,6 +1,6 @@
-const { Op } = require('sequelize');
-const { MessageEmbed, DiscordAPIError } = require("discord.js");
-const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
+//const { Op } = require('sequelize');
+const { MessageEmbed/*, DiscordAPIError*/ } = require("discord.js");
+//const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
 
 module.exports = {
     name: 'blackjack',
@@ -14,12 +14,10 @@ module.exports = {
         if (userBet === undefined) {
             message.channel.send(`🎲You did not specify your bet! Usage: ${prefix}dice {bet}🎲`);
             return;
-        }
-
-        else if (userBet > 25000000) {
+        } else if (userBet > 25000000) {
             message.channel.send("🎲Unfortunately your bet is too large for this game, We can't have you being too successful after all!🎲");
             return;
-        };
+        }
 
         //rules of blacjack, dealer shows 1 card, player is given 2 cards, options are hit and stand
         //if userCardSum is over 21 the player fails the game
@@ -33,87 +31,79 @@ module.exports = {
         // Pulls a random card from the imaginary deck.
         const rollCard = () => Math.floor(Math.random() * (14 - 2) + 2);
 
-        let dealerFirstCard = rollCard()
-        let dealerSecondCard = rollCard()
-        console.log(dealerFirstCard, dealerSecondCard)
+        let dealerFirstCard = rollCard();
+        let dealerSecondCard = rollCard();
+        //console.log(dealerFirstCard, dealerSecondCard);
 
-        let userFirstCard = rollCard()
-        let userSecondCard = rollCard()
-        let userThirdCard = rollCard()
-        let userFourthCard = rollCard()
-        let userFifthCard = rollCard()
+        let userFirstCard = rollCard();
+        let userSecondCard = rollCard();
+        let userThirdCard = rollCard();
+        let userFourthCard = rollCard();
+        let userFifthCard = rollCard();
 
         function calculateCardTotal(x1, x2, x3, x4) {
-            if (x1 > 10) x1 = 10
-            if (x2 > 10) x2 = 10
-            if (x3 > 10) x3 = 10
-            if (x4 > 10) x4 = 10
+            if (x1 > 10) x1 = 10;
+            if (x2 > 10) x2 = 10;
+            if (x3 > 10) x3 = 10;
+            if (x4 > 10) x4 = 10;
 
-            let result = x1 + x2 + x3 + x4
-            return result
+            let result = x1 + x2 + x3 + x4;
+            return result;
         }
 
         const embed = new MessageEmbed()
-        .setTitle("🃏The users cards!🃏")
-        .setColor("ORANGE")
+            .setTitle("🃏The users cards!🃏")
+            .setColor("ORANGE");
 
-        console.log(userFirstCard, userSecondCard)
+        //console.log(userFirstCard, userSecondCard);
 
         function checkForCardType(inputCard, player, cardPlace) {
-
             if (inputCard < 11) {
                 embed.addField(`${player}'s ${cardPlace} card is:`, `${inputCard}`);
-            }
-
-            else if (inputCard === 11) {
+            }  else if (inputCard === 11) {
                 embed.addField(`${player}'s ${cardPlace} card is:`, `Jack(10)`);
-            }
-
-            else if (inputCard === 12) {
+            } else if (inputCard === 12) {
                 embed.addField(`${player}'s ${cardPlace} card is:`, `Queen(10)`);
-            }
-
-            else if (inputCard === 13) {
+            } else if (inputCard === 13) {
                 embed.addField(`${player}'s ${cardPlace} card is:`, `King(10)`);
-            }
-
-            else if (inputCard === 14) {
+            } else if (inputCard === 14) {
                 embed.addField(`${player}'s ${cardPlace} card is:`, `Ace(10)`);
-            }
-
-            else {
-                console.log(inputCard)
+            } else {
+                console.log(inputCard);
                 return;
             }
-        };
-
+        }
 
         // Check cardtypes for dealer's first card and users first and second card.
         checkForCardType(dealerFirstCard, "The dealer", "first");
         checkForCardType(userFirstCard, message.author.username, "first");
         checkForCardType(userSecondCard, message.author.username, "second")
 
+        message.channel.send({embeds: [embed]}).then(botMessage => {
+            const filter = (reaction, user) => (reaction.emoji.name === "🏳️" || reaction.emoji.name === "🚩") && user.id === message.author.id;
+            const collector = botMessage.createReactionCollector({ filter, time: 60000 });
 
+            let hitTimes = 0;
 
-        message.channel.send({ embeds: [embed] }).then(botMessage => {
+            botMessage.react("🏳️").then(() => {
+                botMessage.react("🚩"); //hit
+            });
 
-            
-            function endGame(hasFourth) {
-                
-                let dealerResult = calculateCardTotal(dealerFirstCard, dealerSecondCard, 0, 0)
-                let userResult = calculateCardTotal(userFirstCard, userSecondCard, 0, 0)
+            function endGame(hasFourth=false) {
+                let dealerResult = calculateCardTotal(dealerFirstCard, dealerSecondCard, 0, 0);
+                let userResult = calculateCardTotal(userFirstCard, userSecondCard, 0, 0);
 
                 const gameEndEmbed = new MessageEmbed()
-                .setTitle("Here are the results!")
-                .setColor("ORANGE")
-                .addField("The dealer's first card is:", `${dealerFirstCard}`)
-                .addField("The dealer's second card is:", `${dealerSecondCard}`)
-                .addField("The dealers total amount is:", `${dealerResult}`)
-                .addField("\u200b", "\u200b")
-                .addField(`${message.author.username}'s first card is:`, `${userFirstCard}`,)
-                .addField(`${message.author.username}'s second card is:`, `${userSecondCard}`)
+                    .setTitle("Here are the results!")
+                    .setColor("ORANGE")
+                    .addField("The dealer's first card is:", `${dealerFirstCard}`)
+                    .addField("The dealer's second card is:", `${dealerSecondCard}`)
+                    .addField("The dealers total amount is:", `${dealerResult}`)
+                    .addField("\u200b", "\u200b")
+                    .addField(`${message.author.username}'s first card is:`, `${userFirstCard}`,)
+                    .addField(`${message.author.username}'s second card is:`, `${userSecondCard}`);;
 
-                if (hasFourth === 'yes') {
+                if (hasFourth) {
                     gameEndEmbed.addField(`${message.author.username}'s third card is:`, `${userThirdCard}`);
                 }
 
@@ -139,72 +129,56 @@ module.exports = {
                     message.client.currency.add(message.author.id, userBet);
                 }
 
-                return botMessage.edit({embeds: [gameEndEmbed]});
-
+                botMessage.edit({embeds: [gameEndEmbed]});
+                collector.stop();
+                return;
             }
+            
+            collector.on('collect', reaction => {
+                botMessage.reactions.resolve(reaction.emoji.name).users.remove(message.author);
 
-            let hitTimes = 0
+                // Check for users card sum if over 21, endGame with a loss.
+                if (hitTimes === 1) {
+                    hitTimes++;
 
-            botMessage.react("🏳️").then(() => {
-                botMessage.react("🚩")//hit
+                    message.channel.send("yes2");
+                    checkForCardType(userFourthCard, message.author.username, "fourth");
+                    botMessage.edit({embeds: [embed]});
 
-                const filter = (reaction, user) => (reaction.emoji.name === "🏳️" || reaction.emoji.name === "🚩") && user.id === message.author.id;
-        
-                const collector = botMessage.createReactionCollector({ filter, time: 60000 });
-                
-                collector.on('collect', (reaction) => {
-                    botMessage.reactions.resolve(reaction.emoji.name).users.remove(message.author);
-
-
-                    // Check for users card sum if over 21, endGame with a loss.
-                    if (hitTimes === 1) {
+                    let userCardSum = calculateCardTotal(userFirstCard, userSecondCard, userThirdCard, userFourthCard);
+                    if (userCardSum > 21) {
+                        endGame(true);
+                    } else {
+                        // fix this
+                        endGame(true);
+                    }
+                } else {
+                    if (reaction.emoji.name === '🏳️') {
+                        endGame();
+                    } else if (reaction.emoji.name === '🚩') {
                         hitTimes++;
 
-                        message.channel.send("yes2")
-                        checkForCardType(userFourthCard, message.author.username, "fourth");
-                        botMessage.edit({embeds: [embed]});
+                        checkForCardType(userThirdCard, message.author.username, "third");
+                        message.channel.send("yes");
 
-                        let userCardSum = calculateCardTotal(userFirstCard, userSecondCard, userThirdCard, userFourthCard);
+                        let userCardSum = calculateCardTotal(userFirstCard, userSecondCard, userThirdCard, 0);
                         if (userCardSum > 21) {
-                            endGame("yes");
-                        }
-
-                        else {
-                            endGame("yes");
-                        }
-                    }
-
-
-                    else {
-    
-                        if (reaction.emoji.name === '🏳️') {
                             endGame()
                         }
-             
-                        else if (reaction.emoji.name === '🚩') {
-                            hitTimes++;
-    
-                            checkForCardType(userThirdCard, message.author.username, "third");
-                            message.channel.send("yes");
-    
-                            let userCardSum = calculateCardTotal(userFirstCard, userSecondCard, userThirdCard, 0);
-                            if (userCardSum > 21) {
-                                endGame()
-                            }
-                            botMessage.edit({embeds: [embed]});
-                            return;
-                        }}
-                });
-                
-                collector.on('end', collected => {
-                    if(collected.size < 1) {
-                        message.channel.send(`Hello? Did you fall asleep?\nYou can't escape the loss, You lost ${userBet}💰`);
-        
-                        message.client.currency.add(message.author.id, -userBet);
+                        botMessage.edit({embeds: [embed]});
                         return;
                     }
-                }); 
-            })
+                }
+            });
+            
+            collector.on('end', collected => {
+                if(collected.size < 1) {
+                    message.channel.send(`Hello? Did you fall asleep?\nYou can't escape the loss, You lost ${userBet}💰`);
+    
+                    message.client.currency.add(message.author.id, -userBet);
+                    return;
+                }
+            }); 
         })
 
 
