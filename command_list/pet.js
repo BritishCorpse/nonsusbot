@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
     name: 'pet',
     category: 'fun',
-    description: "Pet whoever you'd like.",
+    description: "Pet whoever you'd like to.",
     execute(message, args){
         images = [
             "https://c.tenor.com/rZRQ6gSf128AAAAM/anime-good-girl.gif",
@@ -25,7 +25,7 @@ module.exports = {
         let petTarget = message.mentions.users.first();
         if (!petTarget) {
             const embed = new MessageEmbed()
-            .setTitle(`${message.author.username} pets ${message.author.username}, how generous!`)
+            .setTitle(`${message.author.username} pets ${message.author.username}, how nice of them :heart:!`)
             .setImage(images[Math.floor(Math.random() * images.length)])
             .setColor("ORANGE")
         
@@ -37,12 +37,24 @@ module.exports = {
         }
 
         else if (petTarget.id === '484644637420552202') {
-            return message.channel.send("Corpse blocks your.. petting?! HOW??!?!?");
+            if (message.author.id !== '834035562864050237') {
+                return message.channel.send("Corpse blocks your.. petting?! HOW??!?!?");
+            }
+
+            else {
+                const embed = new MessageEmbed()
+                .setTitle(`${message.author.username} pets ${petTarget.username} :heart:!`)
+                .setImage(images[Math.floor(Math.random() * images.length)])
+                .setColor("ORANGE")
+            
+                return message.channel.send( {embeds: [embed]} );
+            }
+            
         }
 
         else {
             const embed = new MessageEmbed()
-            .setTitle(`${message.author.username} pets ${petTarget.username}, how generous!`)
+            .setTitle(`${message.author.username} pets ${petTarget.username}, how nice of them :heart:!`)
             .setImage(images[Math.floor(Math.random() * images.length)])
             .setColor("ORANGE")
         

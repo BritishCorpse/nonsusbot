@@ -42,7 +42,19 @@ module.exports = {
         }
 
         else if (slapTarget.id === '484644637420552202') {
-            return message.channel.send("Corpse blocked the slap!! Incredible!");
+            if (message.author.id !== '834035562864050237') {
+                return message.channel.send("Corpse blocked the slap!! Incredible!");
+            }
+
+            else {
+                const embed = new MessageEmbed()
+                .setTitle(`${message.author.username} slaps ${slapTarget.username}, ${funnyReply}`)
+                .setImage(images[Math.floor(Math.random() * images.length)])
+                .setColor("ORANGE")
+            
+                return message.channel.send( {embeds: [embed]} );
+            };
+
         }
 
         else {

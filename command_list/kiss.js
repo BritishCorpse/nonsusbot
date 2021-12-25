@@ -37,7 +37,19 @@ module.exports = {
         }
         // Disable below lines if you want people to be able to do actions to me.
         else if (kissTarget.id === '484644637420552202') {
-            return message.channel.send("Sorry, corpse is not accepting kisses currently.");
+            if (message.author.id !== '834035562864050237') {
+                return message.channel.send("Sorry, corpse is not accepting kisses currently.")
+            }
+
+            else {
+                const embed = new MessageEmbed()
+                .setTitle(`${message.author.username} kisses ${kissTarget.username} :heart:!`)
+                .setImage(images[Math.floor(Math.random() * images.length)])
+                .setColor("ORANGE")
+            
+                return message.channel.send( {embeds: [embed]} );
+            };
+            ;
         }
 
         else {
