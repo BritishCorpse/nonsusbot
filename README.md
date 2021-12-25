@@ -5,11 +5,11 @@ Discord bot
 
 Run `npm install` in the main directory to install the dependencies.
 
-Run `node init_db.js --force` to initialize the database.
+Run `npm start` in the main directory to run the bot, or `npm heroku-start` if running on heroku host.
 
-Run `node .` in the main directory to run the bot, or `npm start` if running on a host.
+Note that if running `npm heroku-start`, a background thread will be created for the main script. Use `ps ax` to find it and `kill PID` to kill it, where PID is the number next to the command in `ps ax`.
 
-Note that this will create a background thread for the main script. Use `ps ax` to find it and `kill PID` to kill it, where PID is the number next to the command in `ps ax`.
+Run `node init_db.js --force` to re-initialize the database, to reset the currency system.
 
 Edit the `config.json` file to change the bot name, default prefix, discord bot token, and api keys.
 
