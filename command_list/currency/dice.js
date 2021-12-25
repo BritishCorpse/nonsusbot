@@ -1,10 +1,10 @@
 const { Op } = require('sequelize');
 const { MessageEmbed } = require("discord.js");
-const { Users, CurrencyShop } = require('../db_objects');
+const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
+
 
 module.exports = {
     name: 'dice',
-    category: 'currency',
     description: 'Play against the computer in a game of dice. Whoever rolls higher wins.',
     async execute(message, args){
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
