@@ -53,8 +53,6 @@ module.exports = {
             return result
         }
 
-        function adjustPictureCard()
-
         const embed = new MessageEmbed()
         .setTitle("🃏The users cards!🃏")
         .setColor("ORANGE")
