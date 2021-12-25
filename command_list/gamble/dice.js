@@ -4,7 +4,7 @@ const { userHasItem } = require(`${__basedir}/functions`);
 
 module.exports = {
     name: 'dice',
-    description: 'Play against the computer in a game of dice. Whoever rolls higher wins.',
+    description: 'Play against the computer in a game of dice.',
     async execute(message, args){
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
@@ -24,7 +24,16 @@ module.exports = {
         else if (userBet > 10000000) {
             message.channel.send("🎲Unfortunately your bet is too large for this game, We can't have you being too successful after all!🎲");
             return;
-        };
+        }
+
+        else if (userBet === 'rules') {
+            const embed = new MessageEmbed()
+            .setTitle("Rules of dice.")
+            .setDescription("The player and computer both roll a six sided die. Whichever party rolls a higher number on the die, wins. The maximum bet for this gamemode is 10 million 💰's.")
+            .setColor("ORANGE")
+            
+            return message.channel.send({embeds: [embed]});
+        }
 
         const roll = () => Math.floor(Math.random() * 7);
         const diceRollComputer = roll();
