@@ -18,11 +18,10 @@ module.exports = {
         if (!item) return message.channel.send('That item doesn\'t exist.');
 
         if (item.cost > message.client.currency.getBalance(message.author.id)) {
-
             return message.channel.send(`You don't have enough currency, ${message.author.username}`);
         }
 
-        message.reply(`You bought ${item.name}`)
+        message.reply(`You bought ${item.name}.`);
         const user = await Users.findOne({
             where: {
                 user_id: message.author.id

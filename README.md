@@ -5,7 +5,9 @@ Discord bot
 
 Run `npm install` in the main directory to install the dependencies.
 
-Run `npm start` in the main directory to run the bot.
+Run `node init_db.js --force` to initialize the database.
+
+Run `node .` in the main directory to run the bot, or `npm start` if running on a host.
 
 Note that this will create a background thread for the main script. Use `ps ax` to find it and `kill PID` to kill it, where PID is the number next to the command in `ps ax`.
 

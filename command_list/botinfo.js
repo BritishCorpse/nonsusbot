@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const { bot_name } = require('../config.json');
+const { developer_discord_user_ids } = require('../development_config.json');
 
 
 module.exports = {
@@ -11,7 +12,7 @@ module.exports = {
           .setColor("BLUE")
           .setTitle(bot_name)
           .addFields(
-              {name: 'Creators', value: '<@!484644637420552202> (and <@!786301097953591326>)'},
+              {name: 'Creators', value: `<@!${developer_discord_user_ids.join("> <@!")}>`},
               {name: 'Main library', value: 'discord.js'}
           )
           .setDescription("Graveyard is a powerful bot created to replace many multipurpose bot. There is no premium version of Graveyard, everything is free!");

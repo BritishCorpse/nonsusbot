@@ -33,12 +33,21 @@ module.exports = {
             }
         });
 
+        function hasNoVip() {
+            message.channel.send(`You do not have the VIP pass. See the ${prefix}shop to buy it.`);
+        }
+
+        if (user === null) { // user doesn't exist in database
+            hasNoVip();
+            return;
+        }
+
         const userItems = await user.getItems();
         for (const userItem of userItems) {
             const userVIP = userItems.find(userItem => userItem.item_id == item.id);
 
             if (userVIP === undefined) {
-                message.channel.send(`You do not have the VIP pass. See the ${prefix}shop to buy it.`);
+                hasNoVip();
             } else {
                 message.channel.send("It appears you have the VIP pass. Welcome to the VIP Group!");
 
