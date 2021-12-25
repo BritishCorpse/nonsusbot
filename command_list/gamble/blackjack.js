@@ -34,7 +34,7 @@ const { MessageEmbed/*, DiscordAPIError*/ } = require("discord.js");
 module.exports = {
     name: 'blackjack',
     description: 'Play against the computer in a game of blacjack.',
-    async execute(message, args){
+    execute(message, args){
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
         //thingy checks gamble pass
         //remember to do later kthx
