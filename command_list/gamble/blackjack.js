@@ -66,16 +66,19 @@ module.exports = {
             else if (pictureCard === 2) {
                 dealerEmbed.addField("dealerFirstCard", "Queen(10)", inline=true);
                 dealerEmbed.addField("dealerSecondCard", "Hidden", inline=true);
+                dealerEmbed.addField("Dealer total:", `${dealerFirstCard}`, inline=true);
             }
 
             else if (pictureCard === 3) {
                 dealerEmbed.addField("dealerFirstCard", "King(10)", inline=true);
                 dealerEmbed.addField("dealerSecondCard", "Hidden", inline=true);
+                dealerEmbed.addField("Dealer total:", `${dealerFirstCard}`, inline=true);
             }
 
             else if (pictureCard === 4) {
                 dealerEmbed.addField("dealerFirstCard", "10", inline=true);
                 dealerEmbed.addField("dealerSecondCard", "Hidden", inline=true);
+                dealerEmbed.addField("Dealer total:", `${dealerFirstCard}`, inline=true);
             }
             
             else {
@@ -87,11 +90,13 @@ module.exports = {
         else if (dealerFirstCard === 11) {
             dealerEmbed.addField("dealerFirstCard", "Ace(11)", inline=true);
             dealerEmbed.addField("dealerSecondCard", "Hidden", inline=true);
+            dealerEmbed.addField("Dealer total:", `${dealerFirstCard}`, inline=true);
         }
 
         else if (dealerFirstCard < 10) {
             dealerEmbed.addField("dealerFirstCard", `${dealerFirstCard}`, inline=true);
             dealerEmbed.addField("dealerSecondCard", "Hidden", inline=true);
+            dealerEmbed.addField("Dealer total:", `${dealerFirstCard}`, inline=true);
         }
 
         message.channel.send({ embeds: [dealerEmbed] })
@@ -182,8 +187,42 @@ module.exports = {
         }
 
 
-        message.channel.send({ embeds: [userEmbed] })
+        message.channel.send({ embeds: [userEmbed] }).then(message => {
+            message.react("🏳️").then(() => {
+                message.react("🚩")//hit
+            })
+        })
 
+        const filter = (reaction, user) => (reaction.emoji.name === "🏳️" || reaction.emoji.name === "🚩") && user.id === message.author.id;
+        
+        const collector = message.createReactionCollector({ filter, time: 15000 });
+        
+        collector.on('collect', (reaction) => {
+
+            console.log(reaction)
+            if (reaction.emoji.name === '🏳️') {
+                message.channel.send("white flag");
+            }
+
+            
+            else if (reaction.emoji.name === '🚩') {
+                message.channel.send("red flag")
+            }
+        });
+        
+        collector.on('end', collected => {
+            if(collected.size < 1) {
+                message.channel.send("Hello? Did you fall asleep?");
+                message.channel.send(`You can't escape the loss, ${userBet}💰`);
+
+                message.client.currency.add(message.author.id, -userBet);
+                return;
+            }
+
+            else {
+                console.log("Collection successful.")
+            };
+        }); 
 
 
     }
