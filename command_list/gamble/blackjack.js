@@ -10,7 +10,7 @@ module.exports = {
         //thingy checks gamble pass
         //remember to do later kthx
 
-        let userBet = args[0];
+        const userBet = args[0];
         if (userBet === undefined) {
             message.channel.send(`🎲You did not specify your bet! Usage: ${prefix}dice {bet}🎲`);
             return;
