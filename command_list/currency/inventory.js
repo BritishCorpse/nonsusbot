@@ -1,4 +1,3 @@
-//const { Users } = require(`${__basedir}/db_objects`);
 const { getUserItems } = require(`${__basedir}/functions`);
 
 

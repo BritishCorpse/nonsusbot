@@ -1,4 +1,3 @@
-const { Op } = require('sequelize');
 const { userHasItem } = require(`${__basedir}/functions`);
 
 

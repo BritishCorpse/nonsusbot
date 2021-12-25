@@ -1,4 +1,3 @@
-const { Op } = require('sequelize');
 const { MessageEmbed } = require("discord.js");
 const { userHasItem } = require(`${__basedir}/functions`);
 
