@@ -24,7 +24,7 @@ module.exports = {
         });
 
         function hasNoCasinoMemberShip() {
-            return message.channel.send(`It appears you are not a member of the casino. Please go to ${prefix}shop and go buy a Casino Membership.`);
+            message.channel.send(`It appears you are not a member of the casino. Please go to ${prefix}shop and go buy a Casino Membership.`);
         }
 
         if (user === null) { // user doesn't exist in database
@@ -44,49 +44,45 @@ module.exports = {
             }
         }
 
-        if (hasVip) {        
-            message.channel.send("You have casino membership.");
-        } else {
+        if (!hasCasinoMemberShip) {        
             hasNoCasinoMemberShip();
+            return;
         }
 
-        //Starting playing dice game.
+        // Starting playing dice game.
         let userBet = args[0];
         if (userBet === undefined) {
-            return message.channel.send(`🎲You did not specify your bet! Usage: ${prefix}dice {bet}🎲`);
+            message.channel.send(`🎲You did not specify your bet! Usage: ${prefix}dice {bet}🎲`);
+            return;
         }
 
         else if (userBet > 10000000) {
-            return message.channel.send("🎲Unfortunately your bet is too large for this game, We can't have you being too successful after all!🎲");
+            message.channel.send("🎲Unfortunately your bet is too large for this game, We can't have you being too successful after all!🎲");
+            return;
         };
 
-        const roll = () => Math.floor(Math.random() * 7)
+        const roll = () => Math.floor(Math.random() * 7);
         const diceRollComputer = roll();
         const diceRollUser = roll();
 
         const embed = new MessageEmbed()
-        .setTitle("🎲A game of dice!🎲")
-        .setColor("ORANGE")
-        .addField("🎲The computer rolled:🎲", `${diceRollComputer}`)
-        .addField("🎲You rolled:🎲", `${diceRollUser}`)
+            .setTitle("🎲A game of dice!🎲")
+            .setColor("ORANGE")
+            .addField("🎲The computer rolled:🎲", `${diceRollComputer}`)
+            .addField("🎲You rolled:🎲", `${diceRollUser}`);
         
         if (diceRollUser > diceRollComputer) {
-            embed.setFooter("YOU WIN!")
+            embed.setFooter("YOU WIN!");
             message.client.currency.add(message.author.id, userBet);
-        }
-
-        else if (diceRollComputer > diceRollUser) {
-            embed.setFooter("YOU LOSE")
+        } else if (diceRollComputer > diceRollUser) {
+            embed.setFooter("YOU LOSE");
             message.client.currency.add(message.author.id, -userBet);
-        }
-
-        else if (diceRollComputer === diceRollUser) {
-            embed.setFooter("ITS A DRAW")
+        } else if (diceRollComputer === diceRollUser) {
+            embed.setFooter("ITS A DRAW");
             message.client.currency.add(message.author.id, -10);
-        }
-
-        else {
-            return message.channel.send("Im not sure what happened.")
+        } else {
+            message.channel.send("I'm not sure what happened.");
+            return;
         }
 
         message.channel.send({embeds: [embed]});
