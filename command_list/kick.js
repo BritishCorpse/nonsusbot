@@ -20,10 +20,12 @@ module.exports = {
     execute(message, args) {
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
-        if (!message.guild.member(message.author).hasPermission(['KICK_MEMBERS'])) {
+        if (!message.member.permissionsIn(message.channel).has('BAN_MEMBERS')) {
             return message.channel.send("Insufficient permissions.");
-        } else {
-            const kickUser = message.mentions.users.first();
+        } 
+        
+        else {
+            const kickUser = message.mentions.members.first();
             const kickReason = args.slice(1).join(" ");
 
             if (!kickUser) {
@@ -39,8 +41,7 @@ module.exports = {
                 .setColor("ORANGE");
 
             message.channel.send({embeds: [embed]});
-            message.channel.send(kickReason);
-            message.guild.member(kickUser).kick({reason: kickReason})
+                kickUser.kick({reason: kickReason})
                 .then(console.log)
                 .catch(console.error);
         }
