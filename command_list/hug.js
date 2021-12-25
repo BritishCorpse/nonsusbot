@@ -1,11 +1,12 @@
 const { MessageEmbed } = require('discord.js');
 
+
 module.exports = {
     name: 'hug',
     category: 'fun',
     description: "Hug whoever you'd want to.",
     async execute(message, args){
-        //Maybe make a library accessable always out of this???
+        // Maybe make a library accessible always out of this???
         images = [
             "https://c.tenor.com/rQ2QQQ9Wu_MAAAAM/anime-cute.gif",
             "https://c.tenor.com/Ct4bdr2ZGeAAAAAM/teria-wang-kishuku-gakkou-no-juliet.gif",
@@ -31,7 +32,7 @@ module.exports = {
             const embed = new MessageEmbed()
             .setTitle(`${message.author.username} hugs ${message.author.username} :heart:!`)
             .setImage(images[Math.floor(Math.random() * images.length)])
-            .setColor("ORANGE")
+            .setColor("ORANGE");
         
             return message.channel.send( {embeds: [embed]} );
         }
@@ -43,18 +44,14 @@ module.exports = {
         else if (hugTarget.id === '484644637420552202') {
             if (message.author.id !== '834035562864050237') {
                 return message.channel.send("Sorry, corpse is not accepting hugs currently.");
-            }
-
-            else {
+            } else {
                 const embed = new MessageEmbed()
-                .setTitle(`${message.author.username} hugs ${hugTarget.username} :heart:!`)
-                .setImage(images[Math.floor(Math.random() * images.length)])
-                .setColor("ORANGE")
+                    .setTitle(`${message.author.username} hugs ${hugTarget.username} :heart:!`)
+                    .setImage(images[Math.floor(Math.random() * images.length)])
+                    .setColor("ORANGE");
             
-                return message.channel.send( {embeds: [embed]} );
-            };
+                return message.channel.send({embeds: [embed]});
+            }
         }
-
-        
     }   
 }
