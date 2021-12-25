@@ -1,5 +1,8 @@
-const { MessageEmbed } = require('discord.js');
 const fs = require('fs');
+const { MessageEmbed } = require('discord.js');
+const { Op } = require('sequelize');
+
+const { Users, CurrencyShop } = require(`${__basedir}/db_objects`)
 
 
 function addPageNumbersToFooter(embed, page, maxPage) {
@@ -16,9 +19,44 @@ function collectionToJSON(collection) {
     return result;
 }
 
+async function getUserItems(userId) {
+    const user = await Users.findOne({
+        where: {
+            user_id: userId
+        }
+    });
+
+    if (user === null) {
+        return [];
+    }
+
+    const items = await user.getItems();
+    return items;
+}
+
 
 module.exports = {
+    getUserItems,
+
+    async userHasItem(userId, itemName) {
+        /*const item = await CurrencyShop.findOne({
+            where: {
+                name: {
+                    [Op.like]: itemName
+                }
+            }
+        });*/
+
+        const userItems = await getUserItems(userId);
+
+        if (userItems.find(userItem => userItem.item.name === itemName) !== undefined)
+            return true;
+
+        return false;
+    },
+
     saveServerConfig (serverConfig) {
+        // Saves the client.serverConfig (given in argument as serverConfig) to server_config.json
         fs.writeFile(`${__basedir}/server_config.json`, JSON.stringify(collectionToJSON(serverConfig)),
                      error => {
                          if (error !== null) console.error(error);
@@ -27,6 +65,7 @@ module.exports = {
 
     async paginateEmbeds (channel, allowedUser, embeds, messageToEdit=null, previousEmoji='◀️', nextEmoji='▶️', addPagesInFooter=true, timeout=120000) {
         // Idea from https://www.npmjs.com/package/discord.js-pagination
+        // Creates reactions allowing multiple embed pages
 
         // channel is the channel to send to
         // allowedUser is the user who can flip the pages

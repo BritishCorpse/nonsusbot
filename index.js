@@ -14,7 +14,7 @@ const { MessageEmbed } = require("discord.js");
 const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
 
 // for common functions
-const functions = require(`${__basedir}/functions`);
+const { saveServerConfig } = require(`${__basedir}/functions`);
 
 const config = require(`${__basedir}/config.json`);
 const defaultServerConfig = require(`${__basedir}/default_server_config.json`);
@@ -112,7 +112,7 @@ function addServerConfigs() {
             client.serverConfig.set(guild.id, defaultServerConfig);
         }
     });
-    functions.saveServerConfig(client.serverConfig);
+    saveServerConfig(client.serverConfig);
 }
 
 
@@ -235,7 +235,6 @@ client.on("messageCreate", async message => {
                 allCommands.push(commandObj.name);
             }
         });
-        console.log(allCommands);
 
         let topCommands = []; // list of top command matches
 

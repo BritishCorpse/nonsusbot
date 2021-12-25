@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const { Users, CurrencyShop } = require(`${__basedir}/db_objects`)
+const { userHasItem } = require(`${__basedir}/functions`);
 
 
 module.exports = {
@@ -17,48 +17,12 @@ module.exports = {
             return;
         }
 
-        // Check if the user has a vip pass
-        const item = await CurrencyShop.findOne({
-            where: {
-                name: {
-                    [Op.like]: "VIP pass" 
-                }
-            }
-        });
-
-        const user = await Users.findOne({
-            where: {
-                user_id: message.member.id
-            }
-        });
-
-        function hasNoVip() {
-            message.channel.send(`You do not have the VIP pass. See the ${prefix}shop to buy it.`);
-        }
-
-        if (user === null) { // user doesn't exist in database
-            hasNoVip();
-            return;
-        }
-
-        const userItems = await user.getItems();
-        
-        let hasVip = false;
-        for (const userItem of userItems) {
-            const userVIP = userItems.find(userItem => userItem.item_id == item.id);
-
-            if (userVIP !== undefined) { // found the item
-                hasVip = true;
-                break;
-            }
-        }
-
-        if (hasVip) {        
+        if (await userHasItem(message.author.id, "VIP pass")) {
             message.channel.send("It appears you have the VIP pass. Welcome to the VIP Group!");
             // Give vip role
             message.member.roles.add(vipRole);
         } else {
-            hasNoVip();
+            message.channel.send(`You do not have the VIP pass. See the ${prefix}shop to buy it.`);
         }
     }
 }

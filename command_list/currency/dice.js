@@ -1,6 +1,6 @@
 const { Op } = require('sequelize');
 const { MessageEmbed } = require("discord.js");
-const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
+const { userHasItem } = require(`${__basedir}/functions`);
 
 
 module.exports = {
@@ -8,44 +8,10 @@ module.exports = {
     description: 'Play against the computer in a game of dice. Whoever rolls higher wins.',
     async execute(message, args){
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
-        // Check if the user has a vip pass
-        const item = await CurrencyShop.findOne({
-            where: {
-                name: {
-                    [Op.like]: "Casino Membership" 
-                }
-            }
-        });
 
-        const user = await Users.findOne({
-            where: {
-                user_id: message.author.id
-            }
-        });
-
-        function hasNoCasinoMemberShip() {
+        // Check if the user has a casino membershio
+        if (!await userHasItem(message.author.id, "Casino Membership")) {
             message.channel.send(`It appears you are not a member of the casino. Please go to ${prefix}shop and go buy a Casino Membership.`);
-        }
-
-        if (user === null) { // user doesn't exist in database
-            hasNoCasinoMemberShip();
-            return;
-        }
-
-        const userItems = await user.getItems();
-        
-        let hasCasinoMemberShip = false;
-        for (const userItem of userItems) {
-            const userCasinoMember = userItems.find(userItem => userItem.item_id == item.id);
-
-            if (userCasinoMember !== undefined) { // found the item
-                hasCasinoMemberShip = true;
-                break;
-            }
-        }
-
-        if (!hasCasinoMemberShip) {        
-            hasNoCasinoMemberShip();
             return;
         }
 

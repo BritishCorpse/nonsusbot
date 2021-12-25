@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('database', 'username', 'password', {
+const sequelize = new Sequelize('currency_database', 'username', 'password', {
 	host: 'localhost',
 	dialect: 'sqlite',
 	logging: false,
@@ -29,6 +29,6 @@ sequelize.sync({ force }).then(async () => {
 		CurrencyShop.upsert({ name: 'Casino Membership', cost: 1000000})
 	];
 	await Promise.all(shop);
-	console.log('Database synced');
-	sequelize.close();
+	console.log('Currency database synced');
+	sequelize.close()
 }).catch(console.error);
