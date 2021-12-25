@@ -217,11 +217,6 @@ module.exports = {
         })
 
 
-        const filter = (reaction, user) => (reaction.emoji.name === "🏳️" || reaction.emoji.name === "🚩") && user.id === message.author.id;
-        
-        const collector = message.createReactionCollector({ filter, time: 15000 });
-        
-        collector.on('collect', (reaction) => {
 
 
 
