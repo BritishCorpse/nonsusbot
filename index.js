@@ -30,11 +30,16 @@ client.serverConfig = new Discord.Collection();
 client.currency = new Discord.Collection();
 
 // Load commands from the command_list folder
-const commandFiles = fs.readdirSync("./command_list")
-    .filter(file => file.endsWith(".js"));
-for (const file of commandFiles) {
-    const command = require(`./command_list/${file}`);
-    client.commands.set(command.name, command);
+const categoryFolders = fs.readdirSync("./command_list");
+for (const category of categoryFolders) {
+    const commandFiles = fs.readdirSync(`./command_list/${category}`)
+        .filter(file => file.endsWith(".js"));
+
+    for (const file of commandFiles) {
+        const command = require(`./command_list/${category}/${file}`);
+        command.category = category;
+        client.commands.set(command.name, command);
+    }
 }
 
 // Load background tasks from the background_tasks folder
