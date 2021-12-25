@@ -25,7 +25,6 @@ module.exports = {
         let petTarget = message.mentions.users.first();
         if (!petTarget) {
             const embed = new MessageEmbed()
-            const embed = new MessageEmbed()
             .setTitle(`${message.author.username} pets ${message.author.username}, how generous!`)
             .setImage(images[Math.floor(Math.random() * images.length)])
             .setColor("ORANGE")
@@ -42,7 +41,6 @@ module.exports = {
         }
 
         else {
-            const embed = new MessageEmbed()
             const embed = new MessageEmbed()
             .setTitle(`${message.author.username} pets ${petTarget.username}, how generous!`)
             .setImage(images[Math.floor(Math.random() * images.length)])
