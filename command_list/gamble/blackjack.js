@@ -217,6 +217,36 @@ module.exports = {
         })
 
 
+        const filter = (reaction, user) => (reaction.emoji.name === "🏳️" || reaction.emoji.name === "🚩") && user.id === message.author.id;
+        
+        const collector = message.createReactionCollector({ filter, time: 15000 });
+        
+        collector.on('collect', (reaction) => {
+
+            console.log(reaction)
+            if (reaction.emoji.name === '🏳️') {
+                message.channel.send("white flag");
+            }
+
+            
+            else if (reaction.emoji.name === '🚩') {
+                message.channel.send("red flag")
+            }
+        });
+        
+        collector.on('end', collected => {
+            if(collected.size < 1) {
+                message.channel.send("Hello? Did you fall asleep?");
+                message.channel.send(`You can't escape the loss, ${userBet}💰`);
+
+                message.client.currency.add(message.author.id, -userBet);
+                return;
+            }
+
+            else {
+                console.log("Collection successful.")
+            };
+        }); 
 
 
     }
