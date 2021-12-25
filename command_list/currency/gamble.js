@@ -5,6 +5,8 @@ module.exports = {
     name: 'gamble',
     description: "Goes to the casino.",
     execute (message, args) {
+        //Command disabled.
+        return message.channel.send("This command is no longer available.")
         message.channel.send('Would you like to enter the casino? (cost: 100)').then(() => {
 
             const filter = m => message.author.id === m.author.id;

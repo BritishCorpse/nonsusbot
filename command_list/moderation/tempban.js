@@ -21,13 +21,15 @@ module.exports = {
 
         if (!message.member.permissionsIn(message.channel).has('BAN_MEMBERS')) {
             return message.channel.send("Insufficient permissions.");
-        } else {
-            const banUser = message.mentions.users.first();
+        } 
+        
+        else {
+            let banUser = message.mentions.members.first();
             const banTime = args[1];
             const banReason = args.slice(2).join(" ");
 
             if (!banUser || !banTime) {
-                return message.channel.send(`Incorrect usage. Proper usage, ${prefix}tempban ${user} time reason`);
+                return message.channel.send(`Incorrect usage. Proper usage, ${prefix}tempban ${banUser} time reason`);
             }
 
             if (!banReason) {
@@ -44,7 +46,7 @@ module.exports = {
                 .setColor("ORANGE");
 
             message.channel.send({embeds: [embed]});
-            message.guild.member(banUser).ban({days: banTime, reason: banReason})
+                banUser.ban({days: banTime, reason: banReason})
                 .then(console.log)
                 .catch(console.error);
         }
