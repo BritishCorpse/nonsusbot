@@ -4,7 +4,7 @@ const { x_rapidapi_key } = require("../config.json");
 module.exports = {
   name: ["youtube", "yt"],
   category: "Tool",
-  description: "Search videos on youtube.",
+  description: "Searches for videos on youtube.com then sends the link in the channel.",
   execute (message, args) {
     const options = {
       url: "https://youtube-v31.p.rapidapi.com/search",

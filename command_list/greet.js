@@ -1,7 +1,7 @@
 module.exports = {
   name: ["greet", "hello"],
   category: "Fun",
-  description: "Say hello to someone.",
+  description: "Says hello to anyone!",
   execute (message, args) {
     if (/@/m.test(args.join(" "))) {
       message.channel.send("No no nooo, very baaad! :poop:");

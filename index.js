@@ -146,7 +146,7 @@ Reflect.defineProperty(client.currency, 'getBalance', {
 client.once("ready", async () => {
     const storedBalances = await Users.findAll();
     storedBalances.forEach(b => client.currency.set(b.user_id, b));
-    client.user.setActivity("with dead people | _help");
+    client.user.setActivity(`with dead people | @ me for my prefix!`);
     console.log("Ready and logged in as " + client.user.tag + "!");
     console.log("\u0007"); // bell sound
 });
@@ -161,28 +161,48 @@ client.on("messageDelete", message => {
     const channel = client.channels.cache.get("825726316817023016");
     channel.send({
         embeds: [embed]
-    });
+    }); 
 });
 
 
-//For handling commands
-client.on("messageCreate", message => {
-    // disable DMs
+// For handling commands
+client.on("messageCreate", async message => {
+    // Disable DMs
     if (message.guild === null) return;
 
-    // log messages
+    // Log messages
     const date = new Date(message.createdTimestamp);
     console.log(`${date.toGMTString()} | ${message.guild.name} | #${message.channel.name} | ${message.author.tag}: ${message.content} ${message.type}`);
 
     const prefix = client.serverConfig.get(message.guild.id).prefix;
 
-    // don't do commands if they come from a bot
+    // Don't do commands if they come from a bot
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-    //Disable lines below for public use, otherwise user needs to be administrator
-    //if (!message.guild.member(message.author).hasPermission(['ADMINISTRATOR'])) {
-    //  return message.channel.send("you do not withold the powers to use the kek bot... try again later! L");
-    //}
+
+    // Check for user's badge. If there is no custom badge, make the normal badge.
+    // Marked this out, will fix tomorrow.
+/*
+    const user = await Users.findOne({
+        where: {
+            user_id: message.member.id
+        }
+    });
+
+    const item = await CurrencyShop.findOne({
+        where: {
+            name: {
+                [Op.like]: "VIP pass" 
+            }
+        }
+    });
+
+    const userItems = await user.getItems();
+    for (const userItem of userItems) {
+        const userBadge = userItems.find(userItem => userItem.item_id == item.id);
+    }
+
+    */
 
     const args = message.content.slice(prefix.length)
         .replace(/\s+/, " ")

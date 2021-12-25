@@ -4,7 +4,7 @@ const { Users } = require('../db_objects');
 module.exports = {
     name: 'transfer',
     category: "Currency",
-    description: "Transfer some of your money to someone.",
+    description: "Transfer coins from your account to someone else.",
     execute (message, args) {
         const currentAmount = message.client.currency.getBalance(message.author.id);
         //const transferAmount = commandArgs.split(/ +/).find(arg => !/<@!?\d+>/.test(arg));

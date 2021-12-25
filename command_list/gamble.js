@@ -4,7 +4,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
     name: 'gamble',
     category: "Currency",
-    description: "Go to the casino.",
+    description: "Goes to the casino.",
     execute (message, args) {
         message.channel.send('Would you like to enter the casino? (cost: 100)').then(() => {
 

@@ -1,7 +1,7 @@
 module.exports = {
     name: 'leaderboard',
     category: "Currency",
-    description: "See the richest users.",
+    description: "Displays the richest users on the leaderboard.",
     execute (message, args) {
         message.channel.send(
             message.client.currency.sort((a, b) => b.balance - a.balance)

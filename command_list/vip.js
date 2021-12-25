@@ -5,7 +5,7 @@ const { Users, CurrencyShop } = require('../db_objects')
 module.exports = {
     name: 'vip',
     category: 'currency',
-    description: 'Join the V.I.P group for a low price of 10 million coins!',
+    description: "If member has a VIP pass in their inventory, gives them the vip_role_id, if the role is not set, the user will not get the role.",
     async execute(message, args){
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 

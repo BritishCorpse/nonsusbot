@@ -6,7 +6,7 @@ const { very_ninja_php_session_id } = require('../config.json');
 module.exports = {
   name: "mp4",
   category: "Tool",
-  description: "Search the MP4 URL for a video.",
+  description: "Searches for the MP4 file of any video you want.",
   execute (message, args) {
       message.channel.send("The MP4 command is currently broken. We apologize for the inconvenience.");
       return;

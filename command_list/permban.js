@@ -15,7 +15,7 @@ const funnyReplies = [
 module.exports = {
     name: 'permban',
     category: "Moderation",
-    description: "Ban's a user from the guild permanently.",
+    description: "Permanently bans a user from the guild.",
     execute (message, args) {
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 

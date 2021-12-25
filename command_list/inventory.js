@@ -4,7 +4,7 @@ const { Users } = require('../db_objects');
 module.exports = {
     name: 'inventory',
     category: "Currency",
-    description: "Show your inventory, or someone else's inventory.",
+    description: "Shows your inventory, or someone else's.",
     async execute (message, args) {
         const target = message.mentions.users.first() || message.author;
         const user = await Users.findOne({

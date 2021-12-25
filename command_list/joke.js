@@ -10,7 +10,7 @@ const offensive = [];
 module.exports = {
   name: 'joke',
   category: "Fun",
-  description: "Find a joke.",
+  description: "Finds a joke from the database, then sends it in the channel.",
   execute (message, args) {
     //let joke_length = 0;
     let content = "";

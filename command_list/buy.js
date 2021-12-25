@@ -5,7 +5,7 @@ const { Users, CurrencyShop } = require('../db_objects')
 module.exports = {
     name: 'buy',
     category: "Currency",
-    description: "Buy an item.",
+    description: "Buys an item from the shop.",
     async execute (message, args) {
         const item = await CurrencyShop.findOne({
             where: {

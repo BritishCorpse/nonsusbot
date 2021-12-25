@@ -11,7 +11,7 @@ function formatCategoryName(category) {
 module.exports = {
     name: 'help',
     category: "General",
-    description: "Help page for commands.",
+    description: "What you're reading right now!",
     execute (message, args) {
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
         const botAvatarUrl = message.client.user.displayAvatarURL();

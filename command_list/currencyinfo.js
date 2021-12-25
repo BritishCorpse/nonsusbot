@@ -4,7 +4,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
     name: 'currencyinfo',
     category: "Currency",
-    description: "Information about Graveyard's currency system.",
+    description: "Shows information about Graveyard's currency system.",
     execute (message, args) {
         const embed = new MessageEmbed()
             .setAuthor(`${message.author.username}`, message.author.avatarURL()) // see i would do that but i have developed ptsd from the shop command not working without quotations

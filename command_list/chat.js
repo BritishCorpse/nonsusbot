@@ -3,7 +3,7 @@ const request = require("request");
 module.exports = {
   name: "chat",
   category: "Fun",
-  description: "Chat with the bot.",
+  description: "Talk with an AI!",
   execute (message, args) {
     if (/@/m.test(args.join(" "))) {
       message.channel.send("No no nooo, very baaad! :poop:");

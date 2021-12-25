@@ -5,7 +5,7 @@ const { CurrencyShop } = require('../db_objects');
 module.exports = {
     name: 'shop',
     category: "Currency",
-    description: "See the shop.",
+    description: "Displays the shop.",
     async execute (message, args) {
         const embed = new MessageEmbed()
         .setTitle("Shop page: 1")

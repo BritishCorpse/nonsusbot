@@ -5,7 +5,7 @@ const { bot_name } = require('../config.json');
 module.exports = {
     name: 'botinfo',
     category: "General",
-    description: "Show information on the bot.",
+    description: "Shows information on the bot.",
     execute (message, args) {
       const embed = new MessageEmbed()
           .setColor("BLUE")

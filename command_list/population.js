@@ -6,7 +6,7 @@ const max_number_of_results = 1;
 module.exports = {
   name: "population",
   category: "Tool",
-  description: "Find the population of a country.",
+  description: "Finds the population of a country, then sends it in the channel.",
   execute (message, args) {
     let apiURL;
     if (args.join(" ") === undefined || args.join(" ") === "") {

@@ -29,7 +29,7 @@ function embedFromFoodData(foodData, index, maxIndex) {
 module.exports = {
     name: "food",
     category: "Tool",
-    description: "Get data on food.",
+    description: "Searches for nutritional values for food items, then sends it in the channel.",
     execute (message, args) {
         const options = {
             url: "https://edamam-food-and-grocery-database.p.rapidapi.com/parser",
