@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
-const redditjokes = require("../data/jokes/reddit_jokes.json");
-const stupidstuff = require("../data/jokes/stupidstuff.json");
-const wocka = require("../data/jokes/wocka.json");
+const redditjokes = require(`${__basedir}/data/jokes/reddit_jokes.json`);
+const stupidstuff = require(`${__basedir}/data/jokes/stupidstuff.json`);
+const wocka = require(`${__basedir}/data/jokes/wocka.json`);
 const jokes = redditjokes.concat(stupidstuff, wocka);
 
 //const offensive = ["horny", "penis", "vagine", "dick", "cock", "sex", "porn", "screw", "baby", "racist", "semen", "fuck", "shit", "sperm"];
@@ -9,7 +9,6 @@ const offensive = [];
 
 module.exports = {
   name: 'joke',
-  category: "Fun",
   description: "Finds a joke from the database, then sends it in the channel.",
   execute (message, args) {
     //let joke_length = 0;

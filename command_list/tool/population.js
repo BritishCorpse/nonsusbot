@@ -1,11 +1,10 @@
 const request = require("request");
-const { x_rapidapi_key } = require("../config.json");
+const { x_rapidapi_key } = require(`${__basedir}/config.json`);
 
 const max_number_of_results = 1;
 
 module.exports = {
   name: "population",
-  category: "Tool",
   description: "Finds the population of a country, then sends it in the channel.",
   execute (message, args) {
     let apiURL;

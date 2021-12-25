@@ -1,5 +1,5 @@
 const request = require("request");
-const { x_rapidapi_key } = require("../config.json");
+const { x_rapidapi_key } = require(`${__basedir}/config.json`);
 const { MessageEmbed } = require("discord.js");
 
 
@@ -28,7 +28,6 @@ function embedFromFoodData(foodData, index, maxIndex) {
 
 module.exports = {
     name: "food",
-    category: "Tool",
     description: "Searches for nutritional values for food items, then sends it in the channel.",
     execute (message, args) {
         const options = {

@@ -3,7 +3,6 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
   name: 'geoip',
-  category: "Tool",
   description: "Geolocates an IP. The IP address should be the first argument.",
   execute (message, args) {
     const ipExpr = /(?:\d{1,3}\.){3}\d{1,3}/;

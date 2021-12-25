@@ -1,12 +1,11 @@
 const request = require("request");
 const { MessageEmbed } = new require("discord.js");
-const { x_rapidapi_key } = require("../config.json");
+const { x_rapidapi_key } = require(`${__basedir}/config.json`);
 
 const max_number_of_definitions = 2;
 
 module.exports = {
   name: ["urban", "ud"],
-  category: "Tool",
   description: "Searches Urban Dictionary for anything you'd like.",
   execute (message, args) {
     const options = {

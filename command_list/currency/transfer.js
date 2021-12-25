@@ -1,9 +1,8 @@
-const { Users } = require('../db_objects');
+const { Users } = require(`${__basedir}/db_objects`);
 
 
 module.exports = {
     name: 'transfer',
-    category: "Currency",
     description: "Transfer coins from your account to someone else.",
     execute (message, args) {
         const currentAmount = message.client.currency.getBalance(message.author.id);

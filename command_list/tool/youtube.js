@@ -1,9 +1,8 @@
 const request = require("request");
-const { x_rapidapi_key } = require("../config.json");
+const { x_rapidapi_key } = require(`${__basedir}/config.json`);
 
 module.exports = {
   name: ["youtube", "yt"],
-  category: "Tool",
   description: "Searches for videos on youtube.com then sends the link in the channel.",
   execute (message, args) {
     const options = {

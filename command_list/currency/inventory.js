@@ -1,9 +1,8 @@
-const { Users } = require('../db_objects');
+const { Users } = require(`${__basedir}/db_objects`);
 
 
 module.exports = {
     name: 'inventory',
-    category: "Currency",
     description: "Shows your inventory, or someone else's.",
     async execute (message, args) {
         const target = message.mentions.users.first() || message.author;

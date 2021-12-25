@@ -1,11 +1,10 @@
 const { MessageEmbed } = require('discord.js');
-const { bot_name } = require('../config.json');
-const { developer_discord_user_ids } = require('../development_config.json');
+const { bot_name } = require(`${__basedir}/config.json`);
+const { developer_discord_user_ids } = require(`${__basedir}/development_config.json`);
 
 
 module.exports = {
     name: 'botinfo',
-    category: "General",
     description: "Shows information on the bot.",
     execute (message, args) {
       const embed = new MessageEmbed()

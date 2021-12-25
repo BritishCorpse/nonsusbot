@@ -1,3 +1,6 @@
+// Set the base directory to remove relative paths
+global.__basedir = __dirname;
+
 const fs = require("fs");
 const Discord = new require("discord.js");
 const request = require("request");
@@ -8,10 +11,10 @@ const levenshtein = require("js-levenshtein");
 // Remove this once not needed anymore:
 const { MessageEmbed } = require("discord.js");
 
-const { Users, CurrencyShop } = require('./db_objects');
+const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
 
-const config = require("./config.json");
-const defaultServerConfig = require("./default_server_config.json");
+const config = require(`${__basedir}/config.json`);
+const defaultServerConfig = require(`${__basedir}/default_server_config.json`);
 
 
 const client = new Discord.Client({
@@ -36,7 +39,7 @@ for (const category of categoryFolders) {
         .filter(file => file.endsWith(".js"));
 
     for (const file of commandFiles) {
-        const command = require(`./command_list/${category}/${file}`);
+        const command = require(`${__basedir}/command_list/${category}/${file}`);
         command.category = category;
         client.commands.set(command.name, command);
     }

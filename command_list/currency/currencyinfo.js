@@ -3,7 +3,6 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     name: 'currencyinfo',
-    category: "Currency",
     description: "Shows information about Graveyard's currency system.",
     execute (message, args) {
         const embed = new MessageEmbed()

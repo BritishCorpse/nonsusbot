@@ -2,7 +2,6 @@ const request = require("request");
 
 module.exports = {
   name: "chat",
-  category: "Fun",
   description: "Talk with an AI!",
   execute (message, args) {
     if (/@/m.test(args.join(" "))) {

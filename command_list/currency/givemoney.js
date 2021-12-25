@@ -1,9 +1,8 @@
-const { developer_discord_user_ids, development_discord_server_ids } = require('../development_config.json');
+const { developer_discord_user_ids, development_discord_server_ids } = require(`${__basedir}/development_config.json`);
 
 
 module.exports = {
     name: 'givemoney',
-    category: "Currency",
     description: "Adds coins to user (not everyone is viable for free coins), second argument is how much money it'll give.",
     execute (message, args) {
         // Check if user is a developer of this bot

@@ -1,10 +1,9 @@
 const { Op } = require('sequelize');
-const { Users, CurrencyShop } = require('../db_objects');
+const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
 
 
 module.exports = {
     name: 'buy',
-    category: "Currency",
     description: "Buys an item from the shop.",
     async execute (message, args) {
         const item = await CurrencyShop.findOne({

@@ -1,10 +1,9 @@
 const { MessageEmbed } = require('discord.js');
-const { CurrencyShop } = require('../db_objects');
+const { CurrencyShop } = require(`${__basedir}/db_objects`);
 
 
 module.exports = {
     name: 'shop',
-    category: "Currency",
     description: "Displays the shop.",
     async execute (message, args) {
         const embed = new MessageEmbed()

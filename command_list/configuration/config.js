@@ -1,11 +1,10 @@
 const fs = require("fs");
-const defaultServerConfig = require("../default_server_config.json");
+const defaultServerConfig = require(`${__basedir}/default_server_config.json`);
 const { MessageEmbed } = require("discord.js");
 
 
 module.exports = {
   name: "config",
-  category: "Configuration",
   description: "Change server settings for this bot.",
   execute (message, args) {
     if (!message.member.permissionsIn(message.channel).has("ADMINISTRATOR")) {

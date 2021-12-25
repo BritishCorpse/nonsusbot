@@ -3,7 +3,6 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     name: 'gamble',
-    category: "Currency",
     description: "Goes to the casino.",
     execute (message, args) {
         message.channel.send('Would you like to enter the casino? (cost: 100)').then(() => {
@@ -17,7 +16,8 @@ module.exports = {
             .then(messages => {
                 if (messages.first().content.toLowerCase() === 'yes') {
                     if (100 > message.client.currency.getBalance(message.author.id)) {
-                        return message.reply(`It seems that you do not have the funds required to enter the casino. What a shame.`);
+                        message.reply(`It seems that you do not have the funds required to enter the casino. What a shame.`);
+                        return;
                     } else {
                         message.client.currency.add(message.author.id, -1);
                         const embed = new MessageEmbed()
@@ -85,7 +85,8 @@ module.exports = {
                                                     userBet = Number(messages.first().content)
 
                                                     if (userBet > message.client.currency.getBalance(message.author.id)) {
-                                                        return message.reply("I told you this would happen! (You were kicked out of the casino.")
+                                                        message.reply("I told you this would happen! (You were kicked out of the casino.")
+                                                        return;
                                                     }
 
                                                 })
@@ -124,7 +125,7 @@ module.exports = {
                                                 message.client.currency.add(message.author.id, userProfit);
                                             } else if (diceRollComputer === diceRollUser) {
                                                 message.client.currency.add(message.author.id, userBet);
-                                                return message.channel.send(`Its.. a draw?\nYou got back ${userBet}💰`);
+                                                return message.channel.send(`Its... a draw?\nYou got back ${userBet}💰`);
                                             } else {
                                                 message.channel.send("I'm... not quite sure what happened. My apologies, here's your money back, plus some extra for the inconvenience.");
                                                 message.client.currency.add(message, author.id, userBet + 1000);
@@ -138,7 +139,8 @@ module.exports = {
                     }
                 } else {
                     message.channel.send("Alright, come back another time!");
-                   return message.reply("Psst. Type the word yes to accept the offer next time!")
+                    message.reply("Psst. Type the word yes to accept the offer next time!");
+                    return;
                 }
             })
         })

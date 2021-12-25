@@ -15,7 +15,6 @@ const funnyReplies = [
 
 module.exports = {
     name: 'kick',
-    category: "Moderation",
     description: 'Kicks a user from the guild.',
     execute(message, args) {
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;

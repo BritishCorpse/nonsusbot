@@ -5,7 +5,6 @@ const max_number_of_articles = 1;
 
 module.exports = {
   name: "britannica",
-  category: "Tool",
   description: "Searches articles on Britannica.",
   execute (message, args) {
     request("https://www.britannica.com/search?query=test" + args.join(" "), (error, response, body) => {

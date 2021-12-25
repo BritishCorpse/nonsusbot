@@ -1,6 +1,5 @@
 module.exports = {
     name: "exit",
-    category: "Development",
     description: "Shuts down the bot.",
     op: true,
     execute (message, args) {

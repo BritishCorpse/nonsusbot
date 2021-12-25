@@ -6,7 +6,6 @@ const max_number_of_verses = 1;
 
 module.exports = {
   name: "bible",
-  category: "Tool",
   description: "Get bible verses. Topic is the first argument.",
   execute (message, args) {
     request("https://www.openbible.info/topics/" + args.join(" "), (error, response, body) => {

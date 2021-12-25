@@ -1,10 +1,9 @@
 const { Op } = require('sequelize');
-const { Users, CurrencyShop } = require('../db_objects')
+const { Users, CurrencyShop } = require(`${__basedir}/db_objects`)
 
 
 module.exports = {
     name: 'vip',
-    category: 'currency',
     description: "If member has a VIP pass in their inventory, gives them the vip_role_id, if the role is not set, the user will not get the role.",
     async execute(message, args){
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;

@@ -1,10 +1,9 @@
 const { MessageEmbed } = require('discord.js');
-const { paginateEmbeds } = require('../paginator');
+const { paginateEmbeds } = require(`${__basedir}/paginator`);
 
 
 module.exports = {
     name: 'paginatortest',
-    category: "dummy",
     description: "test paginator",
     execute (message, args) {
         const embeds = [];

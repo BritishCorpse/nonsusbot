@@ -1,6 +1,5 @@
 module.exports = {
     name: 'unban',
-    category: "Moderation",
     description: 'Unbans a user from the guild using userID.',
     execute(message, args){
         if(!message.guild.member(message.author).hasPermission(['BAN_MEMBERS'])){

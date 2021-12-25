@@ -1,11 +1,10 @@
 const request = require("request");
 const { parse } = require("node-html-parser");
 const { MessageAttachment, MessageEmbed } = require("discord.js");
-const { very_ninja_php_session_id } = require('../config.json');
+const { very_ninja_php_session_id } = require(`${__basedir}/config.json`);
 
 module.exports = {
   name: "mp4",
-  category: "Tool",
   description: "Searches for the MP4 file of any video you want.",
   execute (message, args) {
       message.channel.send("The MP4 command is currently broken. We apologize for the inconvenience.");

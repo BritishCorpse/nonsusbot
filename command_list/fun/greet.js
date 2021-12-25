@@ -1,6 +1,5 @@
 module.exports = {
   name: ["greet", "hello"],
-  category: "Fun",
   description: "Says hello to anyone!",
   execute (message, args) {
     if (/@/m.test(args.join(" "))) {

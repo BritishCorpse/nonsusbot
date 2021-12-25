@@ -1,5 +1,4 @@
 const { MessageEmbed } = new require("discord.js");
-const Discord = require('discord.js');
 
 
 function formatCategoryName(category) {
@@ -9,7 +8,6 @@ function formatCategoryName(category) {
 
 module.exports = {
     name: 'help',
-    category: "General",
     description: "What you're reading right now!",
     execute (message, args) {
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;

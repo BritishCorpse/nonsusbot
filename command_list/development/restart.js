@@ -1,6 +1,5 @@
 module.exports = {
     name: "restart",
-    category: "Development",
 	  description: "Restarts the bot.",
     op: true,
   	execute (message, args) {

@@ -15,7 +15,6 @@ const funnyReplies = [
 
 module.exports = {
     name: 'tempban',
-    category: "Moderation",
     description: "Temporarily bans a user from the guild, for a determined amount of days.",
     execute (message, args) {
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
