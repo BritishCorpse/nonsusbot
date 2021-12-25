@@ -43,18 +43,23 @@ module.exports = {
         }
 
         const userItems = await user.getItems();
+        
+        let hasVip = false;
         for (const userItem of userItems) {
             const userVIP = userItems.find(userItem => userItem.item_id == item.id);
 
-            if (userVIP === undefined) {
-                hasNoVip();
-            } else {
-                message.channel.send("It appears you have the VIP pass. Welcome to the VIP Group!");
-
-                // Give vip role
-                message.member.roles.add(vipRole);
+            if (userVIP !== undefined) { // found the item
+                hasVip = true;
+                break;
             }
-        };
+        }
 
+        if (hasVip) {        
+            message.channel.send("It appears you have the VIP pass. Welcome to the VIP Group!");
+            // Give vip role
+            message.member.roles.add(vipRole);
+        } else {
+            hasNoVip();
+        }
     }
-};
+}
