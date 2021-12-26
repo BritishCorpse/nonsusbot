@@ -15,34 +15,29 @@ const funnyReplies = [
 module.exports = {
     name: 'permban',
     description: "Permanently bans a user from the guild.",
+    userPermissions: ["BAN_MEMBERS"],
     execute (message, args) {
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
-        if (!message.member.permissionsIn(message.channel).has('BAN_MEMBERS')) {
-            return message.channel.send("Insufficient permissions.");
-        } 
-        
-        else {
-            const banUser = message.mentions.members.first();
-            const banReason = args.slice(1).join(" ");
+        const banUser = message.mentions.members.first();
+        const banReason = args.slice(1).join(" ");
 
-            if (!banUser || !banReason) {
-                return message.channel.send(`Incorrect usage. Proper usage: ${prefix}permban {user} reason`);
-            }
-
-            const funnyReply = funnyReplies[Math.floor(Math.random()*funnyReplies.length)];
-            const embed = new MessageEmbed()
-                .setAuthor(`${message.author.username}`, message.author.avatarURL())
-                .setDescription(`The moderators have spoken, the ban hammer has fallen, ${banUser.tag} has been banned from ${message.guild.name}! ` + funnyReply)
-                .addField("Ban duration", "Permanent")
-                .addField("Ban reason", banReason)
-                .addField("Moderator", message.author.tag)
-                .setColor("ORANGE");
-
-            message.channel.send({embeds: [embed]});
-                banUser.ban({reason: banReason})
-                .then(console.log)
-                .catch(console.error);
+        if (!banUser || !banReason) {
+            return message.channel.send(`Incorrect usage. Proper usage: ${prefix}permban {user} reason`);
         }
+
+        const funnyReply = funnyReplies[Math.floor(Math.random()*funnyReplies.length)];
+        const embed = new MessageEmbed()
+            .setAuthor(`${message.author.username}`, message.author.avatarURL())
+            .setDescription(`The moderators have spoken, the ban hammer has fallen, ${banUser.tag} has been banned from ${message.guild.name}! ` + funnyReply)
+            .addField("Ban duration", "Permanent")
+            .addField("Ban reason", banReason)
+            .addField("Moderator", message.author.tag)
+            .setColor("ORANGE");
+
+        message.channel.send({embeds: [embed]});
+            banUser.ban({reason: banReason})
+            .then(console.log)
+            .catch(console.error);
     }
 }

@@ -1,7 +1,7 @@
 module.exports = {
     name: "restart",
-	  description: "Restarts the bot.",
-    op: true,
+    description: "Restarts the bot.",
+    developer: true,
   	execute (message, args) {
         message.channel.send("Restarting the bot...")
         .then(() => {
