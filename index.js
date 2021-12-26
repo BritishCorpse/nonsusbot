@@ -263,9 +263,7 @@ client.on("messageCreate", async message => {
     }
 
     // Check for permissions
-    //console.log(message.member.permissionsIn(message.channel).missing(commandObject.userPermissions));
-    if (!message.member.permissionsIn(message.channel).has(commandObject.userPermissions)) {
-        // TODO: replace this with permissions.missing() ?
+    if (!message.member.permissionsIn(message.channel).has(commandObject.userPermissions || [])) {
         const missingPermissions = [];
         for (const permission of commandObject.userPermissions) {
             if (!message.member.permissionsIn(message.channel).has(permission)) {
