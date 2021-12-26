@@ -14,6 +14,7 @@
   "scripts": {
     "heroku-start": "node init_db.js && node . & node heroku.js",
     "start": "node init_db.js && node .",
+    "clean": "rm -rf node_modules server_config.json database.sqlite",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
