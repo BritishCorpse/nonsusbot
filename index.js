@@ -191,7 +191,6 @@ client.on("messageCreate", async message => {
     // Don't do commands if they come from a bot
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-
     // Check for user's badge. If there is no custom badge, make the normal badge.
     // Marked this out, will fix tomorrow.
 /*
@@ -220,7 +219,7 @@ client.on("messageCreate", async message => {
         .replace(/\s+/, " ")
         .trim()
         .split(" ");
-    let command = args.shift();
+    const command = args.shift();
 
     const commandObject = getCommandObjectByName(command);
     if (commandObject === undefined) { // if the command doesn't exist
@@ -236,7 +235,7 @@ client.on("messageCreate", async message => {
             }
         });
 
-        let topCommands = []; // list of top command matches
+        const topCommands = []; // list of top command matches
 
         for (const commandName of allCommands) {
             const similarity = levenshtein(command, commandName);
@@ -254,10 +253,18 @@ client.on("messageCreate", async message => {
         return;
     }
 
-    //console.log(commandObject);
-    if (commandObject.op !== true) {
-        doCommand(commandObject, message, args);
-    } else {
-        message.channel.send("Admin only commands are currently disabled.")
+    // Check for permissions
+    if (!message.member.permissionsIn(message.channel).has(commandObject.userPermissions)) {
+        message.channel.send(`You do not have the \`${commandObject.userPermissions.join('`, `')}\` permission(s)`);
+        return;
     }
+
+    // Check of developer only commands
+    if (commandObject.op === true) {
+        message.channel.send("Admin only commands are currently disabled.")
+        return;
+    }
+    
+    // If all the checks passed, do the command
+    doCommand(commandObject, message, args);
 });

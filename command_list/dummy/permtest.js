@@ -1,7 +1,7 @@
 module.exports = {
-    name: 'paginatortest',
-    description: "test paginator",
-    userPermissions: ['MANAGE_CHANNELS'],
+    name: 'permtest',
+    description: "test permissions check",
+    userPermissions: ['ADMINISTRATOR'],
     execute (message, args) {
         message.channel.send('the command executed');
     }
