@@ -255,8 +255,17 @@ client.on("messageCreate", async message => {
     }
 
     // Check for permissions
+    //console.log(message.member.permissionsIn(message.channel).missing(commandObject.userPermissions));
     if (!message.member.permissionsIn(message.channel).has(commandObject.userPermissions)) {
-        message.channel.send(`You do not have the \`${commandObject.userPermissions.join('`, `')}\` permission(s)`);
+        // TODO: replace this with permissions.missing() ?
+        const missingPermissions = [];
+        for (const permission of commandObject.userPermissions) {
+            if (!message.member.permissionsIn(message.channel).has(permission)) {
+                missingPermissions.push(permission);
+            }
+        }
+
+        message.channel.send(`You do not have these required permissions: \`${missingPermissions.join('`, `')}\``);
         return;
     }
 
