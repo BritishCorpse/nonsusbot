@@ -58,10 +58,7 @@ module.exports = {
           }
         }
 
-        console.log(client.serverConfig);
-        console.log(client.serverConfig.get(message.guild.id));
         client.serverConfig.get(message.guild.id)[args[1]] = args[2];
-        console.log(client.serverConfig);
 
         // write it to the file
         saveServerConfig(client.serverConfig);
