@@ -13,6 +13,8 @@ Run `node init_db.js --force` to re-initialize the database, to reset the curren
 
 Edit the `config.json` file to change the bot name, default prefix, discord bot token, and api keys.
 
+Run `npm run clean` to clean the directory (will delete `node_modules` and other files).
+
 ## Configuration files
 
 ### `config.json`
