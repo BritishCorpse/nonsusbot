@@ -1,7 +1,7 @@
 const fs = require("fs");
 const { MessageEmbed } = require("discord.js");
 const defaultServerConfig = require(`${__basedir}/default_server_config.json`);
-const functions = require(`${__basedir}/functions`);
+const { saveServerConfig } = require(`${__basedir}/functions`);
 
 
 module.exports = {
@@ -58,10 +58,13 @@ module.exports = {
           }
         }
 
+        console.log(client.serverConfig);
+        console.log(client.serverConfig.get(message.guild.id));
         client.serverConfig.get(message.guild.id)[args[1]] = args[2];
+        console.log(client.serverConfig);
 
         // write it to the file
-        functions.saveServerConfig(client.serverConfig);
+        saveServerConfig(client.serverConfig);
 
         message.channel.send("Set value `" + args[1] + "` to `" + args[2] + "`");
       } else {
@@ -89,7 +92,7 @@ module.exports = {
 
       message.channel.send({embeds: [embed]});
 
-    } else {
+    } else { // no option given, or incorrect option given
       message.channel.send("Options are: set, list");
     }
   }

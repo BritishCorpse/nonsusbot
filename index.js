@@ -59,7 +59,14 @@ for (const file of backgroundTasksFiles) {
 }
 
 // Load server-specific configs from the server_config.json file
-const serverConfigJSON = require("./server_config.json");
+let serverConfigJSON;
+try {
+    serverConfigJSON = require(`${__basedir}/server_config.json`);
+} catch (error) {
+    if (error.code === "MODULE_NOT_FOUND") {
+        serverConfigJSON = {};
+    }
+}
 for (const guildId in serverConfigJSON) {
     client.serverConfig.set(guildId, serverConfigJSON[guildId]);
 }
@@ -106,11 +113,12 @@ function collectionToJSON(collection) {
 }
 
 
-function addServerConfigs() {
+function addNewGuildServerConfigs() {
     // add new guilds to the server_config.json file
     client.guilds.cache.each(guild => {
         if (client.serverConfig.get(guild.id) === undefined) {
-            client.serverConfig.set(guild.id, defaultServerConfig);
+            // JSON.parse JSON.stringify makes a deep copy, which is needed to fix a bug where editing one config edits multiple configs because they are the same object
+            client.serverConfig.set(guild.id, JSON.parse(JSON.stringify(defaultServerConfig))); 
         }
     });
     saveServerConfig(client.serverConfig);
@@ -119,8 +127,8 @@ function addServerConfigs() {
 
 client.login(config.bot_token)
     // add server configs
-    .then(addServerConfigs);
-client.on("guildCreate", addServerConfigs);
+    .then(addNewGuildServerConfigs);
+client.on("guildCreate", addNewGuildServerConfigs);
 
 
 // start the background tasks once
