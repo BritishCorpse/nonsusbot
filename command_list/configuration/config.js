@@ -7,12 +7,8 @@ const functions = require(`${__basedir}/functions`);
 module.exports = {
   name: "config",
   description: "Change server settings for this bot.",
+  userPermissions: ["ADMINISTRATOR"],
   execute (message, args) {
-    if (!message.member.permissionsIn(message.channel).has("ADMINISTRATOR")) {
-      message.channel.send("You do not have the required permissions.");
-      return
-    }
-
     const client = message.client;
     
     if (args[0] === "set") {
