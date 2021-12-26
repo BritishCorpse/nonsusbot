@@ -2,6 +2,35 @@
 const { MessageEmbed/*, DiscordAPIError*/ } = require("discord.js");
 //const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
 
+
+/* Rules:
+ * Each participant attempts to beat the dealer by getting a count as close to
+ * 21 as possible, without going over 21.
+ * It is up to each individual player if an ace is worth 1 or 11. Face cards
+ * are 10 and any other card is its pip value.
+ *
+ * The player to the left goes first and must decide whether to "stand" (not
+ * ask for another card) or "hit" (ask for another card in an attempt to get
+ * closer to a count of 21, or even hit 21 exactly). Thus, a player may stand
+ * on the two cards originally dealt to them, or they may ask the dealer for
+ * additional cards, one at a time, until deciding to stand on the total (if it
+ * is 21 or under), or goes "bust" (if it is over 21). In the latter case, the
+ * player loses and the dealer collects the bet wagered. The dealer then turns
+ * to the next player to their left and serves them in the same manner.
+ *
+ * When the dealer has served every player, the dealers face-down card is
+ * turned up. If the total is 17 or more, it must stand. If the total is 16 or
+ * under, they must take a card. The dealer must continue to take cards until
+ * the total is 17 or more, at which point the dealer must stand. If the dealer
+ * has an ace, and counting it as 11 would bring the total to 17 or more (but
+ * not over 21), the dealer must count the ace as 11 and stand. The dealer's
+ * decisions, then, are automatic on all plays, whereas the player always has
+ * the option of taking one or more cards.
+ *
+ * Whoever gets closer, dealer or player wins, if both get 21 its a draw, if
+ * both get same its a draw. 
+ */
+
 module.exports = {
     name: 'blackjack',
     description: 'Play against the computer in a game of blacjack.',
