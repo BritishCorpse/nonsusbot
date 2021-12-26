@@ -48,7 +48,7 @@ module.exports = {
             message.channel.send("🎲Unfortunately your bet is too large for this game, We can't have you being too successful after all!🎲");
             return;
 
-        } else if (userBet === 'rules') {
+        } else if (args[0] === 'rules') {
             const embed = new MessageEmbed()
             .setTitle("Rules of blackjack.")
             .setColor("ORANGE")
@@ -66,33 +66,53 @@ module.exports = {
         // Pulls a random card from the imaginary deck.
         const rollCard = () => Math.floor(Math.random() * (14 - 2) + 2);
 
-        let dealerFirstCard = rollCard();
-        let dealerSecondCard = rollCard();
+        ///let dealerFirstCard = rollCard();
+        ///let dealerSecondCard = rollCard();
+        const dealerCards = [];
+        for (let i = 0; i < 2; ++i) {
+            dealerCards.push(rollCard());
+        }
         //console.log(dealerFirstCard, dealerSecondCard);
 
-        let userFirstCard = rollCard();
-        let userSecondCard = rollCard();
-        let userThirdCard = rollCard();
-        let userFourthCard = rollCard();
-        let userFifthCard = rollCard();
+        ///let userFirstCard = rollCard();
+        ///let userSecondCard = rollCard();
+        ///let userThirdCard = rollCard();
+        ///let userFourthCard = rollCard();
+        ///let userFifthCard = rollCard();
 
-        function calculateCardTotal(x1, x2, x3, x4) {
-            if (x1 > 10) x1 = 10;
-            if (x2 > 10) x2 = 10;
-            if (x3 > 10) x3 = 10;
-            if (x4 > 10) x4 = 10;
+        const userCards = [];
+        ////for (let i = 0; i < 5; ++i) {
+            ////userCards.push(rollCard());
+        ////}
+        for (let i = 0; i < 2; ++i) {
+            userCards.push(rollCard());
+        }
 
-            let result = x1 + x2 + x3 + x4;
+        const constrain = (number, max) => number > max ? max : number;
+
+        function calculateCardTotal(cards) {
+            let result = 0;
+            for (const card of cards) {
+                result += constrain(card, 10);
+            }
             return result;
         }
 
         const embed = new MessageEmbed()
-            .setTitle("🃏The users cards!🃏")
+            .setTitle("🃏The user's cards!🃏")
             .setColor("ORANGE");
 
         //console.log(userFirstCard, userSecondCard);
 
-        function checkForCardType(inputCard, player, cardPlace) {
+        function cardToString(card) {
+            if (card < 11) {
+                return `${card}`;
+            } else {
+                return ['Jack', 'Queen', 'King', 'Ace'][card - 11] + '(10)';
+            }
+        }
+
+        /*/function checkForCardType(inputCard, player, cardPlace) {
             if (inputCard < 11) {
                 embed.addField(`${player}'s ${cardPlace} card is:`, `${inputCard}`);
             }  else if (inputCard === 11) {
@@ -107,16 +127,26 @@ module.exports = {
                 console.log(inputCard);
                 return;
             }
+        }/*/
+
+        function addEmbedField(card, player, cardNumber) {
+            embed.addField(`${player}'s card #${cardNumber} is:`, cardToString(card));
         }
 
         // Check cardtypes for dealer's first card and users first and second card.
-        checkForCardType(dealerFirstCard, "The dealer", "first");
-        checkForCardType(userFirstCard, message.author.username, "first");
-        checkForCardType(userSecondCard, message.author.username, "second")
+        ///checkForCardType(dealerFirstCard, "The dealer", "first");
+        ///checkForCardType(userFirstCard, message.author.username, "first");
+        ///checkForCardType(userSecondCard, message.author.username, "second")
+        addEmbedField(dealerCards[0], 'Dealer', 1);
+        addEmbedField(userCards[0], message.member.nickname, 1);
+        addEmbedField(userCards[1], message.member.nickname, 2);
 
         message.channel.send({embeds: [embed]}).then(botMessage => {
-            const filter = (reaction, user) => (reaction.emoji.name === "🏳️" || reaction.emoji.name === "🚩") && user.id === message.author.id;
-            const collector = botMessage.createReactionCollector({ filter, time: 60000 });
+            const filter = (reaction, user) => (reaction.emoji.name === "🏳️"
+                                                || reaction.emoji.name === "🚩")
+                                               && user.id === message.author.id;
+
+            const collector = botMessage.createReactionCollector({filter, time: 60000});
 
             let hitTimes = 0;
 
@@ -125,27 +155,33 @@ module.exports = {
             });
 
             function endGame(hasFourth=false) {
-                let dealerResult = calculateCardTotal(dealerFirstCard, dealerSecondCard, 0, 0);
-                let userResult = calculateCardTotal(userFirstCard, userSecondCard, 0, 0);
+                ///const dealerResult = calculateCardTotal(dealerFirstCard, dealerSecondCard);
+                const dealerResult = calculateCardTotal(dealerCards);
+                //let userResult = calculateCardTotal(userFirstCard, userSecondCard);
+
+                ///const userResult = calculateCardTotal(userFirstCard, userSecondCard, userThirdCard, userFourthCard);
+                const userResult = calculateCardTotal(userCards);
 
                 const gameEndEmbed = new MessageEmbed()
                     .setTitle("Here are the results!")
                     .setColor("ORANGE")
-                    .addField("The dealer's first card is:", `${dealerFirstCard}`)
-                    .addField("The dealer's second card is:", `${dealerSecondCard}`)
+                    .addField("The dealer's first card is:", `${/*/dealerFirstCard/*/dealerCards[0]}`)
+                    .addField("The dealer's second card is:", `${/*/dealerSecondCard/*/dealerCards[1]}`)
                     .addField("The dealers total amount is:", `${dealerResult}`)
                     .addField("\u200b", "\u200b")
-                    .addField(`${message.author.username}'s first card is:`, `${userFirstCard}`,)
-                    .addField(`${message.author.username}'s second card is:`, `${userSecondCard}`);;
+                    ///.addField(`${message.author.username}'s first card is:`, `${userFirstCard}`,)
+                    ///.addField(`${message.author.username}'s second card is:`, `${userSecondCard}`);
+                    .addField(`${message.author.username}'s first card is:`, `${userCards[0]}`,)
+                    .addField(`${message.author.username}'s second card is:`, `${userCards[1]}`);
 
                 if (hasFourth) {
-                    gameEndEmbed.addField(`${message.author.username}'s third card is:`, `${userThirdCard}`);
+                    ///gameEndEmbed.addField(`${message.author.username}'s third card is:`, `${userThirdCard}`);
+                    gameEndEmbed.addField(`${message.author.username}'s third card is:`, `${userCards[2]}`);
                 }
 
-                gameEndEmbed.addField(`${message.author.username}'s total amount is:`, `${userResult}`)
+                gameEndEmbed.addField(`${message.author.username}'s total amount is:`, `${userResult}`);
 
-                let userCardSum = calculateCardTotal(userFirstCard, userSecondCard, userThirdCard, userFourthCard);
-                if (userCardSum > 21) {
+                if (userResult > 21) {
                     gameEndEmbed.setFooter(`${message.author.username} got a bust! -${userBet}💰`);
                     message.client.currency.add(message.author.id, -userBet);
                 }
@@ -166,7 +202,6 @@ module.exports = {
 
                 botMessage.edit({embeds: [gameEndEmbed]});
                 collector.stop();
-                return;
             }
             
             collector.on('collect', reaction => {
@@ -177,28 +212,34 @@ module.exports = {
                     hitTimes++;
 
                     message.channel.send("yes2");
-                    checkForCardType(userFourthCard, message.author.username, "fourth");
+                    ///checkForCardType(userFourthCard, message.author.username, "fourth");
+                    addEmbedField(userCards[3], message.author.username, 4);
                     botMessage.edit({embeds: [embed]});
 
-                    let userCardSum = calculateCardTotal(userFirstCard, userSecondCard, userThirdCard, userFourthCard);
-                    if (userCardSum > 21) {
+                    ///const userResult = calculateCardTotal(userFirstCard, userSecondCard, userThirdCard, userFourthCard);
+                    const userResult = calculateCardTotal(userCards);
+                    if (userResult > 21) {
                         endGame(true);
                     } else {
                         // fix this
-                        endGame(true);
+                        //endGame(true);
+                        message.channel.send("idk what to do now");
                     }
                 } else {
                     if (reaction.emoji.name === '🏳️') {
                         endGame();
                     } else if (reaction.emoji.name === '🚩') {
                         hitTimes++;
+                        userCards.push(rollCard());
 
-                        checkForCardType(userThirdCard, message.author.username, "third");
+                        ///checkForCardType(userThirdCard, message.author.username, "third");
+                        addEmbedField(userCards[2], message.author.username, 3);
                         message.channel.send("yes");
 
-                        let userCardSum = calculateCardTotal(userFirstCard, userSecondCard, userThirdCard, 0);
-                        if (userCardSum > 21) {
-                            endGame()
+                        ///const userResult = calculateCardTotal(userFirstCard, userSecondCard, userThirdCard);
+                        const userResult = calculateCardTotal(userCards);
+                        if (userResult > 21) {
+                            endGame();
                         }
                         botMessage.edit({embeds: [embed]});
                         return;
@@ -215,10 +256,5 @@ module.exports = {
                 }
             }); 
         })
-
-
-
-
-
     }
 }
