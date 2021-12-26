@@ -136,7 +136,7 @@ module.exports = {
                 ace.makeAceEleven();
 
                 // check score again
-                if (getScore(dealerScore) > 21) {
+                if (getScore(dealerCards) > 21) {
                     // undo because having an ace as 11 would be too big
                     ace.makeAceOne();
                 } else {
@@ -218,6 +218,9 @@ module.exports = {
 
             // check if dealer already busted (right after drawing the cards)
             if (getScore(dealerCards) > 21) {
+                endGame();
+                return;
+            } else if (getScore(dealerCards) === 21) { // check if dealer already won
                 endGame();
                 return;
             }
