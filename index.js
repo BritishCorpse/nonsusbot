@@ -19,6 +19,7 @@ const { saveServerConfig } = require(`${__basedir}/functions`);
 const config = require(`${__basedir}/config.json`);
 const defaultServerConfig = require(`${__basedir}/default_server_config.json`);
 
+const developmentConfig = require(`${__basedir}/development_config.json`);
 
 
 const client = new Discord.Client({
@@ -260,9 +261,19 @@ client.on("messageCreate", async message => {
     }
 
     // Check of developer only commands
-    if (commandObject.op === true) {
-        message.channel.send("Admin only commands are currently disabled.")
-        return;
+    if (commandObject.developer) {
+        if (!developmentConfig.developer_discord_user_ids.includes(message.author.id)) {
+            message.channel.send("You are not a developer!");
+            return;
+        }
+
+        if (!developmentConfig.development_discord_server_ids.includes(message.guild.id)) {
+            message.channel.send("You are a developer, but you are not in a development server!");
+            return;
+        }
+
+        //message.channel.send("Developer only commands are currently disabled.");
+        //return;
     }
     
     // If all the checks passed, do the command
