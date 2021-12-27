@@ -6,7 +6,7 @@ const { Users, CurrencyShop } = require(`${__basedir}/db_objects`)
 
 
 function addPageNumbersToFooter(embed, page, maxPage) {
-    return new MessageEmbed(embed).setFooter(`(${page}/${maxPage}) ${embed.footer.text}`);
+    return new MessageEmbed(embed).setFooter(`(${page}/${maxPage}) ${embed.footer ? embed.footer.text : ''}`);
 }
 
 
@@ -120,6 +120,10 @@ module.exports = {
 
             message.edit({embeds: [newEmbed]});
             message.reactions.resolve(reaction.emoji.name).users.remove(allowedUser);
+        });
+
+        collector.on('end', collected => {
+            message.reactions.removeAll();
         });
     }
 }

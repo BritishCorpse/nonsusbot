@@ -1,4 +1,5 @@
-const { MessageEmbed } = new require("discord.js");
+const { MessageEmbed } = require("discord.js");
+const { paginateEmbeds } = require(`${__basedir}/functions`);
 
 
 function formatCategoryName(category) {
@@ -46,20 +47,24 @@ module.exports = {
 
         // List all categories (no argument given)
         if (args[0] === undefined || args[0] === "") {
-            let embedDescription = "";
+            const pages = [];
+
+            let mainEmbedDescription = "";
             for (const category in categories) {
-                embedDescription += `**${category}**\n`;
+                mainEmbedDescription += `**${category}**\n`;
+
+                pages.push(createEmbedFromCategory(category));
             }
 
-            const embed = new MessageEmbed()
-                .setColor("ORANGE")
-                .setThumbnail(botAvatarUrl)
-                .setTitle("Categories")
-                .setDescription(embedDescription)
-                .setFooter(`Do ${prefix}help <category> to see the commands in each category.`);
+            pages.unshift(new MessageEmbed()
+                           .setColor("ORANGE")
+                           .setThumbnail(botAvatarUrl)
+                           .setTitle("Categories")
+                           .setDescription(mainEmbedDescription)
+                           .setFooter(`Do ${prefix}help <category> to see the commands in each category.`)
+            );
 
-            message.channel.send({embeds: [embed]});
-            
+            paginateEmbeds(message.channel, message.author, pages);
         } else {
             const possibleCategory = formatCategoryName(args[0])
             if (categories.hasOwnProperty(possibleCategory)) {
