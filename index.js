@@ -8,9 +8,6 @@ const levenshtein = require("js-levenshtein");
 //const Sequelize = require('sequelize');
 //const { Op } = require('sequelize');
 
-// Remove this once not needed anymore (MessageEmbed):
-const { MessageEmbed } = require("discord.js");
-
 const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
 
 // for common functions
@@ -40,7 +37,7 @@ client.currency = new Discord.Collection();
 // Load commands from the command_list folder
 const categoryFolders = fs.readdirSync("./command_list");
 for (const category of categoryFolders) {
-    const commandFiles = fs.readdirSync(`./command_list/${category}`)
+    const commandFiles = fs.readdirSync(`${__basedir}/command_list/${category}`)
         .filter(file => file.endsWith(".js"));
 
     for (const file of commandFiles) {
@@ -51,10 +48,10 @@ for (const category of categoryFolders) {
 }
 
 // Load background tasks from the background_tasks folder
-const backgroundTasksFiles = fs.readdirSync("./background_tasks")
+const backgroundTasksFiles = fs.readdirSync(`${__basedir}/background_tasks`)
     .filter(file => file.endsWith(".js"));
 for (const file of backgroundTasksFiles) {
-    const backgroundTask = require(`./background_tasks/${file}`);
+    const backgroundTask = require(`${__basedir}/background_tasks/${file}`);
     client.backgroundTasks.set(backgroundTask.name, backgroundTask);
 }
 
@@ -98,11 +95,6 @@ function doCommand(commandObj, message, args) {
 }
 
 
-function doBackgroundTask(backgroundTaskObj/*, client*/) {
-    backgroundTaskObj.execute(client);
-}
-
-
 function collectionToJSON(collection) {
     // turns a discord collection to a JSON {key: value} dictionary
     let result = {};
@@ -132,8 +124,8 @@ client.on("guildCreate", addNewGuildServerConfigs);
 
 
 // start the background tasks once
-client.backgroundTasks.forEach(backgroundTaskObj => {
-    doBackgroundTask(backgroundTaskObj, client);
+client.backgroundTasks.forEach(backgroundTask => {
+    backgroundTask.execute(client);
 });
 
 
@@ -170,19 +162,6 @@ client.once("ready", async () => {
     client.user.setActivity(`with dead people | @ me for my prefix!`);
     console.log("Ready and logged in as " + client.user.tag + "!");
     console.log("\u0007"); // bell sound
-});
-
-
-// Deleted message logging (MOVE THIS TO BACKGROUND TASKS??)
-client.on("messageDelete", message => {
-    const embed = new MessageEmbed()
-        .setAuthor(`${message.author.username}`, message.author.avatarURL())
-        .setDescription(message.content);
-
-    const channel = client.channels.cache.get("825726316817023016");
-    channel.send({
-        embeds: [embed]
-    });
 });
 
 
