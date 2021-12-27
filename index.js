@@ -177,7 +177,7 @@ client.once("ready", async () => {
 client.on("messageDelete", message => {
     const embed = new MessageEmbed()
         .setAuthor(`${message.author.username}`, message.author.avatarURL())
-        .setDescription(message.content);
+        .setDescription(`${message.content}`);
 
     const channel = client.channels.cache.get("825726316817023016");
     channel.send({
