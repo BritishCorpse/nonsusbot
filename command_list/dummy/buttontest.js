@@ -11,9 +11,28 @@ module.exports = {
                 new MessageButton()
                     .setCustomId('primary')
                     .setLabel('Primary')
-                    .setStyle('PRIMARY')
+                    .setStyle('DANGER')
             );
 
-        message.channel.send({content: 'test', components: [row]});
+        message.channel.send({content: 'test', components: [row]})
+        .then(botMessage => {
+            const collector = botMessage.createMessageComponentCollector({componentType: 'BUTTON', time: 30000})
+
+            collector.on("collect", interaction => {
+                interaction.deferUpdate();
+                console.log(interaction);
+            });
+
+            collector.on("end", collected => {
+                message.channel.send('timed out');
+
+                for (const button of row.components) {
+                    button.setDisabled(true);
+                }
+                botMessage.edit({components: [row]});
+
+                console.log(row);
+            });
+        });
     }
 }

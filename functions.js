@@ -1,7 +1,7 @@
 const fs = require('fs');
-const { MessageEmbed } = require('discord.js');
-const { Op } = require('sequelize');
+const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 
+const { Op } = require('sequelize');
 const { Users, CurrencyShop } = require(`${__basedir}/db_objects`)
 
 
@@ -65,7 +65,7 @@ module.exports = {
                      });
     },
 
-    async paginateEmbeds (channel, allowedUser, embeds, messageToEdit=null, previousEmoji='◀️', nextEmoji='▶️', addPagesInFooter=true, timeout=120000) {
+    async paginateEmbeds (channel, allowedUser, embeds, messageToEdit=null, previousEmoji='<', nextEmoji='>', addPagesInFooter=true, timeout=120000) {
         // Idea from https://www.npmjs.com/package/discord.js-pagination
         // Creates reactions allowing multiple embed pages
 
@@ -74,40 +74,45 @@ module.exports = {
         // if messageToEdit is given, it will edit that message instead of sending a new one
         // if addPagesInFooter is true, it adds page number before the footer
 
-
         let maxIndex = embeds.length - 1;
         let currentIndex = 0;
 
-        let message;
+        const row = new MessageActionRow()
+            .addComponents(
+                new MessageButton()
+                    .setCustomId('previous')
+                    .setLabel(previousEmoji)
+                    .setStyle('PRIMARY'),
+                new MessageButton()
+                    .setCustomId('next')
+                    .setLabel(nextEmoji)
+                    .setStyle('PRIMARY')
+            );
 
+        let message;
         if (messageToEdit === null) {
             let newEmbed = embeds[currentIndex];
             if (addPagesInFooter)
                 newEmbed = addPageNumbersToFooter(newEmbed, currentIndex + 1, maxIndex + 1);
 
-            message = await channel.send({embeds: [newEmbed]});
+            message = await channel.send({embeds: [newEmbed], components: [row]});
         } else {
             message = messageToEdit;
         }
 
-        // Put the emojis
-        message.react(previousEmoji).then(() => {
-            message.react(nextEmoji);
-        });
+        const filter = interaction => (interaction.customId === 'previous'
+                                       || interaction.customId === 'next')
+                                      && interaction.user.id === allowedUser.id;
 
-        const filter = (reaction, user) => (reaction.emoji.name === previousEmoji
-                                            || reaction.emoji.name === nextEmoji)
-                                           && user.id === allowedUser.id;
+        const collector = message.createMessageComponentCollector({filter, time: timeout});
 
-        const collector = message.createReactionCollector({filter, time: timeout});
-
-        collector.on('collect', reaction => {
-            if (reaction.emoji.name === previousEmoji) {
+        collector.on('collect', interaction => {
+            if (interaction.customId === 'previous') {
                 if (currentIndex === 0)
                     currentIndex = maxIndex; // loop back around
                 else
                     currentIndex--; 
-            } else if (reaction.emoji.name === nextEmoji) {
+            } else if (interaction.customId === 'next') {
                 if (currentIndex === maxIndex)
                     currentIndex = 0;
                 else
@@ -118,12 +123,12 @@ module.exports = {
             if (addPagesInFooter)
                 newEmbed = addPageNumbersToFooter(newEmbed, currentIndex + 1, maxIndex + 1);
 
-            message.edit({embeds: [newEmbed]});
-            message.reactions.resolve(reaction.emoji.name).users.remove(allowedUser);
+            interaction.update({embeds: [newEmbed]});
         });
 
         collector.on('end', collected => {
-            message.reactions.removeAll();
+            row.components.forEach(button => button.setDisabled(true));
+            message.edit({components: [row]});
         });
     }
 }
