@@ -10,6 +10,8 @@ module.exports = {
             //const channel = client.channels.cache.get("825726316817023016");
             const logChannel = client.channels.cache.get(client.serverConfig.get(message.guild.id).log_channel_id);
 
+            if (logChannel === undefined) return;
+
             const embed = new MessageEmbed()
                 .setAuthor(`${message.author.username}`, message.author.avatarURL())
                 .setDescription(message.content);
