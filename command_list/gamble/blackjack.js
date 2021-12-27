@@ -184,7 +184,9 @@ module.exports = {
                     .setStyle('DANGER')
             );
 
-        message.channel.send({embeds: [embed], components: [row]}).then(botMessage => {
+        message.channel.send({embeds: [embed], components: [row]}).then(botMessage => {1
+            let userPlayed = false; // used to cancel the message given if the user didn't do anything when the dealer automatically lost
+
             const filter = interaction => (interaction.customId === 'stand'
                                            || interaction.customId === 'hit')
                                           && interaction.user.id === message.author.id;
@@ -225,6 +227,8 @@ module.exports = {
             //let hitTimes = 0;
 
             collector.on('collect', interaction => {
+                userPlayed = true;
+
                 if (interaction.customId === 'stand') {
                     interaction.deferUpdate();
                     endGame();
@@ -246,8 +250,8 @@ module.exports = {
             });
             
             collector.on('end', collected => {
-                console.log('ended');
-                if (collected.size < 1) {
+                console.log(collected.size); 
+                if (!userPlayed) {
                     message.channel.send(`Hello? Did you fall asleep?\nYou can't escape the loss, You lost ${userBet}💰`);
     
                     message.client.currency.add(message.author.id, -userBet);
@@ -259,11 +263,11 @@ module.exports = {
 
             // check if dealer already busted (right after drawing the cards)
             if (getScore(dealerCards) > 21) {
+                userPlayed = true;
                 endGame();
-                return;
             } else if (getScore(dealerCards) === 21) { // check if dealer already won
+                userPlayed = true;
                 endGame();
-                return;
             }
         });
     }
