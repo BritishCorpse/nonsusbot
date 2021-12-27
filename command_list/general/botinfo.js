@@ -13,7 +13,6 @@ module.exports = {
           .addField('Creators', `<@!${developer_discord_user_ids.join("> <@!")}>`)
           .addField('Main library', '[discord.js](https://discord.js.org/)')
           .setDescription("Graveyard is a powerful bot created to replace many multipurpose bots. There is no premium version of Graveyard, everything is free!");
-
       message.channel.send({embeds: [embed]});
     }
 }

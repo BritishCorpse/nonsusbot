@@ -1,5 +1,5 @@
 module.exports = {
-	name: "m",
+	name: "verify",
 	execute (client) {
         function verifyUser(message) {
             // disable DMs

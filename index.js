@@ -1,3 +1,9 @@
+// Don't run unless it was using a npm script
+if (process.env.npm_command === undefined) {
+    console.log('This script must be run using npm, as some features of this bot require it. See README.md for more information.');
+    process.exit(1);
+}
+
 // Set the base directory to remove relative paths
 global.__basedir = __dirname;
 
@@ -7,9 +13,6 @@ const request = require("request");
 const levenshtein = require("js-levenshtein");
 //const Sequelize = require('sequelize');
 //const { Op } = require('sequelize');
-
-// Remove this once not needed anymore (MessageEmbed):
-const { MessageEmbed } = require("discord.js");
 
 const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
 
@@ -40,7 +43,7 @@ client.currency = new Discord.Collection();
 // Load commands from the command_list folder
 const categoryFolders = fs.readdirSync("./command_list");
 for (const category of categoryFolders) {
-    const commandFiles = fs.readdirSync(`./command_list/${category}`)
+    const commandFiles = fs.readdirSync(`${__basedir}/command_list/${category}`)
         .filter(file => file.endsWith(".js"));
 
     for (const file of commandFiles) {
@@ -51,10 +54,10 @@ for (const category of categoryFolders) {
 }
 
 // Load background tasks from the background_tasks folder
-const backgroundTasksFiles = fs.readdirSync("./background_tasks")
+const backgroundTasksFiles = fs.readdirSync(`${__basedir}/background_tasks`)
     .filter(file => file.endsWith(".js"));
 for (const file of backgroundTasksFiles) {
-    const backgroundTask = require(`./background_tasks/${file}`);
+    const backgroundTask = require(`${__basedir}/background_tasks/${file}`);
     client.backgroundTasks.set(backgroundTask.name, backgroundTask);
 }
 
@@ -98,11 +101,6 @@ function doCommand(commandObj, message, args) {
 }
 
 
-function doBackgroundTask(backgroundTaskObj/*, client*/) {
-    backgroundTaskObj.execute(client);
-}
-
-
 function collectionToJSON(collection) {
     // turns a discord collection to a JSON {key: value} dictionary
     let result = {};
@@ -132,8 +130,8 @@ client.on("guildCreate", addNewGuildServerConfigs);
 
 
 // start the background tasks once
-client.backgroundTasks.forEach(backgroundTaskObj => {
-    doBackgroundTask(backgroundTaskObj, client);
+client.backgroundTasks.forEach(backgroundTask => {
+    backgroundTask.execute(client);
 });
 
 
@@ -173,6 +171,7 @@ client.once("ready", async () => {
 });
 
 
+<<<<<<< HEAD
 // Deleted message logging (MOVE THIS TO BACKGROUND TASKS??)
 client.on("messageDelete", message => {
     const embed = new MessageEmbed()
@@ -186,6 +185,8 @@ client.on("messageDelete", message => {
 });
 
 
+=======
+>>>>>>> f7ca8ac8c19d8e9ec736f1eabaa0d0b49bf76a6c
 // For handling commands
 client.on("messageCreate", async message => {
     // Disable DMs
