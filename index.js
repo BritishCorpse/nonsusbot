@@ -1,3 +1,9 @@
+// Don't run unless it was using a npm script
+if (process.env.npm_command === undefined) {
+    console.log('This script must be run using npm, as some features of this bot require it. See README.md for more information.');
+    process.exit(1);
+}
+
 // Set the base directory to remove relative paths
 global.__basedir = __dirname;
 
