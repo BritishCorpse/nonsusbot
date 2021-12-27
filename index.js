@@ -171,7 +171,6 @@ client.once("ready", async () => {
 });
 
 
-<<<<<<< HEAD
 // Deleted message logging (MOVE THIS TO BACKGROUND TASKS??)
 client.on("messageDelete", message => {
     const embed = new MessageEmbed()
@@ -185,8 +184,6 @@ client.on("messageDelete", message => {
 });
 
 
-=======
->>>>>>> f7ca8ac8c19d8e9ec736f1eabaa0d0b49bf76a6c
 // For handling commands
 client.on("messageCreate", async message => {
     // Disable DMs
