@@ -280,7 +280,7 @@ client.on("messageCreate", async message => {
     }
 
     // Check of developer only commands
-    if (commandObject.developer) {
+    if (commandObject.developer === true) {
         if (!developmentConfig.developer_discord_user_ids.includes(message.author.id)) {
             message.channel.send("You are not a developer!");
             return;
