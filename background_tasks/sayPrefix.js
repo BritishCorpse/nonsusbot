@@ -1,5 +1,5 @@
 module.exports = {
-	name: "prefix",
+	name: "say_prefix",
 	execute (client) {
     client.on("messageCreate", message => {
       if (message.content === "<@!" + client.user.id + ">") {
