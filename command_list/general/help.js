@@ -29,9 +29,9 @@ module.exports = {
             let embedDescription = "";
             for (const command of categories[formatCategoryName(category)]) {
                 if (typeof command.name === "string") {
-                    embedDescription += `**${command.name}**: `;
+                    embedDescription += `**${prefix}${command.name}**: `;
                 } else { // if it has multiple names (aliases)
-                    embedDescription += `**${command.name.join(", ")}**: `;
+                    embedDescription += `**${prefix}${command.name.join(", " + prefix)}**: `;
                 }
                 embedDescription += command.description + "\n";
             }
@@ -96,13 +96,20 @@ module.exports = {
                     .setColor("ORANGE")
                     .setThumbnail(botAvatarUrl)
                     .setDescription(command.description)
-                    .addField('Category', command.category);
+                    .addField('Category', formatCategoryName(command.category));
+                
+                if (command.userPermissions !== undefined)
+                    embed.addField('Permissions required', '`' + command.userPermissions.join('`, `') + '`');
+
+                if (command.developer === true) {
+                    embed.setFooter('This command is only available to developers.');
+                }
 
                 // Format embed title
                 if (typeof command.name === "string") {
-                    embed.setTitle(`**${command.name}`);
+                    embed.setTitle(`**${prefix}${command.name}**`);
                 } else { // if it has multiple names (aliases)
-                    embed.setTitle(`**${command.name.join(", ")}**`);
+                    embed.setTitle(`**${prefix}${command.name.join(", " + prefix)}**`);
                 }
 
                 message.channel.send({embeds: [embed]});
