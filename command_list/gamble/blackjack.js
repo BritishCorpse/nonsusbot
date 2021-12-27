@@ -129,7 +129,6 @@ module.exports = {
         dealerCards.push(new Card(2));
         // draw more cards, or make ace 11, to bring score between 17 and 21
         while (getScore(dealerCards) < 17) {
-            console.log(dealerCards);
             const ace = dealerCards.find(card => card.isAce);
             if (ace !== undefined && ace.value !== 11) {
                 // make ace 11 to try to bring score up (according to the rules he has to do this)
@@ -146,8 +145,6 @@ module.exports = {
             // take a card
             dealerCards.push(getCard());
         }
-
-        console.log('NOT STUCK');
 
         const userCards = [];
         // starting cards
