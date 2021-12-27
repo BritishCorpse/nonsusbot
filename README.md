@@ -3,6 +3,8 @@ Discord bot
 
 ## Running
 
+Preferred node version is 16.x, 17.x.
+
 Run `npm install` in the main directory to install the dependencies.
 
 This bot must be run using npm, as some features require it. Running `node index.js` or `node .` will not work.

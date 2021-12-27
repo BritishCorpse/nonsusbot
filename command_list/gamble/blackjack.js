@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 
 
 /* Rules:
@@ -45,15 +45,13 @@ class Card {
     }
 
     makeAceEleven() {
-        if (this.isAce) {
+        if (this.isAce)
             this.value = 11;
-        }
     }
 
     makeAceOne() {
-        if (this.isAce) {
+        if (this.isAce)
             this.value = 1;
-        }
     }
 
     show() {
@@ -124,13 +122,15 @@ module.exports = {
         }
 
         const dealerCards = [];
-        for (let i = 0; i < 2; ++i) {
-            dealerCards.push(getCard());
-        }
+        //for (let i = 0; i < 2; ++i) {
+        //    dealerCards.push(getCard());
+        //}
+        dealerCards.push(new Card(1));
+        dealerCards.push(new Card(2));
         // draw more cards, or make ace 11, to bring score between 17 and 21
         while (getScore(dealerCards) < 17) {
             const ace = dealerCards.find(card => card.isAce);
-            if (ace !== undefined) {
+            if (ace !== undefined && ace.value !== 11) {
                 // make ace 11 to try to bring score up (according to the rules he has to do this)
                 ace.makeAceEleven();
 
@@ -172,17 +172,26 @@ module.exports = {
 
         const embed = getGameStateEmbed();
 
-        message.channel.send({embeds: [embed]}).then(botMessage => {
-            const filter = (reaction, user) => (reaction.emoji.name === "🏳️"
-                                                || reaction.emoji.name === "🚩")
-                                               && user.id === message.author.id;
+        const row = new MessageActionRow()
+            .addComponents(
+                new MessageButton()
+                    .setCustomId('stand')
+                    .setLabel('🏳️')
+                    .setStyle('SECONDARY'),
+                new MessageButton()
+                    .setCustomId('hit')
+                    .setLabel('🚩')
+                    .setStyle('DANGER')
+            );
 
-            const collector = botMessage.createReactionCollector({filter, time: 60000});
+        message.channel.send({embeds: [embed], components: [row]}).then(botMessage => {1
+            let userPlayed = false; // used to cancel the message given if the user didn't do anything when the dealer automatically lost
 
-            // React with the messages
-            botMessage.react("🏳️").then(() => {
-                botMessage.react("🚩"); //hit
-            });
+            const filter = interaction => (interaction.customId === 'stand'
+                                           || interaction.customId === 'hit')
+                                          && interaction.user.id === message.author.id;
+
+            const collector = botMessage.createMessageComponentCollector({filter, time: 60000});
 
             function endGame() {
                 const dealerScore = getScore(dealerCards);
@@ -215,48 +224,51 @@ module.exports = {
                 collector.stop();
             }
 
-            // check if dealer already busted (right after drawing the cards)
-            if (getScore(dealerCards) > 21) {
-                endGame();
-                return;
-            } else if (getScore(dealerCards) === 21) { // check if dealer already won
-                endGame();
-                return;
-            }
-
             //let hitTimes = 0;
 
-            collector.on('collect', reaction => {
-                // Remove the user's reaction
-                botMessage.reactions.resolve(reaction.emoji.name).users.remove(message.author);
+            collector.on('collect', interaction => {
+                userPlayed = true;
 
-                if (reaction.emoji.name === '🏳️') {
+                if (interaction.customId === 'stand') {
+                    interaction.deferUpdate();
                     endGame();
-                } else if (reaction.emoji.name === '🚩') {
+                } else if (interaction.customId === 'hit') {
                     // Take a new card
                     userCards.push(getCard());
 
                     const userScore = getScore(userCards);
 
                     if (userScore > 21) { // bust
+                        interaction.deferUpdate();
                         endGame();
-                        return;
+                    } else {
+                        interaction.update({embeds: [getGameStateEmbed()]});
                     }
-
-                    botMessage.edit({embeds: [getGameStateEmbed()]});
 
                     //hitTimes++;
                 }
             });
             
             collector.on('end', collected => {
-                if(collected.size < 1) {
+                console.log(collected.size); 
+                if (!userPlayed) {
                     message.channel.send(`Hello? Did you fall asleep?\nYou can't escape the loss, You lost ${userBet}💰`);
     
                     message.client.currency.add(message.author.id, -userBet);
-                    return;
                 }
+
+                row.components.forEach(button => button.setDisabled(true));
+                botMessage.edit({components: [row]});
             }); 
+
+            // check if dealer already busted (right after drawing the cards)
+            if (getScore(dealerCards) > 21) {
+                userPlayed = true;
+                endGame();
+            } else if (getScore(dealerCards) === 21) { // check if dealer already won
+                userPlayed = true;
+                endGame();
+            }
         });
     }
 }

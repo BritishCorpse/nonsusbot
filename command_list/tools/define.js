@@ -10,7 +10,6 @@ module.exports = {
   execute (message, args) {
     request("https://dictionaryapi.com/api/v3/references/collegiate/json/" + args[0] + "?key=" + dictionary_api_key, (error, response, body) => {
       parsed_body = JSON.parse(body);
-      console.log(parsed_body);
       let embeds = [];
 
       let number_of_definitions = 0;

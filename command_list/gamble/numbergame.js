@@ -1,7 +1,7 @@
 const { MessageEmbed, Message, Collection } = require("discord.js");
-const e = require("express");
 
 const { userHasItem } = require(`${__basedir}/functions`);
+
 
 module.exports = {
     name: 'numbergame',
@@ -64,8 +64,6 @@ module.exports = {
             const collector = message.channel.createMessageCollector({ filter, time: 60000 });
     
             collector.on('collect', m => {
-                console.log(`Collected ${m.content}`);
-    
                 if (m.content != gameNumber) {
                     userLives--;
 
