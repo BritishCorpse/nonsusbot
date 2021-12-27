@@ -152,12 +152,31 @@ Reflect.defineProperty(client.currency, 'add', {
     },
 });
 
+Reflect.defineProperty(client.currency, 'setBalance', {
+    /* eslint-disable-next-line func-name-matching */
+    value: async function setBalance(id, amount) {
+        const user = client.currency.get(id);
+        if (user) {
+            user.balance = Number(amount);
+            return user.save();
+        }
+        const newUser = await Users.create({
+            user_id: id,
+            balance: amount
+        });
+        client.currency.set(id, newUser);
+        return newUser;
+    },
+});
 
 Reflect.defineProperty(client.currency, 'getBalance', {
     /* eslint-disable-next-line func-name-matching */
     value: function getBalance(id) {
         const user = client.currency.get(id);
-        return user ? user.balance : 0;
+        if (user) {
+            return user.balance;
+        }
+        return 0;
     },
 });
 

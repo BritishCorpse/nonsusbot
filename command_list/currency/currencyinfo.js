@@ -9,7 +9,7 @@ module.exports = {
             .setAuthor(`${message.author.username}`, message.author.avatarURL()) // see i would do that but i have developed ptsd from the shop command not working without quotations
             .setTitle("Graveyard currency system.")
             //.addField("Prefix:", "!")
-            .addField("NOTE: FIX THIS COMMAND")
+            .addField("NOTE: FIX THIS COMMAND", 'uwu')
             .addField("Gain money by sending messages!", "1 message = 1 coin.")
             .addField("Spend money at shops with !shop!", "!buy to select the item to buy.")
             .addField("Transfer money: ", "!tranfer {amount}")

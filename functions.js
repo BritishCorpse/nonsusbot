@@ -39,17 +39,19 @@ module.exports = {
     getUserItems,
 
     async userHasItem(userId, itemName) {
-        /*const item = await CurrencyShop.findOne({
+        const item = await CurrencyShop.findOne({
             where: {
                 name: {
                     [Op.like]: itemName
                 }
             }
-        });*/
+        });
 
         const userItems = await getUserItems(userId);
+        console.log(userItems);
 
-        if (userItems.find(userItem => userItem.item.name === itemName) !== undefined)
+        //if (userItems.find(userItem => userItem.item.name === itemName) !== undefined)
+        if (userItems.find(userItem => userItem.item.item_id === item.item_id) !== undefined)
             return true;
 
         return false;
