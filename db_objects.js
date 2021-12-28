@@ -21,7 +21,7 @@ UserItems.belongsTo(CurrencyShop, { foreignKey: 'item_id', as: 'item' });
 /* eslint-disable-next-line func-names */
 Users.prototype.addItem = async function(item) {
     const useritem = await UserItems.findOne({
-        where: { user_id: this.user_id, item_id: item.item_id },
+        where: { user_id: this.user_id, item_id: item.id },
     });
 
     if (useritem) {
@@ -29,7 +29,7 @@ Users.prototype.addItem = async function(item) {
         return useritem.save();
     }
 
-    return UserItems.create({ user_id: this.user_id, item_id: item.item_id, amount: 1 });
+    return UserItems.create({ user_id: this.user_id, item_id: item.id, amount: 1 });
 };
 
 /* eslint-disable-next-line func-names */

@@ -30,6 +30,7 @@ sequelize.sync({ force }).then(async () => {
 		CurrencyShop.upsert({ name: 'Typical Femoid', cost: 1000})
 	];
 	await Promise.all(shop);
-	console.log('Currency database synced');
+	console.log('Currency database synced.');
+
 	sequelize.close()
 }).catch(console.error);
