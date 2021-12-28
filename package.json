@@ -8,6 +8,9 @@
     "sequelize": "^6.12.2",
     "sqlite3": "^5.0.2"
   },
+  "devDependencies": {
+    "jest": "^27.4.5"
+  },
   "name": "nonsusbot",
   "version": "1.1.0",
   "main": "index.js",
@@ -15,7 +18,7 @@
     "heroku-start": "node init_db.js && node . & node heroku.js",
     "start": "node init_db.js && node .",
     "clean": "rm -rf node_modules server_config.json database.sqlite",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",

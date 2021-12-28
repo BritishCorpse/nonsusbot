@@ -8,7 +8,7 @@ if (process.env.npm_command === undefined) {
 global.__basedir = __dirname;
 
 const fs = require("fs");
-const Discord = new require("discord.js");
+const Discord = require("discord.js");
 const request = require("request");
 const levenshtein = require("js-levenshtein");
 //const Sequelize = require('sequelize');
