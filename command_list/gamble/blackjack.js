@@ -86,6 +86,8 @@ module.exports = {
     execute(message, args) {
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
+        const username = message.member.nickname || message.author.username;
+
         const userBet = Number.parseInt(args[0]);
 
         if (args[0] === 'rules') {
@@ -164,7 +166,7 @@ module.exports = {
             embed.addField("\u200b", "\u200b"); // space
 
             for (const i in userCards) {
-                embed.addField(...getCardEmbedFieldArguments(userCards[i], `${message.member.nickname}`, Number.parseInt(i) + 1));
+                embed.addField(...getCardEmbedFieldArguments(userCards[i], `${username}`, Number.parseInt(i) + 1));
             }
 
             return embed;
@@ -201,20 +203,20 @@ module.exports = {
                     .setTitle("Here are the results!")
                     .addField("\u200b", "\u200b") // space
                     .addField("The dealer's total amount is:", `${dealerScore}`)
-                    .addField(`${message.member.nickname}'s total amount is:`, `${userScore}`);
+                    .addField(`${username}'s total amount is:`, `${userScore}`);
 
                 // TODO: make this cleaner:
                 if (dealerScore > 21) {
-                    gameEndEmbed.setFooter(`The dealer got a bust! ${message.member.nickname} won the game! +${userBet}💰`)
+                    gameEndEmbed.setFooter(`The dealer got a bust! ${username} won the game! +${userBet}💰`)
                     message.client.currency.add(message.author.id, userBet);
                 } else if (userScore > 21) {
-                    gameEndEmbed.setFooter(`${message.member.nickname} got a bust! The dealer won the game! -${userBet}💰`);
+                    gameEndEmbed.setFooter(`${username} got a bust! The dealer won the game! -${userBet}💰`);
                     message.client.currency.add(message.author.id, -userBet);
                 } else if (userScore < dealerScore) {
-                    gameEndEmbed.setFooter(`${message.member.nickname} lost the game! -${userBet}💰`);
+                    gameEndEmbed.setFooter(`${username} lost the game! -${userBet}💰`);
                     message.client.currency.add(message.author.id, -userBet);
                 } else if (userScore > dealerScore) {
-                    gameEndEmbed.setFooter(`${message.member.nickname} won the game! +${userBet}💰`)
+                    gameEndEmbed.setFooter(`${username} won the game! +${userBet}💰`)
                     message.client.currency.add(message.author.id, userBet);
                 } else {
                     gameEndEmbed.setFooter("It's a draw!");
