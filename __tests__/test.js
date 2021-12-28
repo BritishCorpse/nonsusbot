@@ -21,7 +21,7 @@ client.prompt = (channel, message, timeout=10000) => {
     return new Promise(resolve => {
         channel.send(message)
         .then(() => {
-            const filter = m => m;
+            const filter = m => m.author.id !== client.user.id;
             channel.awaitMessages({
                 filter,
                 max: 1,
@@ -33,17 +33,46 @@ client.prompt = (channel, message, timeout=10000) => {
     });
 };
 
+client.sendCommand = (channel, command, timeout) => {
+    return client.prompt()
+};
 
+let guild;
+let channel;
+// Login the bot and create test channel
+beforeAll(() => {
+    client.login(developmentConfig.testing_bot_token);
 
-test("login bot", async () => {
-    await client.login(developmentConfig.testing_bot_token);
-    
-    client.once("ready", () => {
-        client.user.setActivity("testing the Graveyard bot");
-        console.log("Testing bot ready and logged in as " + client.user.tag + "!");
-        console.log("\u0007"); // bell sound
+    return new Promise((resolve, reject) => {
+        client.once("ready", async () => {
+            client.user.setActivity("testing the Graveyard bot");
+            //console.log("Testing bot ready and logged in as " + client.user.tag + "!");
+            //console.log("\u0007"); // bell sound
 
-        expect(client.isReady())
-        .toBe(true);
+            guild = client.guilds.cache.get(developmentConfig.testing_discord_server_id);
+            if (guild === undefined) reject();
+            channel = await guild.channels.create(`test-commands-${new Date().getTime()}`, {
+                type: "GUILD_TEXT",
+                reason: "Test bot commands",
+                topic: "A temporary channel to test bot commands"
+            });
+            resolve();
+        });
     });
+}, 10 * 1000);
+
+
+// Delete the test channel
+afterAll(() => {
+    return new Promise(async (resolve, reject) => {
+        await channel.delete("Test complete");
+        resolve();
+    });
+});
+
+// Tests
+test("test", async () => {
+    const response = await client.prompt(channel, "_");
+    expect(response.content)
+    .toBeTruthy();
 });

@@ -200,8 +200,8 @@ client.on("messageCreate", async message => {
 
     const prefix = client.serverConfig.get(message.guild.id).prefix;
 
-    // Don't do commands if they come from a bot
-    if (!message.content.startsWith(prefix) || message.author.bot) return;
+    // Don't do commands if they come from a bot, except for the testing bot
+    if (!message.content.startsWith(prefix) || (message.author.bot && message.author.id !== developmentConfig.testing_bot_discord_user_id)) return;
 
     // Check for user's badge. If there is no custom badge, make the normal badge.
     // Marked this out, will fix tomorrow.
