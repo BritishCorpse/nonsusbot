@@ -50,7 +50,15 @@ module.exports = {
                     .setColor("ORANGE");
             
                 return message.channel.send({embeds: [embed]});
-            }
+            }        
         }
+
+        const embed = new MessageEmbed()
+        .setTitle(`${message.author.username} hugs ${hugTarget.username} :heart:!`)
+        .setImage(images[Math.floor(Math.random() * images.length)])
+        .setColor("ORANGE");
+
+        message.channel.send({embeds: [embed]});
+
     }   
 }
