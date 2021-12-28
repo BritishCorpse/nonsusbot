@@ -33,12 +33,15 @@ client.prompt = (channel, message, timeout=10000) => {
     });
 };
 
-client.sendCommand = (channel, command, timeout) => {
-    return client.prompt()
+client.promptCommand = (channel, command, timeout) => {
+    // get the newest prefix
+    const prefix = require('../server_config.json')[channel.guild.id].prefix;
+
+    return client.prompt(channel, prefix + command, timeout);
 };
 
-let guild;
-let channel;
+let testGuild;
+let testChannel;
 // Login the bot and create test channel
 beforeAll(() => {
     client.login(developmentConfig.testing_bot_token);
@@ -49,9 +52,9 @@ beforeAll(() => {
             //console.log("Testing bot ready and logged in as " + client.user.tag + "!");
             //console.log("\u0007"); // bell sound
 
-            guild = client.guilds.cache.get(developmentConfig.testing_discord_server_id);
-            if (guild === undefined) reject();
-            channel = await guild.channels.create(`test-commands-${new Date().getTime()}`, {
+            testGuild = client.guilds.cache.get(developmentConfig.testing_discord_server_id);
+            if (testGuild === undefined) reject();
+            testChannel = await testGuild.channels.create(`test-commands-${new Date().getTime()}`, {
                 type: "GUILD_TEXT",
                 reason: "Test bot commands",
                 topic: "A temporary channel to test bot commands"
@@ -71,8 +74,9 @@ afterAll(() => {
 });
 
 // Tests
-test("test", async () => {
-    const response = await client.prompt(channel, "_");
+test("mention for prefix", async () => {
+    const response = await client.prompt(testChannel, `<@!${developmentConfig.development_bot_discord_user_id}>`);
+    console.log(response);
     expect(response.content)
     .toBeTruthy();
 });
