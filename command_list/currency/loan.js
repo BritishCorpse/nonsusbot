@@ -4,3 +4,10 @@
 // if user does not pay back loan within 30 days, the user will forcibly be removed 1.5 times the sum of the total loan + interest.
 
 //ILL DO THIS LATER KTHX
+module.exports = {
+    name: 'loan',
+    description: 'Get a loan',
+    execute (message, args) {
+        
+    }
+}
