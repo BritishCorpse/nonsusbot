@@ -1,4 +1,4 @@
-const { Message, MessageEmbed, Client } = require("discord.js");
+const { Message, MessageEmbed, Client, MessageActionRow } = require("discord.js");
 
 
 module.exports = {
@@ -21,6 +21,9 @@ module.exports = {
             "https://c.tenor.com/e6cYiAPPCq4AAAAM/anime-kissing.gif"
         ];
 
+        if (message.author.id === '786301097953591326') {
+            return message.channel.send("No poki. Don't do this.");
+        }
         let kissTarget = message.mentions.users.first();
         if (!kissTarget) {
             const embed = new MessageEmbed()
@@ -49,6 +52,10 @@ module.exports = {
                 return message.channel.send( {embeds: [embed]} );
             };
             ;
+        }
+
+        else if (kissTarget.id === '786301097953591326') {
+            return message.channel.send("Sorry not happening.");
         }
 
         else {
