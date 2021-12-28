@@ -12,6 +12,9 @@ module.exports = {
             message.channel.send(`${targetUser.tag} has nothing!`);
             return;
         }
+        message.channel.send('command disabled for now cuz im eating');
+        return;
+        console.log(items[0]);
         message.channel.send(`${targetUser.tag} currently has ${items.map(t => `${t.amount} ${t.item.name}`).join(', ')}`);
     }
 }
