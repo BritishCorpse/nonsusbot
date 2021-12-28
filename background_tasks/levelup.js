@@ -1,7 +1,7 @@
 module.exports = {
     name: 'levelup',
     execute(client) {
-        client.on('message', message => {
+        client.on('messageCreate', message => {
             const channel = client.channels.cache.get("869030517419417630");
 
             if (message.guild === null || message.author.bot) return;
