@@ -8,7 +8,7 @@ module.exports = {
         client.on("messageDelete", message => {
             //This gives a shit ton of errors, also we dont theoretically need this, so im disabling it for now. We'll look into it later.
             //const channel = client.channels.cache.get("825726316817023016");
-            /*const logChannel = client.channels.cache.get(client.serverConfig.get(message.guild.id).log_channel_id);
+            const logChannel = client.channels.cache.get(client.serverConfig.get(message.guild.id).log_channel_id);
 
             if (logChannel === undefined) return;
 
@@ -18,7 +18,7 @@ module.exports = {
 
             logChannel.send({
                 embeds: [embed]
-            });*/
+            });
         });
     }
 }
