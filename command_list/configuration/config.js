@@ -52,6 +52,8 @@ module.exports = {
                 // extra stuff to do
                 // TODO: move this to background_tasks/verify.js
                 if (args[1] === "verify_channel_id") {
+                    const channel = message.client.channels.cache.get(args[2]);
+
                     channel.send("Say 'yes' if you agree with the rules, and get verified!");
                     message.channel.send("Verify channel was setup. Edit the role to give using the config command, and manually edit the roles.");
                 }

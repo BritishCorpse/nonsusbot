@@ -5,7 +5,7 @@ module.exports = {
             // disable DMs
             if (message.guild === null) return;
 
-            if (message.channel.id === client.serverConfig.get(message.guild.id).verify_channel_id) {
+            if (message.channel.id === client.serverConfig.get(message.guild.id).verify_channel_id && message.author.id !== message.client.user.id) {
                 if (message.content.toLowerCase() == "yes") {
                     const verifiedRoleID = client.serverConfig.get(message.guild.id).verify_role_id;
                     const verifiedRole = message.guild.roles.cache.find(r => r.id === verifiedRoleID);
