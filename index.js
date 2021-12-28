@@ -189,20 +189,6 @@ client.once("ready", async () => {
     console.log("\u0007"); // bell sound
 });
 
-
-// Deleted message logging (MOVE THIS TO BACKGROUND TASKS??)
-client.on("messageDelete", message => {
-    const embed = new MessageEmbed()
-        .setAuthor(`${message.author.username}`, message.author.avatarURL())
-        .setDescription(`${message.content}`);
-
-    const channel = client.channels.cache.get("825726316817023016");
-    channel.send({
-        embeds: [embed]
-    });
-});
-
-
 // For handling commands
 client.on("messageCreate", async message => {
     // Disable DMs

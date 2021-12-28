@@ -11,11 +11,13 @@ module.exports = {
 
             new MessageEmbed()
             .setTitle("Graveyard version 1.1.0 changelog!")
+            .setColor("ORANGE")
             .setDescription("Here's whats new!")
             .setFooter(`Do ${prefix}nerdstuff for the full changelog, including bugs, fixes, features, upcoming features and more.`),
 
             new MessageEmbed()
             .setTitle("Currency system!")
+            .setColor("ORANGE")
             .setDescription("For this version of graveyard we made an entire currency system, including ways to gain money, gamble it away, give it away to other players or even buy new things!\nHere's some cool commands to try out!")
             .addField(`See what you can buy at ${prefix}shop!`, `Usage: ${prefix}shop`)
             .addField(`Purchase an item from the shop with ${prefix}buy`, `Usage: ${prefix}buy {item name}`)
@@ -26,6 +28,7 @@ module.exports = {
 
             new MessageEmbed()
             .setTitle("FUNFUNFUNFUNFUNFUN")
+            .setColor("ORANGE")
             .setDescription("Aside from having fun with money, you can also have fun with friends! That's why we made some fun commands for you and your friends to use on eachother!")
             .addField(`Someone being annoying? ${prefix}slap them!`, `Usage: ${prefix}slap {target}, you can even slap yourself if you're not behaving!`)
             .addField(`Sometimes we're all in need of a hug! So it's only natural we added ${prefix}hug!`, `Usage: ${prefix}hug {target}, show some self love!`)
