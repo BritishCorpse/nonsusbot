@@ -32,7 +32,7 @@ module.exports = {
                 // special cases for each config option
                 // (return; in case of error)
 
-                if (['m_channel_id', 'verify_channel_id', 'log_channel_id'].includes(args[1])) {
+                if (['m_channel_id', 'verify_channel_id', 'log_channel_id', 'level_channel_id'].includes(args[1])) {
                     if (!isValidGuildTextChannelId(message.guild, args[2])) {
                         message.channel.send("Channel ID is invalid.");
                         return;
