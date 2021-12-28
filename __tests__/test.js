@@ -1,6 +1,5 @@
 // inspired by https://github.com/IanMitchell/jest-discord
 
-
 const Discord = require("discord.js");
 
 const developmentConfig = require("../development_config.json");
@@ -64,19 +63,83 @@ beforeAll(() => {
     });
 }, 10 * 1000);
 
-
 // Delete the test channel
 afterAll(() => {
     return new Promise(async (resolve, reject) => {
-        await channel.delete("Test complete");
+        await testChannel.delete("Test complete");
         resolve();
     });
 });
 
+
+// Add custom matchers
+/*expect.extend({
+    toHaveEmbeds(received, amount=1) {
+        // received is a message
+        const pass = received.embeds.length >= amount;
+        if (pass)
+            return {
+                message: () => `expected ${received} to have embed`,
+                pass: true,
+            };
+        else
+            return {
+                message: () => `expected ${received} to have embed`,
+                pass: false,
+            };
+    },
+
+    to() {
+        
+    },
+});*/
+
+
 // Tests
-test("mention for prefix", async () => {
-    const response = await client.prompt(testChannel, `<@!${developmentConfig.development_bot_discord_user_id}>`);
-    console.log(response);
-    expect(response.content)
-    .toBeTruthy();
+describe("mention", () => {
+    const mentionText = `<@!${developmentConfig.development_bot_discord_user_id}>`;
+    describe("without extra text", async () => {
+        let response;
+        beforeAll(() => {
+            response = await client.prompt(testChannel, mentionText);
+        });
+
+        it("content has the word prefix", () => {
+            expect(response.content)
+            .toEqual(
+                expect.stringContaining("prefix")
+            );
+        });
+        
+        it("has the prefix")
+    });
+});
+
+describe("help command", () => {
+    describe("without no arguments", () => {
+        let response;
+        beforeAll(async () => {
+            response = await client.promptCommand(testChannel, "help");
+        })
+
+        it("has embeds", () => {
+            expect(response.embeds.length)
+            .toBeGreaterThan(0);
+        })
+
+        it("has no content", () => {
+            expect(response.content.length)
+            .toBe(0);
+        });
+        
+        it("has one action row", () => {
+            expect(response.components.length)
+            .toBe(1);
+        });
+
+        it("has two buttons", () => {
+            expect(response.components[0].components.length)
+            .toBe(2);
+        });
+    });
 });
