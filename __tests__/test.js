@@ -41,7 +41,8 @@ function startMainBot() {
 beforeAll(() => {
     return startMainBot();
 }, 20 * 1000);
- 
+
+// Restart the bot whenever it crashes
 afterEach(() => {
     if (mainBotProcess.exitCode !== null) {
         return startMainBot();
@@ -164,11 +165,11 @@ for (const category of categories) {
 describe("fuzzing arguments", () => {
     for (const command of commands) {
         describe(`${command} command`, () => {
-            const p = data => {
-                describe(`fuzz: ${data}`, () => {
+            const p = (...args) => {
+                describe(`fuzz: ${args.join(' ')}`, () => {
                     let response;
                     beforeAll(async () => {
-                        response = await client.promptCommand(testChannel, `${command} ${data}`);
+                        response = await client.promptCommand(testChannel, `${command} ${args.join(' ')}`);
                     });
 
                     it("does not crash", () => {
@@ -178,8 +179,10 @@ describe("fuzzing arguments", () => {
                 });
             };
 
-            //fuzz(p).string();
-            fuzz(p).under(preset.all(), preset.all(), preset.all(), preset.all(), preset.all());
+            //fuzz(p).all();
+            //fuzz(p).under(preset.all());
+            //fuzz(p).under(preset.all(), preset.all(), preset.all(), preset.all(), preset.all());
+            fuzz(p).under(preset.all(), preset.all());
         });
     }
 });
