@@ -104,28 +104,34 @@ describe("mention", () => {
             response = await client.prompt(testChannel, mentionText);
         });
 
-        it("content has the word prefix", () => {
+        it("has the word prefix in content", () => {
             expect(response.content)
             .toEqual(
                 expect.stringContaining("prefix")
             );
         });
         
-        it("has the prefix")
+        it("has the prefix in content", () => {
+            const prefix = require('../server_config.json')[channel.guild.id].prefix;
+            expect(response.content)
+            .toEqual(
+                expect.stringContaining(prefix)
+            );
+        });
     });
 });
 
 describe("help command", () => {
-    describe("without no arguments", () => {
+    describe("without arguments", () => {
         let response;
         beforeAll(async () => {
             response = await client.promptCommand(testChannel, "help");
-        })
+        });
 
-        it("has embeds", () => {
+        it("has one embed", () => {
             expect(response.embeds.length)
-            .toBeGreaterThan(0);
-        })
+            .toBe(1);
+        });
 
         it("has no content", () => {
             expect(response.content.length)
@@ -141,5 +147,16 @@ describe("help command", () => {
             expect(response.components[0].components.length)
             .toBe(2);
         });
+    });
+
+    describe("with category argument", () => {
+        for (const category of fs.readdirSync("./command_list")) {
+            describe(`category argument: ${category}`, () => {
+                let response;
+                beforeAll(async () => {
+                    response = await client.promptCommand(testChannel, `help ${category}`);
+                });
+            });
+        }
     });
 });
