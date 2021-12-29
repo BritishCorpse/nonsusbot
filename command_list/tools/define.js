@@ -17,7 +17,7 @@ module.exports = {
       if (typeof parsed_body[0] === "string") {
         const embed = new MessageEmbed()
           .setTitle("Similar words")
-          .setDescription(parsed_body)
+          .setDescription(parsed_body.join(", "))
           .setThumbnail("https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Merriam-Webster_logo.svg/1200px-Merriam-Webster_logo.svg.png")
           .setURL("https://www.merriam-webster.com/dictionary/" + args[0]);
         embeds.push(embed);
