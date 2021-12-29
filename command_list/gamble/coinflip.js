@@ -35,6 +35,7 @@ module.exports = {
             return message.channel.send({embeds: [embed]});
         }
 
+        
         let userChoice = args[1];
         if (!userChoice) {
             message.channel.send(`🎲The coin landed on the floor. You didn't call it out!🎲`);
