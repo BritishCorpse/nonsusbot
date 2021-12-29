@@ -4,11 +4,17 @@ if (process.env.npm_command === undefined) {
     process.exit(1);
 }
 
+// Set testing global directory
+global.testing = false;
+if (process.send) {
+    global.testing = true;
+}
+
 // Set the base directory to remove relative paths
 global.__basedir = __dirname;
 
 const fs = require("fs");
-const Discord = new require("discord.js");
+const Discord = require("discord.js");
 const request = require("request");
 const levenshtein = require("js-levenshtein");
 //const Sequelize = require('sequelize');
@@ -188,6 +194,11 @@ client.once("ready", async () => {
     client.user.setActivity(`with dead people | @ me for my prefix!`);
     console.log("Ready and logged in as " + client.user.tag + "!");
     console.log("\u0007"); // bell sound
+
+    // send message to parent process if testing
+    if (testing) {
+        process.send(JSON.stringify(client));
+    }
 });
 
 // For handling commands
@@ -201,8 +212,10 @@ client.on("messageCreate", async message => {
 
     const prefix = client.serverConfig.get(message.guild.id).prefix;
 
-    // Don't do commands if they come from a bot
-    if (!message.content.startsWith(prefix) || message.author.bot) return;
+    // Don't do commands if they come from a bot, except for the testing bot (all 3 lines required)
+    if (!message.content.startsWith(prefix)) return;
+    if (message.author.bot && !testing) return;
+    if (message.author.bot && testing && message.author.id !== developmentConfig.testing_bot_discord_user_id) return;
 
     // Check for user's badge. If there is no custom badge, make the normal badge.
     // Marked this out, will fix tomorrow.
