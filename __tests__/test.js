@@ -5,6 +5,8 @@ const fs = require("fs");
 const cp = require("child_process");
 const { fuzz, preset } = require("fuzzing");
 
+const sleep = require("util").promisify(setTimeout);
+
 const developmentConfig = require("../development_config.json");
 
 
@@ -27,11 +29,9 @@ function startMainBot() {
     return new Promise((resolve, reject) => {
         mainBotProcess = cp.fork("./index.js");
 
-        //mainBotProcess.on("exit", () => {
-        //});
-
-        mainBotProcess.on("message", message => {
+        mainBotProcess.on("message", async message => {
             mainBotClient = JSON.parse(message);
+            await sleep(100);
             resolve();
         });
     });
@@ -166,10 +166,11 @@ describe("fuzzing arguments", () => {
     for (const command of commands) {
         describe(`${command} command`, () => {
             const p = (...args) => {
-                describe(`fuzz: ${args.join(' ')}`, () => {
+                const textArgs = args.map(arg => arg.toString()).join(" ");
+                describe(`fuzz: ${textArgs}`, () => {
                     let response;
                     beforeAll(async () => {
-                        response = await client.promptCommand(testChannel, `${command} ${args.join(' ')}`);
+                        response = await client.promptCommand(testChannel, `${command} ${textArgs}`);
                     });
 
                     it("does not crash", () => {
@@ -179,14 +180,14 @@ describe("fuzzing arguments", () => {
                 });
             };
 
-            //fuzz(p).all();
-            //fuzz(p).under(preset.all());
-            //fuzz(p).under(preset.all(), preset.all(), preset.all(), preset.all(), preset.all());
-            fuzz(p).under(preset.all(), preset.all());
+            // TODO: make fuzz not stupid and exponentially use memory
+            fuzz(p).all();
+            //fuzz(p).under(preset.all(), preset.all());
         });
     }
 });
 
+// TODO: replace this with a general usage thing in command
 /*describe("help command", () => {
     describe("without arguments", () => {
         let response;
