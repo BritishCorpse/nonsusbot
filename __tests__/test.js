@@ -178,13 +178,13 @@ describe("fuzzing arguments", () => {
                 });
             };
 
-            fuzz(p).string();
-            //fuzz(p).under(preset.all(), preset.all(), preset.all(), preset.all(), preset.all());
+            //fuzz(p).string();
+            fuzz(p).under(preset.all(), preset.all(), preset.all(), preset.all(), preset.all());
         });
     }
 });
 
-describe("help command", () => {
+/*describe("help command", () => {
     describe("without arguments", () => {
         let response;
         beforeAll(async () => {
@@ -212,7 +212,7 @@ describe("help command", () => {
         });
     });
 
-    /*describe("with category argument", () => {
+    describe("with category argument", () => {
         for (const category of categories) {
             describe(`category argument: ${category}`, () => {
                 let response;
@@ -236,5 +236,5 @@ describe("help command", () => {
                 });
             });
         }
-    });*/
-});
+    });
+});*/
