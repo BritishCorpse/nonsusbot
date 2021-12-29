@@ -3,7 +3,7 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const cp = require("child_process");
-const { fuzz } = require("fuzzing");
+const { fuzz, preset } = require("fuzzing");
 
 const developmentConfig = require("../development_config.json");
 
@@ -116,6 +116,7 @@ beforeAll(() => {
 afterAll(() => {
     return new Promise(async (resolve, reject) => {
         //await testChannel.delete("Test complete");
+        mainBotProcess.kill();
         resolve();
     });
 });
@@ -178,6 +179,7 @@ describe("fuzzing arguments", () => {
             };
 
             fuzz(p).string();
+            //fuzz(p).under(preset.all(), preset.all(), preset.all(), preset.all(), preset.all());
         });
     }
 });
