@@ -1,11 +1,22 @@
 module.exports = {
-    name: 'buttontest',
-    description: "test buttons",
+    name: 'usagetest',
+    description: "test usage checking",
     developer: true,
-
-    usage: {
-        
-    },
+    usage: [    // used both for documentation in help and for actually checking the usage of a command before running it
+        {
+            //is: "string",
+            //has: "string",
+            //isnumber: "number",
+            //
+            check: {
+                is: "firstarg"
+            },
+            description: 
+            example: 
+            next: [       // next arg when first arg passes the test
+            ],
+        },
+    ],
 
     execute (message, args) {
         const row = new MessageActionRow()
