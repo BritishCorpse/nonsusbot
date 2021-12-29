@@ -4,16 +4,21 @@ module.exports = {
     developer: true,
     usage: [    // used both for documentation in help and for actually checking the usage of a command before running it
         {
-            //is: "string",
-            //has: "string",
-            //isnumber: "number",
-            //
-            check: {
-                is: "firstarg"
+            tag: "firstarg" // the <tag> it shows in the help command, for example _config <set> <channelid>
+            example: "firstarg", // optional, for more help ?
+            check: { // the test(s) the argument must pass to be valid; also the info the help command will show for each argument
+                is: "firstarg",             // checks if argument is exactly this
+                // isinteger: true,         // checks if argument is a number
+                // matches: /regex/,        // checks if argument matches the regex
+                // custom: (arg) => {}      // custom function for more complex logic if needed, but shouldn't be needed
             },
-            description: 
-            example: 
-            next: [       // next arg when first arg passes the test
+            next: [       // next argument when first arg passes the test
+                {
+                    
+                },
+                {
+                    
+                },
             ],
         },
     ],

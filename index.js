@@ -98,6 +98,13 @@ function getCommandObjectByName(commandName) {
 }
 
 
+function checkUsage(usage, arg) {
+    // Returns true if it passed, false if it didn't
+
+    for (const argument of )
+}
+
+
 function doCommand(commandObj, message, args) {
     try {
         commandObj.execute(message, args);
