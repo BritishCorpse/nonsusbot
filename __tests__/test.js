@@ -3,6 +3,7 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const cp = require("child_process");
+const { fuzz } = require("fuzzing");
 
 const developmentConfig = require("../development_config.json");
 
@@ -20,7 +21,9 @@ const client = new Discord.Client({
 // Start the main bot process
 let mainBotProcess;
 let mainBotClient;
-beforeAll(() => {
+
+
+function startMainBot() {
     return new Promise((resolve, reject) => {
         mainBotProcess = cp.fork("./index.js");
 
@@ -32,7 +35,18 @@ beforeAll(() => {
             resolve();
         });
     });
+}
+
+
+beforeAll(() => {
+    return startMainBot();
 }, 20 * 1000);
+ 
+afterEach(() => {
+    if (mainBotProcess.exitCode !== null) {
+        return startMainBot();
+    }
+});
 
 // Login the bot and create test channel
 let testGuild;
@@ -130,15 +144,40 @@ describe("mention", () => {
 const categories = fs.readdirSync("./command_list");
 const commands = [];
 for (const category of categories) {
-    commands.push(fs.readdirSync(`./command_list/${category}`));
+    const commandFiles = fs.readdirSync(`./command_list/${category}`);
+
+    for (const commandFile of commandFiles) {
+        const data = fs.readFileSync(`./command_list/${category}/${commandFile}`, "utf8");
+        const name = JSON.parse(data.match(/name: *((?:"|'|\[).+),/)[1].replace(/'/g, "\""));
+
+        if (typeof name === "object") {
+            for (const alias of name) {
+                commands.push(alias);
+            }
+        } else if (typeof name === "string") {
+            commands.push(name);
+        }
+    }
 }
 
-const possibleArgument = ["0", "-1", "+0", "02"];
-
-describe("sending dummy arguments", () => {
+describe("fuzzing arguments", () => {
     for (const command of commands) {
         describe(`${command} command`, () => {
-            
+            const p = data => {
+                describe(`fuzz: ${data}`, () => {
+                    let response;
+                    beforeAll(async () => {
+                        response = await client.promptCommand(testChannel, `${command} ${data}`);
+                    });
+
+                    it("does not crash", () => {
+                        expect(response)
+                        .toBeTruthy();
+                    });
+                });
+            };
+
+            fuzz(p).string();
         });
     }
 });
