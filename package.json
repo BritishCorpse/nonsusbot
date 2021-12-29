@@ -20,7 +20,7 @@
     "heroku-start": "node init_db.js && node . & node heroku.js",
     "start": "node init_db.js && node .",
     "clean": "rm -rf node_modules server_config.json database.sqlite",
-    "test": "jest"
+    "test": "node init_db.js && jest"
   },
   "author": "",
   "license": "ISC",
