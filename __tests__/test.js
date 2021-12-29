@@ -1,6 +1,8 @@
 // inspired by https://github.com/IanMitchell/jest-discord
 
 const Discord = require("discord.js");
+const fs = require("fs");
+const cp = require("child_process");
 
 const developmentConfig = require("../development_config.json");
 
@@ -9,40 +11,60 @@ const client = new Discord.Client({
     intents: [
         Discord.Intents.FLAGS.GUILDS,
         Discord.Intents.FLAGS.GUILD_MESSAGES,
-        Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-        Discord.Intents.FLAGS.DIRECT_MESSAGES,
-        Discord.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+        //Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+        //Discord.Intents.FLAGS.DIRECT_MESSAGES,
+        //Discord.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
     ]
 });
 
-// Create custom functions accessible from tests to send commands and get response
-client.prompt = (channel, message, timeout=10000) => {
-    return new Promise(resolve => {
-        channel.send(message)
-        .then(() => {
-            const filter = m => m.author.id !== client.user.id;
-            channel.awaitMessages({
-                filter,
-                max: 1,
-                time: timeout,
-                errors: ['time']
-            })
-            .then(messages => resolve(messages.first()));
+// Start the main bot process
+let mainBotProcess;
+let mainBotClient;
+beforeAll(() => {
+    return new Promise((resolve, reject) => {
+        mainBotProcess = cp.fork("./index.js");
+
+        //mainBotProcess.on("exit", () => {
+        //});
+
+        mainBotProcess.on("message", message => {
+            mainBotClient = JSON.parse(message);
+            resolve();
         });
     });
-};
+}, 20 * 1000);
 
-client.promptCommand = (channel, command, timeout) => {
-    // get the newest prefix
-    const prefix = require('../server_config.json')[channel.guild.id].prefix;
-
-    return client.prompt(channel, prefix + command, timeout);
-};
-
+// Login the bot and create test channel
 let testGuild;
 let testChannel;
-// Login the bot and create test channel
 beforeAll(() => {
+    jest.setTimeout(20 * 1000);
+
+    // Create custom functions accessible from tests to send commands and get response
+    client.prompt = (channel, message, timeout=10000) => {
+        return new Promise(resolve => {
+            channel.send(message)
+            .then(() => {
+                const filter = m => m.author.id === mainBotClient.user;
+                channel.awaitMessages({
+                    filter,
+                    max: 1,
+                    time: timeout,
+                    errors: ['time']
+                })
+                .then(messages => resolve(messages.first()));
+            });
+        });
+    };
+
+    client.promptCommand = (channel, command, timeout) => {
+        // get the newest prefix
+        const prefix = require('../server_config.json')[channel.guild.id].prefix;
+
+        return client.prompt(channel, prefix + command, timeout);
+    };
+
+    // Login the bot
     client.login(developmentConfig.testing_bot_token);
 
     return new Promise((resolve, reject) => {
@@ -56,69 +78,69 @@ beforeAll(() => {
             testChannel = await testGuild.channels.create(`test-commands-${new Date().getTime()}`, {
                 type: "GUILD_TEXT",
                 reason: "Test bot commands",
-                topic: "A temporary channel to test bot commands"
+                topic: "A temporary channel to test bot commands",
+                permissionOverwrites: [
+                    /*{
+                        // overwrite permissions for the main bot just in case
+                        id: developmentConfig.main_bot_discord_user_id,
+                        allow: ["VIEW_CHANNEL", "SEND_MESSAGES", "MANAGE_MESSAGES",
+                                "ATTACH_FILES", "ADD_REACTIONS"]
+                    },*/
+                    {
+                        // overwrite permissions for everyone else
+                        id: testGuild.roles.everyone.id,
+                        deny: ["SEND_MESSAGES", "ADD_REACTIONS", "MANAGE_MESSAGES"]
+                    }
+                ]
             });
             resolve();
         });
     });
-}, 10 * 1000);
+}, 20 * 1000);
 
 // Delete the test channel
 afterAll(() => {
     return new Promise(async (resolve, reject) => {
-        await testChannel.delete("Test complete");
+        //await testChannel.delete("Test complete");
         resolve();
     });
 });
 
-
-// Add custom matchers
-/*expect.extend({
-    toHaveEmbeds(received, amount=1) {
-        // received is a message
-        const pass = received.embeds.length >= amount;
-        if (pass)
-            return {
-                message: () => `expected ${received} to have embed`,
-                pass: true,
-            };
-        else
-            return {
-                message: () => `expected ${received} to have embed`,
-                pass: false,
-            };
-    },
-
-    to() {
-        
-    },
-});*/
-
-
 // Tests
 describe("mention", () => {
-    const mentionText = `<@!${developmentConfig.development_bot_discord_user_id}>`;
-    describe("without extra text", async () => {
+    describe("without extra text", () => {
         let response;
-        beforeAll(() => {
-            response = await client.prompt(testChannel, mentionText);
+        beforeAll(async () => {
+            response = await client.prompt(testChannel, `<@!${mainBotClient.user}>`);
         });
 
         it("has the word prefix in content", () => {
             expect(response.content)
-            .toEqual(
-                expect.stringContaining("prefix")
-            );
+            .toInclude("prefix");
         });
         
         it("has the prefix in content", () => {
-            const prefix = require('../server_config.json')[channel.guild.id].prefix;
+            const prefix = require('../server_config.json')[testChannel.guild.id].prefix;
             expect(response.content)
-            .toEqual(
-                expect.stringContaining(prefix)
-            );
+            .toInclude(prefix);
         });
     });
+});
+
+const categories = fs.readdirSync("./command_list");
+const commands = [];
+for (const category of categories) {
+    commands.push(fs.readdirSync(`./command_list/${category}`));
+}
+
+const possibleArgument = ["0", "-1", "+0", "02"];
+
+describe("sending dummy arguments", () => {
+    for (const command of commands) {
+        describe(`${command} command`, () => {
+            
+        });
+    }
 });
 
 describe("help command", () => {
@@ -129,34 +151,49 @@ describe("help command", () => {
         });
 
         it("has one embed", () => {
-            expect(response.embeds.length)
-            .toBe(1);
+            expect(response.embeds)
+            .toBeArrayOfSize(1);
         });
 
         it("has no content", () => {
-            expect(response.content.length)
-            .toBe(0);
+            expect(response.content)
+            .toBeEmpty();
         });
         
         it("has one action row", () => {
-            expect(response.components.length)
-            .toBe(1);
+            expect(response.components)
+            .toBeArrayOfSize(1);
         });
 
         it("has two buttons", () => {
-            expect(response.components[0].components.length)
-            .toBe(2);
+            expect(response.components[0].components)
+            .toBeArrayOfSize(2);
         });
     });
 
-    describe("with category argument", () => {
-        for (const category of fs.readdirSync("./command_list")) {
+    /*describe("with category argument", () => {
+        for (const category of categories) {
             describe(`category argument: ${category}`, () => {
                 let response;
                 beforeAll(async () => {
                     response = await client.promptCommand(testChannel, `help ${category}`);
                 });
+
+                it("has one embed", () => {
+                    expect(response.embeds)
+                    .toBeArrayOfSize(1);
+                });
+
+                it("has no action row", () => {
+                    expect(response.components)
+                    .toBeEmpty();
+                });
+
+                it("has no content", () => {
+                    expect(response.content)
+                    .toBeEmpty();
+                });
             });
         }
-    });
+    });*/
 });

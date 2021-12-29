@@ -187,6 +187,11 @@ client.once("ready", async () => {
     client.user.setActivity(`with dead people | @ me for my prefix!`);
     console.log("Ready and logged in as " + client.user.tag + "!");
     console.log("\u0007"); // bell sound
+
+    // send message to parent process if testing with npm test
+    if (process.send) {
+        process.send(JSON.stringify(client));//)client.user.id);
+    }
 });
 
 // For handling commands
