@@ -15,18 +15,17 @@ module.exports = {
             return new MessageEmbed().setTitle("Shop").setColor("ORANGE").setFooter("penis")
         }
 
-        let embed = makeEmbed();
-
-
+        let embed;
+        
         for (const i in items) {
             const item = items[i];
-            
-            embed.addField(`${item.name}`, `${item.cost}`);
 
-            if ((i + 1) % 10 === 0) {
-                pages.push(embed);  
-                let embed = makeEmbed();
+            if (i % 10 === 0) {
+                embed = makeEmbed();
+                embeds.push(embed);  
             }
+                        
+            embed.addField(`${item.name}`, `${item.cost}`);
         }
 
         paginateEmbeds(message.channel, message.author, embeds);
