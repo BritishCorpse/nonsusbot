@@ -12,7 +12,7 @@ const descriptionFormats = {
     isinteger: not => `is ${not ? "not " : ""}an integer`,
     matches: (not, value) => `${not ? "does not match" : "matches"} \`\`${value}\`\``,
     matchesfully: (not, value) => `${not ? "does not match" : "matches"} fully \`\`${value}\`\``,
-    isuser: (not, value) => ``,
+    //isuser: (not, value) => ``,
     isuseringuild: (not, value) => `is ${not ? "not " : ""}a user in the guild`,
 };
 
@@ -229,21 +229,22 @@ function getValidationFunction(message, check, _value) {
             if (!arg) return false;
                 return arg.match(value) !== null;
         },
-        matchesfully:  arg => {
+        matchesfully: arg => {
                 if (!arg) return false;
                 const match = arg.match(value);
                 return match !== null && match[0] === arg;
         },
         //isuser: arg => ,
-        isuseringuild: async (arg, message) => {
-            const match = arg.match(/^<@!(\d)+>$/);
-            if (match !== null) {
-                const user = await message.members.fetch(match[1]);
-                console.log(user);
-            }
+        isuseringuild: arg => {
+            let userId;
+            if (arg.match(/^<@!(\d+)>$/) !== null)
+                userId = arg.slice(3, -1);
+            else if (arg.match(/^\d+$/))
+                userId = arg;
 
-            const user = message.members.fetch({query: arg, limit: 1});
-            console.log(user);
+            if (userId && message.guild.members.cache.get(userId) !== undefined)
+                return true;
+            return false;
         },
     }
 
@@ -258,12 +259,10 @@ function getValidationFunction(message, check, _value) {
 
     let validationFunction;
     if (check === "passes"){
-        validationFunction = value.func; 
+        // value.func is a custom function
         validationFunction = arg => {
-            // value.func is a custom function
-            // give it the message so that it can check more
             return value.func(arg, message);
-        };
+        }; 
     } else {
         if (!validationFunctions.hasOwnProperty(check)) {
             throw { 
@@ -283,7 +282,7 @@ function getValidationFunction(message, check, _value) {
 }
 
 
-function checkUsage(message, usage, args, depth=0) {
+async function checkUsage(message, usage, args, depth=0) {
     // recursive function
     // Returns true if it passed, object if it didn't
     // depth determines which args index to use
@@ -299,7 +298,7 @@ function checkUsage(message, usage, args, depth=0) {
         for (const check in option.checks) {
             const validationFunction = getValidationFunction(message, check, option.checks[check]);
 
-            if (validationFunction(args[depth]) !== true) {
+            if (await validationFunction(args[depth]) !== true) {
                 passed = false;
             }
         }
@@ -314,7 +313,7 @@ function checkUsage(message, usage, args, depth=0) {
 
         // depth < args.length allows for infinite (circular) objects for infinite arguments being checked
         if (depth < args.length && passedOptions[0].hasOwnProperty("next")) { 
-            return checkUsage(message, passedOptions[0].next, args, depth + 1);
+            return await checkUsage(message, passedOptions[0].next, args, depth + 1);
         }
         return true;
     } else if (passedOptions.length === 0) {
@@ -332,7 +331,6 @@ function checkUsage(message, usage, args, depth=0) {
 
 
 function doCommand(commandObj, message, args) {
-    let pass;
     if (!commandObj.usage) {
         throw { 
             name:        "CommandUsageError", 
@@ -340,14 +338,17 @@ function doCommand(commandObj, message, args) {
             toString:    function() {return `${this.name}: ${this.message}`;}
         };
     }
-    pass = checkUsage(message, commandObj.usage, args);
+    //let pass = await checkUsage(message, commandObj.usage, args);
+    checkUsage(message, commandObj.usage, args)
+    .then(pass => {
+        if (pass !== true) {
+            const [usage, depth] = pass;
+            sendUsage(message, commandObj.usage, usage, args[depth]);
+        } else {
+            commandObj.execute(message, args);
+        }
+    });
 
-    if (pass !== true) {
-        const [usage, depth] = pass;
-        sendUsage(message, commandObj.usage, usage, args[depth]);
-    } else {
-        commandObj.execute(message, args);
-    }
     /*try {
     } catch (error) {
         console.error(error.toString());

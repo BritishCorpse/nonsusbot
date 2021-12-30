@@ -3,10 +3,10 @@ module.exports = {
     description: "Says hello to someone!",
 
     usage: [
-        { tag: "user", checks: {isuseringuild: null} }
+        { tag: "user", checks: {isuseringuild: null}, example: "786301097953591326" }
     ],
 
-    execute (message, args) {
-        message.channel.send(`Hello, ${args[0]}`);
+    async execute (message, args) {
+        message.channel.send(`Hello, <@!${args[0]}>`);
     }
 }

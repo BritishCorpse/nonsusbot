@@ -5,6 +5,11 @@ const { createInfiniteCircularUsage } = require(`${__basedir}/functions`);
 module.exports = {
     name: 'hug',
     description: "Hug whoever you'd want to.",
+
+    usage: [
+        { tag: "user", checks: {isuseringuild: null}, example: "786301097953591326" }
+    ],
+
     async execute(message, args){
         // Maybe make a library accessible always out of this???
         images = [
