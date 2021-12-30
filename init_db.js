@@ -15,6 +15,8 @@ const force = process.argv.includes('--force') || process.argv.includes('-f');
 
 sequelize.sync({ force }).then(async () => {
 	const shop = [
+		CurrencyShop.upsert({ name: 'VIP pass', cost: 10000000 }),
+		CurrencyShop.upsert({ name: 'Casino Membership', cost: 1000 }),
 		CurrencyShop.upsert({ name: 'Cookie', cost: 1 }),
 		CurrencyShop.upsert({ name: 'Premium Cookie', cost: 100 }),
 		CurrencyShop.upsert({ name: 'Coke E Cola', cost: 3 }),
@@ -25,8 +27,6 @@ sequelize.sync({ force }).then(async () => {
 		CurrencyShop.upsert({ name: 'Lost Soul', cost: 10000 }),
 		CurrencyShop.upsert({ name: 'Doritoes', cost: 7000 }),
 		CurrencyShop.upsert({ name: 'Tendies', cost: 5000 }),
-		CurrencyShop.upsert({ name: 'VIP pass', cost: 10000000 }),
-		CurrencyShop.upsert({ name: 'Casino Membership', cost: 1000 }),
 		CurrencyShop.upsert({ name: 'Typical Femoid', cost: 1000 }),
 		CurrencyShop.upsert({ name: 'One third of an amazon stock', cost: 1125 }),
 		CurrencyShop.upsert({ name: "Joe Biden's leg", cost: 2943529411764 }),
@@ -56,6 +56,7 @@ sequelize.sync({ force }).then(async () => {
 		CurrencyShop.upsert({ name: 'Chicken', cost: 748485395}),
 		CurrencyShop.upsert({ name: 'Cracker (Food)', cost: 1}),
 		CurrencyShop.upsert({ name: 'Chinese food', cost: 10}),
+		CurrencyShop.upsert({ name: 'Fresh car smell in a bottle', cost: 40}),
 	];
 	await Promise.all(shop);
 	console.log('Currency database synced.');
