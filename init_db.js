@@ -41,6 +41,8 @@ sequelize.sync({ force }).then(async () => {
 		CurrencyShop.upsert({ name: 'Dog (Pomeranian)', cost: 700}),
 		CurrencyShop.upsert({ name: 'Dog (Poodle)', cost: 1000}),
 		CurrencyShop.upsert({ name: 'Dog (Shiba)', cost: 1600}),
+		CurrencyShop.upsert({ name: 'Dog (Bella)', cost: 1500}),
+		CurrencyShop.upsert({ name: 'Dog (Chloe)', cost: 10000}),
 		CurrencyShop.upsert({ name: 'Cat (No color)', cost: 10}),
 		CurrencyShop.upsert({ name: 'Cat (Black)', cost: 100}),
 		CurrencyShop.upsert({ name: 'Cat (Oraeang)', cost: 200}),
@@ -49,10 +51,11 @@ sequelize.sync({ force }).then(async () => {
 		CurrencyShop.upsert({ name: 'Cat (Brown)', cost: 160}),
 		CurrencyShop.upsert({ name: 'Cat (Red)', cost: 1000}),
 		CurrencyShop.upsert({ name: 'Cat (Manta)', cost: 10000}),
-		CurrencyShop.upsert({ name: 'Dog (Chloe)', cost: 10000}),
+		CurrencyShop.upsert({ name: 'Cat (Callie)', cost: 10000}),
+		CurrencyShop.upsert({ name: 'Fish (Ziggy)', cost: 1000}),
 		CurrencyShop.upsert({ name: 'Chicken', cost: 748485395}),
 		CurrencyShop.upsert({ name: 'Cracker (Food)', cost: 1}),
-		CurrencyShop.upsert({ name: 'Chinese food', cost: 10})
+		CurrencyShop.upsert({ name: 'Chinese food', cost: 10}),
 	];
 	await Promise.all(shop);
 	console.log('Currency database synced.');
