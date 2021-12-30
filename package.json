@@ -10,6 +10,7 @@
     "sqlite3": "^5.0.2"
   },
   "devDependencies": {
+    "frontail": "^4.9.2",
     "fuzzing": "^0.12.21",
     "jest": "^27.4.5",
     "jest-extended": "^1.2.0"
@@ -19,7 +20,8 @@
   "main": "index.js",
   "scripts": {
     "heroku-start": "node init_db.js && node . & node heroku.js",
-    "start": "node init_db.js && pm2 start index.js --name discord-bot",
+    "start": "node init_db.js && mkdir logs && pm2 start ecosystem.config.js",
+    "log": "echo 'Streaming logs to http://127.0.0.1:9001' && frontail logs/*",
     "stop": "pm2 stop index.js",
     "clean": "rm -rf node_modules server_config.json database.sqlite",
     "test": "node init_db.js && jest"
