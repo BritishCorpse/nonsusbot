@@ -19,7 +19,7 @@
   "main": "index.js",
   "scripts": {
     "heroku-start": "node init_db.js && node . & node heroku.js",
-    "start": "node init_db.js && pm2 start index.js",
+    "start": "node init_db.js && pm2 start index.js --name discord-bot",
     "stop": "pm2 stop index.js",
     "clean": "rm -rf node_modules server_config.json database.sqlite",
     "test": "node init_db.js && jest"
