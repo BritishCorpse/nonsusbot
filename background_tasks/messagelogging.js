@@ -14,6 +14,7 @@ module.exports = {
 
             const embed = new MessageEmbed()
                 .setAuthor(`${message.author.username}`, message.author.avatarURL())
+                .setColor("ORANGE")
                 .setDescription(message.content);
 
             logChannel.send({
