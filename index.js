@@ -101,6 +101,7 @@ function getCommandObjectByName(commandName) {
 const descriptionFormats = {
     isempty: not => `is ${not ? "not " : ""}empty`,
     is: (not, value) => `is ${not ? "not " : ""}"${value}"`,
+    isin: (not, value) => `is ${not ? "not " : ""}one of ${value}`,
     isinteger: not => `is ${not ? "not " : ""}an integer`,
     matches: (not, value) => `${not ? "does not match" : "matches"} ${value}`,
 };
@@ -118,7 +119,6 @@ function generateDescription(option) {
             value = value.not;
         }
 
-        description += (descriptionFormats[check] || option.checks[check].description)(not, value);
         if (check !== "passes") {
             description += descriptionFormats[check](not, value);
         } else {
@@ -200,6 +200,8 @@ function getValidationFunction(check, _value) {
         validationFunction = value.func; // value.func is a custom function
     } else if (check === "is") {
         validationFunction = arg => arg === value;
+    } else if (check === "isin") {
+        validationFunction = arg => value.includes(arg);
     } else if (check === "isinteger") {
         validationFunction = isInteger;
     } else if (check === "matches") {
