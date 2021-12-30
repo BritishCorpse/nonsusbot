@@ -10,10 +10,11 @@ const descriptionFormats = {
     is: (not, value) => `is ${not ? "not " : ""}\`${value}\``,
     isin: (not, value) => `is ${not ? "not " : ""}one of \`${value.join(", ")}\``,
     isinteger: not => `is ${not ? "not " : ""}an integer`,
-    matches: (not, value) => `${not ? "does not match" : "matches"} \`\`\`${value}\`\`\``,
-    matchesfully: (not, value) => `${not ? "does not match" : "matches"} fully \`\`\`${value}\`\`\``,
+    matches: (not, value) => `${not ? "does not match" : "matches"} \`\`${value}\`\``,
+    matchesfully: (not, value) => `${not ? "does not match" : "matches"} fully \`\`${value}\`\``,
+    isuser: (not, value) => ``,
+    isuseringuild: (not, value) => `is ${not ? "not " : ""}a user in the guild`,
 };
-
 
 
 function addPageNumbersToFooter(embed, page, maxPage) {
@@ -145,6 +146,13 @@ async function paginateEmbeds(channel, allowedUser, embeds, messageToEdit=null, 
 }
 
 
+function createInfiniteCircularUsage(usage) {
+    // gets the usage for infinite arguments
+    usage[0].next = usage;
+    return usage;
+}
+
+
 function generateDescription(option) {
     let description = "";
 
@@ -225,6 +233,17 @@ function getValidationFunction(message, check, _value) {
                 if (!arg) return false;
                 const match = arg.match(value);
                 return match !== null && match[0] === arg;
+        },
+        //isuser: arg => ,
+        isuseringuild: async (arg, message) => {
+            const match = arg.match(/^<@!(\d)+>$/);
+            if (match !== null) {
+                const user = await message.members.fetch(match[1]);
+                console.log(user);
+            }
+
+            const user = message.members.fetch({query: arg, limit: 1});
+            console.log(user);
         },
     }
 
@@ -359,4 +378,5 @@ module.exports = {
     sendUsage,
     checkUsage,
     doCommand,
+    createInfiniteCircularUsage,
 }
