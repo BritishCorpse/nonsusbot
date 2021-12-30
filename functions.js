@@ -2,7 +2,7 @@ const fs = require('fs');
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 
 const { Op } = require('sequelize');
-const { Users, CurrencyShop } = require(`${__basedir}/db_objects`)
+const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
 
 
 const descriptionFormats = {
@@ -292,7 +292,9 @@ function checkUsage(message, usage, args, depth=0) {
 
     if (passedOptions.length === 1) {
         // success
-        if (passedOptions[0].hasOwnProperty("next")) {
+
+        // depth < args.length allows for infinite (circular) objects for infinite arguments being checked
+        if (depth < args.length && passedOptions[0].hasOwnProperty("next")) { 
             return checkUsage(message, passedOptions[0].next, args, depth + 1);
         }
         return true;
