@@ -4,8 +4,6 @@
 //    process.exit(1);
 //}
 
-console.log(process.env);
-
 // Set testing global directory
 global.testing = false;
 if (process.send) {
