@@ -6,6 +6,10 @@ const { developer_discord_user_ids } = require(`${__basedir}/development_config.
 module.exports = {
     name: 'botinfo',
     description: "Shows information on the bot.",
+
+    usage: [
+    ],
+
     execute (message, args) {
       const embed = new MessageEmbed()
           .setColor("BLUE")

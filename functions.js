@@ -163,7 +163,7 @@ function generateDescription(option) {
                 throw { 
                     name:        "CommandUsageError", 
                     message:     `There is no description for ${check}.`, 
-                    toString:    () => `${this.name}: ${this.message}` 
+                    toString:    function() {return `${this.name}: ${this.message}`;}
                 };
             }
             description += option.checks[check].description(not, value);
@@ -180,8 +180,7 @@ function generateDescription(option) {
 
 
 function sendUsage(message, usage, failedOn, failedArg) {
-    // TODO: move this to functions.js
-    // if failedOn is null, it will show the complete usage
+    // TODO: if failedOn is null, it will show the complete usage
     if (failedOn === undefined) failedOn = usage;
 
     const embed = new MessageEmbed()
@@ -251,7 +250,7 @@ function getValidationFunction(message, check, _value) {
             throw { 
                 name:        "CommandUsageError", 
                 message:     `There is no check called ${check}.`, 
-                toString:    () => `${this.name}: ${this.message}` 
+                toString:    function() {return `${this.name}: ${this.message}`;}
             };
         } else {
             validationFunction = validationFunctions[check];
@@ -269,6 +268,8 @@ function checkUsage(message, usage, args, depth=0) {
     // recursive function
     // Returns true if it passed, object if it didn't
     // depth determines which args index to use
+
+    if (usage.length === 0) return true; // nothing to check
 
     const passedOptions = []; // if usage is made correctly, there should only be one correct option
 
@@ -303,7 +304,7 @@ function checkUsage(message, usage, args, depth=0) {
         throw { 
             name:        "CommandUsageError", 
             message:     "There cannot be multiple valid usages.", 
-            toString:    () => `${this.name}: ${this.message}` 
+            toString:    function() {return `${this.name}: ${this.message}`;}
         };
     }
 }
@@ -311,16 +312,30 @@ function checkUsage(message, usage, args, depth=0) {
 
 function doCommand(commandObj, message, args) {
     let pass;
-    try {
-        pass = checkUsage(message, commandObj.usage, args);
-    } catch (error) {
-        console.error(error);
+    if (!commandObj.usage) {
+        throw { 
+            name:        "CommandUsageError", 
+            message:     `There is no usage defined for ${commandObj.name}.`, 
+            toString:    function() {return `${this.name}: ${this.message}`;}
+        };
     }
+    pass = checkUsage(message, commandObj.usage, args);
 
     if (pass !== true) {
-        console.log(pass);
         const [usage, depth] = pass;
-        sendUsage(message, commandObj.usage, usage, args[depth])
+        sendUsage(message, commandObj.usage, usage, args[depth]);
+    } else {
+        commandObj.execute(message, args);
+    }
+    /*try {
+    } catch (error) {
+        console.error(error.toString());
+        message.reply("There was an error trying to execute that command!");
+    }*/
+
+    /*if (pass !== true) {
+        const [usage, depth] = pass;
+        sendUsage(message, commandObj.usage, usage, args[depth]);
     } else {
         try {
             commandObj.execute(message, args);
@@ -328,7 +343,7 @@ function doCommand(commandObj, message, args) {
             console.error(error);
             message.reply("There was an error trying to execute that command!");
         }
-    }
+    }*/
 }
 
 

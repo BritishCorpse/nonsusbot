@@ -292,5 +292,11 @@ client.on("messageCreate", async message => {
     }
     
     // If all the checks passed, do the command
-    doCommand(commandObject, message, args);
+    try {
+        doCommand(commandObject, message, args);
+    } catch (error) {
+        console.error(error.toString());
+        console.trace();
+        message.reply("There was an error trying to execute that command!");
+    }
 });

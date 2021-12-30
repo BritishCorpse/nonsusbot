@@ -6,8 +6,7 @@ module.exports = {
     description: "See what's new in the current version of Graveyard!",
 
     usage: [
-        { tag: "nothing", checks: {isempty: null} }
-    ]
+    ],
 
     execute(message, args) {
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
