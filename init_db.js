@@ -50,7 +50,9 @@ sequelize.sync({ force }).then(async () => {
 		CurrencyShop.upsert({ name: 'Cat (Red)', cost: 1000}),
 		CurrencyShop.upsert({ name: 'Cat (Manta)', cost: 10000}),
 		CurrencyShop.upsert({ name: 'Dog (Chloe)', cost: 10000}),
-		CurrencyShop.upsert({ name: 'Chicken', cost: 748485395})
+		CurrencyShop.upsert({ name: 'Chicken', cost: 748485395}),
+		CurrencyShop.upsert({ name: 'Cracker', cost: 1}),
+		CurrencyShop.upsert({ name: 'Chinese food', cost: 10})
 	];
 	await Promise.all(shop);
 	console.log('Currency database synced.');
