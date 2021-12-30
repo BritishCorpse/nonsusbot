@@ -22,7 +22,7 @@ module.exports = {
         }
 
         else if (userBet > 10000000) {
-            message.channel.send("🎲Unfortunately your bet is too large for this game, We can't have you being too successful after all!🎲");
+            message.channel.send("🎲Your bet is not supported, too large or too small.🎲");
             return;
         }
 

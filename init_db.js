@@ -29,7 +29,7 @@ sequelize.sync({ force }).then(async () => {
 		CurrencyShop.upsert({ name: 'Casino Membership', cost: 1000 }),
 		CurrencyShop.upsert({ name: 'Typical Femoid', cost: 1000 }),
 		CurrencyShop.upsert({ name: 'One third of an amazon stock', cost: 1125 }),
-		CurrencyShop.upsert({ name: 'Joe Biden', cost: 2943529411764 }),
+		CurrencyShop.upsert({ name: "Joe Biden's leg", cost: 2943529411764 }),
 		CurrencyShop.upsert({ name: 'Poppy', cost: 2 }),
 		CurrencyShop.upsert({ name: 'Dandelion', cost: 3 }),
 		CurrencyShop.upsert({ name: '1.5 chicken nuggets', cost: 5 }),
@@ -51,7 +51,7 @@ sequelize.sync({ force }).then(async () => {
 		CurrencyShop.upsert({ name: 'Cat (Manta)', cost: 10000}),
 		CurrencyShop.upsert({ name: 'Dog (Chloe)', cost: 10000}),
 		CurrencyShop.upsert({ name: 'Chicken', cost: 748485395}),
-		CurrencyShop.upsert({ name: 'Cracker', cost: 1}),
+		CurrencyShop.upsert({ name: 'Cracker (Food)', cost: 1}),
 		CurrencyShop.upsert({ name: 'Chinese food', cost: 10})
 	];
 	await Promise.all(shop);
