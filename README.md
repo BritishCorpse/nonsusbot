@@ -9,7 +9,9 @@ Run `npm install` in the main directory to install the dependencies.
 
 Run `npm start` to run the bot.
 
-Run `npm log` to start the logging server and go to http://127.0.0.1:9001, or run `tail -f logs/*` to have it in your terminal.
+Run `npm run log` to start the logging server and go to http://127.0.0.1:9001, or run `tail -f logs/*` to have it in your terminal.
+
+Run `npm run status` to see the status of the bot's process.
 
 Run `npm stop` to stop running the bot.
 
