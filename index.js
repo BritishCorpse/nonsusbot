@@ -17,13 +17,16 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const request = require("request");
 const levenshtein = require("js-levenshtein");
-//const Sequelize = require('sequelize');
-//const { Op } = require('sequelize');
 
 const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
 
 // for common functions
-const { saveServerConfig } = require(`${__basedir}/functions`);
+const {
+    saveServerConfig,
+    getCommandCategories,
+    doCommand,
+
+} = require(`${__basedir}/functions`);
 
 const config = require(`${__basedir}/config.json`);
 const defaultServerConfig = require(`${__basedir}/default_server_config.json`);
@@ -48,7 +51,7 @@ client.serverConfig = new Discord.Collection();
 client.currency = new Discord.Collection();
 
 // Load commands from the command_list folder
-const categoryFolders = fs.readdirSync("./command_list");
+const categoryFolders = getCommandCategories();
 for (const category of categoryFolders) {
     const commandFiles = fs.readdirSync(`${__basedir}/command_list/${category}`)
         .filter(file => file.endsWith(".js"));
@@ -95,204 +98,6 @@ function getCommandObjectByName(commandName) {
     });
 
     return returnValue;
-}
-
-
-const descriptionFormats = {
-    isempty: not => `is ${not ? "not " : ""}empty`,
-    is: (not, value) => `is ${not ? "not " : ""}"${value}"`,
-    isin: (not, value) => `is ${not ? "not " : ""}one of ${value}`,
-    isinteger: not => `is ${not ? "not " : ""}an integer`,
-    matches: (not, value) => `${not ? "does not match" : "matches"} ${value}`,
-};
-
-
-function generateDescription(option) {
-
-    let description = "";
-
-    // Generate a description from the checks
-    for (const check in option.checks) {
-        let value = option.checks[check];
-        const not = value && value.hasOwnProperty("not");
-        if (not) {
-            value = value.not;
-        }
-
-        if (check !== "passes") {
-            description += descriptionFormats[check](not, value);
-        } else {
-            if (!option.checks[check].description) {
-                throw { 
-                    name:        "CommandUsageError", 
-                    message:     `There is no description for ${check}.`, 
-                    toString:    () => `${this.name}: ${this.message}` 
-                };
-            }
-            description += option.checks[check].description(not, value);
-        }
-        description += "\n";
-    }
-
-    if (option.hasOwnProperty("example")) {
-        description += `**Example**: ${option.example}`;
-    }
-
-    return description;
-}
-
-
-function sendUsage(message, usage, failedOn, failedArg) {
-    // TODO: move this to functions.js
-    // if failedOn is null, it will show the complete usage
-    if (failedOn === undefined) {
-        failedOn = usage;
-    }
-    
-    const embed = new Discord.MessageEmbed()
-        .setTitle("Usage")
-        .setFooter(`Use ${client.serverConfig.get(message.guild.id).prefix}help for more information.`);
-
-    if (failedArg === null) {
-        embed.setDescription("Your usage is wrong. The argument can be:")
-    } else if (failedArg === undefined) {
-        embed.setDescription("You are missing an argument. The argument can be:");
-    } else {
-        embed.setDescription(`\`${failedArg}\` is an invalid argument. The argument can be:`);
-    }
-
-    for (const option of failedOn) {
-        embed.addField(`<${option.tag}>`, generateDescription(option), inline=true);
-    }
-
-    message.reply({embeds: [embed], ephemeral: true});
-}
-
-
-function getValidationFunction(check, _value) {
-    // Returns a validation function from a check name
-
-    let value;
-    let invert = false;
-    if (_value && _value.hasOwnProperty("not")) {
-        value = _value.not;
-        invert = true;
-    } else {
-        value = _value;
-    }
-
-    let validationFunction;
-
-    function isInteger(arg) {
-        if (!arg) return false;
-        const match = arg.match(/^-?\d+/);
-        if (match !== null && match[0] === arg) {
-            // check that it is not too big or too big negatively
-            const n = Number.parseInt(match[0]);
-            return n.toString() !== "Infinity" && n.toString() !== "-Infinity";
-        }
-        return false;
-    }
-
-    if (check === "isempty") {
-        validationFunction = arg => [undefined, ""].includes(arg);
-    } else if (check === "passes") {
-        validationFunction = value.func; // value.func is a custom function
-    } else if (check === "is") {
-        validationFunction = arg => arg === value;
-    } else if (check === "isin") {
-        validationFunction = arg => value.includes(arg);
-    } else if (check === "isinteger") {
-        validationFunction = isInteger;
-    } else if (check === "matches") {
-        // TODO: make this a full match?
-        validationFunction = arg => {
-            if (!arg) return false;
-            return arg.match(value) !== null;
-        }
-    } else {
-        throw { 
-            name:        "CommandUsageError", 
-            message:     `There is no check called ${check}.`, 
-            toString:    () => `${this.name}: ${this.message}` 
-        };
-    }
-
-    return arg => {
-        if (invert) return !validationFunction(arg);
-        return validationFunction(arg);
-    };
-}
-
-
-function checkUsage(usage, args, depth=0) {
-    // recursive function
-    // Returns true if it passed, false if it didn't
-    // depth determines which args index to use
-
-    const passedOptions = []; // if usage is made correctly, there should only be one correct option
-
-    for (const option of usage) {
-        let passed = true;
-
-        // option must pass all checks defined
-        for (const check in option.checks) {
-            const validationFunction = getValidationFunction(check, option.checks[check]);
-
-            if (validationFunction(args[depth]) !== true) {
-                passed = false;
-            }
-        }
-        
-        if (passed) {
-            passedOptions.push(option);
-        }
-    }
-
-    if (passedOptions.length === 1) {
-        // success
-        if (passedOptions[0].hasOwnProperty("next")) {
-            return checkUsage(passedOptions[0].next, args, depth + 1);
-        }
-        return true;
-    } else if (passedOptions.length === 0) {
-        // fail; return the usage for which it failed
-        return [usage, depth];
-    } else {
-        // error
-        throw { 
-            name:        "CommandUsageError", 
-            message:     "There cannot be multiple valid usages.", 
-            toString:    () => `${this.name}: ${this.message}` 
-        };
-    }
-}
-
-
-function doCommand(commandObj, message, args) {
-    const pass = checkUsage(commandObj.usage, args);
-
-    if (pass !== true) {
-        const [usage, depth] = pass;
-        sendUsage(message, commandObj.usage, usage, args[depth]);
-    } else {
-        try {
-            commandObj.execute(message, args);
-        } catch (error) {
-            console.error(error);
-            message.reply("There was an error trying to execute that command!");
-        }
-    }
-}
-
-
-function collectionToJSON(collection) {
-    // turns a discord collection to a JSON {key: value} dictionary
-    let result = {};
-    for (const [key, value] of collection) {
-        result[key] = value;
-    }
-    return result;
 }
 
 

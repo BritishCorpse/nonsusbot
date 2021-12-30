@@ -4,11 +4,15 @@ const { paginateEmbeds } = require(`${__basedir}/functions`);
 module.exports = {
     name: 'changelog',
     description: "See what's new in the current version of Graveyard!",
+
+    usage: [
+        { tag: "nothing", checks: {isempty: null} }
+    ]
+
     execute(message, args) {
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
         const embeds = [
-
             new MessageEmbed()
             .setTitle("Changelog for Graveyard Version 1.1.4!")
             .setColor("ORANGE")

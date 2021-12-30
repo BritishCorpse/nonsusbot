@@ -26,6 +26,31 @@ module.exports = {
     name: "config",
     description: "Change bot settings for this server.",
     userPermissions: ["ADMINISTRATOR"],
+
+    usage: [
+        { tag: "list", checks: {is: "list"} },
+        { tag: "set", checks: {is: "set"}, 
+            next: [
+                { tag: "option", checks: {isin: ["m_channel_id", "verify_channel_id", "log_channel_id", "level_channel_id"]},
+                    next: [
+                        { tag: "channel-id", checks: {isinteger: null} }
+                    ]
+                },
+                { tag: "option", checks: {isin: ["verify_role_id", "vip_role_id"]},
+                    next: [
+                        { tag: "role-id", checks: {isinteger: null} }
+                    ]
+                },
+                { tag: "option", checks: {is: "prefix"},
+                    next: [
+                        { tag: "prefix", checks: {matchesfully: /[a-zA-Z0-9~`!@#$%^&*()_+\-={}|\[\]\\:";'<>?,.\/]{0,2}[~`!@#$%^&*()_+\-={}|\[\]\\:";'<>?,.\/]/} }
+                    ]
+                    
+                }
+            ]
+        }
+    ],
+
     execute (message, args) {
         if (args[0] === "set") {
             if (args[1] in defaultServerConfig) {
