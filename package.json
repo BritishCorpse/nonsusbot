@@ -19,7 +19,7 @@
   "version": "1.1.4",
   "main": "index.js",
   "scripts": {
-    "start": "node init_db.js && mkdir logs && pm2 start ecosystem.config.js",
+    "start": "mkdir logs; node init_db.js && pm2 start ecosystem.config.js",
     "log": "echo 'Streaming logs to http://127.0.0.1:9001' && frontail logs/*",
     "stop": "pm2 stop index.js",
     "test": "node init_db.js && jest"
