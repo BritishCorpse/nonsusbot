@@ -5,6 +5,10 @@ const { paginateEmbeds } = require(`${__basedir}/functions`);
 module.exports = {
     name: 'paginatortest',
     description: "test paginator",
+    
+    usage: [
+    ],
+
     execute (message, args) {
         const embeds = [
 
