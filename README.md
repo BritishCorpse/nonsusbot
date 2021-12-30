@@ -32,7 +32,7 @@ This is for server wide configurations (prefixes, etc.).
 
 ### `development_config.json`
 
-This is for development options (discord development servers, discord developer users, etc.).
+This is for development options (discord development servers, discord developer users, testing bot configs, etc.).
 
 ### sqlite database
 

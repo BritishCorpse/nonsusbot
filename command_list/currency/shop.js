@@ -1,21 +1,33 @@
 const { MessageEmbed } = require('discord.js');
 const { CurrencyShop } = require(`${__basedir}/db_objects`);
-
+const { paginateEmbeds } = require(`${__basedir}/functions`);
 
 module.exports = {
     name: 'shop',
     description: "Displays the shop.",
     async execute (message, args) {
-        const embed = new MessageEmbed()
-            .setTitle("Shop page: 1")
-            .setColor("ORANGE");
+        
+        const embeds = [];
 
-        const items = await CurrencyShop.findAll();
+        items = await CurrencyShop.findAll();
 
-        for (const item of items){
-            embed.addField(`${item.name}`, `${item.cost}💰`);
+        function makeEmbed() {
+            return new MessageEmbed().setTitle("Shop").setColor("ORANGE")
         }
 
-        message.channel.send({embeds: [embed]});
+        let embed;
+
+        for (const i in items) {
+            const item = items[i];
+
+            if (i % 10 === 0) {
+                embed = makeEmbed();
+                embeds.push(embed);  
+            }
+                        
+            embed.addField(`${item.name}`, `${item.cost}`);
+        }
+
+        paginateEmbeds(message.channel, message.author, embeds);
     }
 }
