@@ -12,11 +12,11 @@ module.exports = {
         items = await CurrencyShop.findAll();
 
         function makeEmbed() {
-            return new MessageEmbed().setTitle("Shop").setColor("ORANGE").setFooter("penis")
+            return new MessageEmbed().setTitle("Shop").setColor("ORANGE")
         }
 
         let embed;
-        
+
         for (const i in items) {
             const item = items[i];
 
