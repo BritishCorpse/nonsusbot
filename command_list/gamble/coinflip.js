@@ -23,7 +23,17 @@ module.exports = {
 
         // Check if the user has a casino membershio
 
-        let userBet = args[0];
+        if (args[0] === 'rules') {
+            const embed = new MessageEmbed()
+            .setTitle("Coinflip")
+            .setDescription(`The player calls either heads or tails, the computer then flips a coin. If the player is correct, they gain their bet.`)
+            .setColor(randomColor);
+            
+            message.channel.send({embeds: [embed]});
+            return;
+        }
+
+        let userBet = Number.parseInt(args[0]);
         if (userBet === undefined) {
             message.channel.send(`🎲You did not specify your bet! Usage: ${prefix}coinflip {bet} {heads or tails}🎲`);
             return;
@@ -37,15 +47,6 @@ module.exports = {
         else if (isNaN(userBet)) {
             message.channel.send(`I don' think ${userBet} is a number.`);
             return;
-        }
-
-        else if (userBet === 'rules') {
-            const embed = new MessageEmbed()
-            .setTitle("Coinflip")
-            .setDescription(`The player calls either heads or tails, the computer then flips a coin. If the player is correct, they get ${userBet}💰's.`)
-            .setColor(randomColor)
-            
-            return message.channel.send({embeds: [embed]});
         }
 
         let userChoice = args[1];
