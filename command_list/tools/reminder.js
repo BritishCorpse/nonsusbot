@@ -1,4 +1,5 @@
-const { MessageEmbed } = new require("discord.js");
+const { MessageEmbed } = require("discord.js");
+const { createInfiniteCircularUsage } = require(`${__basedir}/functions`);
 
 const max_number_of_definitions = 2;
 
@@ -17,9 +18,9 @@ module.exports = {
             checks: {
                 matchesfully: /(?:0*(\d+)d)?(?:0*((?:\d)|(?:1\d)|(?:2[0-3]))h)?(?:0*((?:\d)|(?:[1-5]\d))m)?(?:0*((?:\d)|(?:[1-5]\d))s)?/
             },
-            next: [
-                { tag: "message" }
-            ]
+            next: createInfiniteCircularUsage([
+                { tag: "message", checks: {isempty: {not: null}} }
+            ])
         }
     ],
 

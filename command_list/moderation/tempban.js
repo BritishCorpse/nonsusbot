@@ -21,9 +21,13 @@ module.exports = {
 
     usage: [
         { tag: "user", checks: {isuseridinguild: null},
-            next: createInfiniteCircularUsage([
-                { tag: "reason", checks: {matches: {not: /[^\w?!.,;:'"\(\)\/]/}}
-            ])
+            next: [
+                { tag: "time", checks: {isinteger: null},
+                    next: createInfiniteCircularUsage([
+                        { tag: "reason", checks: {matches: {not: /[^\w?!.,;:'"\(\)\/]/}, isempty: {not: null}} }
+                    ])
+                }
+            ]
         }
     ],
 

@@ -7,9 +7,9 @@ module.exports = {
     userPermissions: ["BAN_MEMBERS"],
 
     usage: [
-        { tag: "user", checks: {isuseridinguild: null},
+        { tag: "user", checks: {isbanneduseridinguild: null},
             next: createInfiniteCircularUsage([
-                { tag: "reason", checks: {matches: {not: /[^\w?!.,;:'"\(\)\/]/}}
+                { tag: "reason", checks: {matches: {not: /[^\w?!.,;:'"\(\)\/]/}, isempty: {not: null}} }
             ])
         }
     ],

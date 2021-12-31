@@ -9,9 +9,9 @@ module.exports = {
     description: "Define the first argument. Optionally include the type of the word (noun, verb, adjective, adverb, etc) as the second argument.",
 
     usage: [
-        { tag: "word", checks: {matches: {not: /[^a-zA-Z-]/}},
+        { tag: "word", checks: {matches: {not: /[^a-zA-Z-]/}, isempty: {not: null}},
             next: [
-                { tag: "type", checks: {matches: {not: /[^a-zA-Z]/}} },
+                { tag: "type", checks: {matches: {not: /[^a-zA-Z]/}, isempty: {not: null}} },
                 { tag: "nothing", checks: {isempty: null} }
             ]
         }
@@ -62,7 +62,8 @@ module.exports = {
           if (embeds.length === 0) {
               embeds.push(new MessageEmbed()
                   .setTitle("No definition found")
-                  .setDescription("No definition was found with type *" + args[1] + "*");
+                  .setDescription("No definition was found with type *" + args[1] + "*")
+              );
           }
 
           for (const embed of embeds) {

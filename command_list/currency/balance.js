@@ -3,11 +3,12 @@ module.exports = {
     description: "Shows your balance, or someone else's balance.",
 
     usage: [
-        { tag: "nothing" },
-        { tag: "user", checks: {isuseringuild: null} }
+        { tag: "user", checks: {isuseridinguild: null} },
+        { tag: "nothing", checks: {isempty: null} }
     ],
 
     execute (message, args) {
+        console.log("balance execute runs");
         const target = message.mentions.users.first() || message.author;
         message.channel.send(`<@!${target.id}> has ${message.client.currency.getBalance(target.id)}💰`);
     }

@@ -87,7 +87,7 @@ module.exports = {
     usage: [
         { tag: "bet", checks: {isinteger: null},
             next: [
-                { tag: "bet", checks: {isinteger: null} }
+                { tag: "lives", checks: {isinteger: null} }
             ]
         }
     ],

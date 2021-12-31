@@ -8,7 +8,7 @@ module.exports = {
     description: "Buys an item from the shop.",
 
     usage: createInfiniteCircularUsage([
-        { tag: "item", {matches: {not: /[^\w?!.,;:'"\(\)]/}} }
+        { tag: "item", checks: {matches: {not: /[^\w?!.,;:'"\(\)]/}, isempty: {not: null}} }
     ]),
 
     async execute (message, args) {

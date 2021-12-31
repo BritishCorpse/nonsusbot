@@ -10,14 +10,13 @@ module.exports = {
     description: "Get bible verses. Topic is the first argument.",
 
     usage: createInfiniteCircularUsage([
-        { tag: "topic", checks: {matches: {not: /[^a-zA-Z]/}} }
+        { tag: "topic", checks: {matches: {not: /[^a-zA-Z]/}, isempty: {not: null}} }
     ]),
 
     execute (message, args) {
         request("https://www.openbible.info/topics/" + args.join("_"), (error, response, body) => {
             const root = parse(body);
             const verses = root.querySelectorAll("div[class^='verse']");//.splice(0, max_number_of_verses);
-            console.log(verses.length);
 
             const pages = [];
 

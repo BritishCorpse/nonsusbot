@@ -6,7 +6,7 @@ module.exports = {
     description: "Transfer coins from your account to someone else.",
 
     usage: [
-        { tag: "user", checks: {isuseringuild: null},
+        { tag: "user", checks: {isuseridinguild: null},
             next: [
                 { tag: "amount", checks: {isinteger: null} }
             ]

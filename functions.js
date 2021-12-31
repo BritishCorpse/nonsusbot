@@ -12,7 +12,8 @@ const descriptionFormats = {
     isinteger: not => `is ${not ? "not " : ""}an integer`,
     matches: (not, value) => `${not ? "does not match" : "matches"} \`\`${value}\`\``,
     matchesfully: (not, value) => `${not ? "does not match" : "matches"} fully \`\`${value}\`\``,
-    //isuser: (not, value) => ``,
+    //isuserid: (not, value) => `is ${not ? "not " : ""}a user`,
+    isbanneduseridinguild: (not, value) => `is ${not ? "not " : ""}a banned user in the guild`,
     isuseridinguild: (not, value) => `is ${not ? "not " : ""}a user id in the guild`,
 };
 
@@ -149,6 +150,7 @@ async function paginateEmbeds(channel, allowedUser, embeds, messageToEdit=null, 
 function createInfiniteCircularUsage(usage) {
     // gets the usage for infinite arguments
     usage[0].next = usage;
+    usage[0].circular = true;
     return usage;
 }
 
@@ -210,9 +212,18 @@ function sendUsage(message, usage, failedOn, failedArg) {
 
 
 function getValidationFunction(message, check, _value) {
+    let value;
+    let invert = false;
+    if (_value && _value.hasOwnProperty("not")) {
+        value = _value.not;
+        invert = true;
+    } else {
+        value = _value;
+    }
+
     // Returns a validation function from a check name
     const validationFunctions = {
-        isempty: arg => [undefined, ""].includes(arg),
+        isempty: arg => [null, undefined, ""].includes(arg),
         is: arg => arg === value,
         isin: arg => value.includes(arg),
         isinteger: arg => {
@@ -221,23 +232,35 @@ function getValidationFunction(message, check, _value) {
             if (match !== null && match[0] === arg) {
                 // check that it is not too big or too big negatively
                 const n = Number.parseInt(match[0]);
-                return n.toString() !== "Infinity" && n.toString() !== "-Infinity";
+                return n !== Infinity && n !== -Infinity;
             }
             return false;
         },
         matches:  arg => {
             if (!arg) return false;
-                return arg.match(value) !== null;
+            return arg.match(value) !== null;
         },
         matchesfully: arg => {
-                if (!arg) return false;
-                const match = arg.match(value);
-                return match !== null && match[0] === arg;
+            if (!arg) return false;
+            const match = arg.match(value);
+            return match !== null && match[0] === arg;
         },
-        //isuser: arg => ,
-        isuseridinguild: arg => {
+        isbanneduseridinguild: arg => {
+            if (!arg) return false;
             let userId;
-            if (arg.match(/^<@!(\d+)>$/) !== null)
+            if (arg.match(/^<@!\d+>$/) !== null)
+                userId = arg.slice(3, -1);
+            else if (arg.match(/^\d+$/))
+                userId = arg;
+
+            if (userId && message.guild.bans.resolve(userId))
+                return true;
+            return false;
+        },
+        isuseridinguild: arg => {
+            if (!arg) return false;
+            let userId;
+            if (arg.match(/^<@!\d+>$/) !== null)
                 userId = arg.slice(3, -1);
             else if (arg.match(/^\d+$/))
                 userId = arg;
@@ -246,15 +269,6 @@ function getValidationFunction(message, check, _value) {
                 return true;
             return false;
         },
-    }
-
-    let value;
-    let invert = false;
-    if (_value && _value.hasOwnProperty("not")) {
-        value = _value.not;
-        invert = true;
-    } else {
-        value = _value;
     }
 
     let validationFunction;
@@ -312,7 +326,8 @@ async function checkUsage(message, usage, args, depth=0) {
         // success
 
         // depth < args.length allows for infinite (circular) objects for infinite arguments being checked
-        if (depth < args.length && passedOptions[0].hasOwnProperty("next")) { 
+        if ((passedOptions[0].circular === true && depth < (args.length - 1))
+            || (passedOptions[0].circular !== true && passedOptions[0].hasOwnProperty("next"))) { 
             return await checkUsage(message, passedOptions[0].next, args, depth + 1);
         }
         return true;
@@ -338,7 +353,7 @@ function doCommand(commandObj, message, args) {
             toString:    function() {return `${this.name}: ${this.message}`;}
         };
     }
-    //let pass = await checkUsage(message, commandObj.usage, args);
+
     checkUsage(message, commandObj.usage, args)
     .then(pass => {
         if (pass !== true) {
@@ -347,6 +362,11 @@ function doCommand(commandObj, message, args) {
         } else {
             commandObj.execute(message, args);
         }
+    })
+    .catch(error => {
+        console.error(error.toString());
+        console.trace();
+        process.exit(1);
     });
 
     /*try {

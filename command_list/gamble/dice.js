@@ -7,7 +7,7 @@ module.exports = {
     description: 'Play against the computer in a game of dice.',
 
     usage: [
-        { tag: "bet", checks: {isuseridinguild: null} }
+        { tag: "bet", checks: {isinteger: null} }
     ],
 
     async execute(message, args){

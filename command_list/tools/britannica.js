@@ -9,7 +9,7 @@ module.exports = {
     description: "Searches articles on Britannica.",
 
     usage: createInfiniteCircularUsage([
-        { tag: "query", checks: {} }
+        { tag: "query", checks: {isempty: {not: null}} }
     ]),
 
     execute (message, args) {

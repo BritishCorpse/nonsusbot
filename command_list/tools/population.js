@@ -10,7 +10,7 @@ module.exports = {
     description: "Finds the population of a country, then sends it in the channel.",
 
     usage: createInfiniteCircularUsage([
-        { tag: "country", matches: {not: /[^a-zA-Z'-]/} }, // only this one is made infinite
+        { tag: "country", checks: {matches: {not: /[^a-zA-Z'-]/}, isempty: {not: null}} }, // only this one is made infinite
         { tag: "nothing", checks: {isempty: null} }
     ]),
 

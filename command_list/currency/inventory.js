@@ -6,8 +6,8 @@ module.exports = {
     description: "Shows your inventory, or someone else's.",
 
     usage: [
-        { tag: "nothing" },
-        { tag: "user", checks: {isuseringuild: null} }
+        { tag: "nothing", checks: {isempty: null} },
+        { tag: "user", checks: {isuseridinguild: null} }
     ],
 
     async execute (message, args) {

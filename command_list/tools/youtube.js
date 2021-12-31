@@ -8,7 +8,7 @@ module.exports = {
     description: "Searches for videos on youtube.com then sends the link in the channel.",
 
     usage: createInfiniteCircularUsage([
-        { tag: "query", checks {} }
+        { tag: "query", checks: {isempty: {not: null}} }
     ]),
 
     execute (message, args) {

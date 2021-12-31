@@ -32,7 +32,7 @@ module.exports = {
     description: "Searches for nutritional values for food items, then sends it in the channel.",
 
     usage: createInfiniteCircularUsage([
-        { tag: "food", checks: {} }
+        { tag: "food", checks: {isempty: {not: null}} }
     ]),
 
     execute (message, args) {

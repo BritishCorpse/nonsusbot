@@ -10,8 +10,7 @@ module.exports = {
     usage: [
         { tag: "bet", checks: {isinteger: null},
             next: [
-                { tag: "prediction", checks: {isin: ["heads, tails"]} },
-                { tag: "nothing", checks: {isempty: null} }
+                { tag: "prediction", checks: {isin: ["heads", "tails"]} }
             ]
         }
     ],

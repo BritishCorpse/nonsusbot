@@ -1,18 +1,14 @@
 const request = require("request");
+const { createInfiniteCircularUsage } = require(`${__basedir}/functions`);
 
-// create circular usage for infinite arguments
-let usage = [
-    { tag: "message", checks: {matches: {not: /[^\w?!.,;:'"\(\)\/]/}},
-        next: []
-    }
-];
-usage[0].next = usage;
 
 module.exports = {
     name: "chat",
     description: "Talk with an AI!",
 
-    usage,
+    usage: createInfiniteCircularUsage([
+        { tag: "message", checks: {matches: {not: /[^\w?!.,;:'"\(\)\/]/}, isempty: {not: null}} }
+    ]),
 
     execute (message, args) {
         if (/@/m.test(args.join(" "))) {

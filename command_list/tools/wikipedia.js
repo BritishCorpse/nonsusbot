@@ -6,7 +6,7 @@ module.exports = {
     description: "Searches Wikipedia for anything you'd like.",
 
     usage: createInfiniteCircularUsage([
-        { tag: "query", checks: {} }
+        { tag: "query", checks: {isempty: {not: null}} }
     ]),
 
     execute (message, args) {
