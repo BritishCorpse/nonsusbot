@@ -12,7 +12,8 @@ module.exports = {
             next: [
                 { tag: "lives", checks: {isinteger: null} }
             ]
-        }
+        },
+        { tag: "rules", checks: {is: "rules"} }
     ],
 
     async execute(message, args) {

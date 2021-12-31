@@ -12,7 +12,8 @@ module.exports = {
             next: [
                 { tag: "prediction", checks: {isin: ["heads", "tails"]} }
             ]
-        }
+        },
+        { tag: "rules", checks: {is: "rules"} }
     ],
 
     execute(message, args) {

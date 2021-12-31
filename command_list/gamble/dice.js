@@ -7,7 +7,8 @@ module.exports = {
     description: 'Play against the computer in a game of dice.',
 
     usage: [
-        { tag: "bet", checks: {isinteger: null} }
+        { tag: "bet", checks: {isinteger: null} },
+        { tag: "rules", checks: {is: "rules"} }
     ],
 
     async execute(message, args){
