@@ -6,13 +6,14 @@ module.exports = {
     name: 'shop',
     description: "Displays the shop.",
     async execute (message, args) {
+        var randomColor = Math.floor(Math.random()*16777215).toString(16);
         
         const embeds = [];
 
         items = await CurrencyShop.findAll();
 
         function makeEmbed() {
-            return new MessageEmbed().setTitle("Shop!").setColor("ORANGE")
+            return new MessageEmbed().setTitle("Shop!").setColor(randomColor)
         }
 
         let embed;

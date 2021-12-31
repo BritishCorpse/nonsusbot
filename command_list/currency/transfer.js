@@ -18,6 +18,6 @@ module.exports = {
         message.client.currency.add(message.author.id, -transferAmount);
         message.client.currency.add(transferTarget.id, transferAmount);
 
-        return message.channel.send(`Successfully transferred ${transferAmount}💰 to ${transferTarget.tag}. Your current balance is ${message.client.currency.getBalance(message.author.id)}💰`);
+        return message.channel.send(`Successfully transferred ${transferAmount}💰 to ${transferTarget.tag}. Your remaining balance is: ${message.client.currency.getBalance(message.author.id)}💰`);
     }
 }

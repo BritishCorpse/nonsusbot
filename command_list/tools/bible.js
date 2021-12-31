@@ -9,6 +9,8 @@ module.exports = {
   name: "bible",
   description: "Get bible verses. Topic is the first argument.",
   execute (message, args) {
+      var randomColor = Math.floor(Math.random()*16777215).toString(16);
+
       request("https://www.openbible.info/topics/" + args.join("_"), (error, response, body) => {
           const root = parse(body);
           const verses = root.querySelectorAll("div[class^='verse']");//.splice(0, max_number_of_verses);
@@ -19,6 +21,7 @@ module.exports = {
           for (const verse of verses) {
               const embed = new MessageEmbed()
                   .setTitle(verse.querySelector("a").innerHTML.trim() + " (ESV)")
+                  .setColor(randomColor)
                   .setDescription(
                       verse.querySelector("p").innerHTML
                           .trim()

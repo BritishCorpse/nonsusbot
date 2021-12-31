@@ -8,6 +8,8 @@ module.exports = {
   name: 'define',
   description: "Define the first argument. Optionally include the type of the word (noun, verb, adjective, adverb, etc) as the second argument.",
   execute (message, args) {
+    var randomColor = Math.floor(Math.random()*16777215).toString(16);
+
     request("https://dictionaryapi.com/api/v3/references/collegiate/json/" + args[0] + "?key=" + dictionary_api_key, (error, response, body) => {
       parsed_body = JSON.parse(body);
       let embeds = [];
@@ -17,6 +19,7 @@ module.exports = {
       if (typeof parsed_body[0] === "string") {
         const embed = new MessageEmbed()
           .setTitle("Similar words")
+          .setColor(randomColor)
           .setDescription(parsed_body.join(", "))
           .setThumbnail("https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Merriam-Webster_logo.svg/1200px-Merriam-Webster_logo.svg.png")
           .setURL("https://www.merriam-webster.com/dictionary/" + args[0]);
@@ -30,6 +33,7 @@ module.exports = {
 
           let embed = new MessageEmbed()
             .setTitle(type.meta.id.split(":")[0] + " - *" + type.fl + "*")
+            .setColor(randomColor)
             .setThumbnail("https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Merriam-Webster_logo.svg/1200px-Merriam-Webster_logo.svg.png")
             .setURL("https://www.merriam-webster.com/dictionary/" + args[0]);
 

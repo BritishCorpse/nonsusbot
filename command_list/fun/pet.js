@@ -5,6 +5,8 @@ module.exports = {
     name: 'pet',
     description: "Pet whoever you'd like to.",
     execute(message, args){
+        var randomColor = Math.floor(Math.random()*16777215).toString(16);
+        
         images = [
             "https://c.tenor.com/rZRQ6gSf128AAAAM/anime-good-girl.gif",
             "https://c.tenor.com/Wth7fEpgZ7EAAAAM/neko-anime-girl.gif",
@@ -28,7 +30,7 @@ module.exports = {
             const embed = new MessageEmbed()
             .setTitle(`${message.author.username} pets ${message.author.username}, how nice of them :heart:!`)
             .setImage(images[Math.floor(Math.random() * images.length)])
-            .setColor("ORANGE")
+            .setColor(randomColor)
         
             return message.channel.send( {embeds: [embed]} );
         }
@@ -46,7 +48,7 @@ module.exports = {
                 const embed = new MessageEmbed()
                 .setTitle(`${message.author.username} pets ${petTarget.username} :heart:!`)
                 .setImage(images[Math.floor(Math.random() * images.length)])
-                .setColor("ORANGE")
+                .setColor(randomColor)
             
                 return message.channel.send( {embeds: [embed]} );
             }
@@ -57,7 +59,7 @@ module.exports = {
             const embed = new MessageEmbed()
             .setTitle(`${message.author.username} pets ${petTarget.username}, how nice of them :heart:!`)
             .setImage(images[Math.floor(Math.random() * images.length)])
-            .setColor("ORANGE")
+            .setColor(randomColor)
         
             return message.channel.send( {embeds: [embed]} );
         };

@@ -5,6 +5,8 @@ module.exports = {
     name: 'slap',
     description: "Slap whoever you'd like to.",
     execute(message, args){
+        var randomColor = Math.floor(Math.random()*16777215).toString(16);
+
         images = [
             "https://c.tenor.com/Ws6Dm1ZW_vMAAAAM/girl-slap.gif",
             "https://c.tenor.com/iDdGxlZZfGoAAAAM/powerful-head-slap.gif",
@@ -32,7 +34,7 @@ module.exports = {
             const embed = new MessageEmbed()
             .setTitle(`${message.author.username} slaps ${message.author.username}, ${funnyReply}`)
             .setImage(images[Math.floor(Math.random() * images.length)])
-            .setColor("ORANGE")
+            .setColor(randomColor)
         
             return message.channel.send( {embeds: [embed]} );
         }
@@ -50,7 +52,7 @@ module.exports = {
                 const embed = new MessageEmbed()
                 .setTitle(`${message.author.username} slaps ${slapTarget.username}, ${funnyReply}`)
                 .setImage(images[Math.floor(Math.random() * images.length)])
-                .setColor("ORANGE")
+                .setColor(randomColor)
             
                 return message.channel.send( {embeds: [embed]} );
             };
@@ -61,7 +63,7 @@ module.exports = {
             const embed = new MessageEmbed()
             .setTitle(`${message.author.username} slaps ${slapTarget.username}, ${funnyReply}`)
             .setImage(images[Math.floor(Math.random() * images.length)])
-            .setColor("ORANGE")
+            .setColor(randomColor)
         
             return message.channel.send( {embeds: [embed]} );
         };

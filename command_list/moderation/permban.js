@@ -17,6 +17,7 @@ module.exports = {
     description: "Permanently bans a user from the guild.",
     userPermissions: ["BAN_MEMBERS"],
     execute (message, args) {
+        var randomColor = Math.floor(Math.random()*16777215).toString(16);
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
         const banUser = message.mentions.members.first();
@@ -33,7 +34,7 @@ module.exports = {
             .addField("Ban duration", "Permanent")
             .addField("Ban reason", banReason)
             .addField("Moderator", message.author.tag)
-            .setColor("ORANGE");
+            .setColor(randomColor);
 
         message.channel.send({embeds: [embed]});
             banUser.ban({reason: banReason})

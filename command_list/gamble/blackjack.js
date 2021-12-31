@@ -84,6 +84,8 @@ module.exports = {
     name: 'blackjack',
     description: 'Play against the computer in a game of blacjack.',
     execute(message, args) {
+        var randomColor = Math.floor(Math.random()*16777215).toString(16);
+        
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
         const username = message.member.nickname || message.author.username;
@@ -93,7 +95,7 @@ module.exports = {
         if (args[0] === 'rules') {
             const embed = new MessageEmbed()
             .setTitle("Rules of blackjack.")
-            .setColor("ORANGE")
+            .setColor(randomColor)
             .setDescription(
                 `Each participant attempts to beat the dealer by getting a count as close to 21 as possible, without going over 21.\nThe player to the left goes first and must decide whether to "stand" (not ask for another card) or "hit" (ask for another card in an attempt to get closer to a count of 21, or even hit 21 exactly). Thus, a player may stand on the two cards originally dealt to them, or they may ask the dealer for additional cards, one at a time, until deciding to stand on the total (if it is 21 or under), or goes "bust" (if it is over 21). In the latter case, the player loses and the dealer collects the bet wagered. The dealer then turns to the next player to their left and serves them in the same manner.\nWhen the dealer has served every player, the dealers face-down card is turned up. If the total is 17 or more, it must stand. If the total is 16 or under, they must take a card. The dealer must continue to take cards until the total is 17 or more, at which point the dealer must stand. If the dealer has an ace, and counting it as 11 would bring the total to 17 or more (but not over 21), the dealer must count the ace as 11 and stand. The dealer's decisions, then, are automatic on all plays, whereas the player always has the option of taking one or more cards.\nThe maximum bet for this gamemode is 25 million 💰's.`
             )
@@ -157,7 +159,7 @@ module.exports = {
         function getGameStateEmbed() {
             const embed = new MessageEmbed()
                 .setTitle("🃏Blackjack🃏")
-                .setColor("ORANGE");
+                .setColor(randomColor);
 
             for (const i in dealerCards) {
                 embed.addField(...getCardEmbedFieldArguments(dealerCards[i], 'The dealer', Number.parseInt(i) + 1));

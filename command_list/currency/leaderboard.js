@@ -4,10 +4,11 @@ module.exports = {
     name: 'leaderboard',
     description: "Displays the richest users on the leaderboard.",
     async execute (message, args) {
+            var randomColor = Math.floor(Math.random()*16777215).toString(16);
 
             const embed = new MessageEmbed()
             .setTitle("Top 10 Richest People Anywhere")
-            .setColor("ORANGE")
+            .setColor(randomColor)
 
             await (message.client.currency.sort((a, b) => b.balance - a.balance)
                 .filter(user => message.client.users.cache.has(user.user_id))

@@ -11,6 +11,7 @@ module.exports = {
     name: 'help',
     description: "What you're reading right now!",
     execute (message, args) {
+        var randomColor = Math.floor(Math.random()*16777215).toString(16);
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
         const botAvatarUrl = message.client.user.displayAvatarURL();
 
@@ -37,7 +38,7 @@ module.exports = {
             }
 
             return new MessageEmbed()
-                .setColor("ORANGE")
+                .setColor(randomColor)
                 .setThumbnail(botAvatarUrl)
                 .setTitle(formatCategoryName(category))
                 .setDescription(embedDescription);
@@ -57,7 +58,7 @@ module.exports = {
             }
 
             pages.unshift(new MessageEmbed()
-                           .setColor("ORANGE")
+                           .setColor(randomColor)
                            .setThumbnail(botAvatarUrl)
                            .setTitle("Categories")
                            .setDescription(mainEmbedDescription)
@@ -93,7 +94,7 @@ module.exports = {
                 }
 
                 const embed = new MessageEmbed()
-                    .setColor("ORANGE")
+                    .setColor(randomColor)
                     .setThumbnail(botAvatarUrl)
                     .setDescription(command.description)
                     .addField('Category', formatCategoryName(command.category));

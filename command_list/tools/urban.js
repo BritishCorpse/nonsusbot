@@ -8,6 +8,8 @@ module.exports = {
   name: ["urban", "ud"],
   description: "Searches Urban Dictionary for anything you'd like.",
   execute (message, args) {
+    var randomColor = Math.floor(Math.random()*16777215).toString(16);
+
     const options = {
       url: "https://mashape-community-urban-dictionary.p.rapidapi.com/define",
       headers: {
@@ -35,7 +37,7 @@ module.exports = {
           .setURL(definition.permalink)
           .setDescription(definition.definition + "\n\n**Example:**\n" + definition.example)
           .setFooter("By: " + definition.author)
-          .setColor("YELLOW")
+          .setColor(randomColor)
           .setThumbnail("https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/UD_logo-01.svg/1280px-UD_logo-01.svg.png");
 
         embeds.push(embed);

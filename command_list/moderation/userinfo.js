@@ -5,6 +5,8 @@ module.exports = {
     description: 'See information about a specified user.',
     userPermissions: ["MODERATE_MEMBERS"],
     execute(message, args) {
+        var randomColor = Math.floor(Math.random()*16777215).toString(16);
+        
         let user = message.mentions.users.first() || message.member.user
         const target = message.guild.members.cache.get(user.id)
         if(!target) {
@@ -15,7 +17,7 @@ module.exports = {
         else {
             const embed = new MessageEmbed()
             .setTitle(`Userinfo about ${target}`)
-            .setColor("ORANGE")
+            .setColor(randomColor)
             .addField(`${user.username} joined at:`, ` ${new Date(target.joinedTimestamp)}`, inline=true)
             .addField(`${user.username}'s account was created at:`, ` ${new Date(target.createdTimestamp)}`, inline=true)
             .addField(`${user.username}'s nickname is:`, ` ${target.nickname || 'None'}`, inline=true)

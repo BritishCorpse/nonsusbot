@@ -6,6 +6,8 @@ module.exports = {
     name: 'coinflip',
     description: 'Flip a coin!',
     execute(message, args) {
+        var randomColor = Math.floor(Math.random()*16777215).toString(16);
+
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
         // Check if the user has a casino membershio
@@ -30,7 +32,7 @@ module.exports = {
             const embed = new MessageEmbed()
             .setTitle("Coinflip")
             .setDescription(`The player calls either heads or tails, the computer then flips a coin. If the player is correct, they get ${userBet}💰's.`)
-            .setColor("ORANGE")
+            .setColor(randomColor)
             
             return message.channel.send({embeds: [embed]});
         }
@@ -59,7 +61,7 @@ module.exports = {
 
         const embed = new MessageEmbed()
         .setTitle("The coin has landed!")
-        .setColor("ORANGE")
+        .setColor(randomColor)
 
         function checkResult() {
             if (gameResult() === userChoice) {

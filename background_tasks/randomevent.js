@@ -2,6 +2,8 @@ module.exports = {
     name: 'randomevent',
     execute(client) {
         client.on("messageCreate", async message => {
+            var randomColor = Math.floor(Math.random()*16777215).toString(16);
+            
             if (message.author.bot) return;
 
             if (Math.random() < 0.002) {

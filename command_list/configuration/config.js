@@ -27,6 +27,8 @@ module.exports = {
     description: "Change bot settings for this server.",
     userPermissions: ["ADMINISTRATOR"],
     execute (message, args) {
+        var randomColor = Math.floor(Math.random()*16777215).toString(16);
+        
         if (args[0] === "set") {
             if (args[1] in defaultServerConfig) {
                 // special cases for each config option
@@ -87,7 +89,7 @@ module.exports = {
 
             const embed = new MessageEmbed()
                 .setTitle("Configs for " + message.guild.name)
-                .setColor("BLUE")
+                .setColor(randomColor)
                 .setDescription(descriptionString);
 
             message.channel.send({embeds: [embed]});

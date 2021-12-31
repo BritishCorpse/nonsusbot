@@ -6,6 +6,8 @@ module.exports = {
     name: 'inventory',
     description: "Shows your inventory, or someone else's.",
     async execute (message, args) {
+        var randomColor = Math.floor(Math.random()*16777215).toString(16);
+        
         const targetUser = message.mentions.users.first() || message.author;
 
         const items = await getUserItems(targetUser.id);
@@ -13,7 +15,7 @@ module.exports = {
         const embeds = [];
 
         function makeEmbed() {
-            return new MessageEmbed().setTitle(`${targetUser.user}'s inventory!`).setColor("ORANGE")
+            return new MessageEmbed().setTitle(`${targetUser.user}'s inventory!`).setColor(randomColor)
         }
 
         let embed;

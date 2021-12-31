@@ -7,7 +7,7 @@ function embedFromFoodData(foodData, index, maxIndex) {
   const embed = new MessageEmbed()
     .setTitle(foodData.label)
     .setThumbnail(foodData.image)
-    .setColor("GREEN")
+    .setColor(Math.floor(Math.random()*16777215).toString(16))
     .setAuthor("Page " + index + "/" + maxIndex);
 
   for (const value in foodData) {

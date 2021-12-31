@@ -6,6 +6,7 @@ module.exports = {
     name: 'dice',
     description: 'Play against the computer in a game of dice.',
     async execute(message, args){
+        var randomColor = Math.floor(Math.random()*16777215).toString(16);
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
         // Check if the user has a casino membershio
@@ -30,7 +31,7 @@ module.exports = {
             const embed = new MessageEmbed()
             .setTitle("Rules of dice.")
             .setDescription("The player and computer both roll a six sided die. Whichever party rolls a higher number on the die, wins. The maximum bet for this gamemode is 10 million 💰's.")
-            .setColor("ORANGE")
+            .setColor(randomColor)
             
             return message.channel.send({embeds: [embed]});
         }
@@ -41,7 +42,7 @@ module.exports = {
 
         const embed = new MessageEmbed()
             .setTitle("🎲A game of dice!🎲")
-            .setColor("ORANGE")
+            .setColor(randomColor)
             .addField("🎲The computer rolled:🎲", `${diceRollComputer}`)
             .addField("🎲You rolled:🎲", `${diceRollUser}`);
         
