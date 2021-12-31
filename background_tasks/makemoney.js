@@ -31,6 +31,7 @@ module.exports = {
             // Give the user 1 coin per message.
             message.client.currency.add(message.author.id, 1);
             
+            
         });
 	}		
 };

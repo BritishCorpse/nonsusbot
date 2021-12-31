@@ -13,7 +13,7 @@ module.exports = {
         const embeds = [];
 
         function makeEmbed() {
-            return new MessageEmbed().setTitle(`${targetUser}'s inventory!`).setColor("ORANGE")
+            return new MessageEmbed().setTitle(`${targetUser.user}'s inventory!`).setColor("ORANGE")
         }
 
         let embed;

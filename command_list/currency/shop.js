@@ -25,7 +25,7 @@ module.exports = {
                 embeds.push(embed);  
             }
                         
-            embed.addField(`${item.name}`, `${item.cost}`);
+            embed.addField(`${item.itemEmoji}${item.name}, ${item.itemDescription}`, `${item.cost}`);
         }
 
         paginateEmbeds(message.channel, message.author, embeds);

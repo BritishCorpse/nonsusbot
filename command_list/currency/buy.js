@@ -20,7 +20,7 @@ module.exports = {
             return message.channel.send(`You don't have enough currency, ${message.author.username}`);
         }
 
-        message.reply(`You bought ${item.name}.`);
+        message.reply(`You bought ${item.itemEmoji}${item.name}.`);
         const user = await Users.findOne({
             where: {
                 user_id: message.author.id

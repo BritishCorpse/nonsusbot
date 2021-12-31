@@ -4,7 +4,7 @@ module.exports = {
         client.on("messageCreate", async message => {
             if (message.author.bot) return;
 
-            if (Math.random() < 0.008) {
+            if (Math.random() < 0.002) {
 
                 function randomMoneyAmount() {
                     return Math.floor(Math.random() * 400)

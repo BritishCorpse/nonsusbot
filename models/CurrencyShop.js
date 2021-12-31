@@ -9,6 +9,14 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
+		itemDescription: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		},
+		itemEmoji: {
+			type: DataTypes.STRING,
+			allowNull: true,
+		}
 	}, {
 		timestamps: false,
 	});
