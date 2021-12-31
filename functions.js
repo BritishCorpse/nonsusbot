@@ -13,7 +13,7 @@ const descriptionFormats = {
     matches: (not, value) => `${not ? "does not match" : "matches"} \`\`${value}\`\``,
     matchesfully: (not, value) => `${not ? "does not match" : "matches"} fully \`\`${value}\`\``,
     //isuser: (not, value) => ``,
-    isuseringuild: (not, value) => `is ${not ? "not " : ""}a user in the guild`,
+    isuseridinguild: (not, value) => `is ${not ? "not " : ""}a user id in the guild`,
 };
 
 
@@ -235,7 +235,7 @@ function getValidationFunction(message, check, _value) {
                 return match !== null && match[0] === arg;
         },
         //isuser: arg => ,
-        isuseringuild: arg => {
+        isuseridinguild: arg => {
             let userId;
             if (arg.match(/^<@!(\d+)>$/) !== null)
                 userId = arg.slice(3, -1);

@@ -3,7 +3,11 @@ const { userHasItem } = require(`${__basedir}/functions`);
 
 module.exports = {
     name: 'vip',
-    description: "If member has a VIP pass in their inventory, gives them the vip_role_id, if the role is not set, the user will not get the role.",
+    description: "Become a VIP, if you have a VIP pass and VIP is available.",
+
+    usage: [
+    ],
+
     async execute(message, args){
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 

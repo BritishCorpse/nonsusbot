@@ -1,4 +1,5 @@
 const { MessageEmbed } = require("discord.js");
+const { createInfiniteCircularUsage } = require(`${__basedir}/functions`);
 
 
 const funnyReplies = [
@@ -17,6 +18,15 @@ module.exports = {
     name: 'tempban',
     description: "Temporarily bans a user from the guild, for a determined amount of days.",
     userPermissions: ["BAN_MEMBERS"],
+
+    usage: [
+        { tag: "user", checks: {isuseridinguild: null},
+            next: createInfiniteCircularUsage([
+                { tag: "reason", checks: {matches: {not: /[^\w?!.,;:'"\(\)\/]/}}
+            ])
+        }
+    ],
+
     execute (message, args) {
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 

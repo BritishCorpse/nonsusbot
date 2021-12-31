@@ -4,6 +4,11 @@ const { Message, MessageEmbed, Client, MessageActionRow } = require("discord.js"
 module.exports = {
     name: 'kiss',
     description: "Kiss whoever you'd like to.",
+
+    usage: [
+        { tag: "user", checks: {isuseridinguild: null}, example: "786301097953591326" }
+    ],
+
     async execute(message, args){
         images = [
             "https://c.tenor.com/F02Ep3b2jJgAAAAM/cute-kawai.gif",

@@ -7,7 +7,7 @@ module.exports = {
     description: "Hug whoever you'd want to.",
 
     usage: [
-        { tag: "user", checks: {isuseringuild: null}, example: "786301097953591326" }
+        { tag: "user", checks: {isuseridinguild: null}, example: "786301097953591326" }
     ],
 
     async execute(message, args){

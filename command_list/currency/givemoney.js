@@ -5,6 +5,11 @@ module.exports = {
     name: 'givemoney',
     description: "Adds coins to user (not everyone is viable for free coins), second argument is how much money it'll give.",
     developer: true,
+
+    usage: [
+        { tag: "amount", checks: {isinteger: null} }
+    ],
+
     execute (message, args) {
         let moneyAmount = Number.parseInt(args[0]);
 

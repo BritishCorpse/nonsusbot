@@ -6,6 +6,15 @@ const { userHasItem } = require(`${__basedir}/functions`);
 module.exports = {
     name: 'numbergame',
     description: 'Play a game of guess the number!',
+
+    usage: [
+        { tag: "bet", checks: {isinteger: null},
+            next: [
+                { tag: "lives", checks: {isinteger: null} }
+            ]
+        }
+    ],
+
     async execute(message, args) {
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 

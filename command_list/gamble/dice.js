@@ -5,6 +5,11 @@ const { userHasItem } = require(`${__basedir}/functions`);
 module.exports = {
     name: 'dice',
     description: 'Play against the computer in a game of dice.',
+
+    usage: [
+        { tag: "bet", checks: {isuseridinguild: null} }
+    ],
+
     async execute(message, args){
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 

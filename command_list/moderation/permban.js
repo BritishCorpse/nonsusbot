@@ -16,6 +16,15 @@ module.exports = {
     name: 'permban',
     description: "Permanently bans a user from the guild.",
     userPermissions: ["BAN_MEMBERS"],
+
+    usage: [
+        { tag: "user", checks: {isuseridinguild: null},
+            next: createInfiniteCircularUsage([
+                { tag: "reason", checks: {matches: {not: /[^\w?!.,;:'"\(\)\/]/}}
+            ])
+        }
+    ],
+
     execute (message, args) {
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 

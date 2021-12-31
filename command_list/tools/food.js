@@ -1,6 +1,7 @@
 const request = require("request");
 const { x_rapidapi_key } = require(`${__basedir}/config.json`);
 const { MessageEmbed } = require("discord.js");
+const { createInfiniteCircularUsage } = require(`${__basedir}/functions`);
 
 
 function embedFromFoodData(foodData, index, maxIndex) {
@@ -29,6 +30,11 @@ function embedFromFoodData(foodData, index, maxIndex) {
 module.exports = {
     name: "food",
     description: "Searches for nutritional values for food items, then sends it in the channel.",
+
+    usage: createInfiniteCircularUsage([
+        { tag: "food", checks: {} }
+    ]),
+
     execute (message, args) {
         const options = {
             url: "https://edamam-food-and-grocery-database.p.rapidapi.com/parser",

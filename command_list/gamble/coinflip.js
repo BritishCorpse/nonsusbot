@@ -2,9 +2,20 @@ const { MessageEmbed } = require("discord.js");
 
 const { userHasItem } = require(`${__basedir}/functions`);
 
+
 module.exports = {
     name: 'coinflip',
     description: 'Flip a coin!',
+
+    usage: [
+        { tag: "bet", checks: {isinteger: null},
+            next: [
+                { tag: "prediction", checks: {isin: ["heads, tails"]} },
+                { tag: "nothing", checks: {isempty: null} }
+            ]
+        }
+    ],
+
     execute(message, args) {
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 

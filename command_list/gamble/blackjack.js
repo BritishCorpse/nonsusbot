@@ -83,6 +83,15 @@ function getCardEmbedFieldArguments(card, player, cardNumber) {
 module.exports = {
     name: 'blackjack',
     description: 'Play against the computer in a game of blacjack.',
+
+    usage: [
+        { tag: "bet", checks: {isinteger: null},
+            next: [
+                { tag: "bet", checks: {isinteger: null} }
+            ]
+        }
+    ],
+
     execute(message, args) {
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 

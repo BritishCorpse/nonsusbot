@@ -5,6 +5,10 @@ const { paginateEmbeds } = require(`${__basedir}/functions`);
 module.exports = {
     name: 'shop',
     description: "Displays the shop.",
+    
+    usage: [
+    ],
+
     async execute (message, args) {
         
         const embeds = [];

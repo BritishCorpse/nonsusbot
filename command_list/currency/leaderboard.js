@@ -1,6 +1,10 @@
 module.exports = {
     name: 'leaderboard',
     description: "Displays the richest users on the leaderboard.",
+    
+    usage: [
+    ],
+
     execute (message, args) {
         message.channel.send(
             '```'

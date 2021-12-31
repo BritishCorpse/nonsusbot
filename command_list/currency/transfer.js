@@ -4,6 +4,15 @@ const { Users } = require(`${__basedir}/db_objects`);
 module.exports = {
     name: 'transfer',
     description: "Transfer coins from your account to someone else.",
+
+    usage: [
+        { tag: "user", checks: {isuseringuild: null},
+            next: [
+                { tag: "amount", checks: {isinteger: null} }
+            ]
+        }
+    ],
+
     execute (message, args) {
         const currentAmount = message.client.currency.getBalance(message.author.id);
         //const transferAmount = commandArgs.split(/ +/).find(arg => !/<@!?\d+>/.test(arg));

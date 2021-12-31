@@ -10,7 +10,19 @@ function plural(number) {
 
 module.exports = {
     name: ['reminder', 'remind'],
-    description: "Remind you about something. Usage: <time> <message>",
+    description: "Reminds you about something. Usage: <time> <message>",
+
+    usage: [
+        { tag: "time",
+            checks: {
+                matchesfully: /(?:0*(\d+)d)?(?:0*((?:\d)|(?:1\d)|(?:2[0-3]))h)?(?:0*((?:\d)|(?:[1-5]\d))m)?(?:0*((?:\d)|(?:[1-5]\d))s)?/
+            },
+            next: [
+                { tag: "message" }
+            ]
+        }
+    ],
+
     execute (message, args) {
         const timeString = args[0];
         const reminderMessage = args.slice(1).join(' ');

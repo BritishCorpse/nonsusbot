@@ -1,10 +1,16 @@
 const { Op } = require('sequelize');
 const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
+const { createInfiniteCircularUsage } = require(`${__basedir}/functions`);
 
 
 module.exports = {
     name: 'buy',
     description: "Buys an item from the shop.",
+
+    usage: createInfiniteCircularUsage([
+        { tag: "item", {matches: {not: /[^\w?!.,;:'"\(\)]/}} }
+    ]),
+
     async execute (message, args) {
         const item = await CurrencyShop.findOne({
             where: {

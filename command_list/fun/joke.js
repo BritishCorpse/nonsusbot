@@ -8,38 +8,41 @@ const jokes = redditjokes.concat(stupidstuff, wocka);
 const offensive = [];
 
 module.exports = {
-  name: 'joke',
-  description: "Finds a joke from the database, then sends it in the channel.",
-  execute (message, args) {
-    //let joke_length = 0;
-    let content = "";
-    let good_joke = false;
+    name: 'joke',
+    description: "Finds a joke from the database, then sends it in the channel.",
 
-    do {
-      index = Math.floor(Math.random() * jokes.length);
-      content = (jokes[index].body + jokes[index].title)
-                  .replace(/(\s){2,}/g, "$1"); // remove duplicate spaces and new lines
-      
-      if (content.length <= 2048 && content.length > 0 && content !== undefined && content !== "") {
-        good_joke = true;
-      }
+    usage: [
+    ],
 
-      for (const word of offensive) {
-        if (content.toLowerCase().includes(word)) {
-          good_joke = false;
-        }
-      }
+    execute (message, args) {
+        //let joke_length = 0;
+        let content = "";
+        let good_joke = false;
 
-    } while (!good_joke); // to stop it from giving jokes that are too long
+        do {
+            index = Math.floor(Math.random() * jokes.length);
+            content = (jokes[index].body + jokes[index].title).replace(/(\s){2,}/g, "$1"); // remove duplicate spaces and new lines
+          
+            if (content.length <= 2048 && content.length > 0 && content !== undefined && content !== "") {
+                good_joke = true;
+            }
 
-    const embed = new MessageEmbed()
-      .setTitle(jokes[index].title)
-      .setDescription(jokes[index].body)
-      .setColor("ORANGE");
+            for (const word of offensive) {
+                if (content.toLowerCase().includes(word)) {
+                    good_joke = false;
+                }
+            }
 
-    message.channel.send({embeds: [embed]}) .then(sentMessage => {
-      sentMessage.react("👍");
-      sentMessage.react("👎");
-    });
-  }
+        } while (!good_joke); // to stop it from giving jokes that are too long
+
+        const embed = new MessageEmbed()
+            .setTitle(jokes[index].title)
+            .setDescription(jokes[index].body)
+            .setColor("ORANGE");
+
+        message.channel.send({embeds: [embed]}) .then(sentMessage => {
+            sentMessage.react("👍");
+            sentMessage.react("👎");
+        });
+    }
 }

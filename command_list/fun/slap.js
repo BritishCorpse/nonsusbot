@@ -4,6 +4,11 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
     name: 'slap',
     description: "Slap whoever you'd like to.",
+
+    usage: [
+        { tag: "user", checks: {isuseridinguild: null}, example: "786301097953591326" }
+    ],
+
     execute(message, args){
         images = [
             "https://c.tenor.com/Ws6Dm1ZW_vMAAAAM/girl-slap.gif",

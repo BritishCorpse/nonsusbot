@@ -4,6 +4,11 @@ module.exports = {
     name: 'userinfo',
     description: 'See information about a specified user.',
     userPermissions: ["MODERATE_MEMBERS"],
+
+    usage: [
+        { tag: "user", checks: {isuseridinguild: null} }
+    ],
+
     execute(message, args) {
         let user = message.mentions.users.first() || message.member.user
         const target = message.guild.members.cache.get(user.id)

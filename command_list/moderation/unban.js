@@ -1,7 +1,19 @@
+const { createInfiniteCircularUsage } = require(`${__basedir}/functions`);
+
+
 module.exports = {
     name: 'unban',
     description: 'Unbans a user from the guild using userID.',
     userPermissions: ["BAN_MEMBERS"],
+
+    usage: [
+        { tag: "user", checks: {isuseridinguild: null},
+            next: createInfiniteCircularUsage([
+                { tag: "reason", checks: {matches: {not: /[^\w?!.,;:'"\(\)\/]/}}
+            ])
+        }
+    ],
+
     execute(message, args) {
         let unbanUser = args[0];
         let unbanReasons = args.slice(1);
