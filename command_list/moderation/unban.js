@@ -1,7 +1,21 @@
+const { circularUsageOption } = require(`${__basedir}/functions`);
+
+
 module.exports = {
     name: 'unban',
     description: 'Unbans a user from the guild using userID.',
     userPermissions: ["BAN_MEMBERS"],
+
+    usage: [
+        { tag: "user", checks: {isbanneduseridinguild: null},
+            next: [
+                circularUsageOption(
+                    { tag: "reason", checks: {matches: {not: /[^\w?!.,;:'"\(\)\/]/}, isempty: {not: null}} }
+                )
+            ]
+        }
+    ],
+
     execute(message, args) {
         var randomColor = Math.floor(Math.random()*16777215).toString(16);
         

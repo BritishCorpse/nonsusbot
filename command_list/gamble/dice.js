@@ -5,6 +5,11 @@ const { userHasItem } = require(`${__basedir}/functions`);
 module.exports = {
     name: 'dice',
     description: 'Play against the computer in a game of dice.',
+
+    usage: [
+        { tag: "bet", checks: {isinteger: null} }
+    ],
+
     async execute(message, args){
         var randomColor = Math.floor(Math.random()*16777215).toString(16);
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;

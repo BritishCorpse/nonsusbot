@@ -5,6 +5,10 @@ const { paginateEmbeds } = require(`${__basedir}/functions`);
 module.exports = {
     name: 'shop',
     description: "Displays the shop.",
+    
+    usage: [
+    ],
+
     async execute (message, args) {
         var randomColor = Math.floor(Math.random()*16777215).toString(16);
         

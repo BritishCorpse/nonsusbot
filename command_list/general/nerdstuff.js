@@ -4,6 +4,10 @@ const { paginateEmbeds } = require(`${__basedir}/functions`);
 module.exports = {
     name: 'nerdstuff',
     description: 'Full changelog.',
+
+    usage: [
+    ],
+
     execute(message, args) {
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 

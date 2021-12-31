@@ -3,6 +3,10 @@ const { MessageEmbed } = require("discord.js")
 module.exports = {
     name: 'leaderboard',
     description: "Displays the richest users on the leaderboard.",
+
+    usage: [
+    ],
+
     async execute (message, args) {
             var randomColor = Math.floor(Math.random()*16777215).toString(16);
 

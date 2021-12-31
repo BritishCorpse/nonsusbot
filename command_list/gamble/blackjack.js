@@ -83,6 +83,15 @@ function getCardEmbedFieldArguments(card, player, cardNumber) {
 module.exports = {
     name: 'blackjack',
     description: 'Play against the computer in a game of blacjack.',
+
+    usage: [
+        { tag: "bet", checks: {isinteger: null},
+            next: [
+                { tag: "lives", checks: {isinteger: null} }
+            ]
+        }
+    ],
+
     execute(message, args) {
         var randomColor = Math.floor(Math.random()*16777215).toString(16);
         

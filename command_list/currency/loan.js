@@ -7,6 +7,9 @@
 module.exports = {
     name: 'loan',
     description: 'Get a loan',
+
+    usage: [],
+
     execute (message, args) {
         
     }

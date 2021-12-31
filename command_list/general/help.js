@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const { paginateEmbeds } = require(`${__basedir}/functions`);
+const { getCommandCategories, paginateEmbeds } = require(`${__basedir}/functions`);
 
 
 function formatCategoryName(category) {
@@ -10,6 +10,39 @@ function formatCategoryName(category) {
 module.exports = {
     name: 'help',
     description: "What you're reading right now!",
+
+    usage: [
+        { tag: "nothing", checks: {isempty: null} },
+        { tag: "category",
+            checks: {
+                passes: {
+                    func: arg => {
+                        if (!arg) return false;
+                        return getCommandCategories().includes(arg.toLowerCase());
+                    },
+                    description: () => `is a category`
+                }
+            }
+        },
+        { tag: "command",
+            checks: {
+                passes: {
+                    func: (arg, message) => {
+                        return message.client.commands.find(c => {
+                            if (typeof c.name === "string") {
+                                if (arg === c.name) return true;
+                            } else if (typeof c.name === "object") {
+                                if (c.name.includes(arg)) return true;
+                            }
+                            return false;
+                        }) !== undefined;
+                    },
+                    description: () => `is a command`
+                }
+            }
+        }
+    ],
+
     execute (message, args) {
         var randomColor = Math.floor(Math.random()*16777215).toString(16);
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
@@ -102,9 +135,8 @@ module.exports = {
                 if (command.userPermissions !== undefined)
                     embed.addField('Permissions required', '`' + command.userPermissions.join('`, `') + '`');
 
-                if (command.developer === true) {
+                if (command.developer === true)
                     embed.setFooter('This command is only available to developers.');
-                }
 
                 // Format embed title
                 if (typeof command.name === "string") {

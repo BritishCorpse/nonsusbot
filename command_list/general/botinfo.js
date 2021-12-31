@@ -5,6 +5,10 @@ const { developer_discord_user_ids, artist_discord_user_ids } = require(`${__bas
 module.exports = {
     name: 'botinfo',
     description: "Shows information on the bot.",
+
+    usage: [
+    ],
+
     execute (message, args) {
       var randomColor = Math.floor(Math.random()*16777215).toString(16);
 

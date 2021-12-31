@@ -17,13 +17,16 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const request = require("request");
 const levenshtein = require("js-levenshtein");
-//const Sequelize = require('sequelize');
-//const { Op } = require('sequelize');
 
 const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
 
 // for common functions
-const { saveServerConfig } = require(`${__basedir}/functions`);
+const {
+    saveServerConfig,
+    getCommandCategories,
+    doCommand,
+
+} = require(`${__basedir}/functions`);
 
 const config = require(`${__basedir}/config.json`);
 const defaultServerConfig = require(`${__basedir}/default_server_config.json`);
@@ -48,7 +51,7 @@ client.serverConfig = new Discord.Collection();
 client.currency = new Discord.Collection();
 
 // Load commands from the command_list folder
-const categoryFolders = fs.readdirSync("./command_list");
+const categoryFolders = getCommandCategories();
 for (const category of categoryFolders) {
     const commandFiles = fs.readdirSync(`${__basedir}/command_list/${category}`)
         .filter(file => file.endsWith(".js"));
@@ -95,26 +98,6 @@ function getCommandObjectByName(commandName) {
     });
 
     return returnValue;
-}
-
-
-function doCommand(commandObj, message, args) {
-    try {
-        commandObj.execute(message, args);
-    } catch (error) {
-        console.error(error);
-        message.reply("There was an error trying to execute that command!");
-    }
-}
-
-
-function collectionToJSON(collection) {
-    // turns a discord collection to a JSON {key: value} dictionary
-    let result = {};
-    for (const [key, value] of collection) {
-        result[key] = value;
-    }
-    return result;
 }
 
 
@@ -309,5 +292,11 @@ client.on("messageCreate", async message => {
     }
     
     // If all the checks passed, do the command
-    doCommand(commandObject, message, args);
+    try {
+        doCommand(commandObject, message, args);
+    } catch (error) {
+        console.error(error.toString());
+        console.trace();
+        message.reply("There was an error trying to execute that command!");
+    }
 });

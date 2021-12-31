@@ -2,9 +2,19 @@ const { MessageEmbed } = require("discord.js");
 
 const { userHasItem } = require(`${__basedir}/functions`);
 
+
 module.exports = {
     name: 'coinflip',
     description: 'Flip a coin!',
+
+    usage: [
+        { tag: "bet", checks: {isinteger: null},
+            next: [
+                { tag: "prediction", checks: {isin: ["heads", "tails"]} }
+            ]
+        }
+    ],
+
     execute(message, args) {
         var randomColor = Math.floor(Math.random()*16777215).toString(16);
 
