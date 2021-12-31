@@ -89,7 +89,8 @@ module.exports = {
             next: [
                 { tag: "lives", checks: {isinteger: null} }
             ]
-        }
+        },
+        { tag: "rules", checks: {is: "rules"} }
     ],
 
     execute(message, args) {
