@@ -1,7 +1,7 @@
 const request = require("request");
 const { MessageEmbed } = require("discord.js");
 const { parse } = require("node-html-parser");
-const { paginateEmbeds, createInfiniteCircularUsage } = require(`${__basedir}/functions`);
+const { paginateEmbeds, circularUsageOption } = require(`${__basedir}/functions`);
 
 //const max_number_of_verses = 3;
 
@@ -9,9 +9,11 @@ module.exports = {
     name: "bible",
     description: "Get bible verses. Topic is the first argument.",
 
-    usage: createInfiniteCircularUsage([
-        { tag: "topic", checks: {matches: {not: /[^a-zA-Z]/}, isempty: {not: null}} }
-    ]),
+    usage: [
+        circularUsageOption(
+            { tag: "topic", checks: {matches: {not: /[^a-zA-Z]/}, isempty: {not: null}} }
+        )
+    ],
 
     execute (message, args) {
         request("https://www.openbible.info/topics/" + args.join("_"), (error, response, body) => {

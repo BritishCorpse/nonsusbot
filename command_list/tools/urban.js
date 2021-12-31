@@ -1,7 +1,7 @@
 const request = require("request");
 const { MessageEmbed } = new require("discord.js");
 const { x_rapidapi_key } = require(`${__basedir}/config.json`);
-const { createInfiniteCircularUsage } = require(`${__basedir}/functions`);
+const { circularUsageOption } = require(`${__basedir}/functions`);
 
 
 const max_number_of_definitions = 2;
@@ -10,9 +10,15 @@ module.exports = {
     name: ["urban", "ud"],
     description: "Searches Urban Dictionary for anything you'd like.",
 
-    usage: createInfiniteCircularUsage([
-        { tag: "query", checks: {isempty: {not: null}} }
-    ]),
+    usage: [
+        { tag: "query", checks: {isempty: {not: null}},
+            next: [
+                circularUsageOption(
+                    { tag: "query" } // repeated because only the first word has to not be empty
+                )
+            ]
+        }
+    ],
 
     execute (message, args) {
         const options = {

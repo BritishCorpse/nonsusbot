@@ -1,14 +1,16 @@
 const request = require("request");
-const { createInfiniteCircularUsage } = require(`${__basedir}/functions`);
+const { circularUsageOption } = require(`${__basedir}/functions`);
 
 
 module.exports = {
     name: "chat",
     description: "Talk with an AI!",
 
-    usage: createInfiniteCircularUsage([
-        { tag: "message", checks: {matches: {not: /[^\w?!.,;:'"\(\)\/]/}, isempty: {not: null}} }
-    ]),
+    usage: [
+        circularUsageOption(
+            { tag: "message", checks: {matches: {not: /[^\w?!.,;:'"\(\)\/]/}, isempty: {not: null}} }
+        )
+    ],
 
     execute (message, args) {
         if (/@/m.test(args.join(" "))) {

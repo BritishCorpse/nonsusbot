@@ -1,15 +1,21 @@
 const request = require("request");
 const { x_rapidapi_key } = require(`${__basedir}/config.json`);
-const { createInfiniteCircularUsage } = require(`${__basedir}/functions`);
+const { circularUsageOption } = require(`${__basedir}/functions`);
 
 
 module.exports = {
     name: ["youtube", "yt"],
     description: "Searches for videos on youtube.com then sends the link in the channel.",
 
-    usage: createInfiniteCircularUsage([
-        { tag: "query", checks: {isempty: {not: null}} }
-    ]),
+    usage: [
+        { tag: "query", checks: {isempty: {not: null}},
+            next: [
+                circularUsageOption(
+                    { tag: "query", checks: {} } // repeated because only the first word should not be empty
+                )
+            ]
+        }
+    ],
 
     execute (message, args) {
         const options = {
@@ -32,7 +38,10 @@ module.exports = {
         request(options, (error, response, body) => {
             parsed_body = JSON.parse(body);
 
-            message.channel.send("https://youtu.be/" + parsed_body.items[0].id.videoId);
+            if (parsed_body.items && parsed_body.items[0])
+                message.channel.send("https://youtu.be/" + parsed_body.items[0].id.videoId);
+            else
+                message.channel.send("No YouTube video was found.");
         });
     }
 }

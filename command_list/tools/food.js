@@ -1,7 +1,7 @@
 const request = require("request");
 const { x_rapidapi_key } = require(`${__basedir}/config.json`);
 const { MessageEmbed } = require("discord.js");
-const { createInfiniteCircularUsage } = require(`${__basedir}/functions`);
+const { circularUsageOption } = require(`${__basedir}/functions`);
 
 
 function embedFromFoodData(foodData, index, maxIndex) {
@@ -31,9 +31,11 @@ module.exports = {
     name: "food",
     description: "Searches for nutritional values for food items, then sends it in the channel.",
 
-    usage: createInfiniteCircularUsage([
-        { tag: "food", checks: {isempty: {not: null}} }
-    ]),
+    usage: [
+        circularUsageOption(
+            { tag: "food", checks: {isempty: {not: null}} }
+        )
+    ],
 
     execute (message, args) {
         const options = {

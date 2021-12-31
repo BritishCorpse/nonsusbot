@@ -1,4 +1,4 @@
-const { createInfiniteCircularUsage } = require(`${__basedir}/functions`);
+const { circularUsageOption } = require(`${__basedir}/functions`);
 
 
 module.exports = {
@@ -8,9 +8,11 @@ module.exports = {
 
     usage: [
         { tag: "user", checks: {isbanneduseridinguild: null},
-            next: createInfiniteCircularUsage([
-                { tag: "reason", checks: {matches: {not: /[^\w?!.,;:'"\(\)\/]/}, isempty: {not: null}} }
-            ])
+            next: [
+                circularUsageOption(
+                    { tag: "reason", checks: {matches: {not: /[^\w?!.,;:'"\(\)\/]/}, isempty: {not: null}} }
+                )
+            ]
         }
     ],
 

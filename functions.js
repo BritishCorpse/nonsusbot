@@ -147,6 +147,16 @@ async function paginateEmbeds(channel, allowedUser, embeds, messageToEdit=null, 
 }
 
 
+function circularUsageOption(option) {
+    if (option.hasOwnProperty("next"))
+        option.next.push(option)
+    else
+        option.next = [option];
+    option.circular = true;
+    return option;
+}
+
+
 function createInfiniteCircularUsage(usage) {
     // gets the usage for infinite arguments
     usage[0].next = usage;
@@ -400,4 +410,5 @@ module.exports = {
     checkUsage,
     doCommand,
     createInfiniteCircularUsage,
+    circularUsageOption,
 }

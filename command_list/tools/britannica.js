@@ -1,6 +1,6 @@
 const request = require("request");
 const { parse } = require("node-html-parser");
-const { createInfiniteCircularUsage } = require(`${__basedir}/functions`);
+const { circularUsageOption } = require(`${__basedir}/functions`);
 
 const max_number_of_articles = 1;
 
@@ -8,9 +8,11 @@ module.exports = {
     name: "britannica",
     description: "Searches articles on Britannica.",
 
-    usage: createInfiniteCircularUsage([
-        { tag: "query", checks: {isempty: {not: null}} }
-    ]),
+    usage: [
+        circularUsageOption(
+            { tag: "query", checks: {isempty: {not: null}} }
+        )
+    ],
 
     execute (message, args) {
         request("https://www.britannica.com/search?query=test" + args.join(" "), (error, response, body) => {

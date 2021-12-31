@@ -1,6 +1,6 @@
 const request = require("request");
 const { x_rapidapi_key } = require(`${__basedir}/config.json`);
-const { createInfiniteCircularUsage } = require(`${__basedir}/functions`);
+const { circularUsageOption } = require(`${__basedir}/functions`);
 
 
 const max_number_of_results = 1;
@@ -9,10 +9,12 @@ module.exports = {
     name: "population",
     description: "Finds the population of a country, then sends it in the channel.",
 
-    usage: createInfiniteCircularUsage([
-        { tag: "country", checks: {matches: {not: /[^a-zA-Z'-]/}, isempty: {not: null}} }, // only this one is made infinite
+    usage: [
+        circularUsageOption(
+            { tag: "country", checks: {matches: {not: /[^a-zA-Z'-]/}, isempty: {not: null}} }
+        ),
         { tag: "nothing", checks: {isempty: null} }
-    ]),
+    ],
 
     execute (message, args) {
         let apiURL;

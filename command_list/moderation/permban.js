@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const { createInfiniteCircularUsage } = require(`${__basedir}/functions`);
+const { circularUsageOption } = require(`${__basedir}/functions`);
 
 
 const funnyReplies = [
@@ -20,9 +20,11 @@ module.exports = {
 
     usage: [
         { tag: "user", checks: {isuseridinguild: null},
-            next: createInfiniteCircularUsage([
-                { tag: "reason", checks: {matches: {not: /[^\w?!.,;:'"\(\)\/]/}, isempty: {not: null}} }
-            ])
+            next: [
+                circularUsageOption(
+                    { tag: "reason", checks: {matches: {not: /[^\w?!.,;:'"\(\)\/]/}, isempty: {not: null}} }
+                )
+            ]
         }
     ],
 

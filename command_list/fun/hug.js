@@ -1,5 +1,4 @@
 const { MessageEmbed } = require('discord.js');
-const { createInfiniteCircularUsage } = require(`${__basedir}/functions`);
 
 
 module.exports = {
