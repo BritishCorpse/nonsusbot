@@ -1,6 +1,8 @@
 # Graveyard
 Discord bot
 
+{:toc}
+
 ## Running
 
 Preferred node version is 16.x, 17.x.
