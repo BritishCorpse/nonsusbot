@@ -74,7 +74,8 @@ beforeAll(() => {
 
     client.promptCommand = (channel, command, timeout) => {
         // get the newest prefix
-        const prefix = require('../server_config.json')[channel.guild.id].prefix;
+        //const prefix = require('../server_config.json')[channel.guild.id].prefix;
+        const prefix = "test!"; // use special testing prefix
 
         return client.prompt(channel, prefix + command, timeout);
     };
@@ -116,14 +117,14 @@ beforeAll(() => {
 // Delete the test channel
 afterAll(() => {
     return new Promise(async (resolve, reject) => {
-        //await testChannel.delete("Test complete");
+        await testChannel.delete("Test complete");
         mainBotProcess.kill();
         resolve();
     });
 });
 
 // Tests
-describe("mention", () => {
+/*describe("mention", () => {
     describe("without extra text", () => {
         let response;
         beforeAll(async () => {
@@ -136,12 +137,12 @@ describe("mention", () => {
         });
         
         it("has the prefix in content", () => {
-            const prefix = require('../server_config.json')[testChannel.guild.id].prefix;
+            const realPrefix = require('../server_config.json')[testChannel.guild.id].prefix;
             expect(response.content)
-            .toInclude(prefix);
+            .toInclude(realPrefix);
         });
     });
-});
+});*/
 
 const categories = fs.readdirSync("./command_list");
 const commands = [];

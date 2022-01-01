@@ -120,10 +120,11 @@ client.on("guildCreate", addNewGuildServerConfigs);
 
 
 // start the background tasks once
-client.backgroundTasks.forEach(backgroundTask => {
-    backgroundTask.execute(client);
-});
-
+if (!testing) {
+    client.backgroundTasks.forEach(backgroundTask => {
+        backgroundTask.execute(client);
+    });
+}
 
 Reflect.defineProperty(client.currency, 'add', {
     /* eslint-disable-next-line func-name-matching */
@@ -193,7 +194,11 @@ client.on("messageCreate", async message => {
     const date = new Date(message.createdTimestamp);
     console.log(`${date.toGMTString()} | ${message.guild.name} | #${message.channel.name} | ${message.author.tag}: ${message.content} ${message.type}`);
 
-    const prefix = client.serverConfig.get(message.guild.id).prefix;
+    let prefix;
+    if (testing)
+        prefix = "test!"; // this is normally an invalid prefix
+    else
+        prefix = client.serverConfig.get(message.guild.id).prefix;
 
     // Don't do commands if they come from a bot, except for the testing bot (all 3 lines required)
     if (!message.content.startsWith(prefix)) return;
