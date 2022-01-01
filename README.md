@@ -1,26 +1,25 @@
 # Graveyard
-Discord bot
+A general purpose Discord bot.
 
 Table of Contents
 =================
 
-* [Graveyard](#graveyard)
-   * [Running](#running)
-   * [Configuration files](#configuration-files)
-      * [config.json](#configjson)
-      * [server_config.json and default_server_config.json](#server_configjson-and-default_server_configjson)
-      * [development_config.json](#development_configjson)
-      * [sqlite database](#sqlite-database)
-      * [jest.config.js](#jestconfigjs)
-      * [ecosystem.config.js](#ecosystemconfigjs)
-   * [Making new commands](#making-new-commands)
-      * [Files](#files)
-      * [Properties](#properties)
-      * [Usage](#usage)
-         * [Option](#option)
-            * [Checks](#checks)
-               * [Passes](#passes)
-               * [Not](#not)
+* [Running](#running)
+* [Configuration files](#configuration-files)
+  * [config.json](#configjson)
+  * [server_config.json and default_server_config.json](#server_configjson-and-default_server_configjson)
+  * [development_config.json](#development_configjson)
+  * [sqlite database](#sqlite-database)
+  * [jest.config.js](#jestconfigjs)
+  * [ecosystem.config.js](#ecosystemconfigjs)
+* [Making new commands](#making-new-commands)
+  * [Files](#files)
+  * [Properties](#properties)
+  * [Usage](#usage)
+     * [Option](#option)
+        * [Checks](#checks)
+           * [Passes](#passes)
+           * [Not](#not)
 
 ## Running
 
