@@ -242,7 +242,7 @@ It will take an option, and add append an option referencing itself to the [Arra
 It will also set the `circular` property to `true`.
 
 | ARGUMENT | TYPE | OPTIONAL | DESCRIPTION |
-| :-: | :-: | :-: |
+| :-: | :-: | :-: | :-: |
 | option | [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) | no | The option to be made infinite. |
 
 Returns: [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).
