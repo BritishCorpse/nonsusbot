@@ -6,10 +6,10 @@ const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
 
 
 const descriptionFormats = {
-    isempty: not => `is ${not ? "not " : ""}empty`,
+    isempty: (not, value) => `is ${not ? "not " : ""}empty`,
     is: (not, value) => `is ${not ? "not " : ""}\`${value}\``,
     isin: (not, value) => `is ${not ? "not " : ""}one of \`${value.join(", ")}\``,
-    isinteger: not => `is ${not ? "not " : ""}an integer`,
+    isinteger: (not, value) => `is ${not ? "not " : ""}an integer`,
     matches: (not, value) => `${not ? "does not match" : "matches"} \`\`${value}\`\``,
     matchesfully: (not, value) => `${not ? "does not match" : "matches"} fully \`\`${value}\`\``,
     //isuserid: (not, value) => `is ${not ? "not " : ""}a user`,
