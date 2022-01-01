@@ -372,24 +372,6 @@ function doCommand(commandObj, message, args) {
         console.trace();
         process.exit(1);
     });
-
-    /*try {
-    } catch (error) {
-        console.error(error.toString());
-        message.reply("There was an error trying to execute that command!");
-    }*/
-
-    /*if (pass !== true) {
-        const [usage, depth] = pass;
-        sendUsage(message, commandObj.usage, usage, args[depth]);
-    } else {
-        try {
-            commandObj.execute(message, args);
-        } catch (error) {
-            console.error(error);
-            message.reply("There was an error trying to execute that command!");
-        }
-    }*/
 }
 
 

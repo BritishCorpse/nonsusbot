@@ -12,7 +12,6 @@ module.exports = {
 	name: "makemoney",
 	execute (client) {
         client.on("messageCreate", message => {
-            console.debug("makemoney started");
             const randomColor = Math.floor(Math.random()*16777215).toString(16);
 
             if (message.author.bot && !testing) return;
