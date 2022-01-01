@@ -123,9 +123,10 @@ If multiple options pass, the `CommandUsageError` error will be thrown.
 <details><summary>Example</summary>
 
 ```js
-module.exports = {
-  
-}
+[
+    { tag: "something", checks: {isempty: {not: null}} },  // passes if an argument was given
+    { tag: "nothing", checks: {isempty: null} },           // passes if an argument was not given
+]
 ```
 
 </details>
