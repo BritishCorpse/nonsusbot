@@ -9,7 +9,7 @@ Table of Contents
   * [config.json](#configjson)
   * [server_config.json and default_server_config.json](#server_configjson-and-default_server_configjson)
   * [development_config.json](#development_configjson)
-  * [sqlite database](#sqlite-database)
+  * [database.sqlite](#sqlite-database)
   * [jest.config.js](#jestconfigjs)
   * [ecosystem.config.js](#ecosystemconfigjs)
 * [Making new commands](#making-new-commands)
@@ -56,7 +56,7 @@ This is for server wide configurations (prefixes, etc.).
 
 This is for development options (discord development servers, discord developer users, testing bot configs, etc.).
 
-### sqlite database
+### database.sqlite
 
 This is for the currency system.
 
