@@ -42,7 +42,8 @@ const client = new Discord.Client({
         Discord.Intents.FLAGS.DIRECT_MESSAGES,
         Discord.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
         Discord.Intents.FLAGS.GUILD_MEMBERS,
-    ]
+    ],
+    allowedMentions: {parse: []} // make mentions not ping people
 });
 
 client.commands = new Discord.Collection();

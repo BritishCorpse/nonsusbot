@@ -19,10 +19,10 @@ module.exports = {
                 matchesfully: /(?:0*([1-7])d)?(?:0*((?:\d)|(?:1\d)|(?:2[0-3]))h)?(?:0*((?:\d)|(?:[1-5]\d))m)?(?:0*((?:\d)|(?:[1-5]\d))s)?/
             },
             next: [
-                { tag: "message", checks: {isuseridinguild: {not: null}, isempty: {not: null}},
+                { tag: "message", checks: {isempty: {not: null}},
                     next: [
                         circularUsageOption(
-                            { tag: "message", checks: {isuseridinguild: {not: null}} } // this is repeated because only the first one has to exist (one word minimum)
+                            { tag: "message" } // this is repeated because only the first one has to exist (one word minimum)
                         )
                     ]
                 }
