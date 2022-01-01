@@ -1,7 +1,7 @@
 # Graveyard
 Discord bot
 
-{:toc}
+* TOC {:toc}
 
 ## Running
 
