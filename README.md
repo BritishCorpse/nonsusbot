@@ -62,9 +62,9 @@ Each command must have a module.exports, containing the following properties:
 | :-: | :-: | :-: | :-: |
 | name | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)<br>[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)> | no | The name of the command. For aliases, use an array containing all the names. |
 | description | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | no | The description of the command shown in the help menu. |
-| userPermissions | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)> | yes | Discord permissions required to run the command. See [Discord.Permissions.FLAGS](https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS) |
+| userPermissions | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)> | yes | Discord permissions required to run the command. See [Discord.Permissions.FLAGS](https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS). |
 | usage | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)> | no | Defines how a command should be used, with all arguments possible. See [Usage](#usage) |
-| execute | [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)(message: [Discord.Message](https://discord.js.org/#/docs/main/stable/class/Message), args: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>) => undefined | no | The function to be run when a user enters a command. |
+| execute | [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)(message: [Discord.Message](https://discord.js.org/#/docs/main/stable/class/Message), args: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>) => [undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined) | no | The function to be run when a user enters a command. |
 
 <details><summary>Example</summary>
 
@@ -150,7 +150,7 @@ It must contain the following properties:
 
 Checks is an object that defines rules that the argument to pass to continue down the option.
 
-If checks is undefined or is empty, the option will always pass.
+If checks is [undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined) or empty, the option will always pass.
 
 A check can be inverted by replacing the value with `{not: value}`{:.javascript}. See [Not](#not).
 
