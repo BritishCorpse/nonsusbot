@@ -4,6 +4,10 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
     name: 'currencyinfo',
     description: "Shows information about Graveyard's currency system.",
+
+    usage: [
+    ],
+
     execute (message, args) {
         var randomColor = Math.floor(Math.random()*16777215).toString(16);
 

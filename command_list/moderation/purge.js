@@ -5,6 +5,11 @@ module.exports = {
     name: 'purge',
     description: 'Deletes a specified amount of messages.',
     userPermissions: ["MANAGE_MESSAGES"],
+    
+    usage: [
+        { tag: "number", checks: {isinteger: null} }
+    ],
+
     execute(message, args) {
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 

@@ -5,6 +5,10 @@ module.exports = {
     name: 'buttontest',
     description: "test buttons",
     developer: true,
+
+    usage: [
+    ],
+
     execute (message, args) {
         const row = new MessageActionRow()
             .addComponents(

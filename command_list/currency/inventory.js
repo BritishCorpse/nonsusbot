@@ -5,6 +5,12 @@ const { paginateEmbeds } = require(`${__basedir}/functions`);
 module.exports = {
     name: 'inventory',
     description: "Shows your inventory, or someone else's.",
+
+    usage: [
+        { tag: "nothing", checks: {isempty: null} },
+        { tag: "user", checks: {isuseridinguild: null} }
+    ],
+
     async execute (message, args) {
         var randomColor = Math.floor(Math.random()*16777215).toString(16);
         

@@ -4,6 +4,11 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
     name: 'pet',
     description: "Pet whoever you'd like to.",
+
+    usage: [
+        { tag: "user", checks: {isuseridinguild: null}, example: "786301097953591326" }
+    ],
+
     execute(message, args){
         var randomColor = Math.floor(Math.random()*16777215).toString(16);
         

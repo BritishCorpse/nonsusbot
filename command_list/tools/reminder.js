@@ -1,4 +1,5 @@
-const { MessageEmbed } = new require("discord.js");
+const { MessageEmbed } = require("discord.js");
+const { circularUsageOption } = require(`${__basedir}/functions`);
 
 const max_number_of_definitions = 2;
 
@@ -10,7 +11,25 @@ function plural(number) {
 
 module.exports = {
     name: ['reminder', 'remind'],
-    description: "Remind you about something. Usage: <time> <message>",
+    description: "Reminds you about something. Usage: <time> <message>",
+
+    usage: [
+        { tag: "time",
+            checks: {
+                matchesfully: /(?:0*([1-7])d)?(?:0*((?:\d)|(?:1\d)|(?:2[0-3]))h)?(?:0*((?:\d)|(?:[1-5]\d))m)?(?:0*((?:\d)|(?:[1-5]\d))s)?/
+            },
+            next: [
+                { tag: "message", checks: {isuseridinguild: {not: null}, isempty: {not: null}},
+                    next: [
+                        circularUsageOption(
+                            { tag: "message", checks: {isuseridinguild: {not: null}} } // this is repeated because only the first one has to exist (one word minimum)
+                        )
+                    ]
+                }
+            ]
+        }
+    ],
+
     execute (message, args) {
         const timeString = args[0];
         const reminderMessage = args.slice(1).join(' ');
@@ -36,7 +55,7 @@ module.exports = {
         const seconds = Number.parseInt(match[4]) || 0;
 
         setTimeout(() => {
-            message.reply(reminderMessage);
+            message.reply(`Reminder: ${reminderMessage}`);
         }, seconds * 1000 + minutes * 60 * 1000 + hours * 60 * 60 * 1000 + days * 24 * 60 * 60 * 1000);
 
         message.channel.send(`Set reminder in ${days} day${plural(days)}, ${hours} hour${plural(hours)}, ${minutes} minute${plural(minutes)}, ${seconds} second${plural(seconds)}.`);

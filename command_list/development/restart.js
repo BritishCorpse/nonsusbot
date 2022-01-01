@@ -2,6 +2,10 @@ module.exports = {
     name: "restart",
     description: "Restarts the bot.",
     developer: true,
+
+    usage: [
+    ],
+
   	execute (message, args) {
         message.channel.send(`Command disabled due to using pm2. Use ${message.client.serverConfig.get(message.guild.id).prefix}exit instead.`);
         return;

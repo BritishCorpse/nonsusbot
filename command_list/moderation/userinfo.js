@@ -4,6 +4,11 @@ module.exports = {
     name: 'userinfo',
     description: 'See information about a specified user.',
     userPermissions: ["MODERATE_MEMBERS"],
+
+    usage: [
+        { tag: "user", checks: {isuseridinguild: null} }
+    ],
+
     execute(message, args) {
         var randomColor = Math.floor(Math.random()*16777215).toString(16);
         

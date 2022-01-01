@@ -1,4 +1,5 @@
 const { MessageEmbed } = require("discord.js");
+const { circularUsageOption } = require(`${__basedir}/functions`);
 
 
 const funnyReplies = [
@@ -17,6 +18,21 @@ module.exports = {
     name: 'tempban',
     description: "Temporarily bans a user from the guild, for a determined amount of days.",
     userPermissions: ["BAN_MEMBERS"],
+
+    usage: [
+        { tag: "user", checks: {isuseridinguild: null},
+            next: [
+                { tag: "time", checks: {isinteger: null},
+                    next: [
+                        circularUsageOption(
+                            { tag: "reason", checks: {matches: {not: /[^\w?!.,;:'"\(\)\/]/}, isempty: {not: null}} }
+                        )
+                    ]
+                }
+            ]
+        }
+    ],
+
     execute (message, args) {
         var randomColor = Math.floor(Math.random()*16777215).toString(16);
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
