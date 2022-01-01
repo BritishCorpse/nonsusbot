@@ -157,14 +157,6 @@ function circularUsageOption(option) {
 }
 
 
-function createInfiniteCircularUsage(usage) {
-    // gets the usage for infinite arguments
-    usage[0].next = usage;
-    usage[0].circular = true;
-    return usage;
-}
-
-
 function generateDescription(option) {
     let description = "";
 
@@ -409,6 +401,5 @@ module.exports = {
     sendUsage,
     checkUsage,
     doCommand,
-    createInfiniteCircularUsage,
     circularUsageOption,
 }

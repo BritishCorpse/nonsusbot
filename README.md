@@ -1,7 +1,7 @@
 # Graveyard
 A general purpose Discord bot.
 
-Table of Contents
+Table of contents
 =================
 
 * [Running](#running)
@@ -9,7 +9,7 @@ Table of Contents
   * [config.json](#configjson)
   * [server_config.json and default_server_config.json](#server_configjson-and-default_server_configjson)
   * [development_config.json](#development_configjson)
-  * [database.sqlite](#sqlite-database)
+  * [database.sqlite](#databasesqlite)
   * [jest.config.js](#jestconfigjs)
   * [ecosystem.config.js](#ecosystemconfigjs)
 * [Making new commands](#making-new-commands)
@@ -20,6 +20,7 @@ Table of Contents
         * [Checks](#checks)
            * [Passes](#passes)
            * [Not](#not)
+     * [Circular options](#circular-options)
 
 ## Running
 
@@ -230,3 +231,18 @@ All checks can be inverted by replacing the value with `{not: value}`.
 
 **Note:** when a check is inverted, the option will pass if the argument is not given.
 To disable this behavior, add the `isempty: {not: null}` check.
+
+#### Circular options
+
+Sometimes an infinite number of arguments is required, such as when getting a message from the user.
+
+This can be done using the `circularUsageOption` function in [functions.js](functions.js).
+
+It will take an option, and add append an option referencing itself to the [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of its `next` property.
+It will also set the `circular` property to `true`.
+
+| ARGUMENT | TYPE | OPTIONAL | DESCRIPTION |
+| :-: | :-: | :-: |
+| option | [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) | no | The option to be made infinite. |
+
+Returns: [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).
