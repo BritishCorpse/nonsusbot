@@ -56,7 +56,7 @@ This is for server wide configurations (prefixes, etc.).
 
 This is for development options (discord development servers, discord developer users, testing bot configs, etc.).
 
-### database.sqlite
+### `database.sqlite`
 
 This is for the currency system.
 
