@@ -123,9 +123,16 @@ If multiple options pass, the `CommandUsageError` error will be thrown.
 <details><summary>Example</summary>
 
 ```js
+// Different options for whether an argument was given or not
 [
     { tag: "something", checks: {isempty: {not: null}} },  // passes if an argument was given
     { tag: "nothing", checks: {isempty: null} },           // passes if an argument was not given
+]
+
+// Don't do this! It will throw a CommandUsageError because multiple options are valid.
+[
+    { tag: "something", checks: {isempty: {not: null}} },  // passes if an argument was given
+    { tag: "nothing", checks: {} },                        // passes always
 ]
 ```
 
