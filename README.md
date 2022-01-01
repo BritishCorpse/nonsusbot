@@ -59,7 +59,7 @@ Each command must be within a folder in `./command_list/` (such as `./command_li
 Each command must have a module.exports, containing:
 
 | PROPERTY | TYPE | OPTIONAL | DESCRIPTION |
-| --- | --- | --- | --- |
+| :-: | :-: | :-: | :-: |
 | name | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)<br>[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)> | no | The name of the command. For aliases, use an array containing all the names. |
 | description | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | no | The description of the command shown in the help menu. |
 | userPermissions | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)> | yes | Discord permissions required to run the command. See [Discord.Permissions.FLAGS](https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS) |
