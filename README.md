@@ -98,7 +98,7 @@ It is an array of options where each option is an [Object](https://developer.moz
 If no option passes, the usage is sent in the channel the user sent the command in.
 Descriptions are automatically generated from the usage [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).
 
-If multiple options pass, a `CommandUsageError`{:.language-javascript} error will be thrown.
+If multiple options pass, the `CommandUsageError` error will be thrown.
 
 <details><summary>Example</summary>
 
@@ -152,7 +152,7 @@ Checks is an object that defines rules that the argument to pass to continue dow
 
 If checks is [undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined) or empty, the option will always pass.
 
-A check can be inverted by replacing the value with `{not: value}`{:.language-javascript}. See [Not](#not).
+A check can be inverted by replacing the value with `{not: value}`. See [Not](#not).
 
 | PROPERTY | TYPE | OPTIONAL | DESCRIPTION |
 | :-: | :-: | :-: | :-: |
@@ -198,7 +198,7 @@ If the check you need is not available, you can create one.
 
 ###### Not
 
-All checks can be inverted by replacing the value with `{not: value}`{:.language-javascript}.
+All checks can be inverted by replacing the value with `{not: value}`.
 
 **Note:** when a check is inverted, the option will pass if the argument is not given.
-To disable this behavior, add the `isempty: {not: null}`{:.language-javascript} check.
+To disable this behavior, add the `isempty: {not: null}` check.
