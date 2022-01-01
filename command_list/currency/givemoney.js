@@ -11,7 +11,7 @@ module.exports = {
     ],
 
     execute (message, args) {
-        let moneyAmount = Number.parseInt(args[0]);
+        const moneyAmount = Number.parseInt(args[0]);
 
         if (moneyAmount.toString() === 'NaN') {
             message.client.currency.add(message.author.id, 2000);

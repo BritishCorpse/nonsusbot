@@ -127,37 +127,49 @@ if (!testing) {
     });
 }
 
+// Create functions for adding and setting money
 Reflect.defineProperty(client.currency, 'add', {
     /* eslint-disable-next-line func-name-matching */
     value: async function add(id, amount) {
-        const user = client.currency.get(id);
-        if (user) {
-            user.balance += Number(amount);
-            return user.save();
+        try {
+            const newUser = await Users.create({
+                user_id: id,
+                balance: amount
+            });
+
+            client.currency.set(id, newUser);
+            return newUser;
+        } catch (error) { // user already exists
+            if (error.name !== "SequelizeUniqueConstraintError") throw error;
+
+            const user = client.currency.get(id);
+            if (user) {
+                user.balance += Number.parseInt(amount);
+                return user.save();
+            }
         }
-        const newUser = await Users.create({
-            user_id: id,
-            balance: amount
-        });
-        client.currency.set(id, newUser);
-        return newUser;
     },
 });
 
 Reflect.defineProperty(client.currency, 'setBalance', {
     /* eslint-disable-next-line func-name-matching */
     value: async function setBalance(id, amount) {
-        const user = client.currency.get(id);
-        if (user) {
-            user.balance = Number(amount);
-            return user.save();
+        try {
+            const newUser = await Users.create({
+                user_id: id,
+                balance: amount
+            });
+            client.currency.set(id, newUser);
+            return newUser;
+        } catch (error) {
+            if (error.name !== "SequelizeUniqueConstraintError") throw error;
+
+            const user = client.currency.get(id);
+            if (user) {
+                user.balance = Number.parseInt(amount);
+                return user.save();
+            }
         }
-        const newUser = await Users.create({
-            user_id: id,
-            balance: amount
-        });
-        client.currency.set(id, newUser);
-        return newUser;
     },
 });
 
