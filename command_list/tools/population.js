@@ -38,7 +38,7 @@ module.exports = {
             const parsedBody = JSON.parse(body);
             if (parsedBody.ok) {
                 if (parsedBody.body.world_population !== undefined) {
-                    message.channel.send("The world has a popualtion of " + parsedBody.body.world_population + " in " + parsedBody.body.total_countries + " countries.");
+                    message.channel.send("The world has a population of " + parsedBody.body.world_population + " in " + parsedBody.body.total_countries + " countries.");
                 } else {
                     message.channel.send(args.join(" ") + " has a population of " + parsedBody.body.population + " and ranks #" + parsedBody.body.ranking + " in the world.");
                 }
