@@ -1,6 +1,7 @@
 const { getUserItems } = require(`${__basedir}/functions`);
 const { MessageEmbed } = require('discord.js');
 const { paginateEmbeds } = require(`${__basedir}/functions`);
+const { Users } = require(`${__basedir}/db_objects`);
 
 module.exports = {
     name: 'inventory',
@@ -16,18 +17,20 @@ module.exports = {
         
         const targetUser = message.mentions.users.first() || message.author;
 
+        const userInDb = await Users.findOne({ where: { user_id: targetUser.id } });
+
         const items = await getUserItems(targetUser.id);
 
         const embeds = [];
 
         function makeEmbed() {
-            return new MessageEmbed().setTitle(`${targetUser.user}'s inventory!`).setColor(randomColor)
+            return new MessageEmbed().setTitle(`${userInDb.badge || ' '}${targetUser.username}'s inventory!`).setColor(randomColor)
         }
 
         let embed;
 
         if (items.length === 0) {
-            message.channel.send(`${targetUser.tag} has nothing!`);
+            message.channel.send(`${userInDb.badge || ' '}${targetUser.username} has nothing!`);
             return;
         }
 
@@ -39,7 +42,7 @@ module.exports = {
                 embeds.push(embed);  
             }
                         
-            embed.addField(`${item.item.name}`, `Amount: ${item.amount}`);
+            embed.addField(`${item.item.itemEmoji}${item.item.name}`, `Amount: ${item.amount}`);
         }
         
         paginateEmbeds(message.channel, message.author, embeds);

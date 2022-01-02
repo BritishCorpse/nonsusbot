@@ -16,7 +16,11 @@ module.exports = (sequelize, DataTypes) => {
 		itemEmoji: {
 			type: DataTypes.STRING,
 			allowNull: true,
-		}
+		},
+		isBadge: {
+			type: DataTypes.BOOLEAN,
+			allowNull: true,
+		},
 	}, {
 		timestamps: false,
 	});

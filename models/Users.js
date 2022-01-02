@@ -6,12 +6,17 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
 			primaryKey: true,
 		},
-		balance: {
+		balance: { 
 			type: DataTypes.INTEGER,
 			defaultValue: 0,
 			allowNull: false,
+		},
+		badge: {
+			type: DataTypes.STRING,
+			allowNull: true,
 		},
 	}, {
 		timestamps: false,
 	});
 };
+ 
