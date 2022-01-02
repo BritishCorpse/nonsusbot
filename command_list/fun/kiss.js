@@ -9,7 +9,7 @@ module.exports = {
         { tag: "user", checks: {isuseridinguild: null}, example: "786301097953591326" }
     ],
 
-    async execute(message, args){
+    async execute(message, args) {
         const randomColor = Math.floor(Math.random()*16777215).toString(16);
 
         const images = [
@@ -28,9 +28,6 @@ module.exports = {
             "https://c.tenor.com/e6cYiAPPCq4AAAAM/anime-kissing.gif"
         ];
 
-        if (message.author.id === "786301097953591326") {
-            return message.channel.send("No poki. Don't do this.");
-        }
         const kissTarget = message.mentions.users.first();
         if (!kissTarget) {
             const embed = new MessageEmbed()
@@ -38,43 +35,33 @@ module.exports = {
                 .setImage(images[Math.floor(Math.random() * images.length)])
                 .setColor(randomColor);
         
-            return message.channel.send( {embeds: [embed]} );
-        }
-
-        else if (kissTarget.id === message.client.user.id) {
-            return message.channel.send("You're making me blush! :heart:");
-        }
-        // Disable below lines if you want people to be able to do actions to me.
-        else if (kissTarget.id === "484644637420552202") {
+            message.channel.send({embeds: [embed]});
+            return;
+        } else if (kissTarget.id === message.client.user.id) {
+            message.channel.send("You're making me blush! :heart:");
+            return;
+        } else if (kissTarget.id === "484644637420552202") {
+            // Disable below lines if you want people to be able to do actions to me.
             if (message.author.id !== "834035562864050237") {
-                return message.channel.send("Sorry, corpse is not accepting kisses currently.");
-            }
-
-            else {
+                message.channel.send("Sorry, corpse is not accepting kisses currently.");
+                return;
+            } else {
                 const embed = new MessageEmbed()
                     .setTitle(`${message.author.username} kisses ${kissTarget.username} :heart:!`)
                     .setImage(images[Math.floor(Math.random() * images.length)])
                     .setColor(randomColor);
             
-                return message.channel.send( {embeds: [embed]} );
+                message.channel.send( {embeds: [embed]} );
+                return;
             }
-            
-        }
-
-        else if (kissTarget.id === "786301097953591326") {
-            return message.channel.send("Sorry not happening.");
-        }
-
-        else {
+        } else {
             const embed = new MessageEmbed()
                 .setTitle(`${message.author.username} kisses ${kissTarget.username} :heart:!`)
                 .setImage(images[Math.floor(Math.random() * images.length)])
                 .setColor(randomColor);
         
-            return message.channel.send( {embeds: [embed]} );
+            message.channel.send({embeds: [embed]});
+            return;
         }
-
-
-
     }
 };

@@ -35,42 +35,39 @@ module.exports = {
         const funnyReply = funnyReplies[Math.floor(Math.random() * funnyReplies.length)];
 
         const slapTarget = message.mentions.users.first();
+
         if (!slapTarget) {
             const embed = new MessageEmbed()
                 .setTitle(`${message.author.username} slaps ${message.author.username}, ${funnyReply}`)
                 .setImage(images[Math.floor(Math.random() * images.length)])
                 .setColor(randomColor);
         
-            return message.channel.send( {embeds: [embed]} );
-        }
-
-        else if (slapTarget.id === message.client.user.id) {
-            return message.channel.send("Hey!! Don't slap me, what did I do?!");
-        }
-
-        else if (slapTarget.id === "484644637420552202") {
+            message.channel.send({embeds: [embed]});
+            return;
+        } else if (slapTarget.id === message.client.user.id) {
+            message.channel.send("Hey!! Don't slap me, what did I do?!");
+            return;
+        } else if (slapTarget.id === "484644637420552202") {
             if (message.author.id !== "834035562864050237") {
-                return message.channel.send("Corpse blocked the slap!! Incredible!");
-            }
-
-            else {
+                message.channel.send("Corpse blocked the slap!! Incredible!");
+                return;
+            } else {
                 const embed = new MessageEmbed()
                     .setTitle(`${message.author.username} slaps ${slapTarget.username}, ${funnyReply}`)
                     .setImage(images[Math.floor(Math.random() * images.length)])
                     .setColor(randomColor);
             
-                return message.channel.send( {embeds: [embed]} );
+                message.channel.send({embeds: [embed]});
+                return;
             }
-
-        }
-
-        else {
+        } else {
             const embed = new MessageEmbed()
                 .setTitle(`${message.author.username} slaps ${slapTarget.username}, ${funnyReply}`)
                 .setImage(images[Math.floor(Math.random() * images.length)])
                 .setColor(randomColor);
         
-            return message.channel.send( {embeds: [embed]} );
+            message.channel.send({embeds: [embed]});
+            return;
         }
     }
 };

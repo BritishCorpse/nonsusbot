@@ -31,42 +31,39 @@ module.exports = {
         ];
 
         const petTarget = message.mentions.users.first();
+
         if (!petTarget) {
             const embed = new MessageEmbed()
                 .setTitle(`${message.author.username} pets ${message.author.username}, how nice of them :heart:!`)
                 .setImage(images[Math.floor(Math.random() * images.length)])
                 .setColor(randomColor);
         
-            return message.channel.send( {embeds: [embed]} );
-        }
-
-        else if (petTarget.id === message.client.user.id) {
-            return message.channel.send("Thanks! How did you know I was hungry? :heart:");
-        }
-
-        else if (petTarget.id === "484644637420552202") {
+            message.channel.send({embeds: [embed]});
+            return;
+        } else if (petTarget.id === message.client.user.id) {
+            message.channel.send("Thanks! How did you know I was hungry? :heart:");
+            return;
+        } else if (petTarget.id === "484644637420552202") {
             if (message.author.id !== "834035562864050237") {
-                return message.channel.send("Corpse blocks your.. petting?! HOW??!?!?");
-            }
-
-            else {
+                message.channel.send("Corpse blocks your.. petting?! HOW??!?!?");
+                return;
+            } else {
                 const embed = new MessageEmbed()
                     .setTitle(`${message.author.username} pets ${petTarget.username} :heart:!`)
                     .setImage(images[Math.floor(Math.random() * images.length)])
                     .setColor(randomColor);
             
-                return message.channel.send( {embeds: [embed]} );
+                message.channel.send({embeds: [embed]});
+                return;
             }
-            
-        }
-
-        else {
+        } else {
             const embed = new MessageEmbed()
                 .setTitle(`${message.author.username} pets ${petTarget.username}, how nice of them :heart:!`)
                 .setImage(images[Math.floor(Math.random() * images.length)])
                 .setColor(randomColor);
         
-            return message.channel.send( {embeds: [embed]} );
+            message.channel.send({embeds: [embed]});
+            return;
         }
     }
 };
