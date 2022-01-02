@@ -44,7 +44,7 @@ module.exports = {
                     .setTitle(definition.word)
                     .setURL(definition.permalink)
                     .setDescription(definition.definition + "\n\n**Example:**\n" + definition.example)
-                    .setFooter("By: " + definition.author)
+                    .setFooter({text: `By: ${definition.author}`})
                     .setColor(randomColor)
                     .setThumbnail("https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/UD_logo-01.svg/1280px-UD_logo-01.svg.png");
 
@@ -52,9 +52,10 @@ module.exports = {
             }
 
             if (embeds.length === 0) {
-                embeds.push(new MessageEmbed());
-                embeds[embeds.length - 1].setTitle("No definition found");
-                embeds[embeds.length - 1].setDescription("No definition was found");
+                const embed = new MessageEmbed()
+                    .setTitle("No definition found")
+                    .setDescription("No definition was found");
+                message.channel.send({embeds: [embed]});
             } else {
                 paginateEmbeds(message.channel, message.author, embeds);
             }

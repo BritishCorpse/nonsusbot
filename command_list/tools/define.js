@@ -1,8 +1,8 @@
 const request = require("request");
 const { MessageEmbed } = new require("discord.js");
 const { dictionary_api_key } = require(`${__basedir}/config.json`);
+const { paginateEmbeds } = require(`${__basedir}/functions`);
 
-const maxNumberOfDefinitions = 2;
 
 module.exports = {
     name: "define",
@@ -24,8 +24,6 @@ module.exports = {
             const parsedBody = JSON.parse(body);
             const embeds = [];
 
-            let number_of_definitions = 0;
-
             if (typeof parsedBody[0] === "string") {
                 const embed = new MessageEmbed()
                     .setTitle("Similar words")
@@ -38,8 +36,6 @@ module.exports = {
                 for (const type of parsedBody) { // each word type, noun, adj, etc
                     if ((args[1] !== undefined && type.fl !== args[1])
                         || type.shortdef.length === 0 || type.fl === undefined) continue;
-                    if (number_of_definitions >= maxNumberOfDefinitions) break;
-                    number_of_definitions++;
 
                     const embed = new MessageEmbed()
                         .setTitle(type.meta.id.split(":")[0] + " - *" + type.fl + "*")
@@ -64,19 +60,13 @@ module.exports = {
             }
 
             if (embeds.length === 0) {
-                embeds.push(new MessageEmbed()
+                const embed = new MessageEmbed()
                     .setTitle("No definition found")
-                    .setDescription("No definition was found with type *" + args[1] + "*")
-                );
-            }
-
-            for (const embed of embeds) {
+                    .setDescription("No definition was found with type *" + args[1] + "*");
                 message.channel.send({embeds: [embed]});
+            } else {
+                paginateEmbeds(message.channel, message.author, embeds);
             }
-
-            //if (embeds.length < parsedBody.length) {
-            //    message.channel.send("Maximum amount of definitions (" + maxNumberOfDefinitions + ") was reached.");
-            //}
         });
     }
 };

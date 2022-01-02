@@ -19,7 +19,7 @@ const descriptionFormats = {
 
 
 function addPageNumbersToFooter(embed, page, maxPage) {
-    return new MessageEmbed(embed).setFooter(`(${page}/${maxPage}) ${embed.footer ? embed.footer.text : ""}`);
+    return new MessageEmbed(embed).setFooter({text: `(${page}/${maxPage}) ${embed.footer ? embed.footer.text : ""}`});
 }
 
 
@@ -199,7 +199,7 @@ function sendUsage(message, usage, failedOn, failedArg) {
 
     const embed = new MessageEmbed()
         .setTitle("Incorrect Usage")
-        .setFooter(`Use ${message.client.serverConfig.get(message.guild.id).prefix}help for more information.`);
+        .setFooter({text: `Use ${message.client.serverConfig.get(message.guild.id).prefix}help for more information.`});
 
     if (failedArg === null)
         embed.setDescription("Your usage is wrong.");
