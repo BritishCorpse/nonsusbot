@@ -28,9 +28,9 @@
   },
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "A general purpose discord bot.",
   "private": "true",
   "engines": {
-    "node": ">=16.x"
+    "node": ">=16.x >=17.x"
   }
 }
