@@ -50,7 +50,6 @@ module.exports = {
 
         message.channel.send({embeds: [embed]});
         kickUser.kick({reason: kickReason})
-            .then(console.log)
             .catch(console.error);
     }
 };

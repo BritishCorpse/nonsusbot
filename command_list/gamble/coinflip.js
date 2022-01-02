@@ -1,6 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-
-//const { userHasItem } = require(`${__basedir}/functions`);
+const { userHasItem } = require(`${__basedir}/functions`);
 
 
 module.exports = {
@@ -16,12 +15,18 @@ module.exports = {
         { tag: "rules", checks: {is: "rules"} }
     ],
 
-    execute(message, args) {
+    async execute(message, args) {
+        const prefix = message.client.serverConfig.get(message.guild.id).prefix;
+        
+        // check for casino membership
+        if (!await userHasItem(message.author.id, "Casino Membership")) {
+            message.channel.send(`You don't have a casino membership. See the ${prefix}shop to buy it.`);
+            return;
+        }
+
         const randomColor = Math.floor(Math.random()*16777215).toString(16);
 
-        const prefix = message.client.serverConfig.get(message.guild.id).prefix;
-
-        // Check if the user has a casino membershio
+        // Check if the user has a casino membership
 
         if (args[0] === "rules") {
             const embed = new MessageEmbed()

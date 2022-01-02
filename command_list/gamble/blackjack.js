@@ -1,4 +1,5 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { userHasItem } = require(`${__basedir}/functions`);
 
 
 /* Rules:
@@ -85,19 +86,21 @@ module.exports = {
     description: "Play against the computer in a game of blacjack.",
 
     usage: [
-        { tag: "bet", checks: {isinteger: null},
-            next: [
-                { tag: "lives", checks: {isinteger: null} }
-            ]
-        },
+        { tag: "bet", checks: {isinteger: null} },
         { tag: "rules", checks: {is: "rules"} }
     ],
 
-    execute(message, args) {
-        const randomColor = Math.floor(Math.random()*16777215).toString(16);
-        
+    async execute(message, args) {
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
+        // check for casino membership
+        if (!await userHasItem(message.author.id, "Casino Membership")) {
+            message.channel.send(`You don't have a casino membership. See the ${prefix}shop to buy it.`);
+            return;
+        }
+
+        const randomColor = Math.floor(Math.random()*16777215).toString(16);
+        
         const username = message.member.nickname || message.author.username;
 
         const userBet = Number.parseInt(args[0]);
@@ -113,16 +116,19 @@ module.exports = {
 
             message.channel.send({embeds: [embed]});
             return;
-        } else if (args[0] === undefined || args[0] === "") {
-            message.channel.send(`🎲You did not specify your bet! Usage: ${prefix}blackjack <bet>🎲`);
-            return;
-        } else if (userBet <= 0 || userBet.toString() === "NaN") { // invalid bets
+        } else if (userBet <= 0) { // invalid bets
             message.channel.send("🎲You must give a valid bet!🎲");
             return;
         } else if (userBet > 25000000) {
             message.channel.send("🎲Unfortunately your bet is too large for this game. We can't have you being too successful after all!🎲");
             return;
+        } else if (userBet > message.client.currency.getBalance(message.author.id)) {
+            message.channel.send("🎲You don't have enough money!🎲");
+            return;
         }
+
+        // temporarily take away their money so they can't play two games of blackjack with the same money
+        message.client.currency.add(message.author.id, -userBet);
         
         const usedCardIdentifiers = []; // keeps track of all cards taken so that they can't be taken anymore
         function getCard() {
@@ -211,34 +217,38 @@ module.exports = {
                 const dealerScore = getScore(dealerCards);
                 const userScore = getScore(userCards);
 
+                let userBalanceChange;
+                let gameOverMessage;
+
+                if (dealerScore > 21) {
+                    userBalanceChange = userBet;
+                    gameOverMessage = `The dealer got a bust! ${username} won the game!`;
+                } else if (userScore > 21) {
+                    userBalanceChange = -userBet;
+                    gameOverMessage = `${username} got a bust! The dealer won the game!`;
+                } else if (userScore < dealerScore) {
+                    userBalanceChange = -userBet;
+                    gameOverMessage = `The dealer's score is greater than ${username}'s score! ${username} lost the game!`;
+                } else if (userScore > dealerScore) {
+                    userBalanceChange = userBet;
+                    gameOverMessage = `${username}'s score is greater than the dealer's score! ${username} won the game!`;
+                } else {
+                    userBalanceChange = 0;
+                    gameOverMessage = "It's a draw!";
+                }
+
                 const gameEndEmbed = getGameStateEmbed()
                     .setTitle("Here are the results!")
                     .addField("\u200b", "\u200b") // space
                     .addField("The dealer's total amount is:", `${dealerScore}`)
-                    .addField(`${username}'s total amount is:`, `${userScore}`);
+                    .addField(`${username}'s total amount is:`, `${userScore}`)
+                    .setFooter({text: `${gameOverMessage} ${userBalanceChange >= 0 ? "+" : ""}${userBalanceChange}💰`});
 
-                // TODO: make this cleaner:
-                if (dealerScore > 21) {
-                    gameEndEmbed.setFooter(`The dealer got a bust! ${username} won the game! +${userBet}💰`);
-                    message.client.currency.add(message.author.id, userBet);
-                } else if (userScore > 21) {
-                    gameEndEmbed.setFooter(`${username} got a bust! The dealer won the game! -${userBet}💰`);
-                    message.client.currency.add(message.author.id, -userBet);
-                } else if (userScore < dealerScore) {
-                    gameEndEmbed.setFooter(`${username} lost the game! -${userBet}💰`);
-                    message.client.currency.add(message.author.id, -userBet);
-                } else if (userScore > dealerScore) {
-                    gameEndEmbed.setFooter(`${username} won the game! +${userBet}💰`);
-                    message.client.currency.add(message.author.id, userBet);
-                } else {
-                    gameEndEmbed.setFooter("It's a draw!");
-                }
+                message.client.currency.add(message.author.id, userBet + userBalanceChange);
 
                 botMessage.edit({embeds: [gameEndEmbed]});
                 collector.stop();
             }
-
-            //let hitTimes = 0;
 
             collector.on("collect", interaction => {
                 userPlayed = true;
@@ -258,17 +268,13 @@ module.exports = {
                     } else {
                         interaction.update({embeds: [getGameStateEmbed()]});
                     }
-
-                    //hitTimes++;
                 }
             });
             
             collector.on("end", collected => {
-                console.log(collected.size); 
                 if (!userPlayed) {
                     message.channel.send(`Hello? Did you fall asleep?\nYou can't escape the loss, You lost ${userBet}💰`);
-    
-                    message.client.currency.add(message.author.id, -userBet);
+                    // don't give the bet back
                 }
 
                 row.components.forEach(button => button.setDisabled(true));

@@ -8,7 +8,6 @@ module.exports = {
     ],
 
     execute (message, args) {
-        console.log("balance execute runs");
         const target = message.mentions.users.first() || message.author;
         message.channel.send(`<@!${target.id}> has ${message.client.currency.getBalance(target.id)}💰`);
     }

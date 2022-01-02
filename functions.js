@@ -62,9 +62,6 @@ async function userHasItem(userId, itemName) {
     });
 
     const userItems = await getUserItems(userId);
-    console.log(userItems);
-
-    console.debug(userItems.find(userItem => userItem.item.item_id === item.item_id));
     //if (userItems.find(userItem => userItem.item.name === itemName) !== undefined)
     if (userItems.find(userItem => userItem.item.item_id === item.id) !== undefined)
         return true;

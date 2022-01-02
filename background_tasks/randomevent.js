@@ -34,7 +34,6 @@ module.exports = {
                     .then(async () => {
 
                         const filter = m => message.author.id === m.author.id;
-                        console.log(message.content);
 
                         message.channel.awaitMessages({filter, time: 60000, max: 1, errors: ["time"]})
                             .then(async collected => {

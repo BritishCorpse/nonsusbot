@@ -1,5 +1,4 @@
 const { MessageEmbed } = require("discord.js");
-
 const { userHasItem } = require(`${__basedir}/functions`);
 
 
@@ -17,27 +16,23 @@ module.exports = {
     ],
 
     async execute(message, args) {
-        const randomColor = Math.floor(Math.random()*16777215).toString(16);
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
+        // check for casino membership
         if (!await userHasItem(message.author.id, "Casino Membership")) {
-            message.channel.send(`It appears you are not a member of the casino. Please go to ${prefix}shop and go buy a Casino Membership.`);
+            message.channel.send(`You don't have a casino membership. See the ${prefix}shop to buy it.`);
             return;
         }
 
-        const userBet = args[0];
-        let userLives = args[1];
-        const divProfit = args[1];
+        const randomColor = Math.floor(Math.random()*16777215).toString(16);
+
+        const userBet = Number.parseInt(args[0]);
+        let userLives = Number.parseInt(args[1]);
+        const divProfit = Number.parseInt(args[1]);
         const numberRange = userBet / 10;
         const gameNumber = Math.floor(Math.random() * numberRange);
 
-        // Make sure userbet exists, and that it follows all the perimeters.
-        if (!userBet) {
-            message.channel.send(`🎲You did not specify your bet! Usage: ${prefix}numbergame {bet} {lives}🎲`);
-            return;
-        }
-
-        else if (userBet === "rules") {
+        if (userBet === "rules") {
             const embed = new MessageEmbed()
                 .setTitle("Rules of the number game.")
                 .setDescription("The player attempts to guess the number within a specified range, the range is specified as the users bet (first argument) divided by 10.\nThe player also has an option to choose how many lives they have, the maximum amount of lives is 10.\nIf they player wins, the players profit will be 2 times the amount of coins they bet, divided by how many lives they chose. For example: Bet = 100, Lives = 10, Profit = 20.\nThe maximum bet for this gamemode is 100 million 💰's.")
@@ -46,8 +41,11 @@ module.exports = {
             message.channel.send({embeds: [embed]});
             return;
         }
-
-        else if (userBet > 100000000 || userBet < 100) {
+        // Make sure userbet exists, and that it follows all the perimeters.
+        else if (!userBet) {
+            message.channel.send(`🎲You did not specify your bet! Usage: ${prefix}numbergame {bet} {lives}🎲`);
+            return;
+        } else if (userBet > 100000000 || userBet < 100) {
             message.channel.send("Your bet is either to small, or too large.");
             return;
         }
@@ -56,14 +54,15 @@ module.exports = {
         if (!userLives) {
             message.channel.send(`🎲You did not specify your lives! Usage: ${prefix}numbergame {bet} {lives}🎲`);
             return;
-        }
-
-        else if (userLives > 1000 || userLives < 1 || userLives > numberRange / 2) {
+        } else if (userLives > 1000 || userLives < 1 || userLives > numberRange / 2) {
             message.channel.send(`You either selected too many or too little lives! Usage: ${prefix}numbergame {bet} {lives}`);
             return;
         }
 
-        message.channel.send("Remember, the are no hints, you will have to rely on your luck. With that being said, good luck! You will need it.");
+        // temporarily take their bet
+        message.client.currency.add(message.author, -userBet);
+
+        message.channel.send("Remember, there are no hints, so you will have to rely on your luck. With that being said, good luck! You'll need it.");
 
         const embed = new MessageEmbed()
             .setTitle("1️⃣A game of guess the number3️⃣")
@@ -84,7 +83,6 @@ module.exports = {
                             .setColor(randomColor)
                             .setDescription(`You lost! The number was ${gameNumber}.`)
                             .setFooter(`-${userBet}💰`);
-                        message.client.currency.add(message.author.id, -userBet);
 
                         message.channel.send({embeds: [endEmbed]});
                         collector.stop();
@@ -104,7 +102,7 @@ module.exports = {
                         .setColor(randomColor)
                         .setDescription(`You win! The number was ${gameNumber}. Good job!`)
                         .setFooter(`+${userProfit}`);
-                    message.client.currency.add(message.author.id, userProfit);
+                    message.client.currency.add(message.author.id, userBet + userProfit);
 
                     message.channel.send({embeds: [winEmbed]});
                     collector.stop();
@@ -115,14 +113,9 @@ module.exports = {
             collector.on("end", collected => {
                 if (collected.size < 0) {
                     message.channel.send("Did you fall asleep?");
-    
+                    // keep their bet
                 }
             });
-
         });
-
-
-    
-
     }
 };

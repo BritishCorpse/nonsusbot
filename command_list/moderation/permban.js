@@ -50,7 +50,6 @@ module.exports = {
 
         message.channel.send({embeds: [embed]});
         banUser.ban({reason: banReason})
-            .then(console.log)
             .catch(console.error);
     }
 };
