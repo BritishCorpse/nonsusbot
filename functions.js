@@ -246,7 +246,7 @@ function getValidationFunction(message, check, _value) {
             const match = arg.match(value);
             return match !== null && match[0] === arg;
         },
-        isbanneduseridinguild: arg => {
+        isbanneduseridinguild: async arg => {
             if (!arg) return false;
             let userId;
             if (arg.match(/^<@!\d+>$/) !== null)
@@ -254,11 +254,13 @@ function getValidationFunction(message, check, _value) {
             else if (arg.match(/^\d+$/))
                 userId = arg;
 
-            if (userId && message.guild.bans.resolve(userId))
-                return true;
-            return false;
+            return await message.guild.bans.fetch(userId)
+                .catch(error => {
+                    if (error.name !== "DiscordAPIError")
+                        throw error;
+                }) !== undefined;
         },
-        isuseridinguild: arg => {
+        isuseridinguild: async arg => {
             if (!arg) return false;
             let userId;
             if (arg.match(/^<@!\d+>$/) !== null)
@@ -266,9 +268,11 @@ function getValidationFunction(message, check, _value) {
             else if (arg.match(/^\d+$/))
                 userId = arg;
 
-            if (userId && message.guild.members.cache.get(userId) !== undefined)
-                return true;
-            return false;
+            return await message.guild.members.fetch(userId)
+                .catch(error => {
+                    if (error.name !== "DiscordAPIError")
+                        throw error;
+                }) !== undefined;
         },
     };
 
