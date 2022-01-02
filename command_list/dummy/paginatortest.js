@@ -1,9 +1,9 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed } = require("discord.js");
 const { paginateEmbeds } = require(`${__basedir}/functions`);
 
 
 module.exports = {
-    name: 'paginatortest',
+    name: "paginatortest",
     description: "test paginator",
     
     usage: [
@@ -13,12 +13,12 @@ module.exports = {
         const embeds = [
 
             new MessageEmbed()
-            .setTitle("im a page")
-            .setDescription("im a description")
-            .setFooter(`hey im a footer`),
+                .setTitle("im a page")
+                .setDescription("im a description")
+                .setFooter("hey im a footer"),
 
-        ]
+        ];
         
         paginateEmbeds(message.channel, message.author, embeds);
     }
-}
+};

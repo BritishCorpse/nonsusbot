@@ -1,5 +1,5 @@
 module.exports = {
-    name: ['balance', 'bal'],
+    name: ["balance", "bal"],
     description: "Shows your balance, or someone else's balance.",
 
     usage: [
@@ -8,8 +8,7 @@ module.exports = {
     ],
 
     execute (message, args) {
-        console.log("balance execute runs");
         const target = message.mentions.users.first() || message.author;
         message.channel.send(`<@!${target.id}> has ${message.client.currency.getBalance(target.id)}💰`);
     }
-}
+};

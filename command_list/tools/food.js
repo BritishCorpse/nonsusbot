@@ -5,25 +5,25 @@ const { circularUsageOption } = require(`${__basedir}/functions`);
 
 
 function embedFromFoodData(foodData, index, maxIndex) {
-  const embed = new MessageEmbed()
-    .setTitle(foodData.label)
-    .setThumbnail(foodData.image)
-    .setColor(Math.floor(Math.random()*16777215).toString(16))
-    .setAuthor("Page " + index + "/" + maxIndex);
+    const embed = new MessageEmbed()
+        .setTitle(foodData.label)
+        .setThumbnail(foodData.image)
+        .setColor(Math.floor(Math.random()*16777215).toString(16))
+        .setAuthor("Page " + index + "/" + maxIndex);
 
-  for (const value in foodData) {
-      if (value !== "label" && value !== "uri" && value !== "foodId" && value !== "nutrients" && value !== "image") {
-          embed.addField(value[0].toUpperCase() + value.replace(/([a-z])([A-Z])/g, `$1 $2`).slice(1), foodData[value], true);
-      }
-  }
+    for (const value in foodData) {
+        if (value !== "label" && value !== "uri" && value !== "foodId" && value !== "nutrients" && value !== "image") {
+            embed.addField(value[0].toUpperCase() + value.replace(/([a-z])([A-Z])/g, "$1 $2").slice(1), foodData[value], true);
+        }
+    }
 
-  let descriptionString = "";
-  for (const nutrient in foodData.nutrients) {
-      descriptionString += "**" + nutrient + ":** " + (Math.round(foodData.nutrients[nutrient] * 100) / 100) + "\n";
-  }
-  embed.setDescription(descriptionString);
+    let descriptionString = "";
+    for (const nutrient in foodData.nutrients) {
+        descriptionString += "**" + nutrient + ":** " + (Math.round(foodData.nutrients[nutrient] * 100) / 100) + "\n";
+    }
+    embed.setDescription(descriptionString);
 
-  return embed;
+    return embed;
 }
 
 
@@ -48,17 +48,17 @@ module.exports = {
             qs: {
                 "ingr": args.join(" ")
             }
-        }
+        };
 
         request(options, (error, response, body) => {
-            parsedBody = JSON.parse(body);
+            const parsedBody = JSON.parse(body);
             
             if (parsedBody.parsed === undefined) {
                 message.channel.send("No food was found.");
                 return;
             }
 
-            let allFoods = [];
+            const allFoods = [];
             allFoods.push(...parsedBody.parsed.map(a => a.food));
             allFoods.push(...parsedBody.hints.map(a => a.food));
 
@@ -70,37 +70,37 @@ module.exports = {
             let index = 0; // index in the allFood array
 
             message.channel.send({embeds: [embedFromFoodData(allFoods[index], index + 1, allFoods.length)]})
-            .then(sentMessage => {
-                sentMessage.react("⏪");
-                sentMessage.react("◀️");
-                sentMessage.react("▶️");
-                sentMessage.react("⏩");
+                .then(sentMessage => {
+                    sentMessage.react("⏪");
+                    sentMessage.react("◀️");
+                    sentMessage.react("▶️");
+                    sentMessage.react("⏩");
 
-                function moveIndex(reaction, user) {
-                    if (reaction.message.id === sentMessage.id
+                    function moveIndex(reaction, user) {
+                        if (reaction.message.id === sentMessage.id
                         && user.id === message.author.id) {
 
-                        if (reaction._emoji.name === "▶️") {
-                            if (index < allFoods.length - 1) {
-                                index++;
+                            if (reaction._emoji.name === "▶️") {
+                                if (index < allFoods.length - 1) {
+                                    index++;
+                                }
+                            } else if (reaction._emoji.name === "◀️") {
+                                if (index > 0) {
+                                    index--;
+                                }
+                            } else if (reaction._emoji.name === "⏪") {
+                                index = 0;
+                            } else if (reaction._emoji.name === "⏩") {
+                                index = allFoods.length - 1;
                             }
-                        } else if (reaction._emoji.name === "◀️") {
-                            if (index > 0) {
-                                index--;
-                            }
-                        } else if (reaction._emoji.name === "⏪") {
-                            index = 0;
-                        } else if (reaction._emoji.name === "⏩") {
-                            index = allFoods.length - 1;
+
+                            sentMessage.edit(embedFromFoodData(allFoods[index], index + 1, allFoods.length));
                         }
-
-                        sentMessage.edit(embedFromFoodData(allFoods[index], index + 1, allFoods.length));
                     }
-                }
 
-                message.client.on("messageReactionAdd", moveIndex);
-                message.client.on("messageReactionRemove", moveIndex);
-              });
+                    message.client.on("messageReactionAdd", moveIndex);
+                    message.client.on("messageReactionRemove", moveIndex);
+                });
         });
     }
-}
+};

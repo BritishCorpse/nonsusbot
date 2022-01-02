@@ -1,31 +1,31 @@
-const fs = require('fs');
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const fs = require("fs");
+const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 
-const { Op } = require('sequelize');
+const { Op } = require("sequelize");
 const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
 
 
 const descriptionFormats = {
-    isempty: (not, value) => `is ${not ? "not " : ""}empty`,
+    isempty: not => `is ${not ? "not " : ""}empty`,
     is: (not, value) => `is ${not ? "not " : ""}\`${value}\``,
     isin: (not, value) => `is ${not ? "not " : ""}one of \`${value.join(", ")}\``,
-    isinteger: (not, value) => `is ${not ? "not " : ""}an integer`,
+    isinteger: not => `is ${not ? "not " : ""}an integer`,
     matches: (not, value) => `${not ? "does not match" : "matches"} \`\`${value}\`\``,
     matchesfully: (not, value) => `${not ? "does not match" : "matches"} fully \`\`${value}\`\``,
     //isuserid: (not, value) => `is ${not ? "not " : ""}a user`,
-    isbanneduseridinguild: (not, value) => `is ${not ? "not " : ""}a banned user in the guild`,
-    isuseridinguild: (not, value) => `is ${not ? "not " : ""}a user id in the guild`,
+    isbanneduseridinguild: not => `is ${not ? "not " : ""}a banned user in the guild`,
+    isuseridinguild: not => `is ${not ? "not " : ""}a user id in the guild`,
 };
 
 
 function addPageNumbersToFooter(embed, page, maxPage) {
-    return new MessageEmbed(embed).setFooter(`(${page}/${maxPage}) ${embed.footer ? embed.footer.text : ''}`);
+    return new MessageEmbed(embed).setFooter({text: `(${page}/${maxPage}) ${embed.footer ? embed.footer.text : ""}`});
 }
 
 
 function collectionToJSON(collection) {
     // turns a discord collection to a JSON {key: value} dictionary
-    let result = {};
+    const result = {};
     for (const [key, value] of collection) {
         result[key] = value;
     }
@@ -62,9 +62,8 @@ async function userHasItem(userId, itemName) {
     });
 
     const userItems = await getUserItems(userId);
-
     //if (userItems.find(userItem => userItem.item.name === itemName) !== undefined)
-    if (userItems.find(userItem => userItem.item.item_id === item.item_id) !== undefined)
+    if (userItems.find(userItem => userItem.item.item_id === item.id) !== undefined)
         return true;
     return false;
 }
@@ -73,13 +72,13 @@ async function userHasItem(userId, itemName) {
 function saveServerConfig(serverConfig) {
     // Saves the client.serverConfig (given in argument as serverConfig) to server_config.json
     fs.writeFile(`${__basedir}/server_config.json`, JSON.stringify(collectionToJSON(serverConfig)),
-                 error => {
-                     if (error !== null) console.error(error);
-                 });
+        error => {
+            if (error !== null) console.error(error);
+        });
 }
 
 
-async function paginateEmbeds(channel, allowedUser, embeds, messageToEdit=null, previousEmoji='<', nextEmoji='>', addPagesInFooter=true, timeout=120000) {
+async function paginateEmbeds(channel, allowedUser, embeds, messageToEdit=null, previousEmoji="<", nextEmoji=">", addPagesInFooter=true, timeout=120000) {
     // Idea from https://www.npmjs.com/package/discord.js-pagination
     // Creates reactions allowing multiple embed pages
 
@@ -88,19 +87,19 @@ async function paginateEmbeds(channel, allowedUser, embeds, messageToEdit=null, 
     // if messageToEdit is given, it will edit that message instead of sending a new one
     // if addPagesInFooter is true, it adds page number before the footer
 
-    let maxIndex = embeds.length - 1;
+    const maxIndex = embeds.length - 1;
     let currentIndex = 0;
 
     const row = new MessageActionRow()
         .addComponents(
             new MessageButton()
-                .setCustomId('previous')
+                .setCustomId("previous")
                 .setLabel(previousEmoji)
-                .setStyle('PRIMARY'),
+                .setStyle("PRIMARY"),
             new MessageButton()
-                .setCustomId('next')
+                .setCustomId("next")
                 .setLabel(nextEmoji)
-                .setStyle('PRIMARY')
+                .setStyle("PRIMARY")
         );
 
     let message;
@@ -114,19 +113,19 @@ async function paginateEmbeds(channel, allowedUser, embeds, messageToEdit=null, 
         message = messageToEdit;
     }
 
-    const filter = interaction => (interaction.customId === 'previous'
-                                   || interaction.customId === 'next')
+    const filter = interaction => (interaction.customId === "previous"
+                                   || interaction.customId === "next")
                                   && interaction.user.id === allowedUser.id;
 
     const collector = message.createMessageComponentCollector({filter, time: timeout});
 
-    collector.on('collect', interaction => {
-        if (interaction.customId === 'previous') {
+    collector.on("collect", interaction => {
+        if (interaction.customId === "previous") {
             if (currentIndex === 0)
                 currentIndex = maxIndex; // loop back around
             else
                 currentIndex--; 
-        } else if (interaction.customId === 'next') {
+        } else if (interaction.customId === "next") {
             if (currentIndex === maxIndex)
                 currentIndex = 0;
             else
@@ -140,7 +139,7 @@ async function paginateEmbeds(channel, allowedUser, embeds, messageToEdit=null, 
         interaction.update({embeds: [newEmbed]});
     });
 
-    collector.on('end', collected => {
+    collector.on("end", () => {
         row.components.forEach(button => button.setDisabled(true));
         message.edit({components: [row]});
     });
@@ -148,8 +147,8 @@ async function paginateEmbeds(channel, allowedUser, embeds, messageToEdit=null, 
 
 
 function circularUsageOption(option) {
-    if (option.hasOwnProperty("next"))
-        option.next.push(option)
+    if (Object.prototype.hasOwnProperty.call(option, "next"))
+        option.next.push(option);
     else
         option.next = [option];
     option.circular = true;
@@ -163,7 +162,7 @@ function generateDescription(option) {
     // Generate a description from the checks
     for (const check in option.checks) {
         let value = option.checks[check];
-        const not = value && value.hasOwnProperty("not");
+        const not = value && Object.prototype.hasOwnProperty.call(value, "not");
         if (not) {
             value = value.not;
         }
@@ -183,7 +182,7 @@ function generateDescription(option) {
         description += "\n";
     }
 
-    if (option.hasOwnProperty("example")) {
+    if (Object.prototype.hasOwnProperty.call(option, "example")) {
         description += `**Example**: ${option.example}`;
     }
 
@@ -197,10 +196,10 @@ function sendUsage(message, usage, failedOn, failedArg) {
 
     const embed = new MessageEmbed()
         .setTitle("Incorrect Usage")
-        .setFooter(`Use ${message.client.serverConfig.get(message.guild.id).prefix}help for more information.`);
+        .setFooter({text: `Use ${message.client.serverConfig.get(message.guild.id).prefix}help for more information.`});
 
     if (failedArg === null)
-        embed.setDescription("Your usage is wrong.")
+        embed.setDescription("Your usage is wrong.");
     else if (failedArg === undefined)
         embed.setDescription("You are missing an argument. The argument can be:");
     else
@@ -216,7 +215,7 @@ function sendUsage(message, usage, failedOn, failedArg) {
 function getValidationFunction(message, check, _value) {
     let value;
     let invert = false;
-    if (_value && _value.hasOwnProperty("not")) {
+    if (_value && Object.prototype.hasOwnProperty.call(_value, "not")) {
         value = _value.not;
         invert = true;
     } else {
@@ -271,7 +270,7 @@ function getValidationFunction(message, check, _value) {
                 return true;
             return false;
         },
-    }
+    };
 
     let validationFunction;
     if (check === "passes"){
@@ -280,7 +279,7 @@ function getValidationFunction(message, check, _value) {
             return value.func(arg, message);
         }; 
     } else {
-        if (!validationFunctions.hasOwnProperty(check)) {
+        if (!Object.prototype.hasOwnProperty.call(validationFunctions, check)) {
             throw { 
                 name:        "CommandUsageError", 
                 message:     `There is no check called ${check}.`, 
@@ -329,7 +328,7 @@ async function checkUsage(message, usage, args, depth=0) {
 
         // depth < args.length allows for infinite (circular) objects for infinite arguments being checked
         if ((passedOptions[0].circular === true && depth < (args.length - 1))
-            || (passedOptions[0].circular !== true && passedOptions[0].hasOwnProperty("next"))) { 
+            || (passedOptions[0].circular !== true && Object.prototype.hasOwnProperty.call(passedOptions[0], "next"))) { 
             return await checkUsage(message, passedOptions[0].next, args, depth + 1);
         }
         return true;
@@ -357,37 +356,19 @@ function doCommand(commandObj, message, args) {
     }
 
     checkUsage(message, commandObj.usage, args)
-    .then(pass => {
-        if (pass !== true) {
-            const [usage, depth] = pass;
-            sendUsage(message, commandObj.usage, usage, args[depth]);
-        } else {
-            commandObj.execute(message, args);
-        }
-    })
-    .catch(error => {
-        console.error(error.toString());
-        console.trace();
-        process.exit(1);
-    });
-
-    /*try {
-    } catch (error) {
-        console.error(error.toString());
-        message.reply("There was an error trying to execute that command!");
-    }*/
-
-    /*if (pass !== true) {
-        const [usage, depth] = pass;
-        sendUsage(message, commandObj.usage, usage, args[depth]);
-    } else {
-        try {
-            commandObj.execute(message, args);
-        } catch (error) {
-            console.error(error);
-            message.reply("There was an error trying to execute that command!");
-        }
-    }*/
+        .then(pass => {
+            if (pass !== true) {
+                const [usage, depth] = pass;
+                sendUsage(message, commandObj.usage, usage, args[depth]);
+            } else {
+                commandObj.execute(message, args);
+            }
+        })
+        .catch(error => {
+            console.error(error.toString());
+            console.trace();
+            process.exit(1);
+        });
 }
 
 
@@ -402,4 +383,4 @@ module.exports = {
     checkUsage,
     doCommand,
     circularUsageOption,
-}
+};

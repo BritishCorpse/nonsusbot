@@ -1,6 +1,6 @@
 module.exports = {
-	name: "m",
-	execute (client) {
+    name: "m",
+    execute (client) {
         function deleteIfNotM(message) {
             // disable DMs
             if (message.guild === null) return;
@@ -17,5 +17,5 @@ module.exports = {
         client.on("messageUpdate", (oldMessage, message) => {
             deleteIfNotM(message);
         });
-	}
+    }
 };

@@ -15,7 +15,6 @@ global.__basedir = __dirname;
 
 const fs = require("fs");
 const Discord = require("discord.js");
-const request = require("request");
 const levenshtein = require("js-levenshtein");
 
 const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
@@ -42,7 +41,8 @@ const client = new Discord.Client({
         Discord.Intents.FLAGS.DIRECT_MESSAGES,
         Discord.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
         Discord.Intents.FLAGS.GUILD_MEMBERS,
-    ]
+    ],
+    allowedMentions: {parse: []} // make mentions not ping people
 });
 
 client.commands = new Discord.Collection();
@@ -126,41 +126,53 @@ if (!testing) {
     });
 }
 
-Reflect.defineProperty(client.currency, 'add', {
+// Create functions for adding and setting money
+Reflect.defineProperty(client.currency, "add", {
     /* eslint-disable-next-line func-name-matching */
     value: async function add(id, amount) {
-        const user = client.currency.get(id);
-        if (user) {
-            user.balance += Number(amount);
-            return user.save();
+        try {
+            const newUser = await Users.create({
+                user_id: id,
+                balance: amount
+            });
+
+            client.currency.set(id, newUser);
+            return newUser;
+        } catch (error) { // user already exists
+            if (error.name !== "SequelizeUniqueConstraintError") throw error;
+
+            const user = client.currency.get(id);
+            if (user) {
+                user.balance += Number.parseInt(amount);
+                return user.save();
+            }
         }
-        const newUser = await Users.create({
-            user_id: id,
-            balance: amount
-        });
-        client.currency.set(id, newUser);
-        return newUser;
     },
 });
 
-Reflect.defineProperty(client.currency, 'setBalance', {
+Reflect.defineProperty(client.currency, "setBalance", {
     /* eslint-disable-next-line func-name-matching */
     value: async function setBalance(id, amount) {
-        const user = client.currency.get(id);
-        if (user) {
-            user.balance = Number(amount);
-            return user.save();
+        try {
+            const newUser = await Users.create({
+                user_id: id,
+                balance: amount
+            });
+            client.currency.set(id, newUser);
+            return newUser;
+        } catch (error) {
+            if (error.name !== "SequelizeUniqueConstraintError") throw error;
+
+            const user = client.currency.get(id);
+            if (user) {
+                user.balance = Number.parseInt(amount);
+                return user.save();
+            }
         }
-        const newUser = await Users.create({
-            user_id: id,
-            balance: amount
-        });
-        client.currency.set(id, newUser);
-        return newUser;
     },
 });
 
-Reflect.defineProperty(client.currency, 'getBalance', {
+Reflect.defineProperty(client.currency, "getBalance", {
     /* eslint-disable-next-line func-name-matching */
     value: function getBalance(id) {
         const user = client.currency.get(id);
@@ -175,7 +187,7 @@ Reflect.defineProperty(client.currency, 'getBalance', {
 client.once("ready", async () => {
     const storedBalances = await Users.findAll();
     storedBalances.forEach(b => client.currency.set(b.user_id, b));
-    client.user.setActivity(`with dead people | @ me for my prefix!`);
+    client.user.setActivity("with dead people | @ me for my prefix!");
     console.log("Ready and logged in as " + client.user.tag + "!");
     console.log("\u0007"); // bell sound
 
@@ -207,7 +219,7 @@ client.on("messageCreate", async message => {
 
     // Check for user's badge. If there is no custom badge, make the normal badge.
     // Marked this out, will fix tomorrow.
-/*
+    /*
     const user = await Users.findOne({
         where: {
             user_id: message.member.id
@@ -238,7 +250,7 @@ client.on("messageCreate", async message => {
     const commandObject = getCommandObjectByName(command);
     if (commandObject === undefined) { // if the command doesn't exist
         // turn sub arrays into larger array (since some commands have multiple names in an array)
-        let allCommands = []; // list of all command names (including aliases)
+        const allCommands = []; // list of all command names (including aliases)
         client.commands.forEach(commandObj => {
             if (typeof commandObj.name === "object") {
                 for (const commandAlias of commandObj.name) {
@@ -276,7 +288,7 @@ client.on("messageCreate", async message => {
             }
         }
 
-        message.channel.send(`You do not have these required permissions: \`${missingPermissions.join('`, `')}\``);
+        message.channel.send(`You do not have these required permissions: \`${missingPermissions.join("`, `")}\``);
         return;
     }
 

@@ -9,4 +9,4 @@ module.exports = {
     async execute (message, args) {
         message.channel.send(`Hello, ${args[0]}`);
     }
-}
+};

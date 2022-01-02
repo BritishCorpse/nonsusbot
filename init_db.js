@@ -1,17 +1,17 @@
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 
-const sequelize = new Sequelize('currency_database', 'username', 'password', {
-	host: 'localhost',
-	dialect: 'sqlite',
-	logging: false,
-	storage: 'database.sqlite',
+const sequelize = new Sequelize("currency_database", "username", "password", {
+    host: "localhost",
+    dialect: "sqlite",
+    logging: false,
+    storage: "database.sqlite",
 });
 
-const CurrencyShop = require('./models/CurrencyShop')(sequelize, Sequelize.DataTypes);
-require('./models/Users')(sequelize, Sequelize.DataTypes);
-require('./models/UserItems')(sequelize, Sequelize.DataTypes);
+const CurrencyShop = require("./models/CurrencyShop")(sequelize, Sequelize.DataTypes);
+require("./models/Users")(sequelize, Sequelize.DataTypes);
+require("./models/UserItems")(sequelize, Sequelize.DataTypes);
 
-const force = process.argv.includes('--force') || process.argv.includes('-f');
+const force = process.argv.includes("--force") || process.argv.includes("-f");
 
 sequelize.sync({ force }).then(async () => {
 	const shop = [ 
@@ -73,5 +73,5 @@ sequelize.sync({ force }).then(async () => {
 	await Promise.all(shop);
 	console.log('Currency database synced.');
 
-	sequelize.close()
+    sequelize.close();
 }).catch(console.error);

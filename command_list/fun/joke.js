@@ -8,7 +8,7 @@ const jokes = redditjokes.concat(stupidstuff, wocka);
 const offensive = [];
 
 module.exports = {
-    name: 'joke',
+    name: "joke",
     description: "Finds a joke from the database, then sends it in the channel.",
 
     usage: [
@@ -19,6 +19,7 @@ module.exports = {
         let content = "";
         let good_joke = false;
 
+        let index;
         do {
             index = Math.floor(Math.random() * jokes.length);
             content = (jokes[index].body + jokes[index].title).replace(/(\s){2,}/g, "$1"); // remove duplicate spaces and new lines
@@ -45,4 +46,4 @@ module.exports = {
             sentMessage.react("👎");
         });
     }
-}
+};

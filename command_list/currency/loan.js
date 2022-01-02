@@ -5,12 +5,12 @@
 
 //ILL DO THIS LATER KTHX
 module.exports = {
-    name: 'loan',
-    description: 'Get a loan',
+    name: "loan",
+    description: "Get a loan",
 
     usage: [],
 
     execute (message, args) {
         
     }
-}
+};

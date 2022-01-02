@@ -3,7 +3,7 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const cp = require("child_process");
-const { fuzz, preset } = require("fuzzing");
+const { fuzz/*, preset*/ } = require("fuzzing");
 
 const sleep = require("util").promisify(setTimeout);
 
@@ -26,7 +26,7 @@ let mainBotClient;
 
 
 function startMainBot() {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
         mainBotProcess = cp.fork("./index.js");
 
         mainBotProcess.on("message", async message => {
@@ -37,6 +37,7 @@ function startMainBot() {
     });
 }
 
+/* global jest, beforeAll, afterEach, afterAll, describe, it, expect */
 
 beforeAll(() => {
     return startMainBot();
@@ -59,16 +60,16 @@ beforeAll(() => {
     client.prompt = (channel, message, timeout=10000) => {
         return new Promise(resolve => {
             channel.send(message)
-            .then(() => {
-                const filter = m => m.author.id === mainBotClient.user;
-                channel.awaitMessages({
-                    filter,
-                    max: 1,
-                    time: timeout,
-                    errors: ['time']
-                })
-                .then(messages => resolve(messages.first()));
-            });
+                .then(() => {
+                    const filter = m => m.author.id === mainBotClient.user;
+                    channel.awaitMessages({
+                        filter,
+                        max: 1,
+                        time: timeout,
+                        errors: ["time"]
+                    })
+                        .then(messages => resolve(messages.first()));
+                });
         });
     };
 
@@ -116,10 +117,12 @@ beforeAll(() => {
 
 // Delete the test channel
 afterAll(() => {
-    return new Promise(async (resolve, reject) => {
-        await testChannel.delete("Test complete");
-        mainBotProcess.kill();
-        resolve();
+    return new Promise(resolve => {
+        testChannel.delete("Test complete")
+            .then(() => {
+                mainBotProcess.kill();
+                resolve();
+            });
     });
 });
 
@@ -176,7 +179,7 @@ describe("fuzzing arguments", () => {
 
                     it("does not crash", () => {
                         expect(response)
-                        .toBeTruthy();
+                            .toBeTruthy();
                     });
                 });
             };
