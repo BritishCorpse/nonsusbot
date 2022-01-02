@@ -8,8 +8,8 @@ module.exports = {
 
     execute (message, args) {
         message.channel.send("Shutting down the bot...")
-        .then(() => {
-            process.exit();
-        });
+            .then(() => {
+                process.exit();
+            });
     }
 };

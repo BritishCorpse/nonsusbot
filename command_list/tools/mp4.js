@@ -11,7 +11,7 @@ module.exports = {
     usage: [
         { tag: "url",
             checks: {
-                matchesfully: /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/
+                matchesfully: /[a-zA-Z]+:\/\/.+?(\..+?)+/
             }
         }
     ],
@@ -20,7 +20,6 @@ module.exports = {
         message.channel.send("The MP4 command is currently broken. We apologize for the inconvenience.");
         return;
 
-        let content;
         const options = {
             method: "POST",
             url: "https://very.ninja",
@@ -29,7 +28,7 @@ module.exports = {
                 "content-type": "application/x-www-form-urlencoded"
             },
             body: "url=" + args[0] + "&sid=" + very_ninja_php_session_id
-        }
+        };
 
         request.post(options, (error, response, body) => {
             const root = parse(body);
@@ -42,19 +41,19 @@ module.exports = {
             const title = linkElement.getAttribute("download");
 
             message.channel.send("Getting MP4 file for\n`" + title + "`\n(this might take some time)...")
-            .then(() => {
-                request(link, (error2, response2, body2) => {
-                    const buffer = Buffer.from(body2, "utf8");
-                    if (buffer.byteLength > 8000000) {
-                        const embed = new MessageEmbed()
-                            .setDescription("The MP4 file you requested is too large to send through Discord, so here is the [link](" + link + ").");
-                        message.reply("", embed);
-                        return;
-                    }
-                    const attachment = new MessageAttachment(buffer, title + ".mp4");
-                    message.reply("here is the MP4 file you requested.", attachment);
+                .then(() => {
+                    request(link, (error2, response2, body2) => {
+                        const buffer = Buffer.from(body2, "utf8");
+                        if (buffer.byteLength > 8000000) {
+                            const embed = new MessageEmbed()
+                                .setDescription("The MP4 file you requested is too large to send through Discord, so here is the [link](" + link + ").");
+                            message.reply("", embed);
+                            return;
+                        }
+                        const attachment = new MessageAttachment(buffer, title + ".mp4");
+                        message.reply("here is the MP4 file you requested.", attachment);
+                    });
                 });
-            });
         });
     }
-}
+};

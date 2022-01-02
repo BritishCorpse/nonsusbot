@@ -1,8 +1,8 @@
-const { Message, MessageEmbed, Client, MessageActionRow } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 
 
 module.exports = {
-    name: 'kiss',
+    name: "kiss",
     description: "Kiss whoever you'd like to.",
 
     usage: [
@@ -10,9 +10,9 @@ module.exports = {
     ],
 
     async execute(message, args){
-        var randomColor = Math.floor(Math.random()*16777215).toString(16);
+        const randomColor = Math.floor(Math.random()*16777215).toString(16);
 
-        images = [
+        const images = [
             "https://c.tenor.com/F02Ep3b2jJgAAAAM/cute-kawai.gif",
             "https://c.tenor.com/V0nBQduEYb8AAAAM/anime-kiss-making-out.gif",
             "https://c.tenor.com/7T1cuiOtJvQAAAAM/anime-kiss.gif",
@@ -28,15 +28,15 @@ module.exports = {
             "https://c.tenor.com/e6cYiAPPCq4AAAAM/anime-kissing.gif"
         ];
 
-        if (message.author.id === '786301097953591326') {
+        if (message.author.id === "786301097953591326") {
             return message.channel.send("No poki. Don't do this.");
         }
-        let kissTarget = message.mentions.users.first();
+        const kissTarget = message.mentions.users.first();
         if (!kissTarget) {
             const embed = new MessageEmbed()
-            .setTitle(`${message.author.username} kisses ${message.author.username} :heart:!`)
-            .setImage(images[Math.floor(Math.random() * images.length)])
-            .setColor(randomColor)
+                .setTitle(`${message.author.username} kisses ${message.author.username} :heart:!`)
+                .setImage(images[Math.floor(Math.random() * images.length)])
+                .setColor(randomColor);
         
             return message.channel.send( {embeds: [embed]} );
         }
@@ -45,31 +45,31 @@ module.exports = {
             return message.channel.send("You're making me blush! :heart:");
         }
         // Disable below lines if you want people to be able to do actions to me.
-        else if (kissTarget.id === '484644637420552202') {
-            if (message.author.id !== '834035562864050237') {
-                return message.channel.send("Sorry, corpse is not accepting kisses currently.")
+        else if (kissTarget.id === "484644637420552202") {
+            if (message.author.id !== "834035562864050237") {
+                return message.channel.send("Sorry, corpse is not accepting kisses currently.");
             }
 
             else {
                 const embed = new MessageEmbed()
-                .setTitle(`${message.author.username} kisses ${kissTarget.username} :heart:!`)
-                .setImage(images[Math.floor(Math.random() * images.length)])
-                .setColor(randomColor)
+                    .setTitle(`${message.author.username} kisses ${kissTarget.username} :heart:!`)
+                    .setImage(images[Math.floor(Math.random() * images.length)])
+                    .setColor(randomColor);
             
                 return message.channel.send( {embeds: [embed]} );
-            };
-            ;
+            }
+            
         }
 
-        else if (kissTarget.id === '786301097953591326') {
+        else if (kissTarget.id === "786301097953591326") {
             return message.channel.send("Sorry not happening.");
         }
 
         else {
             const embed = new MessageEmbed()
-            .setTitle(`${message.author.username} kisses ${kissTarget.username} :heart:!`)
-            .setImage(images[Math.floor(Math.random() * images.length)])
-            .setColor(randomColor)
+                .setTitle(`${message.author.username} kisses ${kissTarget.username} :heart:!`)
+                .setImage(images[Math.floor(Math.random() * images.length)])
+                .setColor(randomColor);
         
             return message.channel.send( {embeds: [embed]} );
         }
@@ -77,4 +77,4 @@ module.exports = {
 
 
     }
-}
+};

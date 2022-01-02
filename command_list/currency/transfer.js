@@ -1,8 +1,5 @@
-const { Users } = require(`${__basedir}/db_objects`);
-
-
 module.exports = {
-    name: 'transfer',
+    name: "transfer",
     description: "Transfer coins from your account to someone else.",
 
     usage: [
@@ -19,7 +16,7 @@ module.exports = {
         const transferAmount = args[1];
         const transferTarget = message.mentions.users.first(); // args[0]
            
-        if (transferTarget.bot) return message.channel.send(`Sorry ${message.author.username}, you cannot give money to bot accounts.`)
+        if (transferTarget.bot) return message.channel.send(`Sorry ${message.author.username}, you cannot give money to bot accounts.`);
         if (!transferAmount || isNaN(transferAmount)) return message.channel.send(`Sorry ${message.author}, that's an invalid amount.`);
         if (transferAmount > currentAmount) return message.channel.send(`Sorry ${message.author} you don't have that much.`);
         if (transferAmount <= 0) return message.channel.send(`Please enter an amount greater than zero, ${message.author}.`);
@@ -29,4 +26,4 @@ module.exports = {
 
         return message.channel.send(`Successfully transferred ${transferAmount}💰 to ${transferTarget.tag}. Your remaining balance is: ${message.client.currency.getBalance(message.author.id)}💰`);
     }
-}
+};

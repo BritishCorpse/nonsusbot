@@ -3,8 +3,8 @@ const { userHasItem } = require(`${__basedir}/functions`);
 
 
 module.exports = {
-    name: 'dice',
-    description: 'Play against the computer in a game of dice.',
+    name: "dice",
+    description: "Play against the computer in a game of dice.",
 
     usage: [
         { tag: "bet", checks: {isinteger: null} },
@@ -12,7 +12,7 @@ module.exports = {
     ],
 
     async execute(message, args){
-        var randomColor = Math.floor(Math.random()*16777215).toString(16);
+        const randomColor = Math.floor(Math.random()*16777215).toString(16);
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
         // Check if the user has a casino membershio
@@ -22,7 +22,7 @@ module.exports = {
         }
 
         // Starting playing dice game.
-        let userBet = args[0];
+        const userBet = args[0];
         if (userBet === undefined) {
             message.channel.send(`🎲You did not specify your bet! Usage: ${prefix}dice {bet}🎲`);
             return;
@@ -33,11 +33,11 @@ module.exports = {
             return;
         }
 
-        else if (userBet === 'rules') {
+        else if (userBet === "rules") {
             const embed = new MessageEmbed()
-            .setTitle("Rules of dice.")
-            .setDescription("The player and computer both roll a six sided die. Whichever party rolls a higher number on the die, wins. The maximum bet for this gamemode is 10 million 💰's.")
-            .setColor(randomColor)
+                .setTitle("Rules of dice.")
+                .setDescription("The player and computer both roll a six sided die. Whichever party rolls a higher number on the die, wins. The maximum bet for this gamemode is 10 million 💰's.")
+                .setColor(randomColor);
             
             return message.channel.send({embeds: [embed]});
         }
@@ -68,4 +68,4 @@ module.exports = {
 
         message.channel.send({embeds: [embed]});
     }
-}
+};

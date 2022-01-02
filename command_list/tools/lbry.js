@@ -14,12 +14,12 @@ module.exports = {
 
     execute (message, args) {
         request("https://lighthouse.lbry.com/search?s=" + args.join(" "), (error, response, body) => {
-            parsed_body = JSON.parse(body);
+            const parsedBody = JSON.parse(body);
 
-            if (parsed_body[0] && parsed_body[0].name && parsed_body[0].claimId)
-                message.channel.send("https://odysee.com/" + parsed_body[0].name + ":" + parsed_body[0].claimId.slice(0, 9));
+            if (parsedBody[0] && parsedBody[0].name && parsedBody[0].claimId)
+                message.channel.send("https://odysee.com/" + parsedBody[0].name + ":" + parsedBody[0].claimId.slice(0, 9));
             else
                 message.channel.send("No LBRY video was found.");
         });
     }
-}
+};

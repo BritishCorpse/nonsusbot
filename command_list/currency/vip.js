@@ -2,7 +2,7 @@ const { userHasItem } = require(`${__basedir}/functions`);
 
 
 module.exports = {
-    name: 'vip',
+    name: "vip",
     description: "Become a VIP, if you have a VIP pass and VIP is available.",
 
     usage: [
@@ -28,4 +28,4 @@ module.exports = {
             message.channel.send(`You do not have the VIP pass. See the ${prefix}shop to buy it.`);
         }
     }
-}
+};

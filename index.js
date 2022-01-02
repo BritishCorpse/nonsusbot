@@ -15,7 +15,6 @@ global.__basedir = __dirname;
 
 const fs = require("fs");
 const Discord = require("discord.js");
-const request = require("request");
 const levenshtein = require("js-levenshtein");
 
 const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
@@ -128,7 +127,7 @@ if (!testing) {
 }
 
 // Create functions for adding and setting money
-Reflect.defineProperty(client.currency, 'add', {
+Reflect.defineProperty(client.currency, "add", {
     /* eslint-disable-next-line func-name-matching */
     value: async function add(id, amount) {
         try {
@@ -151,7 +150,7 @@ Reflect.defineProperty(client.currency, 'add', {
     },
 });
 
-Reflect.defineProperty(client.currency, 'setBalance', {
+Reflect.defineProperty(client.currency, "setBalance", {
     /* eslint-disable-next-line func-name-matching */
     value: async function setBalance(id, amount) {
         try {
@@ -173,7 +172,7 @@ Reflect.defineProperty(client.currency, 'setBalance', {
     },
 });
 
-Reflect.defineProperty(client.currency, 'getBalance', {
+Reflect.defineProperty(client.currency, "getBalance", {
     /* eslint-disable-next-line func-name-matching */
     value: function getBalance(id) {
         const user = client.currency.get(id);
@@ -188,7 +187,7 @@ Reflect.defineProperty(client.currency, 'getBalance', {
 client.once("ready", async () => {
     const storedBalances = await Users.findAll();
     storedBalances.forEach(b => client.currency.set(b.user_id, b));
-    client.user.setActivity(`with dead people | @ me for my prefix!`);
+    client.user.setActivity("with dead people | @ me for my prefix!");
     console.log("Ready and logged in as " + client.user.tag + "!");
     console.log("\u0007"); // bell sound
 
@@ -220,7 +219,7 @@ client.on("messageCreate", async message => {
 
     // Check for user's badge. If there is no custom badge, make the normal badge.
     // Marked this out, will fix tomorrow.
-/*
+    /*
     const user = await Users.findOne({
         where: {
             user_id: message.member.id
@@ -251,7 +250,7 @@ client.on("messageCreate", async message => {
     const commandObject = getCommandObjectByName(command);
     if (commandObject === undefined) { // if the command doesn't exist
         // turn sub arrays into larger array (since some commands have multiple names in an array)
-        let allCommands = []; // list of all command names (including aliases)
+        const allCommands = []; // list of all command names (including aliases)
         client.commands.forEach(commandObj => {
             if (typeof commandObj.name === "object") {
                 for (const commandAlias of commandObj.name) {
@@ -289,7 +288,7 @@ client.on("messageCreate", async message => {
             }
         }
 
-        message.channel.send(`You do not have these required permissions: \`${missingPermissions.join('`, `')}\``);
+        message.channel.send(`You do not have these required permissions: \`${missingPermissions.join("`, `")}\``);
         return;
     }
 

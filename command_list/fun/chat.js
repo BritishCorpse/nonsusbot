@@ -8,7 +8,7 @@ module.exports = {
 
     usage: [
         circularUsageOption(
-            { tag: "message", checks: {matches: {not: /[^\w?!.,;:'"\(\)\/]/}, isempty: {not: null}} }
+            { tag: "message", checks: {matches: {not: /[^\w?!.,;:'"()/]/}, isempty: {not: null}} }
         )
     ],
 
@@ -24,4 +24,4 @@ module.exports = {
             message.channel.send(parsedBody.message);
         });
     }
-}
+};

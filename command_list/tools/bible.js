@@ -41,6 +41,6 @@ module.exports = {
             }
 
             paginateEmbeds(message.channel, message.author, pages);
-      });
-  }
-}
+        });
+    }
+};

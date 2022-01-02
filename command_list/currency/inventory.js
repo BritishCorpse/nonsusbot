@@ -1,9 +1,9 @@
 const { getUserItems } = require(`${__basedir}/functions`);
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed } = require("discord.js");
 const { paginateEmbeds } = require(`${__basedir}/functions`);
 
 module.exports = {
-    name: 'inventory',
+    name: "inventory",
     description: "Shows your inventory, or someone else's.",
 
     usage: [
@@ -12,7 +12,7 @@ module.exports = {
     ],
 
     async execute (message, args) {
-        var randomColor = Math.floor(Math.random()*16777215).toString(16);
+        const randomColor = Math.floor(Math.random()*16777215).toString(16);
         
         const targetUser = message.mentions.users.first() || message.author;
 
@@ -21,7 +21,7 @@ module.exports = {
         const embeds = [];
 
         function makeEmbed() {
-            return new MessageEmbed().setTitle(`${targetUser.user}'s inventory!`).setColor(randomColor)
+            return new MessageEmbed().setTitle(`${targetUser.user}'s inventory!`).setColor(randomColor);
         }
 
         let embed;
@@ -44,4 +44,4 @@ module.exports = {
         
         paginateEmbeds(message.channel, message.author, embeds);
     }
-}
+};

@@ -33,10 +33,10 @@ module.exports = {
                 "q": args.join(" "),
                 "videoCaption": "closedCaption"
             }
-        }
+        };
 
         request(options, (error, response, body) => {
-            parsed_body = JSON.parse(body);
+            const parsed_body = JSON.parse(body);
 
             if (parsed_body.items && parsed_body.items[0])
                 message.channel.send("https://youtu.be/" + parsed_body.items[0].id.videoId);
@@ -44,4 +44,4 @@ module.exports = {
                 message.channel.send("No YouTube video was found.");
         });
     }
-}
+};

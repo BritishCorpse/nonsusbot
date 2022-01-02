@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 
 
 /* Rules:
@@ -61,7 +61,7 @@ class Card {
         else if (this.identifier < 11) // 2 to 10
             return `${this.value}`;
         else // face cards
-            return `${['Jack', 'Queen', 'King'][this.identifier - 11]}(${this.value})`;
+            return `${["Jack", "Queen", "King"][this.identifier - 11]}(${this.value})`;
     }
 }
 
@@ -81,8 +81,8 @@ function getCardEmbedFieldArguments(card, player, cardNumber) {
 
 
 module.exports = {
-    name: 'blackjack',
-    description: 'Play against the computer in a game of blacjack.',
+    name: "blackjack",
+    description: "Play against the computer in a game of blacjack.",
 
     usage: [
         { tag: "bet", checks: {isinteger: null},
@@ -94,7 +94,7 @@ module.exports = {
     ],
 
     execute(message, args) {
-        var randomColor = Math.floor(Math.random()*16777215).toString(16);
+        const randomColor = Math.floor(Math.random()*16777215).toString(16);
         
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
@@ -102,21 +102,21 @@ module.exports = {
 
         const userBet = Number.parseInt(args[0]);
 
-        if (args[0] === 'rules') {
+        if (args[0] === "rules") {
             const embed = new MessageEmbed()
-            .setTitle("Rules of blackjack.")
-            .setColor(randomColor)
-            .setDescription(
-                `Each participant attempts to beat the dealer by getting a count as close to 21 as possible, without going over 21.\nThe player to the left goes first and must decide whether to "stand" (not ask for another card) or "hit" (ask for another card in an attempt to get closer to a count of 21, or even hit 21 exactly). Thus, a player may stand on the two cards originally dealt to them, or they may ask the dealer for additional cards, one at a time, until deciding to stand on the total (if it is 21 or under), or goes "bust" (if it is over 21). In the latter case, the player loses and the dealer collects the bet wagered. The dealer then turns to the next player to their left and serves them in the same manner.\nWhen the dealer has served every player, the dealers face-down card is turned up. If the total is 17 or more, it must stand. If the total is 16 or under, they must take a card. The dealer must continue to take cards until the total is 17 or more, at which point the dealer must stand. If the dealer has an ace, and counting it as 11 would bring the total to 17 or more (but not over 21), the dealer must count the ace as 11 and stand. The dealer's decisions, then, are automatic on all plays, whereas the player always has the option of taking one or more cards.\nThe maximum bet for this gamemode is 25 million 💰's.`
-            )
-            .addField('Rules credit', "[Bicycle Cards](https://bicyclecards.com/how-to-play/blackjack/)");
+                .setTitle("Rules of blackjack.")
+                .setColor(randomColor)
+                .setDescription(
+                    "Each participant attempts to beat the dealer by getting a count as close to 21 as possible, without going over 21.\nThe player to the left goes first and must decide whether to \"stand\" (not ask for another card) or \"hit\" (ask for another card in an attempt to get closer to a count of 21, or even hit 21 exactly). Thus, a player may stand on the two cards originally dealt to them, or they may ask the dealer for additional cards, one at a time, until deciding to stand on the total (if it is 21 or under), or goes \"bust\" (if it is over 21). In the latter case, the player loses and the dealer collects the bet wagered. The dealer then turns to the next player to their left and serves them in the same manner.\nWhen the dealer has served every player, the dealers face-down card is turned up. If the total is 17 or more, it must stand. If the total is 16 or under, they must take a card. The dealer must continue to take cards until the total is 17 or more, at which point the dealer must stand. If the dealer has an ace, and counting it as 11 would bring the total to 17 or more (but not over 21), the dealer must count the ace as 11 and stand. The dealer's decisions, then, are automatic on all plays, whereas the player always has the option of taking one or more cards.\nThe maximum bet for this gamemode is 25 million 💰's."
+                )
+                .addField("Rules credit", "[Bicycle Cards](https://bicyclecards.com/how-to-play/blackjack/)");
 
             message.channel.send({embeds: [embed]});
             return;
-        } else if (args[0] === undefined || args[0] === '') {
+        } else if (args[0] === undefined || args[0] === "") {
             message.channel.send(`🎲You did not specify your bet! Usage: ${prefix}blackjack <bet>🎲`);
             return;
-        } else if (userBet <= 0 || userBet.toString() === 'NaN') { // invalid bets
+        } else if (userBet <= 0 || userBet.toString() === "NaN") { // invalid bets
             message.channel.send("🎲You must give a valid bet!🎲");
             return;
         } else if (userBet > 25000000) {
@@ -172,7 +172,7 @@ module.exports = {
                 .setColor(randomColor);
 
             for (const i in dealerCards) {
-                embed.addField(...getCardEmbedFieldArguments(dealerCards[i], 'The dealer', Number.parseInt(i) + 1));
+                embed.addField(...getCardEmbedFieldArguments(dealerCards[i], "The dealer", Number.parseInt(i) + 1));
             }
             
             embed.addField("\u200b", "\u200b"); // space
@@ -189,20 +189,20 @@ module.exports = {
         const row = new MessageActionRow()
             .addComponents(
                 new MessageButton()
-                    .setCustomId('stand')
-                    .setLabel('🏳️')
-                    .setStyle('SECONDARY'),
+                    .setCustomId("stand")
+                    .setLabel("🏳️")
+                    .setStyle("SECONDARY"),
                 new MessageButton()
-                    .setCustomId('hit')
-                    .setLabel('🚩')
-                    .setStyle('DANGER')
+                    .setCustomId("hit")
+                    .setLabel("🚩")
+                    .setStyle("DANGER")
             );
 
-        message.channel.send({embeds: [embed], components: [row]}).then(botMessage => {1
+        message.channel.send({embeds: [embed], components: [row]}).then(botMessage => {1;
             let userPlayed = false; // used to cancel the message given if the user didn't do anything when the dealer automatically lost
 
-            const filter = interaction => (interaction.customId === 'stand'
-                                           || interaction.customId === 'hit')
+            const filter = interaction => (interaction.customId === "stand"
+                                           || interaction.customId === "hit")
                                           && interaction.user.id === message.author.id;
 
             const collector = botMessage.createMessageComponentCollector({filter, time: 60000});
@@ -219,7 +219,7 @@ module.exports = {
 
                 // TODO: make this cleaner:
                 if (dealerScore > 21) {
-                    gameEndEmbed.setFooter(`The dealer got a bust! ${username} won the game! +${userBet}💰`)
+                    gameEndEmbed.setFooter(`The dealer got a bust! ${username} won the game! +${userBet}💰`);
                     message.client.currency.add(message.author.id, userBet);
                 } else if (userScore > 21) {
                     gameEndEmbed.setFooter(`${username} got a bust! The dealer won the game! -${userBet}💰`);
@@ -228,7 +228,7 @@ module.exports = {
                     gameEndEmbed.setFooter(`${username} lost the game! -${userBet}💰`);
                     message.client.currency.add(message.author.id, -userBet);
                 } else if (userScore > dealerScore) {
-                    gameEndEmbed.setFooter(`${username} won the game! +${userBet}💰`)
+                    gameEndEmbed.setFooter(`${username} won the game! +${userBet}💰`);
                     message.client.currency.add(message.author.id, userBet);
                 } else {
                     gameEndEmbed.setFooter("It's a draw!");
@@ -240,13 +240,13 @@ module.exports = {
 
             //let hitTimes = 0;
 
-            collector.on('collect', interaction => {
+            collector.on("collect", interaction => {
                 userPlayed = true;
 
-                if (interaction.customId === 'stand') {
+                if (interaction.customId === "stand") {
                     interaction.deferUpdate();
                     endGame();
-                } else if (interaction.customId === 'hit') {
+                } else if (interaction.customId === "hit") {
                     // Take a new card
                     userCards.push(getCard());
 
@@ -263,7 +263,7 @@ module.exports = {
                 }
             });
             
-            collector.on('end', collected => {
+            collector.on("end", collected => {
                 console.log(collected.size); 
                 if (!userPlayed) {
                     message.channel.send(`Hello? Did you fall asleep?\nYou can't escape the loss, You lost ${userBet}💰`);
@@ -285,4 +285,4 @@ module.exports = {
             }
         });
     }
-}
+};

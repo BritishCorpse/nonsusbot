@@ -15,7 +15,7 @@ const funnyReplies = [
 
 
 module.exports = {
-    name: 'tempban',
+    name: "tempban",
     description: "Temporarily bans a user from the guild, for a determined amount of days.",
     userPermissions: ["BAN_MEMBERS"],
 
@@ -25,7 +25,7 @@ module.exports = {
                 { tag: "time", checks: {isinteger: null},
                     next: [
                         circularUsageOption(
-                            { tag: "reason", checks: {matches: {not: /[^\w?!.,;:'"\(\)\/]/}, isempty: {not: null}} }
+                            { tag: "reason", checks: {matches: {not: /[^\w?!.,;:'"()/]/}, isempty: {not: null}} }
                         )
                     ]
                 }
@@ -34,10 +34,10 @@ module.exports = {
     ],
 
     execute (message, args) {
-        var randomColor = Math.floor(Math.random()*16777215).toString(16);
+        const randomColor = Math.floor(Math.random()*16777215).toString(16);
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
-        let banUser = message.mentions.members.first();
+        const banUser = message.mentions.members.first();
         const banTime = args[1];
         const banReason = args.slice(2).join(" ");
 
@@ -59,8 +59,8 @@ module.exports = {
             .setColor(randomColor);
 
         message.channel.send({embeds: [embed]});
-            banUser.ban({days: banTime, reason: banReason})
+        banUser.ban({days: banTime, reason: banReason})
             .then(console.log)
             .catch(console.error);
     }
-}
+};

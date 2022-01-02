@@ -1,15 +1,15 @@
-const { Op } = require('sequelize');
+const { Op } = require("sequelize");
 const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
 const { circularUsageOption } = require(`${__basedir}/functions`);
 
 
 module.exports = {
-    name: 'buy',
+    name: "buy",
     description: "Buys an item from the shop.",
 
     usage: [
         circularUsageOption(
-            { tag: "item", checks: {matches: {not: /[^\w?!.,;:'"\(\)]/}, isempty: {not: null}} }
+            { tag: "item", checks: {matches: {not: /[^\w?!.,;:'"()]/}, isempty: {not: null}} }
         )
     ],
 
@@ -37,4 +37,4 @@ module.exports = {
         message.client.currency.add(message.author.id, -item.cost);
         await user.addItem(item);
     }
-}
+};

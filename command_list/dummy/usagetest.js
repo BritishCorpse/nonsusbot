@@ -1,5 +1,5 @@
 module.exports = {
-    name: 'usagetest',
+    name: "usagetest",
     description: "test usage checking",
     developer: true,
 
@@ -18,8 +18,8 @@ module.exports = {
                 isinteger: null,            // checks if argument is a number
                 // matches: /regex/,        // checks if argument matches the regex
                 passes: {                // custom function for more complex logic if needed, but shouldn't be needed
-                     func: arg => arg === "123",
-                     description: (not, value) => `is ${not ? "not " : ""}123`, // custom description in the usage
+                    func: arg => arg === "123",
+                    description: not => `is ${not ? "not " : ""}123`, // custom description in the usage
                 },
             },
             next: [       // next argument when first arg passes the test
@@ -42,4 +42,4 @@ module.exports = {
     execute (message, args) {
         message.reply("i worked yay");
     }
-}
+};

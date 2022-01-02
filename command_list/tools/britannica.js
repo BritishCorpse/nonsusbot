@@ -31,4 +31,4 @@ module.exports = {
             //message.channel.send(parsed_body[1][0] + ": " + parsed_body[3][0]);
         });
     }
-}
+};

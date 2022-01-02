@@ -1,4 +1,3 @@
-const fs = require("fs");
 const { MessageEmbed } = require("discord.js");
 const defaultServerConfig = require(`${__basedir}/default_server_config.json`);
 const { saveServerConfig } = require(`${__basedir}/functions`);
@@ -43,7 +42,7 @@ module.exports = {
                 },
                 { tag: "option", checks: {is: "prefix"},
                     next: [
-                        { tag: "prefix", checks: {matchesfully: /[a-zA-Z0-9~`!@#$%^&*()_+\-={}|\[\]\\:";'<>?,.\/]{0,2}[~`!@#$%^&*()_+\-={}|\[\]\\:";'<>?,.\/]/} }
+                        { tag: "prefix", checks: {matchesfully: /[a-zA-Z0-9~`!@#$%^&*()_+\-={}|[\]\\:";'<>?,./]{0,2}[~`!@#$%^&*()_+\-={}|[\]\\:";'<>?,./]/} }
                     ]
                     
                 }
@@ -52,24 +51,24 @@ module.exports = {
     ],
 
     execute (message, args) {
-        var randomColor = Math.floor(Math.random()*16777215).toString(16);
+        const randomColor = Math.floor(Math.random()*16777215).toString(16);
         
         if (args[0] === "set") {
             if (args[1] in defaultServerConfig) {
                 // special cases for each config option
                 // (return; in case of error)
 
-                if (['m_channel_id', 'verify_channel_id', 'log_channel_id', 'level_channel_id'].includes(args[1])) {
+                if (["m_channel_id", "verify_channel_id", "log_channel_id", "level_channel_id"].includes(args[1])) {
                     if (!isValidGuildTextChannelId(message.guild, args[2])) {
                         message.channel.send("Channel ID is invalid.");
                         return;
                     }
-                } else if (['verify_role_id', 'vip_role_id'].includes(args[2])) {
+                } else if (["verify_role_id", "vip_role_id"].includes(args[2])) {
                     if (!isValidGuildRodeId(args[2])) {
                         message.channel.send("Role ID is invalid.");
                         return;
                     }
-                } else if (args[1] === 'prefix') {
+                } else if (args[1] === "prefix") {
                     if (!isValidPrefix(args[2])) {
                         message.channel.send("Prefix is invalid");
                         return;
@@ -93,14 +92,14 @@ module.exports = {
 
                 message.channel.send("Set value `" + args[1] + "` to `" + args[2] + "`");
             } else {
-                message.channel.send("The value `" + args[1] + "` doesn't exist")
+                message.channel.send("The value `" + args[1] + "` doesn't exist");
             }
 
         } else if (args[0] === "list") {
             // List all the configs
 
             let descriptionString = "";
-            let config = message.client.serverConfig.get(message.guild.id);
+            const config = message.client.serverConfig.get(message.guild.id);
             for (const key in defaultServerConfig) {
                 let value;
                 if (config[key] === "" || config[key] === undefined) {
@@ -123,4 +122,4 @@ module.exports = {
             message.channel.send("Options are: set, list");
         }
     }
-}
+};

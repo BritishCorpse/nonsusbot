@@ -1,65 +1,60 @@
+function randomMoneyAmount() {
+    return Math.floor(Math.random() * 400);
+}
+
+
+function selectMathQuestion(decidingNumber) {
+    if (decidingNumber === 0)
+        return "+";
+    return "-";
+}
+
+
 module.exports = {
-    name: 'randomevent',
+    name: "randomevent",
     execute(client) {
         client.on("messageCreate", async message => {
-            var randomColor = Math.floor(Math.random()*16777215).toString(16);
+            //const randomColor = Math.floor(Math.random()*16777215).toString(16);
             
             if (message.author.bot) return;
 
             if (Math.random() < 0.002) {
-
-                function randomMoneyAmount() {
-                    return Math.floor(Math.random() * 400)
-                }
-
                 const moneyAmount = randomMoneyAmount();
                 const decidingNumber = Math.floor(Math.random() * 2);
-
-                function selectMathQuestion() {
-                    if (decidingNumber === 0)
-                        return "+";
-                    return "-";
-                }
 
                 const mathNumberOne = Math.floor(Math.random() * 100);
                 const mathNumberTwo = Math.floor(Math.random() * 100);
 
-                const mathType = selectMathQuestion();
+                const mathType = selectMathQuestion(decidingNumber);
 
-                function randomEventAnswer() {
-                    if (decidingNumber === 0)
-                        return mathNumberOne + mathNumberTwo;
-                    return mathNumberOne - mathNumberTwo;
-                }
-
-                let answer = randomEventAnswer();
+                const answer = mathNumberOne + (mathNumberTwo * (decidingNumber === 0 ? 1 : -1));
 
                 message.reply("A random event has happened!");
                 message.channel.send(`Math: What is ${mathNumberOne} ${mathType} ${mathNumberTwo}? If you answer correctly, you will get ${moneyAmount}💰`)
-                .then(async () => {
+                    .then(async () => {
 
-                    const filter = m => message.author.id === m.author.id;
-                    console.log(message.content);
+                        const filter = m => message.author.id === m.author.id;
+                        console.log(message.content);
 
-                    message.channel.awaitMessages({filter, time: 60000, max: 1, errors: ['time']})
-                    .then(async collected => {
+                        message.channel.awaitMessages({filter, time: 60000, max: 1, errors: ["time"]})
+                            .then(async collected => {
 
-                        if (collected.first().content === answer.toString()) {
-                            message.channel.send(`The answer is ${answer}. You were correct!\n+${moneyAmount}💰`);
-                            message.client.currency.add(message.author.id, moneyAmount);
-                            return;
-                        }
+                                if (collected.first().content === answer.toString()) {
+                                    message.channel.send(`The answer is ${answer}. You were correct!\n+${moneyAmount}💰`);
+                                    message.client.currency.add(message.author.id, moneyAmount);
+                                    return;
+                                }
 
-                        else {
-                            message.channel.send("Incorrect answer! The event has ended.");
-                            return;
-                        }
+                                else {
+                                    message.channel.send("Incorrect answer! The event has ended.");
+                                    return;
+                                }
                         
-                    }).catch(() => {
-                        message.channel.send('The random event has ended!');
+                            }).catch(() => {
+                                message.channel.send("The random event has ended!");
+                            });
                     });
-                });
             }
         });
     } 
-}
+};

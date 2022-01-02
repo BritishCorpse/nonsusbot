@@ -1,11 +1,11 @@
 const { MessageEmbed } = require("discord.js");
 
-const { userHasItem } = require(`${__basedir}/functions`);
+//const { userHasItem } = require(`${__basedir}/functions`);
 
 
 module.exports = {
-    name: 'coinflip',
-    description: 'Flip a coin!',
+    name: "coinflip",
+    description: "Flip a coin!",
 
     usage: [
         { tag: "bet", checks: {isinteger: null},
@@ -17,23 +17,23 @@ module.exports = {
     ],
 
     execute(message, args) {
-        var randomColor = Math.floor(Math.random()*16777215).toString(16);
+        const randomColor = Math.floor(Math.random()*16777215).toString(16);
 
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
         // Check if the user has a casino membershio
 
-        if (args[0] === 'rules') {
+        if (args[0] === "rules") {
             const embed = new MessageEmbed()
-            .setTitle("Coinflip")
-            .setDescription(`The player calls either heads or tails, the computer then flips a coin. If the player is correct, they gain their bet.`)
-            .setColor(randomColor);
+                .setTitle("Coinflip")
+                .setDescription("The player calls either heads or tails, the computer then flips a coin. If the player is correct, they gain their bet.")
+                .setColor(randomColor);
             
             message.channel.send({embeds: [embed]});
             return;
         }
 
-        let userBet = Number.parseInt(args[0]);
+        const userBet = Number.parseInt(args[0]);
         if (userBet === undefined) {
             message.channel.send(`🎲You did not specify your bet! Usage: ${prefix}coinflip {bet} {heads or tails}🎲`);
             return;
@@ -49,31 +49,31 @@ module.exports = {
             return;
         }
 
-        let userChoice = args[1];
+        const userChoice = args[1];
         if (!userChoice) {
-            message.channel.send(`🎲The coin landed on the floor. You didn't call it out!🎲`);
+            message.channel.send("🎲The coin landed on the floor. You didn't call it out!🎲");
             return;
         }
 
         function coinflip() {
-            return Math.floor(Math.random() * 2)
+            return Math.floor(Math.random() * 2);
         }
 
-        let coinflipResult = coinflip()
+        const coinflipResult = coinflip();
 
         function gameResult() {
             if (coinflipResult === 1) {
-                return 'heads'
+                return "heads";
             }
 
             else if (coinflipResult === 0) {
-                return 'tails'
+                return "tails";
             }
         }
 
         const embed = new MessageEmbed()
-        .setTitle("The coin has landed!")
-        .setColor(randomColor)
+            .setTitle("The coin has landed!")
+            .setColor(randomColor);
 
         function checkResult() {
             if (gameResult() === userChoice) {
@@ -95,10 +95,10 @@ module.exports = {
             message.channel.send({embeds: [embed]});
         }
 
-        checkResult()
+        checkResult();
 
 
 
 
     }
-}
+};

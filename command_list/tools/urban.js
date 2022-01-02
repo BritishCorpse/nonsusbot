@@ -33,11 +33,11 @@ module.exports = {
             qs: {
                 "term": args.join(" ")
             }
-        }
+        };
 
         request(options, (error, response, body) => {
-            parsed_body = JSON.parse(body);
-            let embeds = [];
+            const parsed_body = JSON.parse(body);
+            const embeds = [];
 
             let number_of_definitions = 0;
 
@@ -66,5 +66,5 @@ module.exports = {
                 message.channel.send({embeds: [embed]});
             }
         });
-  }
-}
+    }
+};
