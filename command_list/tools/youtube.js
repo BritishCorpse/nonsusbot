@@ -36,10 +36,10 @@ module.exports = {
         };
 
         request(options, (error, response, body) => {
-            const parsed_body = JSON.parse(body);
+            const parsedBody = JSON.parse(body);
 
-            if (parsed_body.items && parsed_body.items[0])
-                message.channel.send("https://youtu.be/" + parsed_body.items[0].id.videoId);
+            if (parsedBody.items && parsedBody.items[0])
+                message.channel.send("https://youtu.be/" + parsedBody.items[0].id.videoId);
             else
                 message.channel.send("No YouTube video was found.");
         });

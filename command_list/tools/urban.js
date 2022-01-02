@@ -2,9 +2,8 @@ const request = require("request");
 const { MessageEmbed } = new require("discord.js");
 const { x_rapidapi_key } = require(`${__basedir}/config.json`);
 const { circularUsageOption } = require(`${__basedir}/functions`);
+const { paginateEmbeds } = require(`${__basedir}/functions`);
 
-
-const max_number_of_definitions = 2;
 
 module.exports = {
     name: ["urban", "ud"],
@@ -36,15 +35,11 @@ module.exports = {
         };
 
         request(options, (error, response, body) => {
-            const parsed_body = JSON.parse(body);
+            const parsedBody = JSON.parse(body);
             const embeds = [];
 
-            let number_of_definitions = 0;
 
-            for (const definition of parsed_body.list) {
-                if (number_of_definitions >= max_number_of_definitions) break;
-                number_of_definitions++;
-
+            for (const definition of parsedBody.list) {
                 const embed = new MessageEmbed()
                     .setTitle(definition.word)
                     .setURL(definition.permalink)
@@ -60,10 +55,8 @@ module.exports = {
                 embeds.push(new MessageEmbed());
                 embeds[embeds.length - 1].setTitle("No definition found");
                 embeds[embeds.length - 1].setDescription("No definition was found");
-            }
-
-            for (const embed of embeds) {
-                message.channel.send({embeds: [embed]});
+            } else {
+                paginateEmbeds(message.channel, message.author, embeds);
             }
         });
     }
