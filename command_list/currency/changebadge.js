@@ -1,3 +1,5 @@
+const { Users } = require(`${__basedir}/db_objects`);
+
 module.exports = {
     name: 'changebadge',
     description: 'Change your badge if you have one.',
