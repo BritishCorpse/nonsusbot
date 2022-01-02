@@ -271,7 +271,7 @@ module.exports = {
                 }
             });
             
-            collector.on("end", collected => {
+            collector.on("end", () => {
                 if (!userPlayed) {
                     message.channel.send(`Hello? Did you fall asleep?\nYou can't escape the loss, You lost ${userBet}💰`);
                     // don't give the bet back

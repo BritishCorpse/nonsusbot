@@ -29,7 +29,7 @@ module.exports = {
         }
 
         if (item.isBadge) {
-            message.channel.send("Looks like you've bought a badge! We'll go ahead and apply that for you.")
+            message.channel.send("Looks like you've bought a badge! We'll go ahead and apply that for you.");
             await Users.update({ badge: item.itemEmoji }, { where: { user_id: message.author.id } });
         }
         message.reply(`You bought ${item.itemEmoji}${item.name}.`);

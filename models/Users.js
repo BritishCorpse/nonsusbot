@@ -4,19 +4,19 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             unique: true,
             allowNull: false,
-			primaryKey: true,
-		},
-		balance: { 
-			type: DataTypes.INTEGER,
-			defaultValue: 0,
-			allowNull: false,
-		},
-		badge: {
-			type: DataTypes.STRING,
-			allowNull: true,
-		},
-	}, {
-		timestamps: false,
-	});
+            primaryKey: true,
+        },
+        balance: { 
+            type: DataTypes.INTEGER,
+            defaultValue: 0,
+            allowNull: false,
+        },
+        badge: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+    }, {
+        timestamps: false,
+    });
 };
  
