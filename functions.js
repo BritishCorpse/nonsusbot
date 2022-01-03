@@ -98,11 +98,8 @@ async function userHasItem(userId, itemName) {
             }
         }
     });
-    console.log(item);
 
     const userItems = await getUserItems(userId);
-    console.log(userItems);
-    //if (userItems.find(userItem => userItem.item.name === itemName) !== undefined)
     if (userItems.find(userItem => userItem.item_id === item.id) !== undefined)
         return true;
     return false;
@@ -118,7 +115,7 @@ function saveServerConfig(serverConfig) {
 }
 
 
-async function paginateEmbeds(channel, allowedUser, embeds, { useDropdown=false, useButtons=true, messageToEdit=null, previousEmoji="<", nextEmoji=">", addPagesInFooter=true, timeout=120000 }) {
+async function paginateEmbeds(channel, allowedUser, embeds, { useDropdown=false, useButtons=true, messageToEdit=null, previousEmoji="<", nextEmoji=">", addPagesInFooter=true, timeout=120000 }={}) {
     // Idea from https://www.npmjs.com/package/discord.js-pagination
     // Creates reactions allowing multiple embed pages
 
@@ -199,16 +196,16 @@ async function paginateEmbeds(channel, allowedUser, embeds, { useDropdown=false,
                 currentIndex++;
         } else if (interaction.customId === "dropdown") {
             currentIndex = Number.parseInt(interaction.values[0]);
+
+            selectMenuRow.components[0].options.forEach(option => {
+                option.default = false;
+            });
+            selectMenuRow.components[0].options[currentIndex].default = true;
         }
 
         let newEmbed = embeds[currentIndex];
         if (addPagesInFooter)
             newEmbed = addPageNumbersToFooter(newEmbed, currentIndex + 1, maxIndex + 1);
-
-        selectMenuRow.components[0].options.forEach(option => {
-            option.default = false;
-        });
-        selectMenuRow.components[0].options[currentIndex].default = true;
 
         interaction.update({embeds: [newEmbed], components: rows});
     });
