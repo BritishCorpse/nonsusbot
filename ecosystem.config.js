@@ -4,5 +4,8 @@ module.exports = {
         script : "./index.js",
         error_file: "./logs/err.log",
         out_file: "./logs/out.log",
+        env: {
+            "USING_PM2": "true"
+        }
     }]
 };

@@ -1,17 +1,18 @@
 const fs = require("fs");
+const levenshtein = require("js-levenshtein");
 const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
-
 const { Op } = require("sequelize");
+
 const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
 
 
 const descriptionFormats = {
     isempty: not => `is ${not ? "not " : ""}empty`,
-    is: (not, value) => `is ${not ? "not " : ""}\`${value}\``,
-    isin: (not, value) => `is ${not ? "not " : ""}one of \`${value.join(", ")}\``,
+    is: (not, value) => `is ${not ? "not " : ""}${formatBacktick(value)}`,
+    isin: (not, value) => `is ${not ? "not " : ""}one of ${value.map(formatBacktick).join(", ")}`,
     isinteger: not => `is ${not ? "not " : ""}an integer`,
-    matches: (not, value) => `${not ? "does not match" : "matches"} \`\`${value}\`\``,
-    matchesfully: (not, value) => `${not ? "does not match" : "matches"} fully \`\`${value}\`\``,
+    matches: (not, value) => `${not ? "does not match" : "matches"} ${formatBacktick(value)}`,
+    matchesfully: (not, value) => `${not ? "does not match" : "matches"} fully ${formatBacktick(value)}`,
     //isuserid: (not, value) => `is ${not ? "not " : ""}a user`,
     isbanneduseridinguild: not => `is ${not ? "not " : ""}a banned user in the guild`,
     isuseridinguild: not => `is ${not ? "not " : ""}a user id in the guild`,
@@ -35,6 +36,30 @@ function collectionToJSON(collection) {
 
 function getCommandCategories() {
     return fs.readdirSync(`${__basedir}/command_list`);
+}
+
+
+function getAllCommandNames(commandsCollection) {
+    // returns all command names including aliases from a commands collection
+    const allCommands = [];
+    commandsCollection.forEach(commandObj => {
+        if (typeof commandObj.name === "object") {
+            for (const commandAlias of commandObj.name)
+                allCommands.push(commandAlias);
+        } else
+            allCommands.push(commandObj.name);
+    });
+    return allCommands;
+}
+
+
+function getSimilarities(inputString, array) {
+    const matches = [];
+    for (const string of array) {
+        const similarity = levenshtein(inputString, string);
+        matches.push({string, similarity});
+    }
+    return matches;
 }
 
 
@@ -156,6 +181,11 @@ function circularUsageOption(option) {
 }
 
 
+function formatBacktick(name) {
+    return `\`\`${name}\`\``;
+}
+
+
 function generateDescription(option) {
     let description = "";
 
@@ -203,7 +233,7 @@ function sendUsage(message, usage, failedOn, failedArg) {
     else if (failedArg === undefined)
         embed.setDescription("You are missing an argument. The argument can be:");
     else
-        embed.setDescription(`\`${failedArg}\` is an invalid argument. The argument can be:`);
+        embed.setDescription(`${formatBacktick(failedArg)} is an invalid argument. The argument can be:`);
 
     for (const option of failedOn)
         embed.addField(`<${option.tag}>`, generateDescription(option));
@@ -379,6 +409,8 @@ function doCommand(commandObj, message, args) {
 module.exports = {
     collectionToJSON,
     getCommandCategories,
+    getAllCommandNames,
+    getSimilarities,
     getUserItems,
     userHasItem,
     saveServerConfig,
@@ -387,4 +419,5 @@ module.exports = {
     checkUsage,
     doCommand,
     circularUsageOption,
+    formatBacktick,
 };

@@ -6,7 +6,7 @@
 
 // Set testing global directory
 global.testing = false;
-if (process.send) {
+if (process.send && process.env.USING_PM2 !== "true") {
     global.testing = true;
 }
 
@@ -15,14 +15,16 @@ global.__basedir = __dirname;
 
 const fs = require("fs");
 const Discord = require("discord.js");
-const levenshtein = require("js-levenshtein");
 
-const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
+const { Users/*, CurrencyShop*/ } = require(`${__basedir}/db_objects`);
 
 // for common functions
 const {
     saveServerConfig,
     getCommandCategories,
+    getAllCommandNames,
+    getSimilarities,
+    formatBacktick,
     doCommand,
 
 } = require(`${__basedir}/functions`);
@@ -242,41 +244,31 @@ client.on("messageCreate", async message => {
     */
 
     const args = message.content.slice(prefix.length)
-        .replace(/\s+/, " ")
-        .trim()
         .split(" ");
     const command = args.shift();
+    if (command === "") {
+        console.log('h');
+        return;
+    }
 
-    const commandObject = getCommandObjectByName(command);
+    let commandObject = getCommandObjectByName(command);
     if (commandObject === undefined) { // if the command doesn't exist
         // turn sub arrays into larger array (since some commands have multiple names in an array)
-        const allCommands = []; // list of all command names (including aliases)
-        client.commands.forEach(commandObj => {
-            if (typeof commandObj.name === "object") {
-                for (const commandAlias of commandObj.name) {
-                    allCommands.push(commandAlias);
-                }
-            } else {
-                allCommands.push(commandObj.name);
-            }
-        });
+        const allCommands = getAllCommandNames(client.commands); // list of all command names (including aliases)
 
-        const topCommands = []; // list of top command matches
+        const similarities = getSimilarities(command, allCommands);
+        const topCommands = similarities.filter(match => match.similarity < 3);
 
-        for (const commandName of allCommands) {
-            const similarity = levenshtein(command, commandName);
-            if (similarity < 3) {
-                topCommands.push(commandName);
-            }
-        }
-
-        if (topCommands.length === 0) {
-            message.channel.send("Command not found. No similar command was found.");
+        if (topCommands.length === 1) {
+            commandObject = getCommandObjectByName(topCommands[0].string);
+            message.channel.send(`The command ${formatBacktick(command)} does not exist. Running ${formatBacktick(topCommands[0].string)}...`);
+        } else if (topCommands.length === 0) {
+            message.channel.send(`The command ${formatBacktick(command)} does not exist. No similar command was found.`);
+            return;
         } else {
-            message.channel.send("Command not found. Similar commands: " + topCommands.join(", "));
+            message.channel.send(`The command ${formatBacktick(command)} does not exist. Did you mean: ${topCommands.map(c => formatBacktick(c.string)).join(", ")}?`);
+            return;
         }
-
-        return;
     }
 
     // Check for permissions
@@ -288,7 +280,7 @@ client.on("messageCreate", async message => {
             }
         }
 
-        message.channel.send(`You do not have these required permissions: \`${missingPermissions.join("`, `")}\``);
+        message.channel.send(`You do not have these required permissions: ${missingPermissions.map(formatBacktick).join(", ")}`);
         return;
     }
 

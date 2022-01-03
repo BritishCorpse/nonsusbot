@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const { getCommandCategories, paginateEmbeds } = require(`${__basedir}/functions`);
+const { formatBacktick } = require(`${__basedir}/functions`);
 
 
 function formatCategoryName(category) {
@@ -63,9 +64,11 @@ module.exports = {
             let embedDescription = "";
             for (const command of categories[formatCategoryName(category)]) {
                 if (typeof command.name === "string") {
-                    embedDescription += `**${prefix}${command.name}**: `;
+                    embedDescription += `${formatBacktick(prefix + command.name)}: `;
+                    //embedDescription += `**${prefix}${command.name}**: `;
                 } else { // if it has multiple names (aliases)
-                    embedDescription += `**${prefix}${command.name.join(", " + prefix)}**: `;
+                    embedDescription += command.name.map(n => formatBacktick(prefix + n)).join(", ");
+                    //embedDescription += `**${prefix}${command.name.join(", " + prefix)}**: `;
                 }
                 embedDescription += command.description + "\n";
             }

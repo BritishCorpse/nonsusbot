@@ -4,7 +4,7 @@ const { paginateEmbeds } = require(`${__basedir}/functions`);
 const { Users } = require(`${__basedir}/db_objects`);
 
 module.exports = {
-    name: "inventory",
+    name: ["inventory", "inv"],
     description: "Shows your inventory, or someone else's.",
 
     usage: [
