@@ -1,4 +1,5 @@
 const fs = require("fs");
+const { URL } = require("url");
 const levenshtein = require("js-levenshtein");
 const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 const { Op } = require("sequelize");
@@ -16,6 +17,7 @@ const descriptionFormats = {
     //isuserid: (not, value) => `is ${not ? "not " : ""}a user`,
     isbanneduseridinguild: not => `is ${not ? "not " : ""}a banned user in the guild`,
     isuseridinguild: not => `is ${not ? "not " : ""}a user id in the guild`,
+    isurl: not => `is ${not ? "not " : ""}a url`,
 };
 
 
@@ -303,6 +305,17 @@ function getValidationFunction(message, check, _value) {
                     if (error.name !== "DiscordAPIError")
                         throw error;
                 }) !== undefined;
+        },
+        isurl: arg => {
+            // from https://stackoverflow.com/questions/30931079/validating-a-url-in-node-js/55585593#55585593
+            try {
+                const url = new URL(arg);
+                return url.protocol
+                    ? ["http", "https"].map(x => `${x.toLowerCase()}:`).includes(url.protocol)
+                    : false;
+            } catch (error) {
+                return false;
+            }
         },
     };
 
