@@ -17,9 +17,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: true,
         },
-        isBadge: {
-            type: DataTypes.BOOLEAN,
-            allowNull: true,
+        category: {
+            type: DataTypes.STRING,
+            allowNull: false,
         },
     }, {
         timestamps: false,
