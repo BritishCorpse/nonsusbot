@@ -142,11 +142,9 @@ module.exports = {
         }
 
         const dealerCards = [];
-        //for (let i = 0; i < 2; ++i) {
-        //    dealerCards.push(getCard());
-        //}
-        dealerCards.push(new Card(1));
-        dealerCards.push(new Card(2));
+        for (let i = 0; i < 2; ++i) {
+            dealerCards.push(getCard());
+        }
         // draw more cards, or make ace 11, to bring score between 17 and 21
         while (getScore(dealerCards) < 17) {
             const ace = dealerCards.find(card => card.isAce);

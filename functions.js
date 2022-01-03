@@ -98,10 +98,12 @@ async function userHasItem(userId, itemName) {
             }
         }
     });
+    console.log(item);
 
     const userItems = await getUserItems(userId);
+    console.log(userItems);
     //if (userItems.find(userItem => userItem.item.name === itemName) !== undefined)
-    if (userItems.find(userItem => userItem.item.item_id === item.id) !== undefined)
+    if (userItems.find(userItem => userItem.item_id === item.id) !== undefined)
         return true;
     return false;
 }
