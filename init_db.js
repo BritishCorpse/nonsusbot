@@ -32,7 +32,7 @@ sequelize.sync({ force }).then(async () => {
         CurrencyShop.upsert({ itemEmoji: ":top:", name: "One third of an amazon stock", cost: 1125, itemDescription: "Genuine price of one third of an Amazon stock." }),
         CurrencyShop.upsert({ itemEmoji: "🚓", name: "Kanye West", cost: 6600000000, itemDescription: "Nothing special."}),
         CurrencyShop.upsert({ itemEmoji: "🚓", name: "Ryan Reynolds", cost: 150000000, itemDescription: "A fine addition to your collection!"}),
-        // eslint-disable-next-line no-loss-of-precision
+        /* eslint-disable-next-line no-loss-of-precision */
         CurrencyShop.upsert({ itemEmoji: "🚓", name: "The Dev Team", cost: 999999999999999999999, itemDescription: "Good luck buying this!! Best regards: The Dev Team."}),
         CurrencyShop.upsert({ itemEmoji: "🚓", name: "LocBoi", cost: 50000000, itemDescription: "He won! Fair and square."}),
         CurrencyShop.upsert({ itemEmoji: "🎤", name: "That one artist who fell off", cost: 2000000, itemDescription: "We all know at least one!"}),
