@@ -16,24 +16,22 @@ const Users = require("./models/Users")(sequelize, Sequelize.DataTypes);
 const CurrencyShop = require("./models/CurrencyShop")(sequelize, Sequelize.DataTypes);
 const UserItems = require("./models/UserItems")(sequelize, Sequelize.DataTypes);
 
-UserItems.belongsTo(CurrencyShop, { foreignKey: "item_id", as: "item" });
+UserItems.belongsTo(CurrencyShop, { foreignKey: "item_id", as: "item" }); // foreignKey sets the key to be used from UserItems to look up in CurrencyShop
 
-/* eslint-disable-next-line func-names */
-Users.prototype.addItem = async function(item) {
-    const useritem = await UserItems.findOne({
+Users.prototype.addItem = async item => {
+    const userItem = await UserItems.findOne({
         where: { user_id: this.user_id, item_id: item.id },
     });
 
-    if (useritem) {
-        useritem.amount += 1;
-        return useritem.save();
+    if (userItem) {
+        userItem.amount += 1;
+        return userItem.save();
     }
 
     return UserItems.create({ user_id: this.user_id, item_id: item.id, amount: 1 });
 };
 
-/* eslint-disable-next-line func-names */
-Users.prototype.getItems = function() {
+Users.prototype.getItems = () => {
     return UserItems.findAll({
         where: { user_id: this.user_id },
         include: ["item"],
