@@ -6,7 +6,7 @@ module.exports = {
     description: "Searches Wikipedia for anything you'd like.",
 
     usage: [
-        { tag: "query", checks: {isempty: {not: null}},
+        { tag: "query", checks: {isempty: {not: null}}, circular: true,
             next: [
                 circularUsageOption(
                     { tag: "query", checks: {} }

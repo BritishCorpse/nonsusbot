@@ -1,6 +1,13 @@
 const { MessageEmbed } = require("discord.js");
-const { getCommandCategories, paginateEmbeds } = require(`${__basedir}/functions`);
-const { formatBacktick } = require(`${__basedir}/functions`);
+const {
+    getCommandCategories,
+    getAllCommandNames,
+    getCommandObjectByName,
+    getSimilarities,
+    getAllUsagePaths,
+    paginateEmbeds,
+    formatBacktick,
+} = require(`${__basedir}/functions`);
 
 
 function formatCategoryName(category) {
@@ -65,10 +72,8 @@ module.exports = {
             for (const command of categories[formatCategoryName(category)]) {
                 if (typeof command.name === "string") {
                     embedDescription += `${formatBacktick(prefix + command.name)}: `;
-                    //embedDescription += `**${prefix}${command.name}**: `;
                 } else { // if it has multiple names (aliases)
                     embedDescription += command.name.map(n => formatBacktick(prefix + n)).join(", ");
-                    //embedDescription += `**${prefix}${command.name.join(", " + prefix)}**: `;
                 }
                 embedDescription += command.description + "\n";
             }
@@ -111,21 +116,13 @@ module.exports = {
                 // One command given
                 const commandName = args[0].replace(/^_/, "");
 
-                const command = message.client.commands.find(c => {
-                    if (typeof c.name === "string") {
-                        if (commandName === c.name) {
-                            return true;
-                        }
-                    } else {
-                        if (c.name.includes(commandName)) {
-                            return true;
-                        }
-                    }
-                    return false;
-                });
+                const command = getCommandObjectByName(message.client.commands, commandName);
                 
                 if (command === undefined) {
-                    message.channel.send(`The command ${prefix}${commandName} was not found.`);
+                    const topCommands = getSimilarities(commandName, getAllCommandNames(message.client.commands))
+                        .filter(match => match.similarity < 3);
+
+                    message.channel.send(`The command ${prefix}${commandName} was not found. Did you mean: ${topCommands.map(c => c.formatBacktick()).join(", ")}?`);
                     return;
                 }
 
@@ -135,18 +132,28 @@ module.exports = {
                     .setDescription(command.description)
                     .addField("Category", formatCategoryName(command.category));
                 
+                // Format embed title
+                if (typeof command.name === "string") {
+                    embed.setTitle(formatBacktick(prefix + command.name));
+                } else { // if it has multiple names (aliases)
+                    embed.setTitle(command.name.map(n => formatBacktick(prefix + n)).join(", "));
+                }
+
                 if (command.userPermissions !== undefined)
                     embed.addField("Permissions required", "`" + command.userPermissions.join("`, `") + "`");
 
                 if (command.developer === true)
                     embed.setFooter({text: "This command is only available to developers."});
 
-                // Format embed title
-                if (typeof command.name === "string") {
-                    embed.setTitle(`**${prefix}${command.name}**`);
-                } else { // if it has multiple names (aliases)
-                    embed.setTitle(`**${prefix}${command.name.join(", " + prefix)}**`);
+                // Show usage
+                const paths = getAllUsagePaths(command.usage); // all possible argument combinations
+                
+                let usageString = "";
+                for (const path of paths) {
+                    usageString += path.map(tag => formatBacktick(`<${tag}>`)).join(" ");
+                    usageString += "\n";
                 }
+                embed.addField("Usage", usageString);
 
                 message.channel.send({embeds: [embed]});
             }

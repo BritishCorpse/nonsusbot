@@ -8,7 +8,7 @@ module.exports = {
     description: "Searches for videos on youtube.com then sends the link in the channel.",
 
     usage: [
-        { tag: "query", checks: {isempty: {not: null}},
+        { tag: "query", checks: {isempty: {not: null}}, circular: true,
             next: [
                 circularUsageOption(
                     { tag: "query", checks: {} } // repeated because only the first word should not be empty

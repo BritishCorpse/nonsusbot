@@ -23,6 +23,7 @@ const {
     saveServerConfig,
     getCommandCategories,
     getAllCommandNames,
+    getCommandObjectByName,
     getSimilarities,
     formatBacktick,
     doCommand,
@@ -84,22 +85,6 @@ try {
 }
 for (const guildId in serverConfigJSON) {
     client.serverConfig.set(guildId, serverConfigJSON[guildId]);
-}
-
-
-function getCommandObjectByName(commandName) {
-    let returnValue;
-    client.commands.forEach(commandObj => {
-        if ((typeof commandObj.name === "string"
-             && commandObj.name === commandName)
-            || (typeof commandObj.name === "object"
-                && commandObj.name.includes(commandName))) {
-            returnValue = commandObj;
-            return;
-        }
-    });
-
-    return returnValue;
 }
 
 
@@ -247,11 +232,10 @@ client.on("messageCreate", async message => {
         .split(" ");
     const command = args.shift();
     if (command === "") {
-        console.log('h');
         return;
     }
 
-    let commandObject = getCommandObjectByName(command);
+    let commandObject = getCommandObjectByName(client.commands, command);
     if (commandObject === undefined) { // if the command doesn't exist
         // turn sub arrays into larger array (since some commands have multiple names in an array)
         const allCommands = getAllCommandNames(client.commands); // list of all command names (including aliases)
@@ -260,7 +244,7 @@ client.on("messageCreate", async message => {
         const topCommands = similarities.filter(match => match.similarity < 3);
 
         if (topCommands.length === 1) {
-            commandObject = getCommandObjectByName(topCommands[0].string);
+            commandObject = getCommandObjectByName(client.commands, topCommands[0].string);
             message.channel.send(`The command ${formatBacktick(command)} does not exist. Running ${formatBacktick(topCommands[0].string)}...`);
         } else if (topCommands.length === 0) {
             message.channel.send(`The command ${formatBacktick(command)} does not exist. No similar command was found.`);

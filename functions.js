@@ -55,6 +55,17 @@ function getAllCommandNames(commandsCollection) {
 }
 
 
+function getCommandObjectByName(commandsCollection, commandName) {
+    return commandsCollection.find(command => {
+        if (typeof command.name === "string" && commandName === command.name)
+            return true;
+        else if (typeof command.name === "object" && command.name.includes(commandName))
+            return true;
+        return false;
+    });
+}
+
+
 function getSimilarities(inputString, array) {
     const matches = [];
     for (const string of array) {
@@ -226,6 +237,26 @@ function circularUsageOption(option) {
 
 function formatBacktick(name) {
     return `\`\`${name}\`\``;
+}
+
+
+function getAllUsagePaths(usage) {
+    const paths = [];
+
+    for (const option of usage) {
+        if (!option.circular && option.next) {
+            const nextPaths = getAllUsagePaths(option.next);
+
+            for (const nextPath of nextPaths)
+                paths.push([option.tag, ...nextPath]);
+        } else if (option.circular) {
+            paths.push([`${option.tag}...`]);
+        } else {
+            paths.push([option.tag]);
+        }
+    }
+
+    return paths;
 }
 
 
@@ -464,6 +495,8 @@ module.exports = {
     collectionToJSON,
     getCommandCategories,
     getAllCommandNames,
+    getCommandObjectByName,
+    getAllUsagePaths,
     getSimilarities,
     getUserItems,
     userHasItem,

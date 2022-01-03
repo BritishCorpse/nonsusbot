@@ -81,12 +81,12 @@ Each command must have a module.exports, containing the following properties:
 
 | PROPERTY | TYPE | OPTIONAL | DESCRIPTION |
 | :-: | :-: | :-: | :-: |
-| name | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)<br>[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)> | no | The name of the command. For aliases, use an array containing all the names. |
-| description | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | no | The description of the command shown in the help menu. |
-| userPermissions | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)> | yes | Discord permissions required to run the command. See [Discord.Permissions.FLAGS](https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS). |
-| developer | [Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) | yes | If true, command is developer only (usable by developers in specified development servers). |
-| usage | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)> | no | Defines how a command should be used, with all arguments possible. See [Usage](#usage) |
-| execute | [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)(message: [Discord.Message](https://discord.js.org/#/docs/main/stable/class/Message), args: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>) => [undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined) | no | The function to be run when a user enters a command. |
+| name | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)<br>[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)> | | The name of the command. For aliases, use an array containing all the names. |
+| description | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | | The description of the command shown in the help menu. |
+| userPermissions | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)> | ✓ | Discord permissions required to run the command. See [Discord.Permissions.FLAGS](https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS). |
+| developer | [Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) | ✓ | If true, command is developer only (usable by developers in specified development servers). |
+| usage | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)> | | Defines how a command should be used, with all arguments possible. See [Usage](#usage) |
+| execute | [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)(message: [Discord.Message](https://discord.js.org/#/docs/main/stable/class/Message), args: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>) => [undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined) | | The function to be run when a user enters a command. |
 
 <details><summary>Example</summary>
 
@@ -148,10 +148,11 @@ It must contain the following properties:
 
 | PROPERTY | TYPE | OPTIONAL | DESCRIPTION |
 | :-: | :-: | :-: | :-: |
-| tag | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | no | The name of an argument in an option. |
-| example | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | yes | An example to display when showing the usage of a command. |
-| checks | [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) | yes | The checks the argument string must pass for it to continue down the option. See [Checks](#checks). |
-| next | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) | yes | A list of the next options (identical to the usage). See [Usage](#usage). |
+| tag | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | | The name of an argument in an option. |
+| example | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | ✓ | An example to display when showing the usage of a command. |
+| checks | [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) | ✓ | The checks the argument string must pass for it to continue down the option. See [Checks](#checks). |
+| circular | [Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) | ✓ | Whether the option references itself in its next property. Must be set in order to get an infinite amount of arguments. This option is automatically set by the [circularUsageOption](#circular-option) function. |
+| next | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) | ✓ | A list of the next options (identical to the usage). See [Usage](#usage). |
 
 <details><summary>Example</summary>
 
@@ -186,15 +187,15 @@ A check can be inverted by replacing the value with `{not: value}`. See [Not](#n
 
 | PROPERTY | TYPE | OPTIONAL | DESCRIPTION |
 | :-: | :-: | :-: | :-: |
-| is | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | yes | Argument is exactly the string. |
-| isin | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)> | yes | Argument is exactly one of the strings in the array. |
-| isempty | [null](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null) | yes | Argument is not given. |
-| isinteger | [null](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null) | yes | Argument is an integer. |
-| matches | [RegExp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp) | yes | Argument matches the regular expression somewhere in the string. |
-| matchesfully | [RegExp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp) | yes | Argument matches the regular expression fully. |
-| isuseridinguild | [null](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null) | yes | Argument is the ID or mention of a user in the guild the message was sent in. |
-| isbanneduseridinguild | [null](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null) | yes | Argument is the ID or mention of a banned user in the guild the message was sent in. |
-| passes | [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) | yes | Argument passes a custom rule. See [Passes](#passes). |
+| is | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | ✓ | Argument is exactly the string. |
+| isin | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)> | ✓ | Argument is exactly one of the strings in the array. |
+| isempty | [null](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null) | ✓ | Argument is not given. |
+| isinteger | [null](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null) | ✓ | Argument is an integer. |
+| matches | [RegExp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp) | ✓ | Argument matches the regular expression somewhere in the string. |
+| matchesfully | [RegExp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp) | ✓ | Argument matches the regular expression fully. |
+| isuseridinguild | [null](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null) | ✓ | Argument is the ID or mention of a user in the guild the message was sent in. |
+| isbanneduseridinguild | [null](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null) | ✓ | Argument is the ID or mention of a banned user in the guild the message was sent in. |
+| passes | [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) | ✓ | Argument passes a custom rule. See [Passes](#passes). |
 
 <details><summary>Example</summary>
 
@@ -212,8 +213,8 @@ If the check you need is not available, you can create one.
 
 | PROPERTY | TYPE | OPTIONAL | DESCRIPTION |
 | :-: | :-: | :-: | :-: |
-| func | [Function](arg: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)) | no | Must return a [Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean) determining whether the argument passed or not. |
-| description | [Function](not: [Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean), value: any) | no | The description shown to automatically generate the usage shown to users. The not argument is true if the check was inverted (see [Not](#not)). |
+| func | [Function](arg: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)) | | Must return a [Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean) determining whether the argument passed or not. |
+| description | [Function](not: [Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean), value: any) | | The description shown to automatically generate the usage shown to users. The not argument is true if the check was inverted (see [Not](#not)). |
 
 <details><summary>Example</summary>
 
@@ -244,6 +245,6 @@ It will also set the `circular` property to `true`.
 
 | ARGUMENT | TYPE | OPTIONAL | DESCRIPTION |
 | :-: | :-: | :-: | :-: |
-| option | [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) | no | The option to be made infinite. |
+| option | [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) | | The option to be made infinite. |
 
 Returns: [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).
