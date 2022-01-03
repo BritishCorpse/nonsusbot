@@ -1,7 +1,7 @@
 const fs = require("fs");
 const { URL } = require("url");
 const levenshtein = require("js-levenshtein");
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu } = require("discord.js");
 const { Op } = require("sequelize");
 
 const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
@@ -105,20 +105,44 @@ function saveServerConfig(serverConfig) {
 }
 
 
-async function paginateEmbeds(channel, allowedUser, embeds, messageToEdit=null, previousEmoji="<", nextEmoji=">", addPagesInFooter=true, timeout=120000) {
+async function paginateEmbeds(channel, allowedUser, embeds, { useDropdown=false, useButtons=true, messageToEdit=null, previousEmoji="<", nextEmoji=">", addPagesInFooter=true, timeout=120000 }) {
     // Idea from https://www.npmjs.com/package/discord.js-pagination
     // Creates reactions allowing multiple embed pages
 
     // channel is the channel to send to
     // allowedUser is the user who can flip the pages
     // if messageToEdit is given, it will edit that message instead of sending a new one
+    // if useDropdown is true, it shows a dropdown to switch pages
+    // if useButtons is true, it shows buttons to switch pages (both useDropdown and useButtons can be set)
     // if addPagesInFooter is true, it adds page number before the footer
 
     const maxIndex = embeds.length - 1;
     let currentIndex = 0;
 
-    const row = new MessageActionRow()
-        .addComponents(
+    const rows = [];
+
+    let selectMenuRow;
+    if (useDropdown) {
+        selectMenuRow = new MessageActionRow();
+        const selectMenu = new MessageSelectMenu()
+            .setCustomId("dropdown");
+
+        embeds.forEach((embed, i) => {
+            selectMenu.addOptions({
+                label: `Page ${i + 1}${embed.title ? `: ${embed.title}` : ""}`,
+                value: i.toString(),
+                default: i === 0
+            });
+        });
+
+        selectMenuRow.addComponents(selectMenu);
+        rows.push(selectMenuRow);
+    }
+
+    let buttonRow;
+    if (useButtons) {
+        buttonRow = new MessageActionRow();
+        buttonRow.addComponents(
             new MessageButton()
                 .setCustomId("previous")
                 .setLabel(previousEmoji)
@@ -128,6 +152,8 @@ async function paginateEmbeds(channel, allowedUser, embeds, messageToEdit=null, 
                 .setLabel(nextEmoji)
                 .setStyle("PRIMARY")
         );
+        rows.push(buttonRow);
+    }
 
     let message;
     if (messageToEdit === null) {
@@ -135,13 +161,14 @@ async function paginateEmbeds(channel, allowedUser, embeds, messageToEdit=null, 
         if (addPagesInFooter)
             newEmbed = addPageNumbersToFooter(newEmbed, currentIndex + 1, maxIndex + 1);
 
-        message = await channel.send({embeds: [newEmbed], components: [row]});
+        message = await channel.send({embeds: [newEmbed], components: rows});
     } else {
         message = messageToEdit;
     }
 
     const filter = interaction => (interaction.customId === "previous"
-                                   || interaction.customId === "next")
+                                   || interaction.customId === "next"
+                                   || interaction.customId === "dropdown")
                                   && interaction.user.id === allowedUser.id;
 
     const collector = message.createMessageComponentCollector({filter, time: timeout});
@@ -157,18 +184,32 @@ async function paginateEmbeds(channel, allowedUser, embeds, messageToEdit=null, 
                 currentIndex = 0;
             else
                 currentIndex++;
+        } else if (interaction.customId === "dropdown") {
+            currentIndex = Number.parseInt(interaction.values[0]);
         }
 
         let newEmbed = embeds[currentIndex];
         if (addPagesInFooter)
             newEmbed = addPageNumbersToFooter(newEmbed, currentIndex + 1, maxIndex + 1);
 
-        interaction.update({embeds: [newEmbed]});
+        selectMenuRow.components[0].options.forEach(option => {
+            option.default = false;
+        });
+        selectMenuRow.components[0].options[currentIndex].default = true;
+
+        interaction.update({embeds: [newEmbed], components: rows});
     });
 
     collector.on("end", () => {
-        row.components.forEach(button => button.setDisabled(true));
-        message.edit({components: [row]});
+        rows.forEach(row => {
+            row.components.forEach(component => {
+                component.setDisabled(true);
+                if (component.type === "BUTTON")
+                    component.setStyle("SECONDARY");
+            });
+        });
+
+        message.edit({components: rows});
     });
 }
 

@@ -15,10 +15,10 @@ module.exports = {
             new MessageEmbed()
                 .setTitle("im a page")
                 .setDescription("im a description")
-                .setFooter("hey im a footer"),
+                .setFooter({text: "hey im a footer"}),
 
         ];
         
-        paginateEmbeds(message.channel, message.author, embeds);
+        paginateEmbeds(message.channel, message.author, embeds, {useDropdown: true});
     }
 };

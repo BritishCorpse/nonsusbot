@@ -98,10 +98,10 @@ module.exports = {
                 .setThumbnail(botAvatarUrl)
                 .setTitle("Categories")
                 .setDescription(mainEmbedDescription)
-                .setFooter(`Do ${prefix}help <category> to see the commands in each category.`)
+                .setFooter({text: `Do ${prefix}help <category> to see the commands in each category.`})
             );
 
-            paginateEmbeds(message.channel, message.author, pages);
+            paginateEmbeds(message.channel, message.author, pages, {useButtons: false, useDropdown: true});
         } else {
             const possibleCategory = formatCategoryName(args[0]);
             if (Object.prototype.hasOwnProperty.call(categories, possibleCategory)) {
@@ -139,7 +139,7 @@ module.exports = {
                     embed.addField("Permissions required", "`" + command.userPermissions.join("`, `") + "`");
 
                 if (command.developer === true)
-                    embed.setFooter("This command is only available to developers.");
+                    embed.setFooter({text: "This command is only available to developers."});
 
                 // Format embed title
                 if (typeof command.name === "string") {
