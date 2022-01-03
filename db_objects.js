@@ -18,7 +18,7 @@ const UserItems = require("./models/UserItems")(sequelize, Sequelize.DataTypes);
 
 UserItems.belongsTo(CurrencyShop, { foreignKey: "item_id", as: "item" }); // foreignKey sets the key to be used from UserItems to look up in CurrencyShop
 
-Users.prototype.addItem = async item => {
+Users.prototype.addItem = async function(item) { // function is used instead of arrow function to be able to use the "this" variable
     const userItem = await UserItems.findOne({
         where: { user_id: this.user_id, item_id: item.id },
     });
@@ -31,7 +31,7 @@ Users.prototype.addItem = async item => {
     return UserItems.create({ user_id: this.user_id, item_id: item.id, amount: 1 });
 };
 
-Users.prototype.getItems = () => {
+Users.prototype.getItems = function() {
     return UserItems.findAll({
         where: { user_id: this.user_id },
         include: ["item"],
