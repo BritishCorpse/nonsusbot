@@ -246,7 +246,7 @@ To disable this behavior, add the `isempty: {not: null}` check.
 
 Sometimes an infinite number of arguments is required, such as when getting a message from the user.
 
-This can be done using the `circularUsageOption` function in [functions.js](functions.js).
+This can be done using the `circularUsageOption` function in [functions.js](https://github.com/BritishCorpse/nonsusbot/blob/7810e96b45799307853ff871ab90870157748f2f/functions.js#L227).
 
 It will take an option, and add append an option referencing itself to the [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of its `next` property.
 It will also set the `circular` property to `true`.
