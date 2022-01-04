@@ -49,6 +49,14 @@ Run `git clean -dfX` to clean the directory.
 This is for bot wide configuration (api keys, bot token, bot name, etc.).
 Make sure to put your bot token in the config.json file!
 
+| PROPERTY | TYPE | OPTIONAL | DESCRIPTION |
+| :-: | :-: | :-: | :-: |
+| bot\_name | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | no | The name of the bot. |
+| bot\_token | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | no | Discord token of the bot. See [Your token](https://discordjs.guide/preparations/setting-up-a-bot-application.html#your-token). |
+| dictionary\_api\_key | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | no | Webster's dictionary api key. See [Register for a Developer Account](https://dictionaryapi.com/register/index) (select the Collegiate Dictionary in the API keys). |
+| x\_rapidapi\_key | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | no | The rapidapi api key. See [RapidAPI](https://rapidapi.com/auth/sign-up). |
+| very\_ninja\_php\_session_id | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | no | The very.ninja PHPSESSID (does not work anymore). |
+
 ### `server_config.json` and `default_server_config.json`
 
 This is for server wide configurations (prefixes, etc.).
