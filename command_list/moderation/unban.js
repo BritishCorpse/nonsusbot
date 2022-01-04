@@ -27,7 +27,7 @@ module.exports = {
 
         const { MessageEmbed } = require("discord.js");
         const embed = new MessageEmbed()
-            .setAuthor(`${message.author.username}`, message.author.avatarURL())
+            .setAuthor({name: `${message.author.username}`, iconURL: message.author.avatarURL()})
             .setDescription(`The moderators have spoken, the ban hammer has been lifted, ${unbanUser.tag} has been unbanned! ` + "Welcome back soldier.")
             .addField("Unban reason", unbanReason)
             .addField("Moderator", message.author.tag)

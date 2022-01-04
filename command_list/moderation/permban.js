@@ -41,7 +41,7 @@ module.exports = {
 
         const funnyReply = funnyReplies[Math.floor(Math.random()*funnyReplies.length)];
         const embed = new MessageEmbed()
-            .setAuthor(`${message.author.username}`, message.author.avatarURL())
+            .setAuthor({name: `${message.author.username}`, iconURL: message.author.avatarURL()})
             .setDescription(`The moderators have spoken, the ban hammer has fallen, ${banUser.tag} has been banned from ${message.guild.name}! ` + funnyReply)
             .addField("Ban duration", "Permanent")
             .addField("Ban reason", banReason)

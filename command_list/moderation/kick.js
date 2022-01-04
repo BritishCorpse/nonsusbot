@@ -42,7 +42,7 @@ module.exports = {
 
         const funnyReply = funnyReplies[Math.floor(Math.random()*funnyReplies.length)];
         const embed = new MessageEmbed()
-            .setAuthor(`${message.author.username}`, message.author.avatarURL())
+            .setAuthor({name: `${message.author.username}`, iconURL: message.author.avatarURL()})
             .setDescription(`The moderators have spoken, ${kickUser.tag} has been kicked from ${message.guild.name}! ` + funnyReply)
             .addField("Ban reason", kickReason)
             .addField("Moderator", message.author.tag)  

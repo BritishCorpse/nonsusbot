@@ -49,6 +49,14 @@ Run `git clean -dfX` to clean the directory.
 This is for bot wide configuration (api keys, bot token, bot name, etc.).
 Make sure to put your bot token in the config.json file!
 
+| PROPERTY | TYPE | OPTIONAL | DESCRIPTION |
+| :-: | :-: | :-: | :-: |
+| bot\_name | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | | The name of the bot. |
+| bot\_token | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | | Discord token of the bot. See [Your token](https://discordjs.guide/preparations/setting-up-a-bot-application.html#your-token). |
+| dictionary\_api\_key | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | | Webster's dictionary api key. See [Register for a Developer Account](https://dictionaryapi.com/register/index) (select the Collegiate Dictionary in the API keys). |
+| x\_rapidapi\_key | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | | The rapidapi api key. See [RapidAPI](https://rapidapi.com/auth/sign-up). |
+| very\_ninja\_php\_session_id | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | | The very.ninja PHPSESSID (does not work anymore). |
+
 ### `server_config.json` and `default_server_config.json`
 
 This is for server wide configurations (prefixes, etc.).
@@ -238,7 +246,7 @@ To disable this behavior, add the `isempty: {not: null}` check.
 
 Sometimes an infinite number of arguments is required, such as when getting a message from the user.
 
-This can be done using the `circularUsageOption` function in [functions.js](functions.js).
+This can be done using the `circularUsageOption` function in [functions.js](https://github.com/BritishCorpse/nonsusbot/blob/7810e96b45799307853ff871ab90870157748f2f/functions.js#L227).
 
 It will take an option, and add append an option referencing itself to the [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of its `next` property.
 It will also set the `circular` property to `true`.
