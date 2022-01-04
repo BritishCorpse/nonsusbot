@@ -9,7 +9,7 @@ function embedFromFoodData(foodData, index, maxIndex) {
         .setTitle(foodData.label)
         .setThumbnail(foodData.image)
         .setColor(Math.floor(Math.random()*16777215).toString(16))
-        .setAuthor("Page " + index + "/" + maxIndex);
+        .setAuthor({name: `Page ${index}/${maxIndex}`});
 
     for (const value in foodData) {
         if (value !== "label" && value !== "uri" && value !== "foodId" && value !== "nutrients" && value !== "image") {
