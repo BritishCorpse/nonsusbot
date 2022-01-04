@@ -9,7 +9,7 @@ module.exports = {
     usage: [
     ],
 
-    async execute (message, args) {
+    async execute (message) {
         const randomColor = Math.floor(Math.random()*16777215).toString(16);
         
         const embeds = [];
@@ -33,6 +33,6 @@ module.exports = {
             embed.addField(`${item.itemEmoji}${item.name}, ${item.itemDescription}`, `${item.cost}`);
         }
 
-        paginateEmbeds(message.channel, message.author, embeds);
+        paginateEmbeds(message.channel, message.author, embeds, {useDropdown: true});
     }
 };
