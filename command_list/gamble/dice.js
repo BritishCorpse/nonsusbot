@@ -43,7 +43,7 @@ module.exports = {
         // temporarily take the bet
         message.client.currency.add(message.author.id, -userBet);
 
-        const roll = () => Math.floor(Math.random() * 7);
+        const roll = () => Math.floor(Math.random() * 6 + 1);
         const diceRollComputer = roll();
         const diceRollUser = roll();
 
