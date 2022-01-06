@@ -12,15 +12,12 @@ module.exports = {
         )   
     ],
     async execute(message, args) {
-
-        const newBadge = args[0];
-
         const userId = message.author.id;
 
         const item = await CurrencyShop.findOne({
             where: {
                 name: {
-                    [Op.like]: newBadge
+                    [Op.like]: args.join(" ")
                 }
             }
         });
@@ -32,12 +29,12 @@ module.exports = {
             return;
         }
 
-        if (!await userHasItem(message.author.id, newBadge)) {
+        if (!await userHasItem(message.author.id, args.join(" "))) {
             message.channel.send("It appears that you do not own this badge.");
             return;
         }
 
-        message.channel.send("Applying your new badge...");
+        message.channel.send("Your new badge has been applied!");
 
         await Users.update({ badge: item.itemEmoji }, { where: { user_id: userId } });
     }

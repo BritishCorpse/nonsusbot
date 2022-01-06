@@ -1,4 +1,5 @@
 const { MessageEmbed } = require("discord.js");
+const { Users } = require(`${__basedir}/db_objects`);
 
 module.exports = {
     name: "userinfo",
@@ -9,10 +10,13 @@ module.exports = {
         { tag: "user", checks: {isuseridinguild: null} }
     ],
 
-    execute(message, args) {
+    async execute(message, args) {
         const randomColor = Math.floor(Math.random()*16777215).toString(16);
         
         const user = message.mentions.users.first() || message.member.user;
+
+        const userInDb = await Users.findOne({ where: { user_id: user.id}});
+
         const target = message.guild.members.cache.get(user.id);
         if(!target) {
             message.channel.send("You did not specify a user.");
@@ -23,6 +27,8 @@ module.exports = {
             const embed = new MessageEmbed()
                 .setTitle(`Userinfo about ${target}`)
                 .setColor(randomColor)
+                .addField(`${user.username}'s badge is:`, `${userInDb.badge || "User does not have a badge."}`)
+                .addField(`${user.username}'s balance is:`, `${userInDb.balance}`)
                 .addField(`${user.username} joined at:`, ` ${new Date(target.joinedTimestamp)}`, true)
                 .addField(`${user.username}'s account was created at:`, ` ${new Date(target.createdTimestamp)}`, true)
                 .addField(`${user.username}'s nickname is:`, ` ${target.nickname || "None"}`, true)
