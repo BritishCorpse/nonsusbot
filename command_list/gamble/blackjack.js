@@ -83,7 +83,7 @@ function getCardEmbedFieldArguments(card, player, cardNumber) {
 
 module.exports = {
     name: "blackjack",
-    description: "Play against the computer in a game of blacjack.",
+    description: "Play against the computer in a game of blackjack.",
 
     usage: [
         { tag: "bet", checks: {ispositiveinteger: null} },
