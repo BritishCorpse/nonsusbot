@@ -4,7 +4,7 @@ module.exports = {
     userPermissions: ["MANAGE_MESSAGES"],
     
     usage: [
-        { tag: "number", checks: {isinteger: null} }
+        { tag: "number", checks: {ispositiveinteger: null} }
     ],
 
     execute(message, args) {

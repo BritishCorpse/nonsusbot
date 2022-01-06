@@ -7,9 +7,9 @@ module.exports = {
     description: "Play a game of guess the number!",
 
     usage: [
-        { tag: "bet", checks: {isinteger: null},
+        { tag: "bet", checks: {ispositiveinteger: null},
             next: [
-                { tag: "lives", checks: {isinteger: null} }
+                { tag: "lives", checks: {ispositiveinteger: null} }
             ]
         },
         { tag: "rules", checks: {is: "rules"} }

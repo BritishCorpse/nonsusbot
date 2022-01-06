@@ -22,7 +22,7 @@ module.exports = {
     usage: [
         { tag: "user", checks: {isuseridinguild: null},
             next: [
-                { tag: "time", checks: {isinteger: null},
+                { tag: "time", checks: {ispositiveinteger: null},
                     next: [
                         circularUsageOption(
                             { tag: "reason", checks: {matches: {not: /[^\w?!.,;:'"()/]/}, isempty: {not: null}} }
