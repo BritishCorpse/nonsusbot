@@ -29,13 +29,13 @@ module.exports = {
             .first(10)
             .map(async (user, position ) => {
                 
-                const userInDb = await defineUser("484644637420552202");
+                const userInDb = await defineUser(message.client.users.cache.get(user.user_id).id);
 
                 console.log(userInDb.badge);
 
                 position ++;
                 
-                embed.addField(`${position}. ${userInDb.badge}${message.client.users.cache.get(user.user_id).tag}`, `${user.balance}`);
+                embed.addField(`${position}. ${userInDb.badge || ""}${message.client.users.cache.get(user.user_id).tag}`, `${user.balance}`);
             })
             .join("\n") || "It would seem, no one exists?");
         

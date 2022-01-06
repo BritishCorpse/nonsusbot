@@ -15,7 +15,7 @@ const force = process.argv.includes("--force") || process.argv.includes("-f");
 
 sequelize.sync({ force }).then(async () => {
     const shop = [ 
-        CurrencyShop.upsert({ itemEmoji: "<:gembadge:926886708497248416>", name: "gembadge", cost: 1, itemDescription: "gembadge", category: "Badges"}),
+        CurrencyShop.upsert({ itemEmoji: "<:gembadge:926886708497248416>", name: "gembadge", cost: 1000000, itemDescription: "Ooh shiny!", category: "Badges"}),
         CurrencyShop.upsert({ itemEmoji: "<:certificate:926539198503211051>", name: "VIP pass", cost: 10000000, itemDescription: "Flex on your friends!", category: "Special"}),
         CurrencyShop.upsert({ itemEmoji: "<:certificate:926539198503211051>", name: "Casino Membership", cost: 1000, itemDescription: "Join the casino for some exquisite gambling!", category: "Special"}),
         CurrencyShop.upsert({ itemEmoji: "🔖", name: "Bible", cost: 20, itemDescription: "Read up on some of history's best works of fiction!", category: "Fiction"}),
