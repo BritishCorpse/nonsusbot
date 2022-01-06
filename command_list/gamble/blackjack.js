@@ -273,9 +273,8 @@ module.exports = {
 
             collector.on("collect", async interaction => {
                 if (interaction.customId === "stand") {
-                    dealerPlay(); 
-                    
                     if (stood || userCards.find(card => card.isAce) === undefined) {
+                        dealerPlay(); 
                         interaction.deferUpdate();
                         endGame();
                     } else {
