@@ -6,7 +6,7 @@
 
 // Set testing global directory
 global.testing = false;
-if (process.send) {
+if (process.send && process.env.USING_PM2 !== "true") {
     global.testing = true;
 }
 
@@ -15,15 +15,17 @@ global.__basedir = __dirname;
 
 const fs = require("fs");
 const Discord = require("discord.js");
-const request = require("request");
-const levenshtein = require("js-levenshtein");
 
-const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
+const { Users/*, CurrencyShop*/ } = require(`${__basedir}/db_objects`);
 
 // for common functions
 const {
     saveServerConfig,
     getCommandCategories,
+    getAllCommandNames,
+    getCommandObjectByName,
+    getSimilarities,
+    formatBacktick,
     doCommand,
 
 } = require(`${__basedir}/functions`);
@@ -42,7 +44,8 @@ const client = new Discord.Client({
         Discord.Intents.FLAGS.DIRECT_MESSAGES,
         Discord.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
         Discord.Intents.FLAGS.GUILD_MEMBERS,
-    ]
+    ],
+    allowedMentions: {parse: []} // make mentions not ping people
 });
 
 client.commands = new Discord.Collection();
@@ -85,22 +88,6 @@ for (const guildId in serverConfigJSON) {
 }
 
 
-function getCommandObjectByName(commandName) {
-    let returnValue;
-    client.commands.forEach(commandObj => {
-        if ((typeof commandObj.name === "string"
-             && commandObj.name === commandName)
-            || (typeof commandObj.name === "object"
-                && commandObj.name.includes(commandName))) {
-            returnValue = commandObj;
-            return;
-        }
-    });
-
-    return returnValue;
-}
-
-
 function addNewGuildServerConfigs() {
     // add new guilds to the server_config.json file
     client.guilds.cache.each(guild => {
@@ -120,46 +107,59 @@ client.on("guildCreate", addNewGuildServerConfigs);
 
 
 // start the background tasks once
-client.backgroundTasks.forEach(backgroundTask => {
-    backgroundTask.execute(client);
-});
+if (!testing) {
+    client.backgroundTasks.forEach(backgroundTask => {
+        backgroundTask.execute(client);
+    });
+}
 
-
-Reflect.defineProperty(client.currency, 'add', {
+// Create functions for adding and setting money
+Reflect.defineProperty(client.currency, "add", {
     /* eslint-disable-next-line func-name-matching */
     value: async function add(id, amount) {
-        const user = client.currency.get(id);
-        if (user) {
-            user.balance += Number(amount);
-            return user.save();
+        try {
+            const newUser = await Users.create({
+                user_id: id,
+                balance: amount
+            });
+
+            client.currency.set(id, newUser);
+            return newUser;
+        } catch (error) { // user already exists
+            if (error.name !== "SequelizeUniqueConstraintError") throw error;
+
+            const user = client.currency.get(id);
+            if (user) {
+                user.balance += Number.parseInt(amount);
+                return user.save();
+            }
         }
-        const newUser = await Users.create({
-            user_id: id,
-            balance: amount
-        });
-        client.currency.set(id, newUser);
-        return newUser;
     },
 });
 
-Reflect.defineProperty(client.currency, 'setBalance', {
+Reflect.defineProperty(client.currency, "setBalance", {
     /* eslint-disable-next-line func-name-matching */
     value: async function setBalance(id, amount) {
-        const user = client.currency.get(id);
-        if (user) {
-            user.balance = Number(amount);
-            return user.save();
+        try {
+            const newUser = await Users.create({
+                user_id: id,
+                balance: amount
+            });
+            client.currency.set(id, newUser);
+            return newUser;
+        } catch (error) {
+            if (error.name !== "SequelizeUniqueConstraintError") throw error;
+
+            const user = client.currency.get(id);
+            if (user) {
+                user.balance = Number.parseInt(amount);
+                return user.save();
+            }
         }
-        const newUser = await Users.create({
-            user_id: id,
-            balance: amount
-        });
-        client.currency.set(id, newUser);
-        return newUser;
     },
 });
 
-Reflect.defineProperty(client.currency, 'getBalance', {
+Reflect.defineProperty(client.currency, "getBalance", {
     /* eslint-disable-next-line func-name-matching */
     value: function getBalance(id) {
         const user = client.currency.get(id);
@@ -174,7 +174,7 @@ Reflect.defineProperty(client.currency, 'getBalance', {
 client.once("ready", async () => {
     const storedBalances = await Users.findAll();
     storedBalances.forEach(b => client.currency.set(b.user_id, b));
-    client.user.setActivity(`with dead people | @ me for my prefix!`);
+    client.user.setActivity("with dead people | @ me for my prefix!");
     console.log("Ready and logged in as " + client.user.tag + "!");
     console.log("\u0007"); // bell sound
 
@@ -193,7 +193,11 @@ client.on("messageCreate", async message => {
     const date = new Date(message.createdTimestamp);
     console.log(`${date.toGMTString()} | ${message.guild.name} | #${message.channel.name} | ${message.author.tag}: ${message.content} ${message.type}`);
 
-    const prefix = client.serverConfig.get(message.guild.id).prefix;
+    let prefix;
+    if (testing)
+        prefix = "test!"; // this is normally an invalid prefix
+    else
+        prefix = client.serverConfig.get(message.guild.id).prefix;
 
     // Don't do commands if they come from a bot, except for the testing bot (all 3 lines required)
     if (!message.content.startsWith(prefix)) return;
@@ -202,7 +206,7 @@ client.on("messageCreate", async message => {
 
     // Check for user's badge. If there is no custom badge, make the normal badge.
     // Marked this out, will fix tomorrow.
-/*
+    /*
     const user = await Users.findOne({
         where: {
             user_id: message.member.id
@@ -225,41 +229,30 @@ client.on("messageCreate", async message => {
     */
 
     const args = message.content.slice(prefix.length)
-        .replace(/\s+/, " ")
-        .trim()
         .split(" ");
-    const command = args.shift();
+    const command = args.shift().toLowerCase();
+    if (command === "") {
+        return;
+    }
 
-    const commandObject = getCommandObjectByName(command);
+    let commandObject = getCommandObjectByName(client.commands, command);
     if (commandObject === undefined) { // if the command doesn't exist
         // turn sub arrays into larger array (since some commands have multiple names in an array)
-        let allCommands = []; // list of all command names (including aliases)
-        client.commands.forEach(commandObj => {
-            if (typeof commandObj.name === "object") {
-                for (const commandAlias of commandObj.name) {
-                    allCommands.push(commandAlias);
-                }
-            } else {
-                allCommands.push(commandObj.name);
-            }
-        });
+        const allCommands = getAllCommandNames(client.commands); // list of all command names (including aliases)
 
-        const topCommands = []; // list of top command matches
+        const similarities = getSimilarities(command, allCommands);
+        const topCommands = similarities.filter(match => match.similarity < 3);
 
-        for (const commandName of allCommands) {
-            const similarity = levenshtein(command, commandName);
-            if (similarity < 3) {
-                topCommands.push(commandName);
-            }
-        }
-
-        if (topCommands.length === 0) {
-            message.channel.send("Command not found. No similar command was found.");
+        if (topCommands.length === 1) {
+            commandObject = getCommandObjectByName(client.commands, topCommands[0].string);
+            message.channel.send(`The command ${formatBacktick(command)} does not exist. Running ${formatBacktick(topCommands[0].string)}...`);
+        } else if (topCommands.length === 0) {
+            message.channel.send(`The command ${formatBacktick(command)} does not exist. No similar command was found.`);
+            return;
         } else {
-            message.channel.send("Command not found. Similar commands: " + topCommands.join(", "));
+            message.channel.send(`The command ${formatBacktick(command)} does not exist. Did you mean: ${topCommands.map(c => formatBacktick(c.string)).join(", ")}?`);
+            return;
         }
-
-        return;
     }
 
     // Check for permissions
@@ -271,7 +264,7 @@ client.on("messageCreate", async message => {
             }
         }
 
-        message.channel.send(`You do not have these required permissions: \`${missingPermissions.join('`, `')}\``);
+        message.channel.send(`You do not have these required permissions: ${missingPermissions.map(formatBacktick).join(", ")}`);
         return;
     }
 

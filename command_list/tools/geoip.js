@@ -2,7 +2,7 @@ const request = require("request");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
-    name: 'geoip',
+    name: "geoip",
     description: "Geolocates an IP. The IP address should be the first argument.",
 
     usage: [
@@ -29,21 +29,21 @@ module.exports = {
 
         request("https://ipinfo.io/" + args[0], (error, response, body) => {
             //console.error(error);
-            let embed = new MessageEmbed()
+            const embed = new MessageEmbed()
                 .setTitle(args[0])
                 .setURL("https://ipinfo.io/" + args[0])
                 .setThumbnail("https://i.postimg.cc/8zR8F27F/ipinfo-io-logo.png")
                 .setColor(randomColor);
 
-            bodyString = "";
+            let bodyString = "";
             for (const value in JSON.parse(body)) {
                 if (value === "ip" || value === "readme") continue;
 
                 bodyString += value[0].toUpperCase() + value.slice(1) + ": " + JSON.parse(body)[value] + "\n";
             }
-             embed.setDescription(bodyString);
+            embed.setDescription(bodyString);
               
             message.channel.send({embeds: [embed]});
         });
-  }
-}
+    }
+};

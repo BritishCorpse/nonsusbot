@@ -1,31 +1,37 @@
-const fs = require('fs');
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const fs = require("fs");
+const { URL } = require("url");
+const levenshtein = require("js-levenshtein");
+const { MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu } = require("discord.js");
+const { Op } = require("sequelize");
 
-const { Op } = require('sequelize');
 const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
 
 
 const descriptionFormats = {
     isempty: not => `is ${not ? "not " : ""}empty`,
-    is: (not, value) => `is ${not ? "not " : ""}\`${value}\``,
-    isin: (not, value) => `is ${not ? "not " : ""}one of \`${value.join(", ")}\``,
+    is: (not, value) => `is ${not ? "not " : ""}${formatBacktick(value)}`,
+    isin: (not, value) => `is ${not ? "not " : ""}one of ${value.map(formatBacktick).join(", ")}`,
     isinteger: not => `is ${not ? "not " : ""}an integer`,
-    matches: (not, value) => `${not ? "does not match" : "matches"} \`\`${value}\`\``,
-    matchesfully: (not, value) => `${not ? "does not match" : "matches"} fully \`\`${value}\`\``,
+    ispositiveinteger: not => `is ${not ? "not " : ""}a positive integer`,
+    isnegativeinteger: not => `is ${not ? "not " : ""}a negative integer`,
+    isintegerbetween: (not, value) => `is ${not ? "not " : ""}an integer between ${formatBacktick(value[0])} and ${formatBacktick(value[1])}`,
+    matches: (not, value) => `${not ? "does not match" : "matches"} ${formatBacktick(value)}`,
+    matchesfully: (not, value) => `${not ? "does not match" : "matches"} fully ${formatBacktick(value)}`,
     //isuserid: (not, value) => `is ${not ? "not " : ""}a user`,
-    isbanneduseridinguild: (not, value) => `is ${not ? "not " : ""}a banned user in the guild`,
-    isuseridinguild: (not, value) => `is ${not ? "not " : ""}a user id in the guild`,
+    isbanneduseridinguild: not => `is ${not ? "not " : ""}a banned user in the guild`,
+    isuseridinguild: not => `is ${not ? "not " : ""}a user id in the guild`,
+    isurl: not => `is ${not ? "not " : ""}a url`,
 };
 
 
 function addPageNumbersToFooter(embed, page, maxPage) {
-    return new MessageEmbed(embed).setFooter(`(${page}/${maxPage}) ${embed.footer ? embed.footer.text : ''}`);
+    return new MessageEmbed(embed).setFooter({text: `(${page}/${maxPage}) ${embed.footer ? embed.footer.text : ""}`});
 }
 
 
 function collectionToJSON(collection) {
     // turns a discord collection to a JSON {key: value} dictionary
-    let result = {};
+    const result = {};
     for (const [key, value] of collection) {
         result[key] = value;
     }
@@ -35,6 +41,41 @@ function collectionToJSON(collection) {
 
 function getCommandCategories() {
     return fs.readdirSync(`${__basedir}/command_list`);
+}
+
+
+function getAllCommandNames(commandsCollection) {
+    // returns all command names including aliases from a commands collection
+    const allCommands = [];
+    commandsCollection.forEach(commandObj => {
+        if (typeof commandObj.name === "object") {
+            for (const commandAlias of commandObj.name)
+                allCommands.push(commandAlias);
+        } else
+            allCommands.push(commandObj.name);
+    });
+    return allCommands;
+}
+
+
+function getCommandObjectByName(commandsCollection, commandName) {
+    return commandsCollection.find(command => {
+        if (typeof command.name === "string" && commandName === command.name)
+            return true;
+        else if (typeof command.name === "object" && command.name.includes(commandName))
+            return true;
+        return false;
+    });
+}
+
+
+function getSimilarities(inputString, array) {
+    const matches = [];
+    for (const string of array) {
+        const similarity = levenshtein(inputString, string);
+        matches.push({string, similarity});
+    }
+    return matches;
 }
 
 
@@ -62,9 +103,7 @@ async function userHasItem(userId, itemName) {
     });
 
     const userItems = await getUserItems(userId);
-
-    //if (userItems.find(userItem => userItem.item.name === itemName) !== undefined)
-    if (userItems.find(userItem => userItem.item.item_id === item.item_id) !== undefined)
+    if (userItems.find(userItem => userItem.item_id === item.id) !== undefined)
         return true;
     return false;
 }
@@ -73,35 +112,61 @@ async function userHasItem(userId, itemName) {
 function saveServerConfig(serverConfig) {
     // Saves the client.serverConfig (given in argument as serverConfig) to server_config.json
     fs.writeFile(`${__basedir}/server_config.json`, JSON.stringify(collectionToJSON(serverConfig)),
-                 error => {
-                     if (error !== null) console.error(error);
-                 });
+        error => {
+            if (error !== null) console.error(error);
+        });
 }
 
 
-async function paginateEmbeds(channel, allowedUser, embeds, messageToEdit=null, previousEmoji='<', nextEmoji='>', addPagesInFooter=true, timeout=120000) {
+async function paginateEmbeds(channel, allowedUser, embeds, { useDropdown=false, useButtons=true, messageToEdit=null, previousEmoji="<", nextEmoji=">", addPagesInFooter=true, timeout=120000 }={}) {
     // Idea from https://www.npmjs.com/package/discord.js-pagination
     // Creates reactions allowing multiple embed pages
 
     // channel is the channel to send to
     // allowedUser is the user who can flip the pages
     // if messageToEdit is given, it will edit that message instead of sending a new one
+    // if useDropdown is true, it shows a dropdown to switch pages
+    // if useButtons is true, it shows buttons to switch pages (both useDropdown and useButtons can be set)
     // if addPagesInFooter is true, it adds page number before the footer
 
-    let maxIndex = embeds.length - 1;
+    const maxIndex = embeds.length - 1;
     let currentIndex = 0;
 
-    const row = new MessageActionRow()
-        .addComponents(
+    const rows = [];
+
+    let selectMenuRow;
+    if (useDropdown) {
+        selectMenuRow = new MessageActionRow();
+        const selectMenu = new MessageSelectMenu()
+            .setCustomId("dropdown");
+
+        embeds.forEach((embed, i) => {
+            selectMenu.addOptions({
+                label: `Page ${i + 1}${embed.title ? `: ${embed.title}` : ""}`,
+                value: i.toString(),
+                default: i === 0
+            });
+        });
+
+        selectMenuRow.addComponents(selectMenu);
+        rows.push(selectMenuRow);
+    }
+
+    let buttonRow;
+    if (useButtons) {
+        buttonRow = new MessageActionRow();
+        buttonRow.addComponents(
             new MessageButton()
-                .setCustomId('previous')
+                .setCustomId("previous")
                 .setLabel(previousEmoji)
-                .setStyle('PRIMARY'),
+                .setStyle("PRIMARY"),
             new MessageButton()
-                .setCustomId('next')
+                .setCustomId("next")
                 .setLabel(nextEmoji)
-                .setStyle('PRIMARY')
+                .setStyle("PRIMARY")
         );
+        rows.push(buttonRow);
+    }
 
     let message;
     if (messageToEdit === null) {
@@ -109,47 +174,62 @@ async function paginateEmbeds(channel, allowedUser, embeds, messageToEdit=null, 
         if (addPagesInFooter)
             newEmbed = addPageNumbersToFooter(newEmbed, currentIndex + 1, maxIndex + 1);
 
-        message = await channel.send({embeds: [newEmbed], components: [row]});
+        message = await channel.send({embeds: [newEmbed], components: rows});
     } else {
         message = messageToEdit;
     }
 
-    const filter = interaction => (interaction.customId === 'previous'
-                                   || interaction.customId === 'next')
+    const filter = interaction => (interaction.customId === "previous"
+                                   || interaction.customId === "next"
+                                   || interaction.customId === "dropdown")
                                   && interaction.user.id === allowedUser.id;
 
     const collector = message.createMessageComponentCollector({filter, time: timeout});
 
-    collector.on('collect', interaction => {
-        if (interaction.customId === 'previous') {
+    collector.on("collect", interaction => {
+        if (interaction.customId === "previous") {
             if (currentIndex === 0)
                 currentIndex = maxIndex; // loop back around
             else
                 currentIndex--; 
-        } else if (interaction.customId === 'next') {
+        } else if (interaction.customId === "next") {
             if (currentIndex === maxIndex)
                 currentIndex = 0;
             else
                 currentIndex++;
+        } else if (interaction.customId === "dropdown") {
+            currentIndex = Number.parseInt(interaction.values[0]);
+
+            selectMenuRow.components[0].options.forEach(option => {
+                option.default = false;
+            });
+            selectMenuRow.components[0].options[currentIndex].default = true;
         }
 
         let newEmbed = embeds[currentIndex];
         if (addPagesInFooter)
             newEmbed = addPageNumbersToFooter(newEmbed, currentIndex + 1, maxIndex + 1);
 
-        interaction.update({embeds: [newEmbed]});
+        interaction.update({embeds: [newEmbed], components: rows});
     });
 
-    collector.on('end', collected => {
-        row.components.forEach(button => button.setDisabled(true));
-        message.edit({components: [row]});
+    collector.on("end", () => {
+        rows.forEach(row => {
+            row.components.forEach(component => {
+                component.setDisabled(true);
+                if (component.type === "BUTTON")
+                    component.setStyle("SECONDARY");
+            });
+        });
+
+        message.edit({components: rows});
     });
 }
 
 
 function circularUsageOption(option) {
-    if (option.hasOwnProperty("next"))
-        option.next.push(option)
+    if (Object.prototype.hasOwnProperty.call(option, "next"))
+        option.next.push(option);
     else
         option.next = [option];
     option.circular = true;
@@ -157,11 +237,28 @@ function circularUsageOption(option) {
 }
 
 
-function createInfiniteCircularUsage(usage) {
-    // gets the usage for infinite arguments
-    usage[0].next = usage;
-    usage[0].circular = true;
-    return usage;
+function formatBacktick(name) {
+    return `\`\`${name}\`\``;
+}
+
+
+function getAllUsagePaths(usage) {
+    const paths = [];
+
+    for (const option of usage) {
+        if (!option.circular && option.next) {
+            const nextPaths = getAllUsagePaths(option.next);
+
+            for (const nextPath of nextPaths)
+                paths.push([option.tag, ...nextPath]);
+        } else if (option.circular) {
+            paths.push([`${option.tag}...`]);
+        } else {
+            paths.push([option.tag]);
+        }
+    }
+
+    return paths;
 }
 
 
@@ -171,7 +268,7 @@ function generateDescription(option) {
     // Generate a description from the checks
     for (const check in option.checks) {
         let value = option.checks[check];
-        const not = value && value.hasOwnProperty("not");
+        const not = value && Object.prototype.hasOwnProperty.call(value, "not");
         if (not) {
             value = value.not;
         }
@@ -191,7 +288,7 @@ function generateDescription(option) {
         description += "\n";
     }
 
-    if (option.hasOwnProperty("example")) {
+    if (Object.prototype.hasOwnProperty.call(option, "example")) {
         description += `**Example**: ${option.example}`;
     }
 
@@ -205,17 +302,28 @@ function sendUsage(message, usage, failedOn, failedArg) {
 
     const embed = new MessageEmbed()
         .setTitle("Incorrect Usage")
-        .setFooter(`Use ${message.client.serverConfig.get(message.guild.id).prefix}help for more information.`);
+        .setFooter({text: `Use ${message.client.serverConfig.get(message.guild.id).prefix}help for more information.`});
+
+    const paths = getAllUsagePaths(usage); // all possible argument combinations
+    let description = "";
+    for (const path of paths) {
+        description += `${formatBacktick(message.content.split(" ")[0])} `;
+        description += path.map(tag => formatBacktick(`<${tag}>`)).join(" ");
+        description += "\n";
+    }
+    description += "\n";
 
     if (failedArg === null)
-        embed.setDescription("Your usage is wrong.")
+        description += "Your usage is wrong.";
     else if (failedArg === undefined)
-        embed.setDescription("You are missing an argument. The argument can be:");
+        description += "You are missing an argument. The argument can be:";
     else
-        embed.setDescription(`\`${failedArg}\` is an invalid argument. The argument can be:`);
+        description += `${formatBacktick(failedArg)} is an invalid argument. The argument can be:`;
+
+    embed.setDescription(description);
 
     for (const option of failedOn)
-        embed.addField(`<${option.tag}>`, generateDescription(option));
+        embed.addField(`<${option.tag}>`, generateDescription(option), true);
 
     message.reply({embeds: [embed]});
 }
@@ -224,11 +332,22 @@ function sendUsage(message, usage, failedOn, failedArg) {
 function getValidationFunction(message, check, _value) {
     let value;
     let invert = false;
-    if (_value && _value.hasOwnProperty("not")) {
+    if (_value && Object.prototype.hasOwnProperty.call(_value, "not")) {
         value = _value.not;
         invert = true;
     } else {
         value = _value;
+    }
+
+    function isInteger(arg) {
+        if (!arg) return false;
+        const match = arg.match(/^-?\d+/);
+        if (match !== null && match[0] === arg) {
+            // check that it is not too big or too big negatively
+            const n = Number.parseInt(match[0]);
+            return n !== Infinity && n !== -Infinity;
+        }
+        return false;
     }
 
     // Returns a validation function from a check name
@@ -236,15 +355,18 @@ function getValidationFunction(message, check, _value) {
         isempty: arg => [null, undefined, ""].includes(arg),
         is: arg => arg === value,
         isin: arg => value.includes(arg),
-        isinteger: arg => {
-            if (!arg) return false;
-            const match = arg.match(/^-?\d+/);
-            if (match !== null && match[0] === arg) {
-                // check that it is not too big or too big negatively
-                const n = Number.parseInt(match[0]);
-                return n !== Infinity && n !== -Infinity;
-            }
-            return false;
+        isinteger: isInteger,
+        ispositiveinteger: arg => {
+            if (!isInteger(arg)) return false;
+            return Number.parseInt(arg) > 0;
+        },
+        isnegativeinteger: arg => {
+            if (!isInteger(arg)) return false;
+            return Number.parseInt(arg) < 0;
+        },
+        isintegerbetween: arg => {
+            if (!isInteger(arg)) return false;
+            return Number.parseInt(arg) >= value[0] && Number.parseInt(arg) < value[1];
         },
         matches:  arg => {
             if (!arg) return false;
@@ -255,7 +377,7 @@ function getValidationFunction(message, check, _value) {
             const match = arg.match(value);
             return match !== null && match[0] === arg;
         },
-        isbanneduseridinguild: arg => {
+        isbanneduseridinguild: async arg => {
             if (!arg) return false;
             let userId;
             if (arg.match(/^<@!\d+>$/) !== null)
@@ -263,11 +385,13 @@ function getValidationFunction(message, check, _value) {
             else if (arg.match(/^\d+$/))
                 userId = arg;
 
-            if (userId && message.guild.bans.resolve(userId))
-                return true;
-            return false;
+            return await message.guild.bans.fetch(userId)
+                .catch(error => {
+                    if (error.name !== "DiscordAPIError")
+                        throw error;
+                }) !== undefined;
         },
-        isuseridinguild: arg => {
+        isuseridinguild: async arg => {
             if (!arg) return false;
             let userId;
             if (arg.match(/^<@!\d+>$/) !== null)
@@ -275,11 +399,24 @@ function getValidationFunction(message, check, _value) {
             else if (arg.match(/^\d+$/))
                 userId = arg;
 
-            if (userId && message.guild.members.cache.get(userId) !== undefined)
-                return true;
-            return false;
+            return await message.guild.members.fetch(userId)
+                .catch(error => {
+                    if (error.name !== "DiscordAPIError")
+                        throw error;
+                }) !== undefined;
         },
-    }
+        isurl: arg => {
+            // from https://stackoverflow.com/questions/30931079/validating-a-url-in-node-js/55585593#55585593
+            try {
+                const url = new URL(arg);
+                return url.protocol
+                    ? ["http", "https"].map(x => `${x.toLowerCase()}:`).includes(url.protocol)
+                    : false;
+            } catch (error) {
+                return false;
+            }
+        },
+    };
 
     let validationFunction;
     if (check === "passes"){
@@ -288,7 +425,7 @@ function getValidationFunction(message, check, _value) {
             return value.func(arg, message);
         }; 
     } else {
-        if (!validationFunctions.hasOwnProperty(check)) {
+        if (!Object.prototype.hasOwnProperty.call(validationFunctions, check)) {
             throw { 
                 name:        "CommandUsageError", 
                 message:     `There is no check called ${check}.`, 
@@ -337,7 +474,7 @@ async function checkUsage(message, usage, args, depth=0) {
 
         // depth < args.length allows for infinite (circular) objects for infinite arguments being checked
         if ((passedOptions[0].circular === true && depth < (args.length - 1))
-            || (passedOptions[0].circular !== true && passedOptions[0].hasOwnProperty("next"))) { 
+            || (passedOptions[0].circular !== true && Object.prototype.hasOwnProperty.call(passedOptions[0], "next"))) { 
             return await checkUsage(message, passedOptions[0].next, args, depth + 1);
         }
         return true;
@@ -365,43 +502,29 @@ function doCommand(commandObj, message, args) {
     }
 
     checkUsage(message, commandObj.usage, args)
-    .then(pass => {
-        if (pass !== true) {
-            const [usage, depth] = pass;
-            sendUsage(message, commandObj.usage, usage, args[depth]);
-        } else {
-            commandObj.execute(message, args);
-        }
-    })
-    .catch(error => {
-        console.error(error.toString());
-        console.trace();
-        process.exit(1);
-    });
-
-    /*try {
-    } catch (error) {
-        console.error(error.toString());
-        message.reply("There was an error trying to execute that command!");
-    }*/
-
-    /*if (pass !== true) {
-        const [usage, depth] = pass;
-        sendUsage(message, commandObj.usage, usage, args[depth]);
-    } else {
-        try {
-            commandObj.execute(message, args);
-        } catch (error) {
-            console.error(error);
-            message.reply("There was an error trying to execute that command!");
-        }
-    }*/
+        .then(pass => {
+            if (pass !== true) {
+                const [usage, depth] = pass;
+                sendUsage(message, commandObj.usage, usage, args[depth]);
+            } else {
+                commandObj.execute(message, args);
+            }
+        })
+        .catch(error => {
+            console.error(error.toString());
+            console.trace();
+            process.exit(1);
+        });
 }
 
 
 module.exports = {
     collectionToJSON,
     getCommandCategories,
+    getAllCommandNames,
+    getCommandObjectByName,
+    getAllUsagePaths,
+    getSimilarities,
     getUserItems,
     userHasItem,
     saveServerConfig,
@@ -409,6 +532,6 @@ module.exports = {
     sendUsage,
     checkUsage,
     doCommand,
-    createInfiniteCircularUsage,
     circularUsageOption,
-}
+    formatBacktick,
+};

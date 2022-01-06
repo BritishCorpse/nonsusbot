@@ -15,17 +15,17 @@ const funnyReplies = [
 
 
 module.exports = {
-    name: 'tempban',
+    name: "tempban",
     description: "Temporarily bans a user from the guild, for a determined amount of days.",
     userPermissions: ["BAN_MEMBERS"],
 
     usage: [
         { tag: "user", checks: {isuseridinguild: null},
             next: [
-                { tag: "time", checks: {isinteger: null},
+                { tag: "time", checks: {ispositiveinteger: null},
                     next: [
                         circularUsageOption(
-                            { tag: "reason", checks: {matches: {not: /[^\w?!.,;:'"\(\)\/]/}, isempty: {not: null}} }
+                            { tag: "reason", checks: {matches: {not: /[^\w?!.,;:'"()/]/}, isempty: {not: null}} }
                         )
                     ]
                 }
@@ -34,10 +34,10 @@ module.exports = {
     ],
 
     execute (message, args) {
-        var randomColor = Math.floor(Math.random()*16777215).toString(16);
+        const randomColor = Math.floor(Math.random()*16777215).toString(16);
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
-        let banUser = message.mentions.members.first();
+        const banUser = message.mentions.members.first();
         const banTime = args[1];
         const banReason = args.slice(2).join(" ");
 
@@ -51,7 +51,7 @@ module.exports = {
 
         const funnyReply = funnyReplies[Math.floor(Math.random()*funnyReplies.length)];
         const embed = new MessageEmbed()
-            .setAuthor(`${message.author.username}`, message.author.avatarURL())
+            .setAuthor({name: `${message.author.username}`, iconURL: message.author.avatarURL()})
             .setDescription(`The moderators have spoken, the ban hammer has fallen, ${banUser.tag} has been banned from ${message.guild.name}! ` + funnyReply)
             .addField("Ban duration", banTime)
             .addField("Ban reason", banReason)
@@ -59,8 +59,7 @@ module.exports = {
             .setColor(randomColor);
 
         message.channel.send({embeds: [embed]});
-            banUser.ban({days: banTime, reason: banReason})
-            .then(console.log)
+        banUser.ban({days: banTime, reason: banReason})
             .catch(console.error);
     }
-}
+};

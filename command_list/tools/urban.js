@@ -2,9 +2,8 @@ const request = require("request");
 const { MessageEmbed } = new require("discord.js");
 const { x_rapidapi_key } = require(`${__basedir}/config.json`);
 const { circularUsageOption } = require(`${__basedir}/functions`);
+const { paginateEmbeds } = require(`${__basedir}/functions`);
 
-
-const max_number_of_definitions = 2;
 
 module.exports = {
     name: ["urban", "ud"],
@@ -33,23 +32,19 @@ module.exports = {
             qs: {
                 "term": args.join(" ")
             }
-        }
+        };
 
         request(options, (error, response, body) => {
-            parsed_body = JSON.parse(body);
-            let embeds = [];
+            const parsedBody = JSON.parse(body);
+            const embeds = [];
 
-            let number_of_definitions = 0;
 
-            for (const definition of parsed_body.list) {
-                if (number_of_definitions >= max_number_of_definitions) break;
-                number_of_definitions++;
-
+            for (const definition of parsedBody.list) {
                 const embed = new MessageEmbed()
                     .setTitle(definition.word)
                     .setURL(definition.permalink)
                     .setDescription(definition.definition + "\n\n**Example:**\n" + definition.example)
-                    .setFooter("By: " + definition.author)
+                    .setFooter({text: `By: ${definition.author}`})
                     .setColor(randomColor)
                     .setThumbnail("https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/UD_logo-01.svg/1280px-UD_logo-01.svg.png");
 
@@ -57,14 +52,13 @@ module.exports = {
             }
 
             if (embeds.length === 0) {
-                embeds.push(new MessageEmbed());
-                embeds[embeds.length - 1].setTitle("No definition found");
-                embeds[embeds.length - 1].setDescription("No definition was found");
-            }
-
-            for (const embed of embeds) {
+                const embed = new MessageEmbed()
+                    .setTitle("No definition found")
+                    .setDescription("No definition was found");
                 message.channel.send({embeds: [embed]});
+            } else {
+                paginateEmbeds(message.channel, message.author, embeds);
             }
         });
-  }
-}
+    }
+};

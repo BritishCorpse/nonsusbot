@@ -14,7 +14,7 @@ const funnyReplies = [
 
 
 module.exports = {
-    name: 'permban',
+    name: "permban",
     description: "Permanently bans a user from the guild.",
     userPermissions: ["BAN_MEMBERS"],
 
@@ -22,14 +22,14 @@ module.exports = {
         { tag: "user", checks: {isuseridinguild: null},
             next: [
                 circularUsageOption(
-                    { tag: "reason", checks: {matches: {not: /[^\w?!.,;:'"\(\)\/]/}, isempty: {not: null}} }
+                    { tag: "reason", checks: {matches: {not: /[^\w?!.,;:'"()/]/}, isempty: {not: null}} }
                 )
             ]
         }
     ],
 
     execute (message, args) {
-        var randomColor = Math.floor(Math.random()*16777215).toString(16);
+        const randomColor = Math.floor(Math.random()*16777215).toString(16);
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
         const banUser = message.mentions.members.first();
@@ -41,7 +41,7 @@ module.exports = {
 
         const funnyReply = funnyReplies[Math.floor(Math.random()*funnyReplies.length)];
         const embed = new MessageEmbed()
-            .setAuthor(`${message.author.username}`, message.author.avatarURL())
+            .setAuthor({name: `${message.author.username}`, iconURL: message.author.avatarURL()})
             .setDescription(`The moderators have spoken, the ban hammer has fallen, ${banUser.tag} has been banned from ${message.guild.name}! ` + funnyReply)
             .addField("Ban duration", "Permanent")
             .addField("Ban reason", banReason)
@@ -49,8 +49,7 @@ module.exports = {
             .setColor(randomColor);
 
         message.channel.send({embeds: [embed]});
-            banUser.ban({reason: banReason})
-            .then(console.log)
+        banUser.ban({reason: banReason})
             .catch(console.error);
     }
-}
+};

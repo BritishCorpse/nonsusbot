@@ -1,8 +1,8 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed } = require("discord.js");
 
 
 module.exports = {
-    name: 'slap',
+    name: "slap",
     description: "Slap whoever you'd like to.",
 
     usage: [
@@ -10,9 +10,9 @@ module.exports = {
     ],
 
     execute(message, args){
-        var randomColor = Math.floor(Math.random()*16777215).toString(16);
+        const randomColor = Math.floor(Math.random()*16777215).toString(16);
 
-        images = [
+        const images = [
             "https://c.tenor.com/Ws6Dm1ZW_vMAAAAM/girl-slap.gif",
             "https://c.tenor.com/iDdGxlZZfGoAAAAM/powerful-head-slap.gif",
             "https://c.tenor.com/wOCOTBGZJyEAAAAM/chikku-neesan-girl-hit-wall.gif",
@@ -22,7 +22,7 @@ module.exports = {
             "https://c.tenor.com/Sp7yE5UzqFMAAAAM/spank-slap.gif"
         ];
 
-        funnyReplies = [
+        const funnyReplies = [
             "Ouch that hurt!",
             "Maybe dont annoy them next time?!",
             "That's going to leave a mark!",
@@ -30,47 +30,44 @@ module.exports = {
             "OWIE!!!",
             "Cold..",
             "They deserved it!"
-        ]
+        ];
 
-        let funnyReply = funnyReplies[Math.floor(Math.random() * funnyReplies.length)];
+        const funnyReply = funnyReplies[Math.floor(Math.random() * funnyReplies.length)];
 
-        let slapTarget = message.mentions.users.first();
+        const slapTarget = message.mentions.users.first();
+
         if (!slapTarget) {
             const embed = new MessageEmbed()
-            .setTitle(`${message.author.username} slaps ${message.author.username}, ${funnyReply}`)
-            .setImage(images[Math.floor(Math.random() * images.length)])
-            .setColor(randomColor)
+                .setTitle(`${message.author.username} slaps ${message.author.username}, ${funnyReply}`)
+                .setImage(images[Math.floor(Math.random() * images.length)])
+                .setColor(randomColor);
         
-            return message.channel.send( {embeds: [embed]} );
-        }
-
-        else if (slapTarget.id === message.client.user.id) {
-            return message.channel.send("Hey!! Don't slap me, what did I do?!");
-        }
-
-        else if (slapTarget.id === '484644637420552202') {
-            if (message.author.id !== '834035562864050237') {
-                return message.channel.send("Corpse blocked the slap!! Incredible!");
-            }
-
-            else {
+            message.channel.send({embeds: [embed]});
+            return;
+        } else if (slapTarget.id === message.client.user.id) {
+            message.channel.send("Hey!! Don't slap me, what did I do?!");
+            return;
+        } else if (slapTarget.id === "484644637420552202") {
+            if (message.author.id !== "834035562864050237") {
+                message.channel.send("Corpse blocked the slap!! Incredible!");
+                return;
+            } else {
                 const embed = new MessageEmbed()
+                    .setTitle(`${message.author.username} slaps ${slapTarget.username}, ${funnyReply}`)
+                    .setImage(images[Math.floor(Math.random() * images.length)])
+                    .setColor(randomColor);
+            
+                message.channel.send({embeds: [embed]});
+                return;
+            }
+        } else {
+            const embed = new MessageEmbed()
                 .setTitle(`${message.author.username} slaps ${slapTarget.username}, ${funnyReply}`)
                 .setImage(images[Math.floor(Math.random() * images.length)])
-                .setColor(randomColor)
-            
-                return message.channel.send( {embeds: [embed]} );
-            };
-
-        }
-
-        else {
-            const embed = new MessageEmbed()
-            .setTitle(`${message.author.username} slaps ${slapTarget.username}, ${funnyReply}`)
-            .setImage(images[Math.floor(Math.random() * images.length)])
-            .setColor(randomColor)
+                .setColor(randomColor);
         
-            return message.channel.send( {embeds: [embed]} );
-        };
+            message.channel.send({embeds: [embed]});
+            return;
+        }
     }
-}
+};

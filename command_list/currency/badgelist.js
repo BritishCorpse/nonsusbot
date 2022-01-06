@@ -4,33 +4,32 @@ const { paginateEmbeds } = require(`${__basedir}/functions`);
 const { Users } = require(`${__basedir}/db_objects`);
 
 module.exports = {
-    name: ["inventory", "inv"],
-    description: "Shows your inventory, or someone else's.",
+    name: "badgelist",
+    description: "See what badges you currently own!",
 
     usage: [
-        { tag: "nothing", checks: {isempty: null} },
-        { tag: "user", checks: {isuseridinguild: null} }
-    ],
 
-    async execute (message) {
+    ],
+    async execute(message) {
+
         const randomColor = Math.floor(Math.random()*16777215).toString(16);
-        
-        const targetUser = message.mentions.users.first() || message.author;
+
+        const targetUser = message.author;
 
         const userInDb = await Users.findOne({ where: { user_id: targetUser.id } });
 
         const items = await getUserItems(targetUser.id);
 
+        let embed;
+
         const embeds = [];
 
         function makeEmbed() {
-            return new MessageEmbed().setTitle(`${targetUser.badge || " "}${targetUser.username}'s inventory!`).setColor(randomColor);
+            return new MessageEmbed().setTitle(`${userInDb.badge || " "}${targetUser.username}'s badges`).setColor(randomColor);
         }
-
-        let embed;
-
+ 
         if (items.length === 0) {
-            message.channel.send(`${userInDb.badge || " "}${targetUser.username} has nothing!`);
+            message.channel.send(`${userInDb.badge || " "}${targetUser.username} has no badges!`);
             return;
         }
 
@@ -41,10 +40,14 @@ module.exports = {
                 embed = makeEmbed();
                 embeds.push(embed);  
             }
-                        
-            embed.addField(`${item.item.itemEmoji}${item.item.name}`, `Amount: ${item.amount}`);
+
+            if (item.item.category === "Badges") {
+                embed.addField(`${item.item.itemEmoji}${item.item.name}`, `${item.item.itemDescription}`);
+            }
+            
+            
         }
-        
+
         paginateEmbeds(message.channel, message.author, embeds);
     }
 };

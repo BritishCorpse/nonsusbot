@@ -1,5 +1,13 @@
 const { MessageEmbed } = require("discord.js");
-const { getCommandCategories, paginateEmbeds } = require(`${__basedir}/functions`);
+const {
+    getCommandCategories,
+    getAllCommandNames,
+    getCommandObjectByName,
+    getSimilarities,
+    getAllUsagePaths,
+    paginateEmbeds,
+    formatBacktick,
+} = require(`${__basedir}/functions`);
 
 
 function formatCategoryName(category) {
@@ -8,7 +16,7 @@ function formatCategoryName(category) {
 
 
 module.exports = {
-    name: 'help',
+    name: "help",
     description: "What you're reading right now!",
 
     usage: [
@@ -20,7 +28,7 @@ module.exports = {
                         if (!arg) return false;
                         return getCommandCategories().includes(arg.toLowerCase());
                     },
-                    description: () => `is a category`
+                    description: () => "is a category"
                 }
             }
         },
@@ -37,22 +45,22 @@ module.exports = {
                             return false;
                         }) !== undefined;
                     },
-                    description: () => `is a command`
+                    description: () => "is a command"
                 }
             }
         }
     ],
 
     execute (message, args) {
-        var randomColor = Math.floor(Math.random()*16777215).toString(16);
+        const randomColor = Math.floor(Math.random()*16777215).toString(16);
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
         const botAvatarUrl = message.client.user.displayAvatarURL();
 
         // Create categories dictionary with all the commands
         const categories = {};
         message.client.commands.each(command => {
-            const category = formatCategoryName(command.category)
-            if (!categories.hasOwnProperty(category)) {
+            const category = formatCategoryName(command.category);
+            if (!Object.prototype.hasOwnProperty.call(categories, category)) {
                 categories[category] = [];
             }
 
@@ -63,9 +71,9 @@ module.exports = {
             let embedDescription = "";
             for (const command of categories[formatCategoryName(category)]) {
                 if (typeof command.name === "string") {
-                    embedDescription += `**${prefix}${command.name}**: `;
+                    embedDescription += `${formatBacktick(prefix + command.name)}: `;
                 } else { // if it has multiple names (aliases)
-                    embedDescription += `**${prefix}${command.name.join(", " + prefix)}**: `;
+                    embedDescription += command.name.map(n => formatBacktick(prefix + n)).join(", ");
                 }
                 embedDescription += command.description + "\n";
             }
@@ -91,62 +99,64 @@ module.exports = {
             }
 
             pages.unshift(new MessageEmbed()
-                           .setColor(randomColor)
-                           .setThumbnail(botAvatarUrl)
-                           .setTitle("Categories")
-                           .setDescription(mainEmbedDescription)
-                           .setFooter(`Do ${prefix}help <category> to see the commands in each category.`)
+                .setColor(randomColor)
+                .setThumbnail(botAvatarUrl)
+                .setTitle("Categories")
+                .setDescription(mainEmbedDescription)
+                .setFooter({text: `Do ${prefix}help <category> to see the commands in each category.`})
             );
 
-            paginateEmbeds(message.channel, message.author, pages);
+            paginateEmbeds(message.channel, message.author, pages, {useButtons: false, useDropdown: true});
         } else {
-            const possibleCategory = formatCategoryName(args[0])
-            if (categories.hasOwnProperty(possibleCategory)) {
+            const possibleCategory = formatCategoryName(args[0]);
+            if (Object.prototype.hasOwnProperty.call(categories, possibleCategory)) {
                 // One category given
                 message.channel.send({embeds: [createEmbedFromCategory(possibleCategory)]});
             } else {
                 // One command given
-                let commandName = args[0].replace(/^_/, "");
+                const commandName = args[0].replace(/^_/, "");
 
-                const command = message.client.commands.find(c => {
-                    if (typeof c.name === "string") {
-                      if (commandName === c.name) {
-                          return true;
-                      }
-                    } else {
-                      if (c.name.includes(commandName)) {
-                        return true;
-                      }
-                    }
-                    return false;
-                });
+                const command = getCommandObjectByName(message.client.commands, commandName);
                 
                 if (command === undefined) {
-                  message.channel.send(`The command ${prefix}${commandName} was not found.`);
-                  return;
+                    const topCommands = getSimilarities(commandName, getAllCommandNames(message.client.commands))
+                        .filter(match => match.similarity < 3);
+
+                    message.channel.send(`The command ${prefix}${commandName} was not found. Did you mean: ${topCommands.map(c => c.formatBacktick()).join(", ")}?`);
+                    return;
                 }
 
                 const embed = new MessageEmbed()
                     .setColor(randomColor)
                     .setThumbnail(botAvatarUrl)
                     .setDescription(command.description)
-                    .addField('Category', formatCategoryName(command.category));
+                    .addField("Category", formatCategoryName(command.category));
                 
-                if (command.userPermissions !== undefined)
-                    embed.addField('Permissions required', '`' + command.userPermissions.join('`, `') + '`');
-
-                if (command.developer === true)
-                    embed.setFooter('This command is only available to developers.');
-
                 // Format embed title
                 if (typeof command.name === "string") {
-                    embed.setTitle(`**${prefix}${command.name}**`);
+                    embed.setTitle(formatBacktick(prefix + command.name));
                 } else { // if it has multiple names (aliases)
-                    embed.setTitle(`**${prefix}${command.name.join(", " + prefix)}**`);
+                    embed.setTitle(command.name.map(n => formatBacktick(prefix + n)).join(", "));
                 }
+
+                if (command.userPermissions !== undefined)
+                    embed.addField("Permissions required", "`" + command.userPermissions.join("`, `") + "`");
+
+                if (command.developer === true)
+                    embed.setFooter({text: "This command is only available to developers."});
+
+                // Show usage
+                const paths = getAllUsagePaths(command.usage); // all possible argument combinations
+                
+                let usageString = "";
+                for (const path of paths) {
+                    usageString += path.map(tag => formatBacktick(`<${tag}>`)).join(" ");
+                    usageString += "\n";
+                }
+                embed.addField("Usage", usageString);
 
                 message.channel.send({embeds: [embed]});
             }
         }
     }
-}
+};

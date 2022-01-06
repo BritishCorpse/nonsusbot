@@ -1,11 +1,11 @@
 const request = require("request");
 const { MessageEmbed } = new require("discord.js");
 const { dictionary_api_key } = require(`${__basedir}/config.json`);
+const { paginateEmbeds } = require(`${__basedir}/functions`);
 
-const max_number_of_definitions = 2;
 
 module.exports = {
-    name: 'define',
+    name: "define",
     description: "Define the first argument. Optionally include the type of the word (noun, verb, adjective, adverb, etc) as the second argument.",
 
     usage: [
@@ -20,28 +20,24 @@ module.exports = {
     execute (message, args) {
         const randomColor = Math.floor(Math.random()*16777215).toString(16);
 
-        request("https://dictionaryapi.com/api/v3/references/collegiate/json/" + args[0] + "?key=" + dictionary_api_key, (error, response, body) => {
-            const parsed_body = JSON.parse(body);
-            let embeds = [];
+        request(`https://dictionaryapi.com/api/v3/references/collegiate/json/${args[0]}?key=${dictionary_api_key}`, (error, response, body) => {
+            const parsedBody = JSON.parse(body);
+            const embeds = [];
 
-            let number_of_definitions = 0;
-
-            if (typeof parsed_body[0] === "string") {
-              const embed = new MessageEmbed()
-                  .setTitle("Similar words")
-                  .setColor(randomColor)
-                  .setDescription(parsed_body.join(", "))
-                  .setThumbnail("https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Merriam-Webster_logo.svg/1200px-Merriam-Webster_logo.svg.png")
-                  .setURL("https://www.merriam-webster.com/dictionary/" + args[0]);
-              embeds.push(embed);
+            if (typeof parsedBody[0] === "string") {
+                const embed = new MessageEmbed()
+                    .setTitle("Similar words")
+                    .setColor(randomColor)
+                    .setDescription(parsedBody.join(", "))
+                    .setThumbnail("https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Merriam-Webster_logo.svg/1200px-Merriam-Webster_logo.svg.png")
+                    .setURL("https://www.merriam-webster.com/dictionary/" + args[0]);
+                embeds.push(embed);
             } else {
-                for (const type of parsed_body) { // each word type, noun, adj, etc
+                for (const type of parsedBody) { // each word type, noun, adj, etc
                     if ((args[1] !== undefined && type.fl !== args[1])
                         || type.shortdef.length === 0 || type.fl === undefined) continue;
-                    if (number_of_definitions >= max_number_of_definitions) break;
-                    number_of_definitions++;
 
-                    let embed = new MessageEmbed()
+                    const embed = new MessageEmbed()
                         .setTitle(type.meta.id.split(":")[0] + " - *" + type.fl + "*")
                         .setColor(randomColor)
                         .setThumbnail("https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Merriam-Webster_logo.svg/1200px-Merriam-Webster_logo.svg.png")
@@ -64,19 +60,13 @@ module.exports = {
             }
 
             if (embeds.length === 0) {
-                embeds.push(new MessageEmbed()
+                const embed = new MessageEmbed()
                     .setTitle("No definition found")
-                    .setDescription("No definition was found with type *" + args[1] + "*")
-                );
-            }
-
-            for (const embed of embeds) {
+                    .setDescription("No definition was found with type *" + args[1] + "*");
                 message.channel.send({embeds: [embed]});
+            } else {
+                paginateEmbeds(message.channel, message.author, embeds);
             }
-
-            //if (embeds.length < parsed_body.length) {
-            //    message.channel.send("Maximum amount of definitions (" + max_number_of_definitions + ") was reached.");
-            //}
         });
     }
-}
+};

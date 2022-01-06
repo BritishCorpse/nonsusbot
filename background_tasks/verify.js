@@ -1,6 +1,6 @@
 module.exports = {
-	name: "verify",
-	execute (client) {
+    name: "verify",
+    execute (client) {
         function verifyUser(message) {
             // disable DMs
             if (message.guild === null) return;
@@ -34,15 +34,15 @@ module.exports = {
                     continue;
                 }
                 client.channels.fetch(client.serverConfig.get(guildId).verify_channel_id)
-                .then(channel => {
-                    channel.messages.fetch({limit: 100})
-                    .then(messages => {
-                        for (const message of messages) {
-                            verifyUser(message[1]);
-                        }
+                    .then(channel => {
+                        channel.messages.fetch({limit: 100})
+                            .then(messages => {
+                                for (const message of messages) {
+                                    verifyUser(message[1]);
+                                }
+                            });
                     });
-                });
             }
         });
-	}		
+    }		
 };

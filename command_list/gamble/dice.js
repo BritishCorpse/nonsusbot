@@ -3,46 +3,47 @@ const { userHasItem } = require(`${__basedir}/functions`);
 
 
 module.exports = {
-    name: 'dice',
-    description: 'Play against the computer in a game of dice.',
+    name: "dice",
+    description: "Play against the computer in a game of dice.",
 
     usage: [
-        { tag: "bet", checks: {isinteger: null} },
+        { tag: "bet", checks: {ispositiveinteger: null} },
         { tag: "rules", checks: {is: "rules"} }
     ],
 
     async execute(message, args){
-        var randomColor = Math.floor(Math.random()*16777215).toString(16);
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
-        // Check if the user has a casino membershio
+        // check for casino membership
         if (!await userHasItem(message.author.id, "Casino Membership")) {
-            message.channel.send(`It appears you are not a member of the casino. Please go to ${prefix}shop and go buy a Casino Membership.`);
+            message.channel.send(`You don't have a casino membership. See the ${prefix}shop to buy it.`);
             return;
         }
+
+        const randomColor = Math.floor(Math.random()*16777215).toString(16);
 
         // Starting playing dice game.
-        let userBet = args[0];
-        if (userBet === undefined) {
-            message.channel.send(`🎲You did not specify your bet! Usage: ${prefix}dice {bet}🎲`);
-            return;
-        }
+        const userBet = Number.parseInt(args[0]);
 
-        else if (userBet > 10000000) {
-            message.channel.send("🎲Your bet is not supported, too large or too small.🎲");
-            return;
-        }
-
-        else if (userBet === 'rules') {
+        if (userBet === "rules") {
             const embed = new MessageEmbed()
-            .setTitle("Rules of dice.")
-            .setDescription("The player and computer both roll a six sided die. Whichever party rolls a higher number on the die, wins. The maximum bet for this gamemode is 10 million 💰's.")
-            .setColor(randomColor)
+                .setTitle("Rules of dice.")
+                .setDescription("The player and computer both roll a six sided die. Whichever party rolls a higher number on the die, wins. The maximum bet for this gamemode is 10 million 💰's.")
+                .setColor(randomColor);
             
-            return message.channel.send({embeds: [embed]});
+            message.channel.send({embeds: [embed]});
+            return;
+        } else if (userBet > 10000000 || userBet <= 0) {
+            message.channel.send("🎲Your bet is too large or invalid.🎲");
+            return;
+        } else if (userBet > message.client.currency.getBalance(message.author.id)) {
+            message.channel.send("🎲You don't have enough money!🎲");
         }
 
-        const roll = () => Math.floor(Math.random() * 7);
+        // temporarily take the bet
+        message.client.currency.add(message.author.id, -userBet);
+
+        const roll = () => Math.floor(Math.random() * 6 + 1);
         const diceRollComputer = roll();
         const diceRollUser = roll();
 
@@ -53,14 +54,13 @@ module.exports = {
             .addField("🎲You rolled:🎲", `${diceRollUser}`);
         
         if (diceRollUser > diceRollComputer) {
-            embed.setFooter("YOU WIN!");
-            message.client.currency.add(message.author.id, userBet);
+            embed.setFooter({text: "YOU WIN!"});
+            message.client.currency.add(message.author.id, userBet * 2);
         } else if (diceRollComputer > diceRollUser) {
-            embed.setFooter("YOU LOSE");
-            message.client.currency.add(message.author.id, -userBet);
+            embed.setFooter({text: "YOU LOSE"});
         } else if (diceRollComputer === diceRollUser) {
-            embed.setFooter("ITS A DRAW");
-            message.client.currency.add(message.author.id, -10);
+            embed.setFooter({text: "ITS A DRAW"});
+            message.client.currency.add(message.author.id, userBet - 10);
         } else {
             message.channel.send("I'm not sure what happened.");
             return;
@@ -68,4 +68,4 @@ module.exports = {
 
         message.channel.send({embeds: [embed]});
     }
-}
+};

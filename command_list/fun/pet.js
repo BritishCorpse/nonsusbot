@@ -1,8 +1,8 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed } = require("discord.js");
 
 
 module.exports = {
-    name: 'pet',
+    name: "pet",
     description: "Pet whoever you'd like to.",
 
     usage: [
@@ -10,9 +10,9 @@ module.exports = {
     ],
 
     execute(message, args){
-        var randomColor = Math.floor(Math.random()*16777215).toString(16);
+        const randomColor = Math.floor(Math.random()*16777215).toString(16);
         
-        images = [
+        const images = [
             "https://c.tenor.com/rZRQ6gSf128AAAAM/anime-good-girl.gif",
             "https://c.tenor.com/Wth7fEpgZ7EAAAAM/neko-anime-girl.gif",
             "https://c.tenor.com/hmzhWv3b9KsAAAAM/anime-head-pat-anime-head-rub.gif",
@@ -30,43 +30,40 @@ module.exports = {
             "https://c.tenor.com/o0re0DQzkd8AAAAM/anime-head-rub.gif"
         ];
 
-        let petTarget = message.mentions.users.first();
+        const petTarget = message.mentions.users.first();
+
         if (!petTarget) {
             const embed = new MessageEmbed()
-            .setTitle(`${message.author.username} pets ${message.author.username}, how nice of them :heart:!`)
-            .setImage(images[Math.floor(Math.random() * images.length)])
-            .setColor(randomColor)
-        
-            return message.channel.send( {embeds: [embed]} );
-        }
-
-        else if (petTarget.id === message.client.user.id) {
-            return message.channel.send("Thanks! How did you know I was hungry? :heart:");
-        }
-
-        else if (petTarget.id === '484644637420552202') {
-            if (message.author.id !== '834035562864050237') {
-                return message.channel.send("Corpse blocks your.. petting?! HOW??!?!?");
-            }
-
-            else {
-                const embed = new MessageEmbed()
-                .setTitle(`${message.author.username} pets ${petTarget.username} :heart:!`)
+                .setTitle(`${message.author.username} pets ${message.author.username}, how nice of them :heart:!`)
                 .setImage(images[Math.floor(Math.random() * images.length)])
-                .setColor(randomColor)
-            
-                return message.channel.send( {embeds: [embed]} );
-            }
-            
-        }
-
-        else {
-            const embed = new MessageEmbed()
-            .setTitle(`${message.author.username} pets ${petTarget.username}, how nice of them :heart:!`)
-            .setImage(images[Math.floor(Math.random() * images.length)])
-            .setColor(randomColor)
+                .setColor(randomColor);
         
-            return message.channel.send( {embeds: [embed]} );
-        };
+            message.channel.send({embeds: [embed]});
+            return;
+        } else if (petTarget.id === message.client.user.id) {
+            message.channel.send("Thanks! How did you know I was hungry? :heart:");
+            return;
+        } else if (petTarget.id === "484644637420552202") {
+            if (message.author.id !== "834035562864050237") {
+                message.channel.send("Corpse blocks your.. petting?! HOW??!?!?");
+                return;
+            } else {
+                const embed = new MessageEmbed()
+                    .setTitle(`${message.author.username} pets ${petTarget.username} :heart:!`)
+                    .setImage(images[Math.floor(Math.random() * images.length)])
+                    .setColor(randomColor);
+            
+                message.channel.send({embeds: [embed]});
+                return;
+            }
+        } else {
+            const embed = new MessageEmbed()
+                .setTitle(`${message.author.username} pets ${petTarget.username}, how nice of them :heart:!`)
+                .setImage(images[Math.floor(Math.random() * images.length)])
+                .setColor(randomColor);
+        
+            message.channel.send({embeds: [embed]});
+            return;
+        }
     }
-}
+};

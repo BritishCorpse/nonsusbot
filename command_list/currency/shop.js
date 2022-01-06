@@ -1,23 +1,23 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed } = require("discord.js");
 const { CurrencyShop } = require(`${__basedir}/db_objects`);
 const { paginateEmbeds } = require(`${__basedir}/functions`);
 
 module.exports = {
-    name: 'shop',
+    name: "shop",
     description: "Displays the shop.",
     
     usage: [
     ],
 
-    async execute (message, args) {
-        var randomColor = Math.floor(Math.random()*16777215).toString(16);
+    async execute (message) {
+        const randomColor = Math.floor(Math.random()*16777215).toString(16);
         
         const embeds = [];
 
-        items = await CurrencyShop.findAll();
+        const items = await CurrencyShop.findAll();
 
         function makeEmbed() {
-            return new MessageEmbed().setTitle("Shop!").setColor(randomColor)
+            return new MessageEmbed().setTitle("Shop!").setColor(randomColor);
         }
 
         let embed;
@@ -33,6 +33,6 @@ module.exports = {
             embed.addField(`${item.itemEmoji}${item.name}, ${item.itemDescription}`, `${item.cost}`);
         }
 
-        paginateEmbeds(message.channel, message.author, embeds);
+        paginateEmbeds(message.channel, message.author, embeds, {useDropdown: true});
     }
-}
+};

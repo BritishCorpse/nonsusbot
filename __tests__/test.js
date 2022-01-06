@@ -3,7 +3,7 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const cp = require("child_process");
-const { fuzz, preset } = require("fuzzing");
+const { fuzz/*, preset*/ } = require("fuzzing");
 
 const sleep = require("util").promisify(setTimeout);
 
@@ -26,7 +26,7 @@ let mainBotClient;
 
 
 function startMainBot() {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
         mainBotProcess = cp.fork("./index.js");
 
         mainBotProcess.on("message", async message => {
@@ -37,6 +37,7 @@ function startMainBot() {
     });
 }
 
+/* global jest, beforeAll, afterEach, afterAll, describe, it, expect */
 
 beforeAll(() => {
     return startMainBot();
@@ -59,22 +60,23 @@ beforeAll(() => {
     client.prompt = (channel, message, timeout=10000) => {
         return new Promise(resolve => {
             channel.send(message)
-            .then(() => {
-                const filter = m => m.author.id === mainBotClient.user;
-                channel.awaitMessages({
-                    filter,
-                    max: 1,
-                    time: timeout,
-                    errors: ['time']
-                })
-                .then(messages => resolve(messages.first()));
-            });
+                .then(() => {
+                    const filter = m => m.author.id === mainBotClient.user;
+                    channel.awaitMessages({
+                        filter,
+                        max: 1,
+                        time: timeout,
+                        errors: ["time"]
+                    })
+                        .then(messages => resolve(messages.first()));
+                });
         });
     };
 
     client.promptCommand = (channel, command, timeout) => {
         // get the newest prefix
-        const prefix = require('../server_config.json')[channel.guild.id].prefix;
+        //const prefix = require('../server_config.json')[channel.guild.id].prefix;
+        const prefix = "test!"; // use special testing prefix
 
         return client.prompt(channel, prefix + command, timeout);
     };
@@ -115,15 +117,17 @@ beforeAll(() => {
 
 // Delete the test channel
 afterAll(() => {
-    return new Promise(async (resolve, reject) => {
-        //await testChannel.delete("Test complete");
-        mainBotProcess.kill();
-        resolve();
+    return new Promise(resolve => {
+        testChannel.delete("Test complete")
+            .then(() => {
+                mainBotProcess.kill();
+                resolve();
+            });
     });
 });
 
 // Tests
-describe("mention", () => {
+/*describe("mention", () => {
     describe("without extra text", () => {
         let response;
         beforeAll(async () => {
@@ -136,12 +140,12 @@ describe("mention", () => {
         });
         
         it("has the prefix in content", () => {
-            const prefix = require('../server_config.json')[testChannel.guild.id].prefix;
+            const realPrefix = require('../server_config.json')[testChannel.guild.id].prefix;
             expect(response.content)
-            .toInclude(prefix);
+            .toInclude(realPrefix);
         });
     });
-});
+});*/
 
 const categories = fs.readdirSync("./command_list");
 const commands = [];
@@ -175,7 +179,7 @@ describe("fuzzing arguments", () => {
 
                     it("does not crash", () => {
                         expect(response)
-                        .toBeTruthy();
+                            .toBeTruthy();
                     });
                 });
             };
@@ -186,59 +190,3 @@ describe("fuzzing arguments", () => {
         });
     }
 });
-
-// TODO: replace this with a general usage thing in command
-/*describe("help command", () => {
-    describe("without arguments", () => {
-        let response;
-        beforeAll(async () => {
-            response = await client.promptCommand(testChannel, "help");
-        });
-
-        it("has one embed", () => {
-            expect(response.embeds)
-            .toBeArrayOfSize(1);
-        });
-
-        it("has no content", () => {
-            expect(response.content)
-            .toBeEmpty();
-        });
-        
-        it("has one action row", () => {
-            expect(response.components)
-            .toBeArrayOfSize(1);
-        });
-
-        it("has two buttons", () => {
-            expect(response.components[0].components)
-            .toBeArrayOfSize(2);
-        });
-    });
-
-    describe("with category argument", () => {
-        for (const category of categories) {
-            describe(`category argument: ${category}`, () => {
-                let response;
-                beforeAll(async () => {
-                    response = await client.promptCommand(testChannel, `help ${category}`);
-                });
-
-                it("has one embed", () => {
-                    expect(response.embeds)
-                    .toBeArrayOfSize(1);
-                });
-
-                it("has no action row", () => {
-                    expect(response.components)
-                    .toBeEmpty();
-                });
-
-                it("has no content", () => {
-                    expect(response.content)
-                    .toBeEmpty();
-                });
-            });
-        }
-    });
-});*/

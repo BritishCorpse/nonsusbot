@@ -15,42 +15,41 @@ const funnyReplies = [
 
 
 module.exports = {
-    name: 'kick',
-    description: 'Kicks a user from the guild.',
+    name: "kick",
+    description: "Kicks a user from the guild.",
     userPermissions: ["KICK_MEMBERS"],
 
     usage: [
         { tag: "user", checks: {isuseridinguild: null},
             next: [
                 circularUsageOption(
-                    { tag: "reason", checks: {matches: {not: /[^\w?!.,;:'"\(\)\/]/}, isempty: {not: null}} }
+                    { tag: "reason", checks: {matches: {not: /[^\w?!.,;:'"()/]/}, isempty: {not: null}} }
                 )
             ]
         }
     ],
 
     execute(message, args) {
-        var randomColor = Math.floor(Math.random()*16777215).toString(16);
+        const randomColor = Math.floor(Math.random()*16777215).toString(16);
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
         const kickUser = message.mentions.members.first();
         const kickReason = args.slice(1).join(" ");
 
         if (!kickUser) {
-            return message.channel.send(`Incorrect usage. Proper usage, ${prefix}kick ${user} reason`);
+            return message.channel.send(`Incorrect usage. Proper usage, ${prefix}kick ${kickUser} reason`);
         }
 
         const funnyReply = funnyReplies[Math.floor(Math.random()*funnyReplies.length)];
         const embed = new MessageEmbed()
-            .setAuthor(`${message.author.username}`, message.author.avatarURL())
+            .setAuthor({name: `${message.author.username}`, iconURL: message.author.avatarURL()})
             .setDescription(`The moderators have spoken, ${kickUser.tag} has been kicked from ${message.guild.name}! ` + funnyReply)
             .addField("Ban reason", kickReason)
             .addField("Moderator", message.author.tag)  
             .setColor(randomColor);
 
         message.channel.send({embeds: [embed]});
-            kickUser.kick({reason: kickReason})
-            .then(console.log)
+        kickUser.kick({reason: kickReason})
             .catch(console.error);
     }
-}
+};

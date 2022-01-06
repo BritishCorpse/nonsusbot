@@ -1,14 +1,13 @@
 const { MessageEmbed } = require("discord.js");
-
 const { userHasItem } = require(`${__basedir}/functions`);
 
 
 module.exports = {
-    name: 'coinflip',
-    description: 'Flip a coin!',
+    name: "coinflip",
+    description: "Flip a coin!",
 
     usage: [
-        { tag: "bet", checks: {isinteger: null},
+        { tag: "bet", checks: {ispositiveinteger: null},
             next: [
                 { tag: "prediction", checks: {isin: ["heads", "tails"]} }
             ]
@@ -16,24 +15,30 @@ module.exports = {
         { tag: "rules", checks: {is: "rules"} }
     ],
 
-    execute(message, args) {
-        var randomColor = Math.floor(Math.random()*16777215).toString(16);
-
+    async execute(message, args) {
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
+        
+        // check for casino membership
+        if (!await userHasItem(message.author.id, "Casino Membership")) {
+            message.channel.send(`You don't have a casino membership. See the ${prefix}shop to buy it.`);
+            return;
+        }
 
-        // Check if the user has a casino membershio
+        const randomColor = Math.floor(Math.random()*16777215).toString(16);
 
-        if (args[0] === 'rules') {
+        // Check if the user has a casino membership
+
+        if (args[0] === "rules") {
             const embed = new MessageEmbed()
-            .setTitle("Coinflip")
-            .setDescription(`The player calls either heads or tails, the computer then flips a coin. If the player is correct, they gain their bet.`)
-            .setColor(randomColor);
+                .setTitle("Coinflip")
+                .setDescription("The player calls either heads or tails, the computer then flips a coin. If the player is correct, they gain their bet.")
+                .setColor(randomColor);
             
             message.channel.send({embeds: [embed]});
             return;
         }
 
-        let userBet = Number.parseInt(args[0]);
+        const userBet = Number.parseInt(args[0]);
         if (userBet === undefined) {
             message.channel.send(`🎲You did not specify your bet! Usage: ${prefix}coinflip {bet} {heads or tails}🎲`);
             return;
@@ -49,31 +54,31 @@ module.exports = {
             return;
         }
 
-        let userChoice = args[1];
+        const userChoice = args[1];
         if (!userChoice) {
-            message.channel.send(`🎲The coin landed on the floor. You didn't call it out!🎲`);
+            message.channel.send("🎲The coin landed on the floor. You didn't call it out!🎲");
             return;
         }
 
         function coinflip() {
-            return Math.floor(Math.random() * 2)
+            return Math.floor(Math.random() * 2);
         }
 
-        let coinflipResult = coinflip()
+        const coinflipResult = coinflip();
 
         function gameResult() {
             if (coinflipResult === 1) {
-                return 'heads'
+                return "heads";
             }
 
             else if (coinflipResult === 0) {
-                return 'tails'
+                return "tails";
             }
         }
 
         const embed = new MessageEmbed()
-        .setTitle("The coin has landed!")
-        .setColor(randomColor)
+            .setTitle("The coin has landed!")
+            .setColor(randomColor);
 
         function checkResult() {
             if (gameResult() === userChoice) {
@@ -95,10 +100,10 @@ module.exports = {
             message.channel.send({embeds: [embed]});
         }
 
-        checkResult()
+        checkResult();
 
 
 
 
     }
-}
+};

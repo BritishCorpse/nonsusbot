@@ -8,7 +8,7 @@ module.exports = {
     description: "Searches for videos on youtube.com then sends the link in the channel.",
 
     usage: [
-        { tag: "query", checks: {isempty: {not: null}},
+        { tag: "query", checks: {isempty: {not: null}}, circular: true,
             next: [
                 circularUsageOption(
                     { tag: "query", checks: {} } // repeated because only the first word should not be empty
@@ -33,15 +33,15 @@ module.exports = {
                 "q": args.join(" "),
                 "videoCaption": "closedCaption"
             }
-        }
+        };
 
         request(options, (error, response, body) => {
-            parsed_body = JSON.parse(body);
+            const parsedBody = JSON.parse(body);
 
-            if (parsed_body.items && parsed_body.items[0])
-                message.channel.send("https://youtu.be/" + parsed_body.items[0].id.videoId);
+            if (parsedBody.items && parsedBody.items[0])
+                message.channel.send("https://youtu.be/" + parsedBody.items[0].id.videoId);
             else
                 message.channel.send("No YouTube video was found.");
         });
     }
-}
+};

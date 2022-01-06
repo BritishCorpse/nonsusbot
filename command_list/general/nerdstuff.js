@@ -1,9 +1,9 @@
-const { MessageEmbed, Message } = require('discord.js');
-const { paginateEmbeds } = require(`${__basedir}/functions`);
+const { MessageEmbed } = require("discord.js");
+//const { paginateEmbeds } = require(`${__basedir}/functions`);
 
 module.exports = {
-    name: 'nerdstuff',
-    description: 'Full changelog.',
+    name: "nerdstuff",
+    description: "Full changelog.",
 
     usage: [
     ],
@@ -21,9 +21,9 @@ module.exports = {
             .setTitle("New commands.")
             .setColor("ORANGE")
             .addField("Currency commands.", "\u200b")
-            .addField("Added new commands: shop, buy, currencyinfo, givemoney(not available to non-developers), inventory, leaderboard, loan, resetmoney, transfer, vip", `\u200b`)
+            .addField("Added new commands: shop, buy, currencyinfo, givemoney(not available to non-developers), inventory, leaderboard, loan, resetmoney, transfer, vip", "\u200b")
             .addField("Fun commands.", "\u200b")
-            .addField("Added new commands: hug, kiss, pet, slap", `\u200b`)
+            .addField("Added new commands: hug, kiss, pet, slap", "\u200b")
             .setFooter(`Usage for commands: ${prefix}{command} {optional or required argument}`);
 
         const embed3 =new MessageEmbed()
@@ -34,7 +34,7 @@ module.exports = {
         const embed4 = new MessageEmbed()
             .setTitle("Gamble commands.")
             .setColor("ORANGE")
-            .addField("Added new commands: dice, blackjack, numbergame", `\u200b`);
+            .addField("Added new commands: dice, blackjack, numbergame", "\u200b");
 
         const embed5 = new MessageEmbed()
             .setTitle("Bug fixes and known issues.")
@@ -43,4 +43,4 @@ module.exports = {
         
         message.channel.send({embeds: [embed1, embed2, embed3, embed4, embed5]});
     }
-}
+};

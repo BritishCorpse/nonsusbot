@@ -3,7 +3,6 @@ const { MessageEmbed } = require("discord.js");
 const { parse } = require("node-html-parser");
 const { paginateEmbeds, circularUsageOption } = require(`${__basedir}/functions`);
 
-//const max_number_of_verses = 3;
 
 module.exports = {
     name: "bible",
@@ -20,7 +19,7 @@ module.exports = {
   
         request("https://www.openbible.info/topics/" + args.join("_"), (error, response, body) => {
             const root = parse(body);
-            const verses = root.querySelectorAll("div[class^='verse']");//.splice(0, max_number_of_verses);
+            const verses = root.querySelectorAll("div[class^='verse']");
 
             const pages = [];
 
@@ -41,6 +40,6 @@ module.exports = {
             }
 
             paginateEmbeds(message.channel, message.author, pages);
-      });
-  }
-}
+        });
+    }
+};
