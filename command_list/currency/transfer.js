@@ -5,7 +5,7 @@ module.exports = {
     usage: [
         { tag: "user", checks: {isuseridinguild: null},
             next: [
-                { tag: "amount", checks: {isinteger: null} }
+                { tag: "amount", checks: {ispositiveinteger: null} }
             ]
         }
     ],

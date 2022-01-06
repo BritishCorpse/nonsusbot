@@ -12,6 +12,9 @@ const descriptionFormats = {
     is: (not, value) => `is ${not ? "not " : ""}${formatBacktick(value)}`,
     isin: (not, value) => `is ${not ? "not " : ""}one of ${value.map(formatBacktick).join(", ")}`,
     isinteger: not => `is ${not ? "not " : ""}an integer`,
+    ispositiveinteger: not => `is ${not ? "not " : ""}a positive integer`,
+    isnegativeinteger: not => `is ${not ? "not " : ""}a negative integer`,
+    isintegerbetween: (not, value) => `is ${not ? "not " : ""}an integer between ${formatBacktick(value[0])} and ${formatBacktick(value[1])}`,
     matches: (not, value) => `${not ? "does not match" : "matches"} ${formatBacktick(value)}`,
     matchesfully: (not, value) => `${not ? "does not match" : "matches"} fully ${formatBacktick(value)}`,
     //isuserid: (not, value) => `is ${not ? "not " : ""}a user`,
@@ -301,15 +304,26 @@ function sendUsage(message, usage, failedOn, failedArg) {
         .setTitle("Incorrect Usage")
         .setFooter({text: `Use ${message.client.serverConfig.get(message.guild.id).prefix}help for more information.`});
 
+    const paths = getAllUsagePaths(usage); // all possible argument combinations
+    let description = "";
+    for (const path of paths) {
+        description += `${formatBacktick(message.content.split(" ")[0])} `;
+        description += path.map(tag => formatBacktick(`<${tag}>`)).join(" ");
+        description += "\n";
+    }
+    description += "\n";
+
     if (failedArg === null)
-        embed.setDescription("Your usage is wrong.");
+        description += "Your usage is wrong.";
     else if (failedArg === undefined)
-        embed.setDescription("You are missing an argument. The argument can be:");
+        description += "You are missing an argument. The argument can be:";
     else
-        embed.setDescription(`${formatBacktick(failedArg)} is an invalid argument. The argument can be:`);
+        description += `${formatBacktick(failedArg)} is an invalid argument. The argument can be:`;
+
+    embed.setDescription(description);
 
     for (const option of failedOn)
-        embed.addField(`<${option.tag}>`, generateDescription(option));
+        embed.addField(`<${option.tag}>`, generateDescription(option), true);
 
     message.reply({embeds: [embed]});
 }
@@ -325,20 +339,34 @@ function getValidationFunction(message, check, _value) {
         value = _value;
     }
 
+    function isInteger(arg) {
+        if (!arg) return false;
+        const match = arg.match(/^-?\d+/);
+        if (match !== null && match[0] === arg) {
+            // check that it is not too big or too big negatively
+            const n = Number.parseInt(match[0]);
+            return n !== Infinity && n !== -Infinity;
+        }
+        return false;
+    }
+
     // Returns a validation function from a check name
     const validationFunctions = {
         isempty: arg => [null, undefined, ""].includes(arg),
         is: arg => arg === value,
         isin: arg => value.includes(arg),
-        isinteger: arg => {
-            if (!arg) return false;
-            const match = arg.match(/^-?\d+/);
-            if (match !== null && match[0] === arg) {
-                // check that it is not too big or too big negatively
-                const n = Number.parseInt(match[0]);
-                return n !== Infinity && n !== -Infinity;
-            }
-            return false;
+        isinteger: isInteger,
+        ispositiveinteger: arg => {
+            if (!isInteger(arg)) return false;
+            return Number.parseInt(arg) > 0;
+        },
+        isnegativeinteger: arg => {
+            if (!isInteger(arg)) return false;
+            return Number.parseInt(arg) < 0;
+        },
+        isintegerbetween: arg => {
+            if (!isInteger(arg)) return false;
+            return Number.parseInt(arg) >= value[0] && Number.parseInt(arg) < value[1];
         },
         matches:  arg => {
             if (!arg) return false;

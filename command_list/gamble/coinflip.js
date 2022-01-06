@@ -7,7 +7,7 @@ module.exports = {
     description: "Flip a coin!",
 
     usage: [
-        { tag: "bet", checks: {isinteger: null},
+        { tag: "bet", checks: {ispositiveinteger: null},
             next: [
                 { tag: "prediction", checks: {isin: ["heads", "tails"]} }
             ]

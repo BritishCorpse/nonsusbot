@@ -199,6 +199,9 @@ A check can be inverted by replacing the value with `{not: value}`. See [Not](#n
 | isin | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)> | ✓ | Argument is exactly one of the strings in the array. |
 | isempty | [null](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null) | ✓ | Argument is not given. |
 | isinteger | [null](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null) | ✓ | Argument is an integer. |
+| ispositiveinteger | [null](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null) | ✓ | Argument is an integer greater than 0. |
+| isnegativeinteger | [null](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null) | ✓ | Argument is an integer less than 0. |
+| isintegerbetween | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)> | ✓ | Argument is an integer greater than or equal to the first value in the array and less than the second value in the array. |
 | matches | [RegExp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp) | ✓ | Argument matches the regular expression somewhere in the string. |
 | matchesfully | [RegExp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp) | ✓ | Argument matches the regular expression fully. |
 | isuseridinguild | [null](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null) | ✓ | Argument is the ID or mention of a user in the guild the message was sent in. |

@@ -7,7 +7,7 @@ module.exports = {
     description: "Play against the computer in a game of dice.",
 
     usage: [
-        { tag: "bet", checks: {isinteger: null} },
+        { tag: "bet", checks: {ispositiveinteger: null} },
         { tag: "rules", checks: {is: "rules"} }
     ],
 
@@ -43,7 +43,7 @@ module.exports = {
         // temporarily take the bet
         message.client.currency.add(message.author.id, -userBet);
 
-        const roll = () => Math.floor(Math.random() * 7);
+        const roll = () => Math.floor(Math.random() * 6 + 1);
         const diceRollComputer = roll();
         const diceRollUser = roll();
 
