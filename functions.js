@@ -304,15 +304,26 @@ function sendUsage(message, usage, failedOn, failedArg) {
         .setTitle("Incorrect Usage")
         .setFooter({text: `Use ${message.client.serverConfig.get(message.guild.id).prefix}help for more information.`});
 
+    const paths = getAllUsagePaths(usage); // all possible argument combinations
+    let description = "";
+    for (const path of paths) {
+        description += `${formatBacktick(message.content.split(" ")[0])} `;
+        description += path.map(tag => formatBacktick(`<${tag}>`)).join(" ");
+        description += "\n";
+    }
+    description += "\n";
+
     if (failedArg === null)
-        embed.setDescription("Your usage is wrong.");
+        description += "Your usage is wrong.";
     else if (failedArg === undefined)
-        embed.setDescription("You are missing an argument. The argument can be:");
+        description += "You are missing an argument. The argument can be:";
     else
-        embed.setDescription(`${formatBacktick(failedArg)} is an invalid argument. The argument can be:`);
+        description += `${formatBacktick(failedArg)} is an invalid argument. The argument can be:`;
+
+    embed.setDescription(description);
 
     for (const option of failedOn)
-        embed.addField(`<${option.tag}>`, generateDescription(option));
+        embed.addField(`<${option.tag}>`, generateDescription(option), true);
 
     message.reply({embeds: [embed]});
 }
