@@ -43,6 +43,8 @@ class Card {
         this.isAce = this.identifier === 1;
 
         this.value = constrain(this.identifier, 10);
+
+        this.hidden = false; // for dealer's hidden card
     }
 
     makeAceEleven() {
@@ -55,9 +57,19 @@ class Card {
             this.value = 1;
     }
 
+    hide() {
+        this.hidden = true;
+    }
+
+    unHide() {
+        this.hidden = false;
+    }
+
     show() {
         // turns it to a string
-        if (this.isAce) // ace
+        if (this.hidden)
+            return "Hidden";
+        else if (this.isAce) // ace
             return `Ace(${this.value})`;
         else if (this.identifier < 11) // 2 to 10
             return `${this.value}`;
@@ -141,40 +153,18 @@ module.exports = {
             return new Card(cardIdentifier);
         }
 
-        const dealerCards = [];
-        for (let i = 0; i < 2; ++i) {
-            dealerCards.push(getCard());
-        }
-        // draw more cards, or make ace 11, to bring score between 17 and 21
-        while (getScore(dealerCards) < 17) {
-            const ace = dealerCards.find(card => card.isAce);
-            if (ace !== undefined && ace.value !== 11) {
-                // make ace 11 to try to bring score up (according to the rules he has to do this)
-                ace.makeAceEleven();
+        const dealerCards = [getCard(), getCard()];
+        dealerCards[1].hide();
 
-                // check score again
-                if (getScore(dealerCards) > 21) {
-                    // undo because having an ace as 11 would be too big
-                    ace.makeAceOne();
-                } else {
-                    continue; // don't take a card
-                }
-            }
-            // take a card
-            dealerCards.push(getCard());
-        }
-
-        const userCards = [];
         // starting cards
-        for (let i = 0; i < 2; ++i) {
-            userCards.push(getCard());
-        }
+        const userCards = [getCard(), getCard()];
 
         function getGameStateEmbed() {
             const embed = new MessageEmbed()
                 .setTitle("🃏Blackjack🃏")
                 .setColor(randomColor);
 
+            // TODO: add hidden card stuff
             for (const i in dealerCards) {
                 embed.addField(...getCardEmbedFieldArguments(dealerCards[i], "The dealer", Number.parseInt(i) + 1));
             }
@@ -203,10 +193,12 @@ module.exports = {
             );
 
         message.channel.send({embeds: [embed], components: [row]}).then(botMessage => {1;
-            let userPlayed = false; // used to cancel the message given if the user didn't do anything when the dealer automatically lost
+            let gameEnded = false; // used to cancel the message given if the user didn't do anything when the dealer automatically lost
+            let stood = false;
 
             const filter = interaction => (interaction.customId === "stand"
-                                           || interaction.customId === "hit")
+                                           || interaction.customId === "hit"
+                                           || interaction.customId === "toggleace")
                                           && interaction.user.id === message.author.id;
 
             const collector = botMessage.createMessageComponentCollector({filter, time: 60000});
@@ -218,21 +210,27 @@ module.exports = {
                 let userBalanceChange;
                 let gameOverMessage;
 
-                if (dealerScore > 21) {
+                if (userScore > 21) {
+                    userBalanceChange = -userBet;
+                    gameOverMessage = `${username} got a bust! ${username} lost the game!`;
+                } else if (dealerScore > 21) {
                     userBalanceChange = userBet;
                     gameOverMessage = `The dealer got a bust! ${username} won the game!`;
-                } else if (userScore > 21) {
+                } else if (dealerScore === userScore) {
+                    userBalanceChange = 0;
+                    gameOverMessage = "It's a draw!";
+                } else if (dealerScore === 21 && dealerCards.length === 2) {
                     userBalanceChange = -userBet;
-                    gameOverMessage = `${username} got a bust! The dealer won the game!`;
+                    gameOverMessage = `The dealer got a blackjack! ${username} lost the game!`;
+                } else if (userScore === 21 && userCards.length === 2) {
+                    userBalanceChange = Math.floor(userBet * 1.5);
+                    gameOverMessage = `${username} got a blackjack! ${username} won the game!`;
                 } else if (userScore < dealerScore) {
                     userBalanceChange = -userBet;
                     gameOverMessage = `The dealer's score is greater than ${username}'s score! ${username} lost the game!`;
                 } else if (userScore > dealerScore) {
                     userBalanceChange = userBet;
                     gameOverMessage = `${username}'s score is greater than the dealer's score! ${username} won the game!`;
-                } else {
-                    userBalanceChange = 0;
-                    gameOverMessage = "It's a draw!";
                 }
 
                 const gameEndEmbed = getGameStateEmbed()
@@ -245,32 +243,71 @@ module.exports = {
                 message.client.currency.add(message.author.id, userBet + userBalanceChange);
 
                 botMessage.edit({embeds: [gameEndEmbed]});
+
+                gameEnded = true;
                 collector.stop();
             }
 
-            collector.on("collect", interaction => {
-                userPlayed = true;
+            function dealerPlay() {
+                dealerCards[1].unHide();
 
+                // draw more cards, or make ace 11, to bring score between 17 and 21
+                while (getScore(dealerCards) < 17) {
+                    const ace = dealerCards.find(card => card.isAce);
+                    if (ace !== undefined && ace.value !== 11) {
+                        // make ace 11 to try to bring score up (according to the rules he has to do this)
+                        ace.makeAceEleven();
+
+                        // check score again
+                        if (getScore(dealerCards) > 21) {
+                            // undo because having an ace as 11 would be too big
+                            ace.makeAceOne();
+                        } else {
+                            continue; // don't take a card
+                        }
+                    }
+                    // take a card
+                    dealerCards.push(getCard());
+                }
+            }
+
+            collector.on("collect", async interaction => {
                 if (interaction.customId === "stand") {
-                    interaction.deferUpdate();
-                    endGame();
-                } else if (interaction.customId === "hit") {
-                    // Take a new card
-                    userCards.push(getCard());
-
-                    const userScore = getScore(userCards);
-
-                    if (userScore > 21) { // bust
+                    dealerPlay(); 
+                    
+                    if (stood || userCards.find(card => card.isAce) === undefined) {
                         interaction.deferUpdate();
                         endGame();
                     } else {
-                        interaction.update({embeds: [getGameStateEmbed()]});
+                        // turn the hit button into ace value toggle
+                        row.components[1]
+                            .setCustomId("toggleace")
+                            .setLabel("Toggle ace value")
+                            .setStyle("PRIMARY");
+                        await interaction.update({components: [row]});
                     }
+                    stood = true;
+                } else if (interaction.customId === "hit") {
+                    // Take a new card
+                    userCards.push(getCard());
+                    await interaction.update({embeds: [getGameStateEmbed()]});
+
+                    if (getScore(userCards) > 21) {
+                        dealerPlay();
+                        endGame();
+                    }
+                } else if (interaction.customId === "toggleace") {
+                    const ace = userCards.find(card => card.isAce);
+                    if (ace.value === 1)
+                        ace.makeAceEleven();
+                    else
+                        ace.makeAceOne();
+                    await interaction.update({embeds: [getGameStateEmbed()]});
                 }
             });
             
             collector.on("end", () => {
-                if (!userPlayed) {
+                if (!gameEnded) {
                     message.channel.send(`Hello? Did you fall asleep?\nYou can't escape the loss, You lost ${userBet}💰`);
                     // don't give the bet back
                 }
@@ -279,12 +316,12 @@ module.exports = {
                 botMessage.edit({components: [row]});
             }); 
 
-            // check if dealer already busted (right after drawing the cards)
-            if (getScore(dealerCards) > 21) {
-                userPlayed = true;
-                endGame();
-            } else if (getScore(dealerCards) === 21) { // check if dealer already won
-                userPlayed = true;
+            if (dealerCards[0].isAce && dealerCards[1].value === 10
+                || dealerCards[0].value === 10 && dealerCards[1].isAce) { // check if dealer already won
+                dealerCards[1].unHide();
+                // make the ace 11
+                dealerCards[0].makeAceEleven();
+                dealerCards[1].makeAceEleven();
                 endGame();
             }
         });
