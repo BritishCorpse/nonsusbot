@@ -17,6 +17,10 @@ module.exports = {
             //const randomColor = Math.floor(Math.random()*16777215).toString(16);
             
             if (message.author.bot) return;
+            
+            // don't do random events in special channels!
+            if (Object.values(message.client.serverConfig.get(message.guild.id)).includes(message.channel.id))
+                return;
 
             if (Math.random() < 0.002) {
                 const moneyAmount = randomMoneyAmount();
