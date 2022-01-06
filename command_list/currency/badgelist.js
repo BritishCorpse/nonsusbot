@@ -13,7 +13,7 @@ module.exports = {
     async execute(message) {
 
         const randomColor = Math.floor(Math.random()*16777215).toString(16);
-        
+
         const targetUser = message.author;
 
         const userInDb = await Users.findOne({ where: { user_id: targetUser.id } });
@@ -41,8 +41,8 @@ module.exports = {
                 embeds.push(embed);  
             }
 
-            if (item.item.isBadge) {
-                embed.addField(`${item.item.item_emoji}${item.item.name}`, `Badge Name: ${item.item.name}`);
+            if (item.item.category === "Badges") {
+                embed.addField(`${item.item.itemEmoji}${item.item.name}`, `${item.item.itemDescription}`);
             }
             
             

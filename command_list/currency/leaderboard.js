@@ -1,4 +1,5 @@
 const { MessageEmbed } = require("discord.js");
+const { Users } = require(`${__basedir}/db_objects`);
 
 module.exports = {
     name: "leaderboard",
@@ -10,17 +11,38 @@ module.exports = {
     async execute (message) {
         const randomColor = Math.floor(Math.random()*16777215).toString(16);
 
+        async function defineUser(userId) {
+            const userInDb = await Users.findOne({ where: { user_id: userId } });
+            return userInDb;
+        }
+
         const embed = new MessageEmbed()
             .setTitle("Top 10 Richest People Anywhere")
             .setColor(randomColor);
 
+        async function sendEmbed() {
+            message.channel.send({embeds: [embed]});
+        }
+
         await (message.client.currency.sort((a, b) => b.balance - a.balance)
             .filter(user => message.client.users.cache.has(user.user_id))
             .first(10)
-            .map((user, position) => `(${position + 1}) ${embed.addField(`${message.client.users.cache.get(user.user_id).tag}`, `${user.balance}💰`)}`)
-            .join("\n") || "It would seem, no one exists?");
+            .map(async (user, position ) => {
+                
+                const userInDb = await defineUser("484644637420552202");
 
-        message.channel.send({embeds: [embed]});
+                console.log(userInDb.badge);
+
+                position ++;
+                
+                embed.addField(`${position}. ${userInDb.badge}${message.client.users.cache.get(user.user_id).tag}`, `${user.balance}`);
+            })
+            .join("\n") || "It would seem, no one exists?");
+        
+        await new Promise(r => setTimeout(r, 20)).then(async() => {
+            await sendEmbed();
+        });
+
 
     }
 };

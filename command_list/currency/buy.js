@@ -28,10 +28,11 @@ module.exports = {
             return message.channel.send(`You don't have enough :moneybag:'s, ${message.author.username}`);
         }
 
-        if (item.isBadge) {
+        if (item.category === "Badges") {
             message.channel.send("Looks like you've bought a badge! We'll go ahead and apply that for you.");
             await Users.update({ badge: item.itemEmoji }, { where: { user_id: message.author.id } });
         }
+        
         message.reply(`You bought ${item.itemEmoji}${item.name}.`);
         const user = await Users.findOne({
             where: {

@@ -24,7 +24,7 @@ module.exports = {
         const embeds = [];
 
         function makeEmbed() {
-            return new MessageEmbed().setTitle(`${userInDb.badge || " "}${targetUser.username}'s inventory!`).setColor(randomColor);
+            return new MessageEmbed().setTitle(`${targetUser.badge || " "}${targetUser.username}'s inventory!`).setColor(randomColor);
         }
 
         let embed;
