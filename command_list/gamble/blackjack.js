@@ -213,18 +213,18 @@ module.exports = {
                 if (userScore > 21) {
                     userBalanceChange = -userBet;
                     gameOverMessage = `${username} got a bust! ${username} lost the game!`;
-                } else if (dealerScore > 21) {
-                    userBalanceChange = userBet;
-                    gameOverMessage = `The dealer got a bust! ${username} won the game!`;
                 } else if (dealerScore === userScore) {
                     userBalanceChange = 0;
                     gameOverMessage = "It's a draw!";
-                } else if (dealerScore === 21 && dealerCards.length === 2) {
-                    userBalanceChange = -userBet;
-                    gameOverMessage = `The dealer got a blackjack! ${username} lost the game!`;
                 } else if (userScore === 21 && userCards.length === 2) {
                     userBalanceChange = Math.floor(userBet * 1.5);
                     gameOverMessage = `${username} got a blackjack! ${username} won the game!`;
+                } else if (dealerScore === 21 && dealerCards.length === 2) {
+                    userBalanceChange = -userBet;
+                    gameOverMessage = `The dealer got a blackjack! ${username} lost the game!`;
+                } else if (dealerScore > 21) {
+                    userBalanceChange = userBet;
+                    gameOverMessage = `The dealer got a bust! ${username} won the game!`;
                 } else if (userScore < dealerScore) {
                     userBalanceChange = -userBet;
                     gameOverMessage = `The dealer's score is greater than ${username}'s score! ${username} lost the game!`;
