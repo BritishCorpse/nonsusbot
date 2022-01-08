@@ -15,6 +15,7 @@ global.__basedir = __dirname;
 
 const fs = require("fs");
 const Discord = require("discord.js");
+const daily = require("./command_list/currency/daily");
 
 const { Users/*, CurrencyShop*/ } = require(`${__basedir}/db_objects`);
 

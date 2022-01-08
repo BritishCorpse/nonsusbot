@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: true,
         },
+        lastDaily: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        }
     }, {
         timestamps: false,
     });
