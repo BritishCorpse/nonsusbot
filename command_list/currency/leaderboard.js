@@ -8,8 +8,8 @@ module.exports = {
     usage: [
     ],
 
-    async execute (message) {
-        const randomColor = Math.floor(Math.random()*16777215).toString(16);
+    async execute(message) {
+        const randomColor = Math.floor(Math.random() * 16777215).toString(16);
 
         async function defineUser(userId) {
             const userInDb = await Users.findOne({ where: { user_id: userId } });
@@ -21,25 +21,25 @@ module.exports = {
             .setColor(randomColor);
 
         async function sendEmbed() {
-            message.channel.send({embeds: [embed]});
+            message.channel.send({ embeds: [embed] });
         }
 
         await (message.client.currency.sort((a, b) => b.balance - a.balance)
             .filter(user => message.client.users.cache.has(user.user_id))
             .first(10)
-            .map(async (user, position ) => {
-                
+            .map(async (user, position) => {
+
                 const userInDb = await defineUser(message.client.users.cache.get(user.user_id).id);
 
                 console.log(userInDb.badge);
 
-                position ++;
-                
+                position++;
+
                 embed.addField(`${position}. ${userInDb.badge || ""}${message.client.users.cache.get(user.user_id).tag}`, `${user.balance}`);
             })
-            .join("\n") || "It would seem, no one exists?");
-        
-        await new Promise(r => setTimeout(r, 20)).then(async() => {
+            .join("\n") || "According to my statisticas, there is no one in the database.");
+
+        await new Promise(r => setTimeout(r, 1000)).then(async () => {
             await sendEmbed();
         });
 
