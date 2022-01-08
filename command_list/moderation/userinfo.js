@@ -28,7 +28,7 @@ module.exports = {
                 .setTitle(`Userinfo about ${target}`)
                 .setColor(randomColor)
                 .addField(`${user.username}'s badge is:`, `${userInDb.badge || "User does not have a badge."}`)
-                .addField(`${user.username}'s balance is:`, `${userInDb.balance}`)
+                .addField(`${user.username}'s balance is:`, `${userInDb.balance}<:ripcoin:929440348831354980>`)
                 .addField(`${user.username} joined at:`, ` ${new Date(target.joinedTimestamp)}`, true)
                 .addField(`${user.username}'s account was created at:`, ` ${new Date(target.createdTimestamp)}`, true)
                 .addField(`${user.username}'s nickname is:`, ` ${target.nickname || "None"}`, true)

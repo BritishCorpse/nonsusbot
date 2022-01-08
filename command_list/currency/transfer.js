@@ -24,6 +24,6 @@ module.exports = {
         message.client.currency.add(message.author.id, -transferAmount);
         message.client.currency.add(transferTarget.id, transferAmount);
 
-        return message.channel.send(`Successfully transferred ${transferAmount}💰 to ${transferTarget.tag}. Your remaining balance is: ${message.client.currency.getBalance(message.author.id)}💰`);
+        return message.channel.send(`Successfully transferred ${transferAmount}<:ripcoin:929440348831354980> to ${transferTarget.tag}. Your remaining balance is: ${message.client.currency.getBalance(message.author.id)}<:ripcoin:929440348831354980>`);
     }
 };

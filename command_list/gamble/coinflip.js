@@ -89,6 +89,7 @@ module.exports = {
             else if (gameResult !== userChoice) {
                 embed.setDescription(`It's ${gameResult()}! You were incorrect! -${userBet}💰`);
                 message.client.currency.add(message.author.id, -userBet);
+                message.client.currency.add("1", userBet);
             }
 
             else {

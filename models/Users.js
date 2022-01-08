@@ -18,6 +18,14 @@ module.exports = (sequelize, DataTypes) => {
         lastDaily: {
             type: DataTypes.STRING,
             allowNull: true,
+        },
+        lastWeekly: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        lastWorked: {
+            type: DataTypes.STRING,
+            allowNull: true,
         }
     }, {
         timestamps: false,

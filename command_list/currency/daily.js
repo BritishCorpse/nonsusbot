@@ -5,7 +5,8 @@ module.exports = {
     name: "daily",
     description: "Claim your daily coins!",
     usage: [],
-    async execute(message, args){
+    
+    async execute(message){
         const randomColor = Math.floor(Math.random() * 16777215).toString(16);
 
         const d = new Date();
@@ -21,7 +22,7 @@ module.exports = {
         }
 
         if (time - 86400000 < userInDb.lastDaily) {
-            return message.channel.send("SLOW DOWN! It hasn't been 24 hours yet since your last daily!");
+            return message.channel.send("SLOW DOWN! It hasn't been 24 hours since your last daily!");
         }
 
         message.client.currency.add(message.author.id, dailyMoney);
@@ -32,7 +33,7 @@ module.exports = {
         const embed = new MessageEmbed()
         .setTitle("Your daily reward!")
         .setColor(randomColor)
-        .setDescription(`You earned ${dailyMoney}!!!!!!!!!!!!!!!`);
+        .setDescription(`You earned ${dailyMoney}<:ripcoin:929440348831354980>!`);
 
         message.channel.send({ embeds: [embed] });
 

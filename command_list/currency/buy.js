@@ -25,7 +25,7 @@ module.exports = {
         if (!item) return message.channel.send("That item doesn't exist.");
 
         if (item.cost > message.client.currency.getBalance(message.author.id)) {
-            return message.channel.send(`You don't have enough :moneybag:'s, ${message.author.username}`);
+            return message.channel.send(`You don't have enough <:ripcoin:929440348831354980>'s, ${message.author.username}`);
         }
 
         if (item.category === "Badges") {

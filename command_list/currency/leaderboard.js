@@ -35,7 +35,7 @@ module.exports = {
 
                 position++;
 
-                embed.addField(`${position}. ${userInDb.badge || ""}${message.client.users.cache.get(user.user_id).tag}`, `${user.balance}`);
+                embed.addField(`${position}. ${userInDb.badge || ""}${message.client.users.cache.get(user.user_id).tag}`, `${user.balance}<:ripcoin:929440348831354980>`);
             })
             .join("\n") || "According to my statisticas, there is no one in the database.");
 

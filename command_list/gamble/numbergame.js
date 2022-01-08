@@ -85,6 +85,8 @@ module.exports = {
                             .setFooter(`-${userBet}💰`);
 
                         message.channel.send({embeds: [endEmbed]});
+                        
+                        message.client.currency.add(1, userBet);
                         collector.stop();
                         return;
                     }

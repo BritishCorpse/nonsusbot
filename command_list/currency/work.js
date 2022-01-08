@@ -1,11 +1,26 @@
+const { Users } = require(`${__basedir}/db_objects`);
+
 module.exports = {
     name: "work",
     description: "Work a random job for some quick cash.",
     usage: [
 
     ],
+    async execute(message) {
+        const d = new Date();
+        let time = d.getTime();
+        console.log(time);
 
-    execute(message) {
+        const userInDb = await Users.findOne({ where: { user_id: message.author.id } });
+
+        if (userInDb.lastWorked === null) {
+            await Users.update({ lastWorked: time - 3600000 }, { where: { user_id: message.author.id } });
+        }
+
+        // Make sure they cant claim again in 7 days
+        if (time - 3600000 < userInDb.lastWorked) {
+            return message.channel.send("WOAH WOAH SLOW DOWN! You're overworked! It hasn't been an hour since you last worked!");
+        }
 
         const jobs = ["Doctor",
             "Fireman",
@@ -24,15 +39,18 @@ module.exports = {
 
         const jobIndex = Math.floor(Math.random() * jobs.length);
         
-        const earnedMoney = Math.floor(Math.random() * 300) + 100;
+        let earnedMoney = Math.floor(Math.random() * 300) + 100;
 
         const bonusChance = Math.floor(Math.random() * 3);
 
         if (bonusChance === 1) {
-            earnedMoney + 1000;
+            earnedMoney += 1000;
         }
 
-        message.channel.send(`You earned ${earnedMoney}💰 working as (${jobs[jobIndex]})`);
+        message.client.currency.add(message.author.id, earnedMoney);
+        await Users.update({ lastWorked: time }, { where: { user_id: message.author.id } });
+
+        message.channel.send(`You earned ${earnedMoney}<:ripcoin:929440348831354980> working as (${jobs[jobIndex]})`);
     }
 
 }
