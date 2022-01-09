@@ -38,6 +38,7 @@ module.exports = {
             return;
         } else if (userBet > message.client.currency.getBalance(message.author.id)) {
             message.channel.send("🎲You don't have enough money!🎲");
+            return;
         }
 
         // temporarily take the bet
