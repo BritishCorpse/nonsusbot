@@ -73,7 +73,7 @@ module.exports = {
                 if (typeof command.name === "string") {
                     embedDescription += `${formatBacktick(prefix + command.name)}: `;
                 } else { // if it has multiple names (aliases)
-                    embedDescription += command.name.map(n => formatBacktick(prefix + n)).join(", ");
+                    embedDescription += `${command.name.map(n => formatBacktick(prefix + n)).join(", ")}: `;
                 }
                 embedDescription += command.description + "\n";
             }
