@@ -16,7 +16,7 @@
     "jest-extended": "^1.2.0"
   },
   "name": "nonsusbot",
-  "version": "1.1.7",
+  "version": "1.2.0",
   "main": "index.js",
   "scripts": {
     "start": "mkdir logs; node init_db.js && pm2 start ecosystem.config.js",
