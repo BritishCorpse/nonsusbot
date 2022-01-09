@@ -7,28 +7,28 @@ module.exports = {
     
     async execute(message) {
         const target = message.mentions.users.first();
-        const userInDb = await Users.findOne({ where: { user_id: message.author.id } });
-
         const amount = Math.floor(Math.random() * 50) + 300;
+
+        const d = new Date();
+        const time = d.getTime();
 
         if (!target) {
             return message.reply("You robbed yourself! +0<:ripcoin:929759319296192543>");
         }
+
+        const userInDb = await Users.findOne({ where: { user_id: target.id } });
+
         if (amount > message.client.currency.getBalance(target.id)) {
             message.channel.send("This user is too poor to be robbed!");
             return;
         }
-
-
-        const d = new Date();
-        const time = d.getTime();
 
         if (userInDb.lastRobbed === null) {
             await Users.update({ lastRobbed: time - 3600000 }, { where: { user_id: target.id } });
         }
 
         if (time - 3600000 < userInDb.lastRobbed) {
-            return message.channel.send("Let a dead man rest! It hasn't been an hour since this person was last robbed!");
+            return message.channel.send("Don't beat them while they're down! This person has already been robbed in the past 60 minutes.");
         }
 
         const result = Math.floor(Math.random() * 3);
@@ -45,5 +45,6 @@ module.exports = {
         message.client.currency.add(target.id, -amount);
         message.client.currency.add(message.author.id, amount);
 
+        await Users.update({ lastRobbed: time }, { where: { user_id: target.id } });
     }
 };
