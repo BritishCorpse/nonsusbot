@@ -11,7 +11,6 @@ module.exports = {
 
         const d = new Date();
         const time = d.getTime();
-        console.log(time);
 
         const dailyMoney = 2000;
 
@@ -33,7 +32,7 @@ module.exports = {
         const embed = new MessageEmbed()
             .setTitle("Your daily reward!")
             .setColor(randomColor)
-            .setDescription(`You earned ${dailyMoney}<:ripcoin:929440348831354980>!`);
+            .setDescription(`You earned ${dailyMoney}<:ripcoin:929759319296192543>!`);
 
         message.channel.send({ embeds: [embed] });
 

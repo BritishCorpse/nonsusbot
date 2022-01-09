@@ -8,7 +8,7 @@ module.exports = {
     ],
     async execute(message) {
         const d = new Date();
-        let time = d.getTime();
+        const time = d.getTime();
         console.log(time);
 
         const userInDb = await Users.findOne({ where: { user_id: message.author.id } });
@@ -50,7 +50,7 @@ module.exports = {
         message.client.currency.add(message.author.id, earnedMoney);
         await Users.update({ lastWorked: time }, { where: { user_id: message.author.id } });
 
-        message.channel.send(`You earned ${earnedMoney}<:ripcoin:929440348831354980> working as (${jobs[jobIndex]})`);
+        message.channel.send(`You earned ${earnedMoney}<:ripcoin:929759319296192543> working as (${jobs[jobIndex]})`);
     }
 
-}
+};

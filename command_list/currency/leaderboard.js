@@ -30,7 +30,7 @@ module.exports = {
             await topTen.reduce(async (memo, user, position) => {
                 await memo; // waits for previous to end
                 const userInDb = await defineUser(message.client.users.cache.get(user.user_id).id);
-                embed.addField(`${position + 1}. ${userInDb.badge || ""}${message.client.users.cache.get(user.user_id).tag}`, `${user.balance}<:ripcoin:929440348831354980>`);
+                embed.addField(`${position + 1}. ${userInDb.badge || ""}${message.client.users.cache.get(user.user_id).tag}`, `${user.balance}<:ripcoin:929759319296192543>`);
             }, undefined);
         }
 

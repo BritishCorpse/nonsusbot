@@ -82,12 +82,12 @@ module.exports = {
 
         function checkResult() {
             if (gameResult() === userChoice) {
-                embed.setDescription(`It's ${gameResult()}! You were correct! +${userBet}💰`);
+                embed.setDescription(`It's ${gameResult()}! You were correct! +${userBet}<:ripcoin:929759319296192543>`);
                 message.client.currency.add(message.author.id, userBet);
             }
 
             else if (gameResult !== userChoice) {
-                embed.setDescription(`It's ${gameResult()}! You were incorrect! -${userBet}💰`);
+                embed.setDescription(`It's ${gameResult()}! You were incorrect! -${userBet}<:ripcoin:929759319296192543>`);
                 message.client.currency.add(message.author.id, -userBet);
                 message.client.currency.add("1", userBet);
             }

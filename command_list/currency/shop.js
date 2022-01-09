@@ -30,7 +30,7 @@ module.exports = {
                 embeds.push(embed);  
             }
                         
-            embed.addField(`${item.itemEmoji}${item.name}, ${item.itemDescription}`, `${item.cost}<:ripcoin:929440348831354980>`);
+            embed.addField(`${item.itemEmoji}${item.name}, ${item.itemDescription}`, `${item.cost}<:ripcoin:929759319296192543>`);
         }
 
         paginateEmbeds(message.channel, message.author, embeds, {useDropdown: true});

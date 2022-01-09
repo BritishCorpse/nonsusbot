@@ -24,6 +24,6 @@ module.exports = {
         message.client.currency.add(transferTarget.id, transferAmount);
         await message.client.currency.add(message.author.id, -transferAmount); // only need to await this one to show the correct number in the message
 
-        return message.channel.send(`Successfully transferred ${transferAmount}<:ripcoin:929440348831354980> to ${transferTarget.tag}. Your remaining balance is: ${message.client.currency.getBalance(message.author.id)}<:ripcoin:929440348831354980>`);
+        return message.channel.send(`Successfully transferred ${transferAmount}<:ripcoin:929759319296192543> to ${transferTarget.tag}. Your remaining balance is: ${message.client.currency.getBalance(message.author.id)}<:ripcoin:929759319296192543>`);
     }
 };

@@ -8,6 +8,6 @@ module.exports = {
 
     execute(message){
         message.client.currency.setBalance(message.author.id, 0);
-        message.channel.send("Balance set to 0 <:ripcoin:929440348831354980>");
+        message.channel.send("Balance set to 0 <:ripcoin:929759319296192543>");
     }
 };

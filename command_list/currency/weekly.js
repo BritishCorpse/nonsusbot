@@ -32,7 +32,7 @@ module.exports = {
         const embed = new MessageEmbed()
             .setTitle("Your weekly reward!")
             .setColor(randomColor)
-            .setDescription(`You earned ${weeklyMoney}<:ripcoin:929440348831354980>!`);
+            .setDescription(`You earned ${weeklyMoney}<:ripcoin:929759319296192543>!`);
 
         message.channel.send({ embeds: [embed] });
 

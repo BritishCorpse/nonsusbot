@@ -26,6 +26,10 @@ module.exports = (sequelize, DataTypes) => {
         lastWorked: {
             type: DataTypes.STRING,
             allowNull: true,
+        },
+        lastRobbed: {
+            type: DataTypes.STRING,
+            allowNull: true,
         }
     }, {
         timestamps: false,

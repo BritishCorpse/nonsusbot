@@ -238,7 +238,7 @@ module.exports = {
                     .addField("\u200b", "\u200b") // space
                     .addField("The dealer's total amount is:", `${dealerScore}`)
                     .addField(`${username}'s total amount is:`, `${userScore}`)
-                    .setFooter({text: `${gameOverMessage} ${userBalanceChange >= 0 ? "+" : ""}${userBalanceChange}💰`});
+                    .setFooter({text: `${gameOverMessage} ${userBalanceChange >= 0 ? "+" : ""}${userBalanceChange}<:ripcoin:929759319296192543>`});
 
                 message.client.currency.add(message.author.id, userBet + userBalanceChange);
 
