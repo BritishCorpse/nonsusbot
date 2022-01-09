@@ -10,7 +10,7 @@ module.exports = {
         }
     ],
 
-    execute (message, args) {
+    async execute (message, args) {
         const currentAmount = message.client.currency.getBalance(message.author.id);
         //const transferAmount = commandArgs.split(/ +/).find(arg => !/<@!?\d+>/.test(arg));
         const transferAmount = args[1];
@@ -21,8 +21,8 @@ module.exports = {
         if (transferAmount > currentAmount) return message.channel.send(`Sorry ${message.author} you don't have that much.`);
         if (transferAmount <= 0) return message.channel.send(`Please enter an amount greater than zero, ${message.author}.`);
                                                 
-        message.client.currency.add(message.author.id, -transferAmount);
         message.client.currency.add(transferTarget.id, transferAmount);
+        await message.client.currency.add(message.author.id, -transferAmount); // only need to await this one to show the correct number in the message
 
         return message.channel.send(`Successfully transferred ${transferAmount}<:ripcoin:929440348831354980> to ${transferTarget.tag}. Your remaining balance is: ${message.client.currency.getBalance(message.author.id)}<:ripcoin:929440348831354980>`);
     }
