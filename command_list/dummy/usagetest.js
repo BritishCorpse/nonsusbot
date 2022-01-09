@@ -39,7 +39,7 @@ module.exports = {
         },
     ],
 
-    execute (message, args) {
+    execute (message) {
         message.reply("i worked yay");
     }
 };

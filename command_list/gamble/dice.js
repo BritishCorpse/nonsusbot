@@ -59,7 +59,7 @@ module.exports = {
             message.client.currency.add(message.author.id, userBet * 2);
         } else if (diceRollComputer > diceRollUser) {
             embed.setFooter({text: "YOU LOSE"});
-            message.client.currency.add("1", userBet)
+            message.client.currency.add("1", userBet);
         } else if (diceRollComputer === diceRollUser) {
             embed.setFooter({text: "ITS A DRAW"});
             message.client.currency.add(message.author.id, userBet - 10);

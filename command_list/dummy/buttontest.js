@@ -9,7 +9,7 @@ module.exports = {
     usage: [
     ],
 
-    execute (message, args) {
+    execute (message) {
         const row = new MessageActionRow()
             .addComponents(
                 new MessageButton()

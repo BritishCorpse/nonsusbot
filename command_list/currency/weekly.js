@@ -1,5 +1,5 @@
 const { Users } = require(`${__basedir}/db_objects`);
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "weekly",
@@ -10,7 +10,7 @@ module.exports = {
         const randomColor = Math.floor(Math.random() * 16777215).toString(16);
 
         const d = new Date();
-        let time = d.getTime();
+        const time = d.getTime();
         console.log(time);
 
         const weeklyMoney = 10000;
@@ -30,13 +30,13 @@ module.exports = {
         await Users.update({ lastWeekly: time }, { where: { user_id: message.author.id } });
 
         const embed = new MessageEmbed()
-        .setTitle("Your weekly reward!")
-        .setColor(randomColor)
-        .setDescription(`You earned ${weeklyMoney}<:ripcoin:929440348831354980>!`);
+            .setTitle("Your weekly reward!")
+            .setColor(randomColor)
+            .setDescription(`You earned ${weeklyMoney}<:ripcoin:929440348831354980>!`);
 
         message.channel.send({ embeds: [embed] });
 
 
 
     }
-}
+};

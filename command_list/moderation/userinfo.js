@@ -10,7 +10,7 @@ module.exports = {
         { tag: "user", checks: {isuseridinguild: null} }
     ],
 
-    async execute(message, args) {
+    async execute(message) {
         const randomColor = Math.floor(Math.random()*16777215).toString(16);
         
         const user = message.mentions.users.first() || message.member.user;

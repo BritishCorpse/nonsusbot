@@ -8,7 +8,7 @@ module.exports = {
     usage: [
     ],
 
-    async execute(message, args){
+    async execute(message){
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
         // Check if there is a vip role

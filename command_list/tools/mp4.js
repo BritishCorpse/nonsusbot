@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 const request = require("request");
 const { parse } = require("node-html-parser");
 const { MessageAttachment, MessageEmbed } = require("discord.js");

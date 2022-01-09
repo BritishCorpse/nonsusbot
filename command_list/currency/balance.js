@@ -7,7 +7,7 @@ module.exports = {
         { tag: "nothing", checks: {isempty: null} }
     ],
 
-    execute (message, args) {
+    execute (message) {
         const target = message.mentions.users.first() || message.author;
         message.channel.send(`<@!${target.id}> has ${message.client.currency.getBalance(target.id)}<:ripcoin:929440348831354980>`);
     }

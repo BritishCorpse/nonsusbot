@@ -14,7 +14,7 @@ module.exports = {
     usage: [
     ],
 
-    execute (message, args) {
+    execute (message) {
         //let joke_length = 0;
         let content = "";
         let good_joke = false;

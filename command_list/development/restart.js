@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 module.exports = {
     name: "restart",
     description: "Restarts the bot.",
@@ -6,7 +7,7 @@ module.exports = {
     usage: [
     ],
 
-    execute (message, args) {
+    execute (message) {
         message.channel.send(`Command disabled due to using pm2. Use ${message.client.serverConfig.get(message.guild.id).prefix}exit instead.`);
         return;
 

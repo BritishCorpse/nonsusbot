@@ -9,7 +9,7 @@ module.exports = {
         { tag: "user", checks: {isuseridinguild: null}, example: "786301097953591326" }
     ],
 
-    async execute(message, args) {
+    async execute(message) {
         const randomColor = Math.floor(Math.random()*16777215).toString(16);
 
         const images = [

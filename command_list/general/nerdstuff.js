@@ -8,7 +8,7 @@ module.exports = {
     usage: [
     ],
 
-    execute(message, args) {
+    execute(message) {
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
         const embed1 = new MessageEmbed()

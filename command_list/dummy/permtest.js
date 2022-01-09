@@ -7,7 +7,7 @@ module.exports = {
     usage: [
     ],
 
-    execute (message, args) {
+    execute (message) {
         message.channel.send("the command executed");
     }
 };
