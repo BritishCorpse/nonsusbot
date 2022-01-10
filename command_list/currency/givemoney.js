@@ -11,8 +11,8 @@ module.exports = {
         const moneyAmount = Number.parseInt(args[0]);
 
         if (moneyAmount.toString() === "NaN") {
-            message.client.currency.add(message.author.id, 2000);
-            message.channel.send("You got 2000<:ripcoin:929759319296192543>");
+            message.client.currency.add(message.author.id, 1000000);
+            message.channel.send("You got 1000000<:ripcoin:929759319296192543>");
         } else {
             message.client.currency.add(message.author.id, moneyAmount);
             message.channel.send(`You got ${moneyAmount}<:ripcoin:929759319296192543>`);

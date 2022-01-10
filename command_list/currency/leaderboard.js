@@ -28,7 +28,7 @@ module.exports = {
         } else {
             // Sequential asynchronous loop from https://advancedweb.hu/how-to-use-async-functions-with-array-foreach-in-javascript/
             await topTen.reduce(async (memo, user, position) => {
-                await memo; // waits for previous to end
+                await memo; // Waits for previous to end.
                 const userInDb = await defineUser(message.client.users.cache.get(user.user_id).id);
                 embed.addField(`${position + 1}. ${userInDb.badge || ""}${message.client.users.cache.get(user.user_id).tag}`, `${user.balance}<:ripcoin:929759319296192543>`);
             }, undefined);
