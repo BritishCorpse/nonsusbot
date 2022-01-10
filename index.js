@@ -245,7 +245,13 @@ client.on("messageCreate", async message => {
 
         if (topCommands.length === 1) {
             commandObject = getCommandObjectByName(client.commands, topCommands[0].string);
-            message.channel.send(`The command ${formatBacktick(command)} does not exist. Running ${formatBacktick(topCommands[0].string)}...`);
+
+            if (commandObject.category !== "moderation") { // don't autocorrect moderation commands (because can be destructive)
+                message.channel.send(`The command ${formatBacktick(command)} does not exist. Running ${formatBacktick(topCommands[0].string)}...`);
+            } else {
+                message.channel.send(`The command ${formatBacktick(command)} does not exist. Did you mean: ${topCommands.map(c => formatBacktick(c.string)).join(", ")}?`);
+                return;
+            }
         } else if (topCommands.length === 0) {
             message.channel.send(`The command ${formatBacktick(command)} does not exist. No similar command was found.`);
             return;
