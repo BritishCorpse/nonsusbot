@@ -184,8 +184,63 @@ client.once("ready", async () => {
     }
 });
 
+const { Stocks } = require(`${__basedir}/db_objects`);
+
+
+
+async function doDaily(){
+    const stocks = await Stocks.findAll();
+
+    for (const i in stocks) {
+
+        const upOrDown = Math.floor(Math.random() * 2);
+
+        const stock = stocks[i];
+
+        const averageChange = Number.parseInt(stock.averageChange);
+
+        const currentPrice = Number.parseInt(stock.currentPrice);
+
+        const stockChange = currentPrice * averageChange / 100;
+
+        if (upOrDown === 0) {
+            const newPrice = Math.round(currentPrice - stockChange);
+            console.log(`-${newPrice}, ${stock.id}`);
+
+            await Stocks.update({ oldPrice: stock.currentPrice}, { where: { id: stock.id }});
+            await Stocks.update({ currentPrice: newPrice }, { where: { id: stock.id } });
+        }
+
+        if (upOrDown === 1) {
+            const newPrice = Math.round(currentPrice + stockChange);
+            console.log(`+${newPrice}, ${stock.id}`);
+
+            await Stocks.update({ oldPrice: stock.currentPrice}, { where: { id: stock.id }});
+            await Stocks.update({ currentPrice: newPrice }, { where: { id: stock.id } });
+        }
+    }
+
+    await Stocks.update({ lastUpdated: new Date().getTime() }, { where: { id: 1 } });
+}
+
 // For handling commands
 client.on("messageCreate", async message => {
+
+    const itemInDb = await Stocks.findOne({ where: { id: 1} });
+
+    const d = new Date();
+    const time = d.getTime();
+
+    if (itemInDb.lastUpdated === null) {
+        await Stocks.update({ lastUpdated: time - 86400000 }, { where: { id: 1 } });
+    }
+
+    if (time - 86400000 > itemInDb.lastUpdated) {
+        await doDaily();
+    }
+
+    console.log(time);
+    console.log(itemInDb.lastUpdated);
     // Disable DMs
     if (message.guild === null) return;
 

@@ -15,6 +15,7 @@ const sequelize = new Sequelize("database", "username", "password", {
 const Users = require("./models/Users")(sequelize, Sequelize.DataTypes);
 const CurrencyShop = require("./models/CurrencyShop")(sequelize, Sequelize.DataTypes);
 const UserItems = require("./models/UserItems")(sequelize, Sequelize.DataTypes);
+const Stocks = require("./models/Stocks")(sequelize, Sequelize.DataTypes);
 
 UserItems.belongsTo(CurrencyShop, { foreignKey: "item_id", as: "item" }); // foreignKey sets the key to be used from UserItems to look up in CurrencyShop
 
@@ -39,4 +40,4 @@ Users.prototype.getItems = function() {
     });
 };
 
-module.exports = { Users, CurrencyShop, UserItems };
+module.exports = { Users, CurrencyShop, UserItems, Stocks };
