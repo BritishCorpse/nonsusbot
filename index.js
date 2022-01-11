@@ -193,7 +193,7 @@ async function doDaily(){
 
     for (const i in stocks) {
 
-        const upOrDown = Math.floor(Math.random() * 2);
+        const upOrDown = Math.floor(Math.random() * 3);
 
         const stock = stocks[i];
 
@@ -211,7 +211,7 @@ async function doDaily(){
             await Stocks.update({ currentPrice: newPrice }, { where: { id: stock.id } });
         }
 
-        if (upOrDown === 1) {
+        else {
             const newPrice = Math.round(currentPrice + stockChange);
             console.log(`+${newPrice}, ${stock.id}`);
 
@@ -239,8 +239,6 @@ client.on("messageCreate", async message => {
         await doDaily();
     }
 
-    console.log(time);
-    console.log(itemInDb.lastUpdated);
     // Disable DMs
     if (message.guild === null) return;
 

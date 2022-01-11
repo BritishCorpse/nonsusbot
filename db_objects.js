@@ -1,9 +1,4 @@
-const Sequelize = require("sequelize");
-
-/*
- * Make sure you are on at least version 5 of Sequelize! Version 4 as used in this guide will pose a security threat.
- * You can read more about this issue On the [Sequelize issue tracker](https://github.com/sequelize/sequelize/issues/7310).
- */
+const Sequelize = require("sequelize"); // make sure that this is up to date. old version might have issues
 
 const sequelize = new Sequelize("database", "username", "password", {
     host: "localhost",
@@ -16,7 +11,9 @@ const Users = require("./models/Users")(sequelize, Sequelize.DataTypes);
 const CurrencyShop = require("./models/CurrencyShop")(sequelize, Sequelize.DataTypes);
 const UserItems = require("./models/UserItems")(sequelize, Sequelize.DataTypes);
 const Stocks = require("./models/Stocks")(sequelize, Sequelize.DataTypes);
+const UserPortfolio = require("./models/UserPortfolio")(sequelize, Sequelize.DataTypes);
 
+UserPortfolio.belongsTo(Stocks, {foreignkey: "id", as: "id"}); // explained in next line
 UserItems.belongsTo(CurrencyShop, { foreignKey: "item_id", as: "item" }); // foreignKey sets the key to be used from UserItems to look up in CurrencyShop
 
 
@@ -37,6 +34,13 @@ Users.prototype.getItems = function() {
     return UserItems.findAll({
         where: { user_id: this.user_id },
         include: ["item"],
+    });
+};
+
+Users.prototype.getUserPortfolio = function() {
+    return UserPortfolio.findAll({
+        where: { user_id: this.user_id },
+        include: ["id"],
     });
 };
 
