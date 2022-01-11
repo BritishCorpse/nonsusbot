@@ -13,7 +13,7 @@ const UserItems = require("./models/UserItems")(sequelize, Sequelize.DataTypes);
 const Stocks = require("./models/Stocks")(sequelize, Sequelize.DataTypes);
 const UserPortfolio = require("./models/UserPortfolio")(sequelize, Sequelize.DataTypes);
 
-UserPortfolio.belongsTo(Stocks, {foreignkey: "id", as: "id"}); // explained in next line
+UserPortfolio.belongsTo(Stocks, {foreignKey: "id", as: "stock"}); // explained in next line
 UserItems.belongsTo(CurrencyShop, { foreignKey: "item_id", as: "item" }); // foreignKey sets the key to be used from UserItems to look up in CurrencyShop
 
 
