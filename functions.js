@@ -320,7 +320,7 @@ function sendUsage(message, usage, failedOn, failedArg) {
     else if (failedArg === undefined)
         description += "You are missing an argument. The argument can be:";
     else
-        description += `${formatBacktick(failedArg)} is an invalid argument. The argument can be:`;
+        description += `${formatBacktick(failedArg || " ")} is an invalid argument. The argument can be:`;
 
     embed.setDescription(description);
 
