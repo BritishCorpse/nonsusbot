@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define("user_item", {
+    return sequelize.define("user_portfolios", {
         user_id: DataTypes.STRING,
-        stock_id: DataTypes.INTEGER,
+        share_id: DataTypes.STRING,
         amount: {
             type: DataTypes.INTEGER,
             allowNull: false,

@@ -238,7 +238,7 @@ module.exports = {
                     .addField("\u200b", "\u200b") // space
                     .addField("The dealer's total amount is:", `${dealerScore}`)
                     .addField(`${username}'s total amount is:`, `${userScore}`)
-                    .setFooter({text: `${gameOverMessage} ${userBalanceChange >= 0 ? "+" : ""}${userBalanceChange}<:ripcoin:929759319296192543>`});
+                    .setFooter({text: `${gameOverMessage} ${userBalanceChange >= 0 ? "+" : ""}${userBalanceChange}`});
 
                 message.client.currency.add(message.author.id, userBet + userBalanceChange);
 
@@ -307,7 +307,7 @@ module.exports = {
             
             collector.on("end", () => {
                 if (!gameEnded) {
-                    message.channel.send(`Hello? Did you fall asleep?\nYou can't escape the loss, You lost ${userBet}💰`);
+                    message.channel.send(`Hello? Did you fall asleep?\nYou can't escape the loss, You lost ${userBet} <:ripcoin:929759319296192543>`);
                     // don't give the bet back
                 }
 

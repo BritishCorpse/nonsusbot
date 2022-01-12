@@ -9,6 +9,6 @@ module.exports = {
 
     execute (message) {
         const target = message.mentions.users.first() || message.author;
-        message.channel.send(`<@!${target.id}> has ${message.client.currency.getBalance(target.id)}<:ripcoin:929440348831354980>`);
+        message.channel.send(`<@!${target.id}> has ${message.client.currency.getBalance(target.id)}<:ripcoin:929759319296192543>`);
     }
 };

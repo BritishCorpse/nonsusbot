@@ -13,7 +13,7 @@ const UserItems = require("./models/UserItems")(sequelize, Sequelize.DataTypes);
 const Stocks = require("./models/Stocks")(sequelize, Sequelize.DataTypes);
 const UserPortfolio = require("./models/UserPortfolio")(sequelize, Sequelize.DataTypes);
 
-UserPortfolio.belongsTo(Stocks, {foreignKey: "id", as: "stock"}); // explained in next line
+UserPortfolio.belongsTo(Stocks, { foreignKey: "share_id", as: "shares" });
 UserItems.belongsTo(CurrencyShop, { foreignKey: "item_id", as: "item" }); // foreignKey sets the key to be used from UserItems to look up in CurrencyShop
 
 
@@ -30,6 +30,19 @@ Users.prototype.addItem = async function(item) { // function is used instead of 
     return UserItems.create({ user_id: this.user_id, item_id: item.id, amount: 1 });
 };
 
+Users.prototype.addShare = async function(share) {
+    const shareInDb = await UserPortfolio.findOne({
+        where: { user_id: this.user_id, share_id: share.id}
+    });
+
+    if (shareInDb) {
+        shareInDb.amount += 1;
+        return shareInDb.save();
+    }
+
+    return UserPortfolio.create({ user_id: this.user_id, share_id: share.id, amount: 1});
+};
+
 Users.prototype.getItems = function() {
     return UserItems.findAll({
         where: { user_id: this.user_id },
@@ -37,11 +50,4 @@ Users.prototype.getItems = function() {
     });
 };
 
-Users.prototype.getUserPortfolio = function() {
-    return UserPortfolio.findAll({
-        where: { user_id: this.user_id },
-        include: ["id"],
-    });
-};
-
-module.exports = { Users, CurrencyShop, UserItems, Stocks };
+module.exports = { Users, CurrencyShop, UserItems, Stocks, UserPortfolio };

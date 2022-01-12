@@ -1,10 +1,11 @@
 const { MessageEmbed } = require("discord.js");
 const { paginateEmbeds } = require(`${__basedir}/functions`);
 const { Users } = require(`${__basedir}/db_objects`);
+const { UserPortfolio } = require(`${__basedir}/db_objects`);
 
 module.exports = {
-    name: ["inventory", "inv"],
-    description: "Shows your inventory, or someone else's.",
+    name: ["portfolio", "pf"],
+    description: "Shows your portfolio.",
 
     usage: [
         { tag: "nothing", checks: {isempty: null} },
@@ -16,50 +17,56 @@ module.exports = {
         
         const targetUser = message.mentions.users.first() || message.author;
 
+        // Check if user exists in the database, if the user doesnt exist, send an error message.
         const userInDb = await Users.findOne({ where: { user_id: targetUser.id } });
+        if (!userInDb) {
+            message.reply("You do not exist in the database!");
+            return;
+        }
 
-        const embeds = [];
+        const portfolio = UserPortfolio.findAll({
+            where: { user_id: message.author.id },
+        });
 
-        async function getUserPortfolio(userId) {
+        async function getUserItems(userId) {
             const user = await Users.findOne({
                 where: {
                     user_id: userId
                 }
             });
-        
+
             if (user === null)
                 return [];
-        
-            return await user.getUserPortfolio();
+
+            return await portfolio;
         }
 
-        
-        const items = await getUserPortfolio(targetUser.id);
+        const shares = await getUserItems(message.author.id);
 
-
+        const embeds = [];
 
         function makeEmbed() {
             return new MessageEmbed().setTitle(`${userInDb.badge || " "}${targetUser.username}'s portfolio!`).setColor(randomColor);
         }
 
-        let embed;
-
-        if (items.length === 0) {
+        if (shares.length === 0) {
             message.channel.send(`${userInDb.badge || " "}${targetUser.username} has nothing!`);
             return;
         }
 
-        for (const i in items) {
-            const item = items[i];
+        let embed;
+        for (const s in shares) {
+            const share = shares[s];
 
-            if (i % 10 === 0) {
+            if (s % 10 === 0) {
                 embed = makeEmbed();
                 embeds.push(embed);  
             }
-                        
-            embed.addField(`${item.item.itemEmoji}${item.item.name}`, `Amount: ${item.amount}`);
-        }
         
-        paginateEmbeds(message.channel, message.author, embeds);
+            console.log(share);
+            embed.addField(`${share.shares.name}`, `Amount: ${share.amount}`);
+        }
+
+        paginateEmbeds(message.channel, message.author, embeds, {useDropdown: false});
     }
 };

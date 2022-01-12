@@ -41,7 +41,8 @@ module.exports = {
                 embed = makeEmbed();
                 embeds.push(embed);  
             }
-                        
+            
+            console.log(item);
             embed.addField(`${item.item.itemEmoji}${item.item.name}`, `Amount: ${item.amount}`);
         }
         

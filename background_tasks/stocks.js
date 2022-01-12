@@ -40,7 +40,7 @@ async function doDaily() {
 module.exports = {
     name: "stocks",
     execute (client) {
-        client.on("messageCreate", async message => {
+        client.on("messageCreate", async () => {
             const itemInDb = await Stocks.findOne({ where: { id: 1} });
             if (itemInDb === null) return; // fixes crash when itemInDb doesn't exist
 
