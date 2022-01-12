@@ -20,7 +20,7 @@ module.exports = {
         // Check if user exists in the database, if the user doesnt exist, send an error message.
         const userInDb = await Users.findOne({ where: { user_id: targetUser.id } });
         if (!userInDb) {
-            message.reply("You do not exist in the database!");
+            message.reply("Target does not exist in the database!");
             return;
         }
 
@@ -58,8 +58,21 @@ module.exports = {
                 embeds.push(embed);  
             }
         
-            embed.addField(`${shares[i].shares.name}`, `Amount: ${shares[i].amount}`);
+            if (shares[i].amount === 0) {console.log(shares[i].amount); continue}; 
+
+            embed.addField(`${shares[i].shares.name}, Worth: ${shares[i].shares.currentPrice}<:ripcoin:929759319296192543>`, `Owned: ${shares[i].amount}`);
+            
         }
+
+
+
+        for (let i = 0; i < embeds.length; ++i) {
+            if (embeds[i].fields.length === 0) {
+                embeds.splice(embeds[i], 1)
+            }
+        }
+
+        if (embeds.length < 1) {return message.channel.send(`${userInDb.badge || " "}${targetUser.username} has nothing!`)}
 
         paginateEmbeds(message.channel, message.author, embeds, {useDropdown: false});
     }

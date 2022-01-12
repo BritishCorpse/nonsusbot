@@ -40,6 +40,6 @@ module.exports = {
             }
         }
 
-        paginateEmbeds(message.channel, message.author, embeds, {useDropdown: false});
+        paginateEmbeds(message.channel, message.author, embeds);
     }
 };
