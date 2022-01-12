@@ -34,7 +34,7 @@ module.exports = {
             return;
         }
 
-        for (const i in items) {
+        for (let i = 0; i < items.length; ++i) {
             const item = items[i];
 
             if (i % 10 === 0) {
