@@ -24,24 +24,21 @@ module.exports = {
             return;
         }
 
-        const portfolio = UserPortfolio.findAll({
-            where: { user_id: message.author.id },
-        });
-
-        async function getUserItems(userId) {
-            const user = await Users.findOne({
+        async function getUserShares(userId) {
+            const portfolio = await UserPortfolio.findAll({
                 where: {
                     user_id: userId
-                }
+                },
+                include: ["shares"]
             });
 
-            if (user === null)
+            if (portfolio === null)
                 return [];
 
-            return await portfolio;
+            return portfolio;
         }
 
-        const shares = await getUserItems(message.author.id);
+        const shares = await getUserShares(message.author.id);
 
         const embeds = [];
 
@@ -55,16 +52,13 @@ module.exports = {
         }
 
         let embed;
-        for (const s in shares) {
-            const share = shares[s];
-
-            if (s % 10 === 0) {
+        for (let i = 0; i < shares.length; ++i) {
+            if (i % 10 === 0) {
                 embed = makeEmbed();
                 embeds.push(embed);  
             }
         
-            console.log(share);
-            embed.addField(`${share.shares.name}`, `Amount: ${share.amount}`);
+            embed.addField(`${shares[i].shares.name}`, `Amount: ${shares[i].amount}`);
         }
 
         paginateEmbeds(message.channel, message.author, embeds, {useDropdown: false});

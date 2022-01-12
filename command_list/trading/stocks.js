@@ -22,6 +22,7 @@ module.exports = {
 
         let embed;
 
+        console.debug("stocks", stocks);
         for (const i in stocks) {
             const stock = stocks[i];
 
