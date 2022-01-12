@@ -38,7 +38,7 @@ async function doDaily() {
 
 
 module.exports = {
-    name: "daily",
+    name: "stocks",
     execute (client) {
         client.on("messageCreate", async message => {
             const itemInDb = await Stocks.findOne({ where: { id: 1} });
