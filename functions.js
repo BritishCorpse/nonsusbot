@@ -199,7 +199,9 @@ async function paginateEmbeds(channel, allowedUser, embeds, { useDropdown=false,
                 currentIndex++;
         } else if (interaction.customId === "dropdown") {
             currentIndex = Number.parseInt(interaction.values[0]);
+        }
 
+        if (useDropdown) {
             selectMenuRow.components[0].options.forEach(option => {
                 option.default = false;
             });
