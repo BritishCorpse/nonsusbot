@@ -21,8 +21,7 @@ module.exports = {
         }
 
         let embed;
-
-        console.debug("stocks", stocks);
+        
         for (const i in stocks) {
             const stock = stocks[i];
 
@@ -36,7 +35,7 @@ module.exports = {
             }
 
             else {
-                embed.addField(`${stock.id}. ${stock.name}`, `Last price: ${stock.oldPrice}<:ripcoin:929759319296192543>, Currenct price: ${stock.currentPrice}<:ripcoin:929759319296192543>`);
+                embed.addField(`${stock.id}. ${stock.name}`, `Last price: ${stock.oldPrice}<:ripcoin:929759319296192543>, Current price: ${stock.currentPrice}<:ripcoin:929759319296192543>`);
             }
         }
 
