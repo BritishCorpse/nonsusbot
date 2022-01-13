@@ -73,7 +73,7 @@ sequelize.sync({ force }).then(async () => {
         CurrencyShop.upsert({ itemEmoji: "<:goldencross:929750585345966111>", name: "\"God\"", cost: 9223372036854775800, itemDescription: "Just about as much money you can have.", category: "Fiction"}),
         CurrencyShop.upsert({ itemEmoji: "<:creditcard2:929759850982953041>", name: "David Tennant", cost: 17043809, itemDescription: "He really is a lovely man.", category: "People"}),
         CurrencyShop.upsert({ itemEmoji: "🦵", name: "Joe Biden's leg", cost: 2943529411764, itemDescription: "How did they get to that? (1 leg = (Average male's leg weight/Joe biden weight) * U.S.A military networth.)", category: "People"}),
-        CurrencyShop.upsert({ itemEmoji: ":brokenheart:929743654556422195>", name: "Egirl", cost: 10, itemDescription: "\"Why isn't it free?\"", category: "People"}),
+        CurrencyShop.upsert({ itemEmoji: "<:brokenheart:929743654556422195>", name: "Egirl", cost: 10, itemDescription: "\"Why isn't it free?\"", category: "People"}),
 
         //Dogs
         CurrencyShop.upsert({ itemEmoji: ":one:", name: "Dog #939458315", cost: 100, itemDescription: "How does this exist?", category: "Dogs"}),
