@@ -24,7 +24,7 @@ module.exports = {
                 // Make a fancy embed to show to the user.
                 const embed = new MessageEmbed()
                     .setTitle("You got lucky!")
-                    .setDescription(`+${moneyAmount}💰`)
+                    .setDescription(`+${moneyAmount}<:ripcoin:929759319296192543>`)
                     .setColor(randomColor);
 
                 message.reply({ embeds: [embed]});

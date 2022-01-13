@@ -25,6 +25,8 @@ module.exports = {
         }
 
         async function getUserShares(userId) {
+
+            // Gets the porfolio of the user
             const portfolio = await UserPortfolio.findAll({
                 where: {
                     user_id: userId
@@ -37,7 +39,7 @@ module.exports = {
 
             return portfolio;
         }
-
+        
         const shares = await getUserShares(message.author.id);
 
         const embeds = [];
@@ -51,28 +53,29 @@ module.exports = {
             return;
         }
 
+        // Declare embeds existance, just so its here, yaknow its nice to have :)
         let embed;
+
         for (let i = 0; i < shares.length; ++i) {
             if (i % 10 === 0) {
                 embed = makeEmbed();
                 embeds.push(embed);  
             }
         
-            if (shares[i].amount === 0) {console.log(shares[i].amount); continue}; 
+            if (shares[i].amount === 0) {console.log(shares[i].amount); continue;}
 
             embed.addField(`${shares[i].shares.name}, Worth: ${shares[i].shares.currentPrice}<:ripcoin:929759319296192543>`, `Owned: ${shares[i].amount}`);
             
         }
 
-
-
+        // Check if the embeds array has any element with zero fields in it, if so, splice the element from the array.
         for (let i = 0; i < embeds.length; ++i) {
             if (embeds[i].fields.length === 0) {
-                embeds.splice(embeds[i], 1)
+                embeds.splice(embeds[i], 1);
             }
         }
 
-        if (embeds.length < 1) {return message.channel.send(`${userInDb.badge || " "}${targetUser.username} has nothing!`)}
+        if (embeds.length < 1) {return message.channel.send(`${userInDb.badge || " "}${targetUser.username} has nothing!`);}
 
         paginateEmbeds(message.channel, message.author, embeds, {useDropdown: false});
     }

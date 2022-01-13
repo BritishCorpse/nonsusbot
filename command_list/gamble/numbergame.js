@@ -82,7 +82,7 @@ module.exports = {
                             .setTitle("The game has ended!")
                             .setColor(randomColor)
                             .setDescription(`You lost! The number was ${gameNumber}.`)
-                            .setFooter(`-${userBet}<:ripcoin:929759319296192543>`);
+                            .setFooter({text: `-${userBet}<:ripcoin:929759319296192543>`});
 
                         message.channel.send({embeds: [endEmbed]});
                         
@@ -103,7 +103,7 @@ module.exports = {
                         .setTitle("The game has ended!")
                         .setColor(randomColor)
                         .setDescription(`You win! The number was ${gameNumber}. Good job!`)
-                        .setFooter(`+${userProfit} <:ripcoin:929759319296192543>`);
+                        .setFooter({text: `+${userProfit}<:ripcoin:929759319296192543>`});
                     message.client.currency.add(message.author.id, userBet + userProfit);
 
                     message.channel.send({embeds: [winEmbed]});

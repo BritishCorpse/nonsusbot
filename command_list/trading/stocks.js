@@ -31,11 +31,11 @@ module.exports = {
             }
             
             if (stock.currentPrice < 1) {
-                embed.addField(`${stock.id}. ${stock.name}`, "STOCK NOT AVAILABLE: Share price less than 1.");
+                embed.addField(`${stock.name}`, "STOCK NOT AVAILABLE: Share price less than 1.");
             }
 
             else {
-                embed.addField(`${stock.id}. ${stock.name}`, `Last price: ${stock.oldPrice}<:ripcoin:929759319296192543>, Current price: ${stock.currentPrice}<:ripcoin:929759319296192543>`);
+                embed.addField(`${stock.name}`, `Last price: ${stock.oldPrice}<:ripcoin:929759319296192543>, Current price: ${stock.currentPrice}<:ripcoin:929759319296192543>`);
             }
         }
 

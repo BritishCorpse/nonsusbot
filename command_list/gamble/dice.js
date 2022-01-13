@@ -68,13 +68,13 @@ module.exports = {
             embed.setFooter({text: "YOU WIN!"});
             message.client.currency.add(message.author.id, userBet * 2);
         } else if (computerTotal > userTotal) {
-            embed.setFooter({text: "YOU LOSE!"});
+            embed.setFooter({text: `YOU LOSE! -${userBet}<:ripcoin:929759319296192543>`});
             message.client.currency.add("1", userBet);
         } else if (userTotal === computerTotal) {
-            embed.setFooter({text: "ITS A DRAW! YOU WIN!"});
+            embed.setFooter({text: `ITS A DRAW! YOU WIN! ${userBet * 2}<:ripcoin:929759319296192543>`});
             message.client.currency.add(message.author.id, userBet * 2);
         } else if (computerTotal === 6 && userTotal === 6) {
-            embed.setFooter("DOUBLE SIXES!");
+            embed.setFooter({text: `DOUBLE SIXES! ´${userBet * 3}<:ripcoin:929759319296192543>`});
             message.client.currency.add(message.author.id, userBet * 3);
         } else {
             message.channel.send("I'm not sure what happened.");
