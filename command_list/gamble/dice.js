@@ -44,27 +44,37 @@ module.exports = {
         // temporarily take the bet
         message.client.currency.add(message.author.id, -userBet);
 
-        const roll = () => Math.floor(Math.random() * 6 + 1);
-        const diceRollComputer = roll();
-        const diceRollUser = roll();
+        const diceRollComputerOne = Math.floor(Math.random() * 6 + 1);
+        const diceRollComputerTwo = Math.floor(Math.random() * 6 + 1);
+        const diceRollUserOne = Math.floor(Math.random() * 6 + 1);
+        const diceRollUserTwo = Math.floor(Math.random() * 6 + 1);
+
+        const computerTotal = diceRollComputerOne + diceRollComputerTwo;
+        const userTotal = diceRollUserOne + diceRollUserTwo;
+
+        console.log(computerTotal);
+        console.log(userTotal);
+        console.log("scores");
+        console.log(diceRollComputerOne, diceRollComputerTwo);
+        console.log(diceRollUserOne, diceRollUserTwo);
 
         const embed = new MessageEmbed()
-            .setTitle("🎲A game of dice!🎲")
+            .setTitle("<:gollar:929765449657352212>A game of dice!<:gollar:929765449657352212>")
             .setColor(randomColor)
-            .addField("🎲The computer rolled:🎲", `${diceRollComputer}`)
-            .addField("🎲You rolled:🎲", `${diceRollUser}`);
+            .addField("The computer rolls:", `${diceRollComputerOne}🎲 and ${diceRollComputerTwo}🎲`)
+            .addField("You roll:", `${diceRollUserOne}🎲 and ${diceRollUserTwo}🎲`);
         
-        if (diceRollUser > diceRollComputer) {
+        if (userTotal > computerTotal) {
             embed.setFooter({text: "YOU WIN!"});
             message.client.currency.add(message.author.id, userBet * 2);
-        } else if (diceRollComputer > diceRollUser) {
-            embed.setFooter({text: "YOU LOSE"});
+        } else if (computerTotal > userTotal) {
+            embed.setFooter({text: "YOU LOSE!"});
             message.client.currency.add("1", userBet);
-        } else if (diceRollComputer === diceRollUser) {
-            embed.setFooter({text: "ITS A DRAW"});
+        } else if (userTotal === computerTotal) {
+            embed.setFooter({text: "ITS A DRAW! YOU WIN!"});
             message.client.currency.add(message.author.id, userBet * 2);
-        } else if (diceRollComputer === 6 && diceRollUser === 6) {
-            embed.setFooter("DOUBLE WIN!");
+        } else if (computerTotal === 6 && userTotal === 6) {
+            embed.setFooter("DOUBLE SIXES!");
             message.client.currency.add(message.author.id, userBet * 3);
         } else {
             message.channel.send("I'm not sure what happened.");
