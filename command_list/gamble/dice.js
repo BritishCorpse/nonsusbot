@@ -33,7 +33,7 @@ module.exports = {
             
             message.channel.send({embeds: [embed]});
             return;
-        } else if (userBet > 10000000 || userBet <= 0) {
+        } else if (userBet > 1000000000 || userBet <= 0) {
             message.channel.send("🎲Your bet is too large or invalid.🎲");
             return;
         } else if (userBet > message.client.currency.getBalance(message.author.id)) {
