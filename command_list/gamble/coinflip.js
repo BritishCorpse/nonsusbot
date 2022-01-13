@@ -53,6 +53,11 @@ module.exports = {
             message.channel.send(`I don' think ${userBet} is a number.`);
             return;
         }
+        
+        else if (userBet > message.client.currency.getBalance(message.author.id)) {
+            message.channel.send("🎲You don't have enough money!🎲");
+            return;
+        }
 
         const userChoice = args[1];
         if (!userChoice) {
