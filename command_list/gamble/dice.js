@@ -62,7 +62,10 @@ module.exports = {
             message.client.currency.add("1", userBet);
         } else if (diceRollComputer === diceRollUser) {
             embed.setFooter({text: "ITS A DRAW"});
-            message.client.currency.add(message.author.id, userBet + 10);
+            message.client.currency.add(message.author.id, userBet * 2);
+        } else if (diceRollComputer === 6 && diceRollUser === 6) {
+            embed.setFooter("DOUBLE WIN!");
+            message.client.currency.add(message.author.id, userBet * 3);
         } else {
             message.channel.send("I'm not sure what happened.");
             return;
