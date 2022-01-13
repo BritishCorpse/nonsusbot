@@ -40,28 +40,15 @@ module.exports = {
         } else if (kissTarget.id === message.client.user.id) {
             message.channel.send("You're making me blush! :heart:");
             return;
-        } else if (kissTarget.id === "484644637420552202") {
-            // Disable below lines if you want people to be able to do actions to me.
-            if (message.author.id !== "834035562864050237") {
-                message.channel.send("Sorry, corpse is not accepting kisses currently.");
-                return;
-            } else {
-                const embed = new MessageEmbed()
-                    .setTitle(`${message.author.username} kisses ${kissTarget.username} :heart:!`)
-                    .setImage(images[Math.floor(Math.random() * images.length)])
-                    .setColor(randomColor);
-            
-                message.channel.send( {embeds: [embed]} );
-                return;
-            }
-        } else {
-            const embed = new MessageEmbed()
-                .setTitle(`${message.author.username} kisses ${kissTarget.username} :heart:!`)
-                .setImage(images[Math.floor(Math.random() * images.length)])
-                .setColor(randomColor);
+        } 
+
+        const embed = new MessageEmbed()
+            .setTitle(`${message.author.username} kisses ${kissTarget.username} :heart:!`)
+            .setImage(images[Math.floor(Math.random() * images.length)])
+            .setColor(randomColor);
+    
+        message.channel.send({embeds: [embed]});
+        return;
         
-            message.channel.send({embeds: [embed]});
-            return;
-        }
     }
 };
