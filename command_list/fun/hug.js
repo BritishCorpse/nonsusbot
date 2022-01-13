@@ -45,20 +45,6 @@ module.exports = {
         } else if (hugTarget.id === message.client.user.id) {
             message.channel.send("You're making me blush! :heart:");
             return;
-        } else if (hugTarget.id === "484644637420552202") {
-            // Disable below lines if you want people to be able to do actions to me.
-            if (message.author.id !== "834035562864050237") {
-                message.channel.send("Sorry, corpse is not accepting hugs currently.");
-                return;
-            } else {
-                const embed = new MessageEmbed()
-                    .setTitle(`${message.author.username} hugs ${hugTarget.username} :heart:!`)
-                    .setImage(images[Math.floor(Math.random() * images.length)])
-                    .setColor(randomColor);
-            
-                message.channel.send({embeds: [embed]});
-                return;
-            }        
         }
 
         const embed = new MessageEmbed()

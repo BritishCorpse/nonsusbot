@@ -1,9 +1,4 @@
-const Sequelize = require("sequelize");
-
-/*
- * Make sure you are on at least version 5 of Sequelize! Version 4 as used in this guide will pose a security threat.
- * You can read more about this issue On the [Sequelize issue tracker](https://github.com/sequelize/sequelize/issues/7310).
- */
+const Sequelize = require("sequelize"); // make sure that this is up to date. old version might have issues
 
 const sequelize = new Sequelize("database", "username", "password", {
     host: "localhost",
@@ -15,7 +10,10 @@ const sequelize = new Sequelize("database", "username", "password", {
 const Users = require("./models/Users")(sequelize, Sequelize.DataTypes);
 const CurrencyShop = require("./models/CurrencyShop")(sequelize, Sequelize.DataTypes);
 const UserItems = require("./models/UserItems")(sequelize, Sequelize.DataTypes);
+const Stocks = require("./models/Stocks")(sequelize, Sequelize.DataTypes);
+const UserPortfolio = require("./models/UserPortfolio")(sequelize, Sequelize.DataTypes);
 
+UserPortfolio.belongsTo(Stocks, { foreignKey: "share_id", as: "shares" });
 UserItems.belongsTo(CurrencyShop, { foreignKey: "item_id", as: "item" }); // foreignKey sets the key to be used from UserItems to look up in CurrencyShop
 
 
@@ -32,6 +30,19 @@ Users.prototype.addItem = async function(item) { // function is used instead of 
     return UserItems.create({ user_id: this.user_id, item_id: item.id, amount: 1 });
 };
 
+Users.prototype.addShare = async function(share) {
+    const shareInDb = await UserPortfolio.findOne({
+        where: { user_id: this.user_id, share_id: share.id}
+    });
+
+    if (shareInDb) {
+        shareInDb.amount += 1;
+        return shareInDb.save();
+    }
+
+    return UserPortfolio.create({ user_id: this.user_id, share_id: share.id, amount: 1});
+};
+
 Users.prototype.getItems = function() {
     return UserItems.findAll({
         where: { user_id: this.user_id },
@@ -39,4 +50,4 @@ Users.prototype.getItems = function() {
     });
 };
 
-module.exports = { Users, CurrencyShop, UserItems };
+module.exports = { Users, CurrencyShop, UserItems, Stocks, UserPortfolio };

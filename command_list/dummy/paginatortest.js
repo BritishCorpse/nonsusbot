@@ -16,6 +16,10 @@ module.exports = {
                 .setTitle("im a page")
                 .setDescription("im a description")
                 .setFooter({text: "hey im a footer"}),
+            new MessageEmbed()
+                .setTitle("im a page")
+                .setDescription("im a description")
+                .setFooter({text: "hey im a footer"}),
 
         ];
         

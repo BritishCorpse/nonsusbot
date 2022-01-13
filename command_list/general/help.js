@@ -153,7 +153,8 @@ module.exports = {
                     usageString += path.map(tag => formatBacktick(`<${tag}>`)).join(" ");
                     usageString += "\n";
                 }
-                embed.addField("Usage", usageString);
+                if (usageString.length > 0)
+                    embed.addField("Usage", usageString);
 
                 message.channel.send({embeds: [embed]});
             }

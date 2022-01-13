@@ -47,27 +47,15 @@ module.exports = {
         } else if (slapTarget.id === message.client.user.id) {
             message.channel.send("Hey!! Don't slap me, what did I do?!");
             return;
-        } else if (slapTarget.id === "484644637420552202") {
-            if (message.author.id !== "834035562864050237") {
-                message.channel.send("Corpse blocked the slap!! Incredible!");
-                return;
-            } else {
-                const embed = new MessageEmbed()
-                    .setTitle(`${message.author.username} slaps ${slapTarget.username}, ${funnyReply}`)
-                    .setImage(images[Math.floor(Math.random() * images.length)])
-                    .setColor(randomColor);
-            
-                message.channel.send({embeds: [embed]});
-                return;
-            }
-        } else {
-            const embed = new MessageEmbed()
-                .setTitle(`${message.author.username} slaps ${slapTarget.username}, ${funnyReply}`)
-                .setImage(images[Math.floor(Math.random() * images.length)])
-                .setColor(randomColor);
+        } 
         
-            message.channel.send({embeds: [embed]});
-            return;
-        }
+        const embed = new MessageEmbed()
+            .setTitle(`${message.author.username} slaps ${slapTarget.username}, ${funnyReply}`)
+            .setImage(images[Math.floor(Math.random() * images.length)])
+            .setColor(randomColor);
+    
+        message.channel.send({embeds: [embed]});
+        return;
+        
     }
 };

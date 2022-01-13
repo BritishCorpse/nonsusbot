@@ -184,6 +184,8 @@ client.once("ready", async () => {
     }
 });
 
+
+
 // For handling commands
 client.on("messageCreate", async message => {
     // Disable DMs

@@ -135,37 +135,40 @@ async function paginateEmbeds(channel, allowedUser, embeds, { useDropdown=false,
     const rows = [];
 
     let selectMenuRow;
-    if (useDropdown) {
-        selectMenuRow = new MessageActionRow();
-        const selectMenu = new MessageSelectMenu()
-            .setCustomId("dropdown");
-
-        embeds.forEach((embed, i) => {
-            selectMenu.addOptions({
-                label: `Page ${i + 1}${embed.title ? `: ${embed.title}` : ""}`,
-                value: i.toString(),
-                default: i === 0
-            });
-        });
-
-        selectMenuRow.addComponents(selectMenu);
-        rows.push(selectMenuRow);
-    }
-
     let buttonRow;
-    if (useButtons) {
-        buttonRow = new MessageActionRow();
-        buttonRow.addComponents(
-            new MessageButton()
-                .setCustomId("previous")
-                .setLabel(previousEmoji)
-                .setStyle("PRIMARY"),
-            new MessageButton()
-                .setCustomId("next")
-                .setLabel(nextEmoji)
-                .setStyle("PRIMARY")
-        );
-        rows.push(buttonRow);
+
+    if (embeds.length > 1) { // only add buttons and menu if it has more than one page
+        if (useDropdown) {
+            selectMenuRow = new MessageActionRow();
+            const selectMenu = new MessageSelectMenu()
+                .setCustomId("dropdown");
+
+            embeds.forEach((embed, i) => {
+                selectMenu.addOptions({
+                    label: `Page ${i + 1}${embed.title ? `: ${embed.title}` : ""}`,
+                    value: i.toString(),
+                    default: i === 0
+                });
+            });
+
+            selectMenuRow.addComponents(selectMenu);
+            rows.push(selectMenuRow);
+        }
+
+        if (useButtons) {
+            buttonRow = new MessageActionRow();
+            buttonRow.addComponents(
+                new MessageButton()
+                    .setCustomId("previous")
+                    .setLabel(previousEmoji)
+                    .setStyle("PRIMARY"),
+                new MessageButton()
+                    .setCustomId("next")
+                    .setLabel(nextEmoji)
+                    .setStyle("PRIMARY")
+            );
+            rows.push(buttonRow);
+        }
     }
 
     let message;
@@ -178,6 +181,8 @@ async function paginateEmbeds(channel, allowedUser, embeds, { useDropdown=false,
     } else {
         message = messageToEdit;
     }
+
+    if (embeds.length === 1) return; // don't create filters/collectors if only one page
 
     const filter = interaction => (interaction.customId === "previous"
                                    || interaction.customId === "next"
@@ -199,7 +204,9 @@ async function paginateEmbeds(channel, allowedUser, embeds, { useDropdown=false,
                 currentIndex++;
         } else if (interaction.customId === "dropdown") {
             currentIndex = Number.parseInt(interaction.values[0]);
+        }
 
+        if (useDropdown) {
             selectMenuRow.components[0].options.forEach(option => {
                 option.default = false;
             });
@@ -318,7 +325,7 @@ function sendUsage(message, usage, failedOn, failedArg) {
     else if (failedArg === undefined)
         description += "You are missing an argument. The argument can be:";
     else
-        description += `${formatBacktick(failedArg)} is an invalid argument. The argument can be:`;
+        description += `${formatBacktick(failedArg || " ")} is an invalid argument. The argument can be:`;
 
     embed.setDescription(description);
 

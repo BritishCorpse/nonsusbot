@@ -12,7 +12,7 @@ module.exports = {
         const d = new Date();
         const time = d.getTime();
 
-        if (!target) {
+        if (!target || target.id === message.author.id) {
             return message.reply("You robbed yourself! +0<:ripcoin:929759319296192543>");
         }
 
@@ -32,7 +32,7 @@ module.exports = {
         }
 
         const result = Math.floor(Math.random() * 3);
-        if (result === "0") {
+        if (result === 0) {
             message.channel.send(`${target} caught you stealing! You paid them ${amount}<:ripcoin:929759319296192543>`);
 
             message.client.currency.add(target.id, amount);
