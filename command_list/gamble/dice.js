@@ -62,12 +62,12 @@ module.exports = {
             message.client.currency.add("1", userBet);
         } else if (diceRollComputer === diceRollUser) {
             embed.setFooter({text: "ITS A DRAW"});
-            message.client.currency.add(message.author.id, userBet - 10);
+            message.client.currency.add(message.author.id, userBet + 10);
         } else {
             message.channel.send("I'm not sure what happened.");
             return;
         }
 
-        message.channel.send({embeds: [embed]});
+        message.reply({embeds: [embed]});
     }
 };
