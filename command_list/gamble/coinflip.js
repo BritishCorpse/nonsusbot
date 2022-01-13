@@ -82,7 +82,7 @@ module.exports = {
         }
 
         const embed = new MessageEmbed()
-            .setTitle("The coin has landed!")
+            .setTitle("<:gollar:929765449657352212>The coin has landed!<:gollar:929765449657352212>")
             .setColor(randomColor);
 
         function checkResult() {

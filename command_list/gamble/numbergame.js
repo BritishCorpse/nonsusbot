@@ -34,7 +34,7 @@ module.exports = {
 
         if (userBet === "rules") {
             const embed = new MessageEmbed()
-                .setTitle("Rules of the number game.")
+                .setTitle("<:gollar:929765449657352212>Rules of the number game.<:gollar:929765449657352212>")
                 .setDescription("The player attempts to guess the number within a specified range, the range is specified as the users bet (first argument) divided by 10.\nThe player also has an option to choose how many lives they have, the maximum amount of lives is 10.\nIf they player wins, the players profit will be 2 times the amount of coins they bet, divided by how many lives they chose. For example: Bet = 100, Lives = 10, Profit = 20.\nThe maximum bet for this gamemode is 100 million 💰's.")
                 .setColor(randomColor);
             
@@ -65,7 +65,7 @@ module.exports = {
         message.channel.send("Remember, there are no hints, so you will have to rely on your luck. With that being said, good luck! You'll need it.");
 
         const embed = new MessageEmbed()
-            .setTitle("1️⃣A game of guess the number3️⃣")
+            .setTitle("<:gollar:929765449657352212>A game of guess the number<:gollar:929765449657352212>")
             .setColor(randomColor)
             .setDescription(`Guess the number! The number is within the range of ${numberRange} to 0.`);
 
