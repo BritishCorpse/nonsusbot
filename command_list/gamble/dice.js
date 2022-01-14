@@ -69,18 +69,29 @@ module.exports = {
         if (userTotal === computerTotal) {
             embed.addField("ITS A DRAW! YOU WIN!", `+${userBet}<:ripcoin:929759319296192543>`);
             message.client.currency.add(message.author.id, userBet * 2);
+
         } else if (userTotal === 12) {
             embed.addField("DOUBLE SIXES!", `+${userBet * 2}<:ripcoin:929759319296192543>`);
+            // Here only remove the userBet from the casino and then pull the rest out of the aether.
+            message.client.currency.add("1", -userBet);
             message.client.currency.add(message.author.id, userBet * 3); // give the bet back + twice the bet
+
         } else if (userTotal > computerTotal) {
             embed.addField("YOU WIN!", `+${userBet}<:ripcoin:929759319296192543>`);
+            message.client.currency.add("1", -userBet);
             message.client.currency.add(message.author.id, userBet * 2);
+
         } else if (computerTotal > userTotal) {
             embed.addField("YOU LOSE!", `-${userBet}<:ripcoin:929759319296192543>`);
             message.client.currency.add("1", userBet); // casino balance
+
         } else {
             message.channel.send("I'm not sure what happened.");
+
+            //Give the user their bet back because an error happened.
+            message.client.currency.add(message.author.id, userBet);
             return;
+
         }
 
         message.reply({embeds: [embed]});
