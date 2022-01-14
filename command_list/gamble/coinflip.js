@@ -70,34 +70,21 @@ module.exports = {
         }
 
         const coinflipResult = coinflip();
-
-        function gameResult() {
-            if (coinflipResult === 1) {
-                return "heads";
-            }
-
-            else if (coinflipResult === 0) {
-                return "tails";
-            }
-        }
+        const gameResult = coinflipResult === 0 ? "tails" : "heads";
 
         const embed = new MessageEmbed()
             .setTitle("<:gollar:929765449657352212>The coin has landed!<:gollar:929765449657352212>")
             .setColor(randomColor);
 
         function checkResult() {
-            if (gameResult() === userChoice) {
-                embed.setDescription(`It's ${gameResult()}! You were correct! +${userBet}<:ripcoin:929759319296192543>`);
+            if (gameResult === userChoice) {
+                embed.setDescription(`It's ${gameResult}! You were correct! +${userBet}<:ripcoin:929759319296192543>`);
                 message.client.currency.add(message.author.id, userBet);
-            }
-
-            else if (gameResult !== userChoice) {
-                embed.setDescription(`It's ${gameResult()}! You were incorrect! -${userBet}<:ripcoin:929759319296192543>`);
+            } else if (gameResult !== userChoice) {
+                embed.setDescription(`It's ${gameResult}! You were incorrect! -${userBet}<:ripcoin:929759319296192543>`);
                 message.client.currency.add(message.author.id, -userBet);
                 message.client.currency.add("1", userBet);
-            }
-
-            else {
+            } else {
                 message.channel.send("How did this happen?!");
                 message.client.currency.add(message.author.id, 10);
                 return;
@@ -107,9 +94,5 @@ module.exports = {
         }
 
         checkResult();
-
-
-
-
     }
 };
