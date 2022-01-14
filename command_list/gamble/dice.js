@@ -20,7 +20,7 @@ module.exports = {
             return;
         }
 
-        const randomColor = Math.floor(Math.random()*16777215).toString(16);
+        const randomColor = Math.floor(Math.random() * 16777215).toString(16);
 
         // Starting playing dice game.
         const userBet = Number.parseInt(args[0]);
@@ -34,10 +34,10 @@ module.exports = {
             message.channel.send({embeds: [embed]});
             return;
         } else if (userBet > 1000000000 || userBet <= 0) {
-            message.channel.send("🎲Your bet is too large or invalid.🎲");
+            message.channel.send("🎲Your bet is too larrge or invalid.🎲");
             return;
         } else if (userBet > message.client.currency.getBalance(message.author.id)) {
-            message.channel.send("🎲You don't have enough money!🎲");
+            message.channel.send("🎲You don't have enouugh money!🎲");
             return;
         }
 
@@ -52,11 +52,13 @@ module.exports = {
         const computerTotal = diceRollComputerOne + diceRollComputerTwo;
         const userTotal = diceRollUserOne + diceRollUserTwo;
 
+        /*
         console.log(computerTotal);
         console.log(userTotal);
         console.log("scores");
         console.log(diceRollComputerOne, diceRollComputerTwo);
         console.log(diceRollUserOne, diceRollUserTwo);
+        */
 
         const embed = new MessageEmbed()
             .setTitle("<:gollar:929765449657352212>A game of dice!<:gollar:929765449657352212>")
@@ -64,18 +66,18 @@ module.exports = {
             .addField("The computer rolls:", `${diceRollComputerOne}🎲 and ${diceRollComputerTwo}🎲`)
             .addField("You roll:", `${diceRollUserOne}🎲 and ${diceRollUserTwo}🎲`);
         
-        if (userTotal > computerTotal) {
-            embed.setFooter({text: "YOU WIN!"});
+        if (userTotal === computerTotal) {
+            embed.addField("ITS A DRAW! YOU WIN!", `+${userBet}<:ripcoin:929759319296192543>`);
+            message.client.currency.add(message.author.id, userBet * 2);
+        } else if (userTotal === 12) {
+            embed.addField("DOUBLE SIXES!", `+${userBet * 2}<:ripcoin:929759319296192543>`);
+            message.client.currency.add(message.author.id, userBet * 3); // give the bet back + twice the bet
+        } else if (userTotal > computerTotal) {
+            embed.addField("YOU WIN!", `+${userBet}<:ripcoin:929759319296192543>`);
             message.client.currency.add(message.author.id, userBet * 2);
         } else if (computerTotal > userTotal) {
-            embed.setFooter({text: `YOU LOSE! -${userBet}<:ripcoin:929759319296192543>`});
-            message.client.currency.add("1", userBet);
-        } else if (userTotal === computerTotal) {
-            embed.setFooter({text: `ITS A DRAW! YOU WIN! ${userBet * 2}<:ripcoin:929759319296192543>`});
-            message.client.currency.add(message.author.id, userBet * 2);
-        } else if (computerTotal === 6 && userTotal === 6) {
-            embed.setFooter({text: `DOUBLE SIXES! ´${userBet * 3}<:ripcoin:929759319296192543>`});
-            message.client.currency.add(message.author.id, userBet * 3);
+            embed.addField("YOU LOSE!", `-${userBet}<:ripcoin:929759319296192543>`);
+            message.client.currency.add("1", userBet); // casino balance
         } else {
             message.channel.send("I'm not sure what happened.");
             return;
