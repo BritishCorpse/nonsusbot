@@ -41,7 +41,7 @@ module.exports = {
                         }
                 
                     }).catch(() => {
-                        message.reply("Are you there?");
+                        message.reply("Time ran out!");
                     });
             });
     }
