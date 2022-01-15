@@ -1,6 +1,8 @@
 # Files created during development
 *.swp
+.vscode
 .DS_Store
+gh-md-toc # For making README.md table of contents (https://github.com/ekalinin/github-markdown-toc)
 
 # Files created by installation
 node_modules
@@ -9,6 +11,3 @@ node_modules
 *.sqlite
 server_config.json
 logs
-
-# For making README.md table of contents (https://github.com/ekalinin/github-markdown-toc)
-gh-md-toc
