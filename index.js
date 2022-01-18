@@ -176,7 +176,7 @@ client.once("ready", async () => {
     storedBalances.forEach(b => client.currency.set(b.user_id, b));
     client.user.setActivity("with dead people | @ me for my prefix!");
     console.log("Ready and logged in as " + client.user.tag + "!");
-    console.log("\u0007"); // bell sound
+    console.log("\u0007"); // bell sound that sounds pretty cool
 
     // send message to parent process if testing
     if (testing) {
@@ -205,30 +205,6 @@ client.on("messageCreate", async message => {
     if (!message.content.startsWith(prefix)) return;
     if (message.author.bot && !testing) return;
     if (message.author.bot && testing && message.author.id !== developmentConfig.testing_bot_discord_user_id) return;
-
-    // Check for user's badge. If there is no custom badge, make the normal badge.
-    // Marked this out, will fix tomorrow.
-    /*
-    const user = await Users.findOne({
-        where: {
-            user_id: message.member.id
-        }
-    });
-
-    const item = await CurrencyShop.findOne({
-        where: {
-            name: {
-                [Op.like]: "VIP pass" 
-            }
-        }
-    });
-
-    const userItems = await user.getItems();
-    for (const userItem of userItems) {
-        const userBadge = userItems.find(userItem => userItem.item_id == item.id);
-    }
-
-    */
 
     const args = message.content.slice(prefix.length)
         .split(" ");
