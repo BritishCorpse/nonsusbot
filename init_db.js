@@ -41,11 +41,11 @@ sequelize.sync({ force }).then(async () => {
         CurrencyShop.upsert({ itemEmoji: "<:goldenshield:929759898944819250>", name: "Golden Shield", itemDescription: "Protect yourself from incels!", cost: 100000, category: "Badges"}),
 
         //Special
-        CurrencyShop.upsert({ itemEmoji: "<:vipbadge:929750631084859412>", name: "VIP pass", cost: 10000000, itemDescription: "Flex on your friends!", category: "Special"}),
+        CurrencyShop.upsert({ itemEmoji: "<:vipbadge:931917580103450635>", name: "VIP pass", cost: 10000000, itemDescription: "Flex on your friends!", category: "Special"}),
         CurrencyShop.upsert({ itemEmoji: "<:certificate:926539198503211051>", name: "Casino Membership", cost: 1000, itemDescription: "Join the casino for some exquisite gambling!", category: "Special"}),
 
         //Fiction
-        CurrencyShop.upsert({ itemEmoji: "<:book1:929751892093964298>", name: "Bible", cost: 20, itemDescription: "Read up on some of history's best works of fiction!", category: "Fiction"}),
+        CurrencyShop.upsert({ itemEmoji: "<:book1:933470576440406166>", name: "Bible", cost: 20, itemDescription: "Read up on some of history's best works of fiction!", category: "Fiction"}),
         CurrencyShop.upsert({ itemEmoji: "<:angel1:929750568984014928>", name: "Biblically Accurate Angel", cost: 5000000, itemDescription: "They must've escaped! How did that even happen it's an entry in a database!", category: "Fiction"}),
         CurrencyShop.upsert({ itemEmoji: "<:angel1:929750568984014928>", name: "Angel", cost: 777, itemDescription: "Looks like this ones a tad more child friendly.", category: "Fiction"}),
         CurrencyShop.upsert({ itemEmoji: ":smiling_imp:", name: "Demon", cost: 6666, itemDescription: "Collect these and see how many you can get!", category: "Fiction"}),
@@ -60,12 +60,14 @@ sequelize.sync({ force }).then(async () => {
         //Memes
         CurrencyShop.upsert({ itemEmoji: ":top:", name: "One third of an amazon stock", cost: 1125, itemDescription: "Genuine price of one third of an Amazon stock.", category: "Memes"}),
         CurrencyShop.upsert({ itemEmoji: ":sweat_drops:", name: "Water", cost: 1, itemDescription: "r/hydrohomies", category: "Memes"}),
-        CurrencyShop.upsert({ itemEmoji: ":<:heart1:929743672763904040>", name: "Tendies", cost: 5000, itemDescription: "r/superstonk!!!1!!!!11!!!", category: "Memes"}),
-        CurrencyShop.upsert({ itemEmoji: "<:heart1:929743672763904040>", name: "Typical Femoid", cost: 1000, itemDescription: "They always chase after chads when there's a nice guy like me right here!", category: "Memes"}),
+        CurrencyShop.upsert({ itemEmoji: "<:heart1:933467721079857184>",     name: "Tendies", cost: 5000, itemDescription: "r/superstonk!!!1!!!!11!!!", category: "Memes"}),
+        CurrencyShop.upsert({ itemEmoji: "<:heart1:933467721079857184>", name: "Typical Femoid", cost: 1000, itemDescription: "They always chase after chads when there's a nice guy like me right here!", category: "Memes"}),
 
         // People
         CurrencyShop.upsert({ itemEmoji: "<:creditcard2:929759850982953041>", name: "Kanye West", cost: 6600000000, itemDescription: "Nothing special.", category: "People"}),
         CurrencyShop.upsert({ itemEmoji: "<:creditcard2:929759850982953041>", name: "Ryan Reynolds", cost: 150000000, itemDescription: "A fine addition to your collection!", category: "People"}),
+        CurrencyShop.upsert({ itemEmoji: "<:longarms:933455888046493746>", name: "Longarms", cost: 100000, itemDescription: "Created in the darkest pits of hell.", category: "People"}),
+
         /* eslint-disable-next-line no-loss-of-precision */
         CurrencyShop.upsert({ itemEmoji: "<:creditcard2:929759850982953041>", name: "The Dev Team", cost: 999999999999999999999, itemDescription: "Good luck buying this!! Best regards: The Dev Team.", category: "People"}),
         CurrencyShop.upsert({ itemEmoji: "<:locboi:926528670938578945>", name: "LocBoi", cost: 50000000, itemDescription: "He won! Fair and square.", category: "People"}),
@@ -83,7 +85,7 @@ sequelize.sync({ force }).then(async () => {
         CurrencyShop.upsert({ itemEmoji: "🐩", name: "Poodle", cost: 1000, itemDescription: "Did the queen have these?", category: "Dogs"}),
         CurrencyShop.upsert({ itemEmoji: "<:shiba:926585439391981608>", name: "Shiba", cost: 1200, itemDescription: "A favourite of mine!", category: "Dogs"}),
         CurrencyShop.upsert({ itemEmoji: "<:belladog2:926497352238379110>", name: "Bella Dog", cost: 1500, itemDescription: "A vaccuum cleaner of sorts.", category: "Dogs"}),
-        CurrencyShop.upsert({ itemEmoji: "<:wtfkitty:909420858093748265>", name: "Chloe Dog", cost: 10000, itemDescription: "A rat in disguise.", category: "Dogs"}),
+        CurrencyShop.upsert({ itemEmoji: "<:heart1:933467721079857184>", name: "Chloe Dog", cost: 10000, itemDescription: "A rat in disguise.", category: "Dogs"}),
         CurrencyShop.upsert({ itemEmoji: "<:dachshung:926592145538818050>", name: "Dachshund", cost: 1201, itemDescription: "Hey d!", category: "Dogs"}),
         
         //Cats
