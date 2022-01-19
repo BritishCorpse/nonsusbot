@@ -33,7 +33,7 @@ module.exports = {
         }
     ],
 
-    execute (message, args) {
+    async execute (message, args) {
         const randomColor = Math.floor(Math.random()*16777215).toString(16);
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
@@ -45,6 +45,10 @@ module.exports = {
             return message.channel.send(`Incorrect usage. Proper usage, ${prefix}tempban ${banUser} time reason`);
         }
 
+        if (banTime > "7") {
+            message.channel.send("Ban duration is too long.");
+            return;
+        }
         if (!banReason) {
             return message.channel.send("No ban reason specified.");
         }
@@ -58,8 +62,18 @@ module.exports = {
             .addField("Moderator", message.author.tag)
             .setColor(randomColor);
 
+    
+        const embed2 = new  MessageEmbed()
+            .setTitle(`You have been banned from ${message.guild.name}!`)
+            .setColor(randomColor)
+            .setDescription(`Reason: ${banReason}`);
+
+        await banUser.send({embeds: [embed2]});
+
         message.channel.send({embeds: [embed]});
+
         banUser.ban({days: banTime, reason: banReason})
             .catch(console.error);
+        
     }
 };
