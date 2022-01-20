@@ -9,7 +9,7 @@ module.exports = {
 
     usage: [
         circularUsageOption(
-            { tag: "item", checks: {matches: {not: /[^\w?!.,;:'"()]/}, isempty: {not: null}} }
+            { tag: "item", checks: {matches: {not: /[^\w\d?!.,;:'"()#]/}, isempty: {not: null}} }
         )
     ],
 
@@ -33,7 +33,7 @@ module.exports = {
             await Users.update({ badge: item.itemEmoji }, { where: { user_id: message.author.id } });
         }
         
-        message.reply(`You bought ${item.itemEmoji}${item.name}.`);
+        message.reply(`You bought ${item.itemEmoji}**${item.name}**.`);
         const user = await Users.findOne({
             where: {
                 user_id: message.author.id
