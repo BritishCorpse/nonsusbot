@@ -2,6 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const { Stocks } = require(`${__basedir}/db_objects`);
 const { paginateEmbeds } = require(`${__basedir}/functions`);
 
+
 module.exports = {
     name: "stocks",
     description: "Displays the stock market!",
@@ -10,7 +11,7 @@ module.exports = {
     ],
 
     async execute (message) {
-        const randomColor = Math.floor(Math.random()*16777215).toString(16);
+        const randomColor = Math.floor(Math.random() * 16777215).toString(16);
         
         const embeds = [];
 
