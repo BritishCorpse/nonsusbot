@@ -9,7 +9,7 @@ module.exports = {
 
     usage: [
         circularUsageOption(
-            { tag: "item", checks: {matches: {not: /[^\w\d?!.,;:'"()#]/}, isempty: {not: null}} }
+            { tag: "item", checks: {matches: {not: /[^\w?!.,;:'"()#]/}, isempty: {not: null}} }
         )
     ],
 
