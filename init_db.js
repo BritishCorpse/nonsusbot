@@ -60,7 +60,7 @@ sequelize.sync({ force }).then(async () => {
         //Memes
         CurrencyShop.upsert({ itemEmoji: ":top:", name: "One third of an amazon stock", cost: 1125, itemDescription: "Genuine price of one third of an Amazon stock.", category: "Memes"}),
         CurrencyShop.upsert({ itemEmoji: ":sweat_drops:", name: "Water", cost: 1, itemDescription: "r/hydrohomies", category: "Memes"}),
-        CurrencyShop.upsert({ itemEmoji: "<:heart1:933467721079857184>",     name: "Tendies", cost: 5000, itemDescription: "r/superstonk!!!1!!!!11!!!", category: "Memes"}),
+        CurrencyShop.upsert({ itemEmoji: "<:heart1:933467721079857184>", name: "Tendies", cost: 5000, itemDescription: "r/superstonk!!!1!!!!11!!!", category: "Memes"}),
         CurrencyShop.upsert({ itemEmoji: "<:heart1:933467721079857184>", name: "Typical Femoid", cost: 1000, itemDescription: "They always chase after chads when there's a nice guy like me right here!", category: "Memes"}),
 
         // People
