@@ -24,21 +24,23 @@ sequelize.sync({ force }).then(async () => {
         CurrencyShop.upsert({ itemEmoji: "<:amethystbadge:926889002290794578>", name: "Amethyst Badge", cost: 999999999, itemDescription: "Obtainable only, by the 1%.", category: "Badges"}),
         CurrencyShop.upsert({ itemEmoji: "<:pinkbadge:926889010842980402>", name: "Pink Badge", cost: 1000000000, itemDescription: "A badge for true billionaires.", category: "Badges"}),
         CurrencyShop.upsert({ itemEmoji: "<:flagch:929750660432416768>", name: "China Badge", itemDescription: "GLORY TO THE CCP!", cost: 100000, category: "Badges"}),
+        CurrencyShop.upsert({ itemEmoji: "<:estonia:933744210530689114>", name: "Estonia Badge", itemDescription: "mm finland part 2", cost: 100000, category: "Badges"}),  
         CurrencyShop.upsert({ itemEmoji: "<:flagde:929750687926091806>", name: "Denmark Badge", itemDescription: "Nice kingdom!", cost: 100000, category: "Badges"}),
-        CurrencyShop.upsert({ itemEmoji: "<:flageu:929750688131588106>", name: "Eu Badge", cost: 100000, itemDescription: "A *country*.", category: "Badges"}),
-        CurrencyShop.upsert({ itemEmoji: "<:flagfi:929750687699595305>", name: "Finland Badge", itemDescription: "Land of the 200 thousand lakes!", cost: 100000, category: "Badges"}),
+        CurrencyShop.upsert({ itemEmoji: "<:eu:933744210639736872>", name: "Eu Badge", cost: 100000, itemDescription: "A *country*.", category: "Badges"}),
+        CurrencyShop.upsert({ itemEmoji: "<:finland:933744210581008454>", name: "Finland Badge", itemDescription: "Land of the 200 thousand lakes!", cost: 100000, category: "Badges"}),
         CurrencyShop.upsert({ itemEmoji: "<:flagin:929750649481101385>", name: "Indonesia Badge", itemDescription: "The rulers of Growtopia", cost: 100000, category: "Badges"}),
-        CurrencyShop.upsert({ itemEmoji: "<:flagja:929750687519223840>", name: "Japan Badge", itemDescription: "mm waifus.", cost: 100000, category: "Badges"}),
-        CurrencyShop.upsert({ itemEmoji: "<:flagno:929750687926067230>", name: "Norway Badge", itemDescription: "OIL FOR DAYS!", cost: 100000, category: "Badges"}),
+        CurrencyShop.upsert({ itemEmoji: "<:japan:933744210610356366>", name: "Japan Badge", itemDescription: "mm waifus.", cost: 100000, category: "Badges"}),
+        CurrencyShop.upsert({ itemEmoji: "<:norway:933744210220298291>", name: "Norway Badge", itemDescription: "OIL FOR DAYS!", cost: 100000, category: "Badges"}),
         CurrencyShop.upsert({ itemEmoji: "<:flagpo:929750688009949184>", name: "Poland Badge", itemDescription: "Polske! Or something like that.", cost: 100000, category: "Badges"}),
-        CurrencyShop.upsert({ itemEmoji: "<:flagqa:929750687649239071>", name: "Qatar Badge", itemDescription: "Snad.", cost: 100000, category: "Badges"}),
+        CurrencyShop.upsert({ itemEmoji: "<:qatar:933744210593599578>", name: "Qatar Badge", itemDescription: "Snad.", cost: 100000, category: "Badges"}),
         CurrencyShop.upsert({ itemEmoji: "<:flagru:929750688110624879>", name: "Russia Badge", itemDescription: "Insert Vodka or Adidas joke.", cost: 100000, category: "Badges"}),
-        CurrencyShop.upsert({ itemEmoji: "<:flagse:929750688202887198>", name: "Sweden Badge", itemDescription: "Bad at hockey.", cost: 100000, category: "Badges"}),
-        CurrencyShop.upsert({ itemEmoji: "<:flagsw:929750690245521468>", name: "Switzerland Badge", itemDescription: "Fondue :heart_eyes:", cost: 100000, category: "Badges"}),
+        CurrencyShop.upsert({ itemEmoji: "<:sweden:933744210404851776>", name: "Sweden Badge", itemDescription: "Bad at hockey.", cost: 100000, category: "Badges"}),
+        CurrencyShop.upsert({ itemEmoji: "<:switzerland:933744210614550589>", name: "Switzerland Badge", itemDescription: "Fondue :heart_eyes:", cost: 100000, category: "Badges"}),
         CurrencyShop.upsert({ itemEmoji: "<:flagus:929750687934480394>", name: "Usa Badge", itemDescription: "Steal their land and call it our own!", cost: 100000, category: "Badges"}),
         CurrencyShop.upsert({ itemEmoji: "<:graveyardshield:929743719656226837>", name: "Graveyard Shield", itemDescription: "Rep the Graveyard Badge, now in a fashionable purple!", cost: 100000, category: "Badges"}),
         CurrencyShop.upsert({ itemEmoji: "<:prideshield:929743754829656138>", name: "Pride Badge", itemDescription: "Steal the rainbow!!", cost: 100000, category: "Badges"}),
         CurrencyShop.upsert({ itemEmoji: "<:goldenshield:929759898944819250>", name: "Golden Shield", itemDescription: "Protect yourself from incels!", cost: 100000, category: "Badges"}),
+        CurrencyShop.upsert({ itemEmoji: "<:royalbadge:933466266352644149>", name: "Royal Badge", itemDescription: "Join the royalty! For a high price of course.", cost: 10000000000, category: "Badges"}),  
 
         //Special
         CurrencyShop.upsert({ itemEmoji: "<:vipbadge:931917580103450635>", name: "VIP pass", cost: 10000000, itemDescription: "Flex on your friends!", category: "Special"}),
@@ -46,11 +48,11 @@ sequelize.sync({ force }).then(async () => {
 
         //Fiction
         CurrencyShop.upsert({ itemEmoji: "<:book1:933470576440406166>", name: "Bible", cost: 20, itemDescription: "Read up on some of history's best works of fiction!", category: "Fiction"}),
-        CurrencyShop.upsert({ itemEmoji: "<:angel1:929750568984014928>", name: "Biblically Accurate Angel", cost: 5000000, itemDescription: "They must've escaped! How did that even happen it's an entry in a database!", category: "Fiction"}),
-        CurrencyShop.upsert({ itemEmoji: "<:angel1:929750568984014928>", name: "Angel", cost: 777, itemDescription: "Looks like this ones a tad more child friendly.", category: "Fiction"}),
+        CurrencyShop.upsert({ itemEmoji: "<:book1:933470576440406166>", name: "Biblically Accurate Angel", cost: 5000000, itemDescription: "They must've escaped! How did that even happen it's an entry in a database!", category: "Fiction"}),
+        CurrencyShop.upsert({ itemEmoji: "<:book1:933470576440406166>", name: "Angel", cost: 777, itemDescription: "Looks like this ones a tad more child friendly.", category: "Fiction"}),
         CurrencyShop.upsert({ itemEmoji: ":smiling_imp:", name: "Demon", cost: 6666, itemDescription: "Collect these and see how many you can get!", category: "Fiction"}),
         CurrencyShop.upsert({ itemEmoji: "<:evilsoul:929752927789260830>", name: "Evil Soul", cost: 10000, itemDescription: "For those on the wrong side of history.", category: "Fiction"}),
-        CurrencyShop.upsert({ itemEmoji: "<:catholiccross:929750576802185306>", name: "Catholic cross", cost: 40, itemDescription: "SHOUT OUT TO THE CATHOLICS", category: "Fiction"}),
+        CurrencyShop.upsert({ itemEmoji: "<:cross:933697557396332564>", name: "Catholic cross", cost: 40, itemDescription: "religin", category: "Fiction"}),
 
 
         //Flowers
@@ -59,8 +61,8 @@ sequelize.sync({ force }).then(async () => {
 
         //Memes
         CurrencyShop.upsert({ itemEmoji: ":top:", name: "One third of an amazon stock", cost: 1125, itemDescription: "Genuine price of one third of an Amazon stock.", category: "Memes"}),
-        CurrencyShop.upsert({ itemEmoji: ":sweat_drops:", name: "Water", cost: 1, itemDescription: "r/hydrohomies", category: "Memes"}),
-        CurrencyShop.upsert({ itemEmoji: "<:heart1:933467721079857184>", name: "Tendies", cost: 5000, itemDescription: "r/superstonk!!!1!!!!11!!!", category: "Memes"}),
+        CurrencyShop.upsert({ itemEmoji: "<:water:933693983354408991>", name: "Water", cost: 1, itemDescription: "r/hydrohomies", category: "Memes"}),
+        CurrencyShop.upsert({ itemEmoji: "<:chickennugget:933693369757106246>", name: "Tendies", cost: 5000, itemDescription: "r/superstonk!!!1!!!!11!!!", category: "Memes"}),
         CurrencyShop.upsert({ itemEmoji: "<:heart1:933467721079857184>", name: "Typical Femoid", cost: 1000, itemDescription: "They always chase after chads when there's a nice guy like me right here!", category: "Memes"}),
 
         // People
@@ -109,7 +111,7 @@ sequelize.sync({ force }).then(async () => {
         CurrencyShop.upsert({ itemEmoji: ":ramen: ", name: "Japenese food", cost: 10, itemDescription: "\"You can never go wrong with chinese food! Oh wait.\"", category: "Food"}),
         CurrencyShop.upsert({ itemEmoji: "🍪", name: "1.5 chicken nuggets", cost: 5, itemDescription: "CHICKEN NUGGIES", category: "Food"}),
         CurrencyShop.upsert({ itemEmoji: ":coin:", name: "Premium Cookie", cost: 100, itemDescription: "What even is this?", category: "Food" }),
-        CurrencyShop.upsert({ itemEmoji: "🍹", name: "Coke E Cola", cost: 3, itemDescription: "Don't want a lawsuit after all ;)", category: "Food" }),
+        CurrencyShop.upsert({ itemEmoji: "<:coke:933696840023539743>", name: "Coke E Cola", cost: 3, itemDescription: "Don't want a lawsuit after all ;)", category: "Food" }),
         CurrencyShop.upsert({ itemEmoji: "🍝", name: "Father's spaghetti", cost: 243, itemDescription: "For when you don't have a mom to cook for you.", category: "Food"}),
         CurrencyShop.upsert({ itemEmoji: ":egg: :fish:", name: "Fish eggs", cost: 100, itemDescription: "YUM!", category: "Food"}),
 
