@@ -52,10 +52,19 @@ module.exports = {
         const seconds = Number.parseInt(match[4]) || 0;
 
         setTimeout(() => {
-            message.reply(`Reminder: ${reminderMessage}`);
+            message.reply({content: `Reminder: ${reminderMessage}`, allowedMentions: {repliedUser: true}});
         }, seconds * 1000 + minutes * 60 * 1000 + hours * 60 * 60 * 1000 + days * 24 * 60 * 60 * 1000);
 
-        message.channel.send(`Set reminder in ${days} day${plural(days)}, ${hours} hour${plural(hours)}, ${minutes} minute${plural(minutes)}, ${seconds} second${plural(seconds)}.`);
-
+        let string = "";
+        if (days > 0)
+            string += `${days} day${plural(days)}`;
+        if (hours > 0)
+            string += `${hours} hours${plural(hours)}`;
+        if (minutes > 0)
+            string += `${minutes} minute${plural(minutes)}`;
+        if (seconds > 0)
+            string += `${seconds} second${plural(seconds)}`;
+            
+        message.channel.send(`Set reminder in ${string}.`);
     }
 };
