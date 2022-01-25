@@ -107,7 +107,7 @@ client.login(config.bot_token)
 client.on("guildCreate", addNewGuildServerConfigs);
 
 
-// start the background tasks once
+// start the background tasks once, but not two times becuase that would be a bit silly. 
 if (!testing) {
     client.backgroundTasks.forEach(backgroundTask => {
         backgroundTask.execute(client);
