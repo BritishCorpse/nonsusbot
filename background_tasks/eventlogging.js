@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const randomColor = Math.floor(Math.random()*16777215).toString(16);
+const randomColor = Math.floor(Math.random() * 16777215).toString(16);
 
 module.exports = {
     name: "eventlogging",
@@ -9,11 +9,10 @@ module.exports = {
 
             if (logChannel === undefined) return;
 
-            const creator = client.users.cache.get(guildEvent.creatorId);
-            console.log(creator);
+            const creator = await client.users.fetch(guildEvent.creatorId);
 
             const embed = new MessageEmbed()
-                .setAuthor({name: `${await creator.username} created an event.`, iconURL: creator.avatarURL()})
+                .setAuthor({name: `${creator.username} created an event.`, iconURL: creator.avatarURL()})
                 .addField("Event name:", `${guildEvent.name || "Event does not have a name."}`)
                 .addField("Channel type:", `${guildEvent.channel || "Not in a channel."}`)
                 .addField("Event description:", `${guildEvent.description || "No description provided."}`)
@@ -32,10 +31,10 @@ module.exports = {
 
             if (logChannel === undefined) return;
 
-            const creator = client.users.cache.get(guildEvent.creatorId);
+            const creator = await client.users.fetch(guildEvent.creatorId);
 
             const embed = new MessageEmbed()
-                .setAuthor({name: `${await creator.username} deleted an event.`, iconURL: creator.avatarURL()})
+                .setAuthor({name: `${creator.username} deleted an event.`, iconURL: creator.avatarURL()})
                 .addField("Event name:", `${guildEvent.name || "Event did not have a name."}`)
                 .addField("Channel type:", `${guildEvent.channel || "Was not in a channel."}`)
                 .addField("Event description:", `${guildEvent.description || "No description provided."}`)
