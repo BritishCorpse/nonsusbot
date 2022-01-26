@@ -1,6 +1,4 @@
 const { MessageEmbed } = require("discord.js");
-const randomColor = Math.floor(Math.random()*16777215).toString(16);
-
 
 module.exports = {
     name: "channellogging",
@@ -31,9 +29,9 @@ module.exports = {
                 .setAuthor({name: `${executor.tag} created a channel.`, iconURL: executor.avatarURL()})
                 .addField("Channel name:", `${channel.toString()}`)
                 .addField("Channel type:", `${channel.type}`)
-                .addField("Voice channel?", `${channel.isVoice()}`)
+                .addField("Voice channel:", `${channel.isVoice()}`)
                 .addField("Created at:", `${channel.createdAt}`)
-                .setColor(randomColor);
+                .setColor("GREEN");
 
             logChannel.send({embeds: [embed]});
         });
@@ -50,11 +48,11 @@ module.exports = {
             
             const embed = new MessageEmbed()
                 .setAuthor({name: `${executor.tag} deleted a channel.`, iconURL: executor.avatarURL()})
-                .addField("Channel name:", `${channel.toString()}`)
+                .addField("Channel name:", `#${channel.name}`)
                 .addField("Channel type:", `${channel.type}`)
-                .addField("Voice channel?", `${channel.isVoice()}`)
+                .addField("Voice channel:", `${channel.isVoice()}`)
                 .addField("Created at:", `${channel.createdAt}`)
-                .setColor(randomColor);
+                .setColor("RED");
 
             logChannel.send({embeds: [embed]});
         });

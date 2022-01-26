@@ -1,5 +1,4 @@
 const { MessageEmbed } = require("discord.js");
-const randomColor = Math.floor(Math.random()*16777215).toString(16);
 
 module.exports = {
     name: "messagelogging",
@@ -13,9 +12,9 @@ module.exports = {
 
             const embed = new MessageEmbed()
                 .setAuthor(`${oldMessage.author.tag} edited a message.`, oldMessage.author.avatarURL())
-                .setColor(randomColor)
+                .setColor("BLUE")
                 .setDescription(
-                    `Original message content: ${oldMessage.content || "This message does not have any content, is an integrated message or embed."}\nEdited message content: ${newMessage.content || "This message does not have any content, is a integrated message or embed."}`
+                    `Original message: ${oldMessage.content || "This message does not have any content, is an integrated message or embed."}\n Updated message: ${newMessage.content || "This message does not have any content, is an integrated message or embed."}`
                 );
             
             logChannel.send({ embeds: [embed] });
@@ -23,15 +22,15 @@ module.exports = {
 
 
         // Deleted message logging
-        client.on("messageDelete", message => {
+        client.on("messageDelete", message => { 
             const logChannel = client.channels.cache.get(client.serverConfig.get(message.guild.id).log_channel_id);
 
             if (logChannel === undefined) return;
 
             const embed = new MessageEmbed()
                 .setAuthor(`${message.author.tag} deleted a message.`, message.author.avatarURL())
-                .setColor(randomColor)
-                .setDescription(message.content || "This message does not have any content, is an integrated message or embed.");
+                .setColor("RED")
+                .setDescription(`Message content: ${message.content || "This message does not have any content, is an integrated message or embed."}`);
 
             logChannel.send({
                 embeds: [embed]

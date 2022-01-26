@@ -1,5 +1,4 @@
 const { MessageEmbed } = require("discord.js");
-const randomColor = Math.floor(Math.random() * 16777215).toString(16);
 
 module.exports = {
     name: "eventlogging",
@@ -11,6 +10,13 @@ module.exports = {
 
             const creator = await client.users.fetch(guildEvent.creatorId);
 
+            const eventDurationOriginal = guildEvent.scheduledEndTimestamp - guildEvent.scheduledStartTimestamp;
+            let eventDuration = eventDurationOriginal / 3600000;
+
+            if (eventDuration < 0) {
+                eventDuration = "Event does not have a defined length.";
+            }
+
             const embed = new MessageEmbed()
                 .setAuthor({name: `${creator.username} created an event.`, iconURL: creator.avatarURL()})
                 .addField("Event name:", `${guildEvent.name || "Event does not have a name."}`)
@@ -19,9 +25,9 @@ module.exports = {
                 .addField("Privacy level:", `${guildEvent.privacyLevel || "Privacy level non-existant."}`)
                 .addField("Event URL:", `${guildEvent.url ||"No url."}`)
                 .addField("Event status:", `${guildEvent.status || "No status found."}`)
-                .addField("Start and end times:", `${guildEvent.scheduledStartAt || "Event never started."} to ${guildEvent.scheduledEndAt || "Event never ended."}`)
-                .addField("Event duration in hours:", `${guildEvent.scheduledEndTimestamp - guildEvent.scheduledStartTimestamp / 3600000}`)
-                .setColor(randomColor);
+                .addField("Starts at:", `${guildEvent.scheduledStartAt || "Event never started."}`)
+                .addField("Event duration in hours:", `${eventDuration}`)
+                .setColor("GREEN");
 
             logChannel.send({embeds: [embed]});
         });
@@ -31,19 +37,29 @@ module.exports = {
 
             if (logChannel === undefined) return;
 
-            const creator = await client.users.fetch(guildEvent.creatorId);
+            const auditLog = await guildEvent.guild.fetchAuditLogs({
+                limit: 1,
+                type: "GUILD_SCHEDULED_EVENT_DELETE"
+            });
+
+            const deleteLog = auditLog.entries.first();
+            const { executor } = deleteLog; 
+
+            const eventDurationOriginal = guildEvent.scheduledEndTimestamp - guildEvent.scheduledStartTimestamp;
+            let eventDuration = eventDurationOriginal / 3600000;
+
+            if (eventDuration < 0) {
+                eventDuration = "Event does not have a defined length.";
+            }
 
             const embed = new MessageEmbed()
-                .setAuthor({name: `${creator.username} deleted an event.`, iconURL: creator.avatarURL()})
+                .setAuthor({name: `${executor.username} deleted an event.`, iconURL: executor.avatarURL()})
                 .addField("Event name:", `${guildEvent.name || "Event did not have a name."}`)
-                .addField("Channel type:", `${guildEvent.channel || "Was not in a channel."}`)
+                .addField("Channel:", `${guildEvent.channel || "Was not in a channel."}`)
                 .addField("Event description:", `${guildEvent.description || "No description provided."}`)
-                .addField("Privacy level:", `${guildEvent.privacyLevel || "Privacy level was non-existant."}`)
                 .addField("Event URL:", `${guildEvent.url ||"No url."}`)
-                .addField("Event status:", `${guildEvent.status || "No status found."}`)
-                .addField("Start and end times:", `${guildEvent.scheduledStartAt || "Event never started."} to ${guildEvent.scheduledEndAt || "Event never ended."}`)
-                .addField("Event duration in hours:", `${guildEvent.scheduledEndTimestamp - guildEvent.scheduledStartTimestamp / 3600000}`)
-                .setColor(randomColor);
+                .addField("Event duration in hours:", `${eventDuration}`)
+                .setColor("RED");
 
             logChannel.send({embeds: [embed]});
         });
