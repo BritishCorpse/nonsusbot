@@ -2,6 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const { Stocks } = require(`${__basedir}/db_objects`);
 const { paginateEmbeds } = require(`${__basedir}/functions`);
 
+
 module.exports = {
     name: "stocks",
     description: "Displays the stock market!",
@@ -10,7 +11,7 @@ module.exports = {
     ],
 
     async execute (message) {
-        const randomColor = Math.floor(Math.random()*16777215).toString(16);
+        const randomColor = Math.floor(Math.random() * 16777215).toString(16);
         
         const embeds = [];
 
@@ -31,11 +32,11 @@ module.exports = {
             }
             
             if (stock.currentPrice < 1) {
-                embed.addField(`${stock.id}. ${stock.name}`, "STOCK NOT AVAILABLE: Share price less than 1.");
+                embed.addField(`${stock.name}`, "STOCK NOT AVAILABLE: Share price less than 1.");
             }
 
             else {
-                embed.addField(`${stock.id}. ${stock.name}`, `Last price: ${stock.oldPrice}<:ripcoin:929759319296192543>, Current price: ${stock.currentPrice}<:ripcoin:929759319296192543>`);
+                embed.addField(`${stock.name}`, `Last price: ${stock.oldPrice}<:ripcoin:929759319296192543>, Current price: ${stock.currentPrice}<:ripcoin:929759319296192543>`);
             }
         }
 

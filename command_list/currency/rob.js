@@ -13,7 +13,8 @@ module.exports = {
         const time = d.getTime();
 
         if (!target || target.id === message.author.id) {
-            return message.reply("You robbed yourself! +0<:ripcoin:929759319296192543>");
+            message.reply("You robbed yourself! +0<:ripcoin:929759319296192543>");
+            return;
         }
 
         const userInDb = await Users.findOne({ where: { user_id: target.id } });

@@ -43,6 +43,49 @@ Users.prototype.addShare = async function(share) {
     return UserPortfolio.create({ user_id: this.user_id, share_id: share.id, amount: 1});
 };
 
+Users.prototype.addLevel = async function() {
+    const userInDb = await Users.findOne({
+        where: { user_id: this.user_id }
+    });
+
+    if (userInDb.level) {
+        console.log(userInDb.level);
+        userInDb.level += 1;
+        return userInDb.save();
+    }
+
+    userInDb.level = 1;
+    return userInDb.save();
+};
+
+Users.prototype.addExp = async function() {
+    const userInDb = await Users.findOne({
+        where: { user_id: this.user_id }
+    });
+
+    if (userInDb.exp) {
+        userInDb.exp += 1;
+        return userInDb.save();
+    }
+
+    userInDb.exp = 1;
+    return userInDb.save();
+};
+
+Users.prototype.setReqExp = async function() {
+    const userInDb = await Users.findOne({
+        where: { user_id: this.user_id }
+    });
+
+    if (userInDb.reqexp) {
+        userInDb.reqexp = userInDb.level * 1000;
+        return userInDb.save();
+    }
+
+    userInDb.reqexp = 1000;
+    return userInDb.save();
+};
+
 Users.prototype.getItems = function() {
     return UserItems.findAll({
         where: { user_id: this.user_id },

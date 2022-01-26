@@ -30,6 +30,18 @@ module.exports = (sequelize, DataTypes) => {
         lastRobbed: {
             type: DataTypes.STRING,
             allowNull: true,
+        },
+        level: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        },
+        exp: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        },
+        reqexp: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
         }
     }, {
         timestamps: false,

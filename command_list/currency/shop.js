@@ -17,7 +17,7 @@ module.exports = {
         const items = await CurrencyShop.findAll();
 
         function makeEmbed() {
-            return new MessageEmbed().setTitle("Shop!").setColor(randomColor);
+            return new MessageEmbed().setTitle("Shop!").setColor(randomColor).setDescription("Prices are affected by stocks.");
         }
 
         let embed;
