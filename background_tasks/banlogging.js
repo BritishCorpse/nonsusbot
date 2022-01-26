@@ -29,7 +29,7 @@ module.exports = {
 
             // Declare embeds existance. (Very useful comment :D)
             const embed = new MessageEmbed()
-                .setTitle(`User ${ban.user.username} was banned from ${ban.guild.name}`)
+                .setTitle(`User ${ban.user.username} was banned from ${ban.guild.name}.`)
                 .setColor(randomColor);
 
             if (ban.user.id === target.id) embed.setDescription(`Reason for ban: ${reason || "No reason provided"} \n Banned by ${executor}`);

@@ -13,7 +13,7 @@ module.exports = {
             if (logChannel === undefined) return;
 
             const embed = new MessageEmbed()
-                .setAuthor(`${message.author.username}`, message.author.avatarURL())
+                .setAuthor(`${message.author.username} deleted a message.`, message.author.avatarURL())
                 .setColor(randomColor)
                 .setDescription(message.content || "This message does not have any content, is a integrated message or embed.");
 

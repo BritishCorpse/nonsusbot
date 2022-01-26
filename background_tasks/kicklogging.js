@@ -25,7 +25,7 @@ module.exports = {
             if (!kickLog) return;
 
             const embed = new MessageEmbed()
-                .setTitle(`User ${guildMember.displayName} was kicked from ${guildMember.guild.name}`)
+                .setTitle(`User ${guildMember.displayName} was kicked from ${guildMember.guild.name}.`)
                 .setColor(randomColor);
 
             if (guildMember.user.id === target.id) embed.setDescription(`Reason for ban: ${reason || "No reason provided."} \n Banned by ${executor}`);

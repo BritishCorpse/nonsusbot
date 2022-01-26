@@ -8,9 +8,6 @@ module.exports = {
             where: { user_id: message.author.id }
         });
 
-        await userInDb.addLevel();
-
-        message.channel.send("level added!");
-        message.channel.send(`your level is now ${await userInDb.level}`);
+        await Users.update({exp: userInDb.reqexp}, {where: {user_id: message.author.id}});
     }
 };
