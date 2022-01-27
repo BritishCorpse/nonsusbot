@@ -12,6 +12,7 @@ const CurrencyShop = require("./models/CurrencyShop")(sequelize, Sequelize.DataT
 const UserItems = require("./models/UserItems")(sequelize, Sequelize.DataTypes);
 const Stocks = require("./models/Stocks")(sequelize, Sequelize.DataTypes);
 const UserPortfolio = require("./models/UserPortfolio")(sequelize, Sequelize.DataTypes);
+const Levels = require("./models/Levels")(sequelize, Sequelize.DataTypes);
 
 UserPortfolio.belongsTo(Stocks, { foreignKey: "share_id", as: "shares" });
 UserItems.belongsTo(CurrencyShop, { foreignKey: "item_id", as: "item" }); // foreignKey sets the key to be used from UserItems to look up in CurrencyShop
@@ -43,9 +44,9 @@ Users.prototype.addShare = async function(share) {
     return UserPortfolio.create({ user_id: this.user_id, share_id: share.id, amount: 1});
 };
 
-Users.prototype.addLevel = async function() {
-    const userInDb = await Users.findOne({
-        where: { user_id: this.user_id }
+Levels.prototype.addLevel = async function() {
+    const userInDb = await Levels.findOne({
+        where: { userId: this.userId, guildID: this.guildId }
     });
 
     if (userInDb.level) {
@@ -58,23 +59,9 @@ Users.prototype.addLevel = async function() {
     return userInDb.save();
 };
 
-Users.prototype.addExp = async function() {
-    const userInDb = await Users.findOne({
-        where: { user_id: this.user_id }
-    });
-
-    if (userInDb.exp) {
-        userInDb.exp += 1;
-        return userInDb.save();
-    }
-
-    userInDb.exp = 1;
-    return userInDb.save();
-};
-
-Users.prototype.setReqExp = async function() {
-    const userInDb = await Users.findOne({
-        where: { user_id: this.user_id }
+Levels.prototype.setReqExp = async function() {
+    const userInDb = await Levels.findOne({
+        where: { userId: this.userId, guildId: this.guildID }
     });
 
     if (userInDb.reqexp) {
@@ -93,4 +80,4 @@ Users.prototype.getItems = function() {
     });
 };
 
-module.exports = { Users, CurrencyShop, UserItems, Stocks, UserPortfolio };
+module.exports = { Users, CurrencyShop, UserItems, Stocks, UserPortfolio, Levels };

@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const { Users } = require("../../db_objects");
+const { Levels } = require("../../db_objects");
 
 module.exports = {
     name: "level",
@@ -12,13 +12,14 @@ module.exports = {
         
         if (user.bot) {return message.channel.send("Bots can't be ranked!");}
 
-        const userInDb = await Users.findOne({
-            where: {user_id: user.id}
+        const userInDb = await Levels.findOne({
+            where: {userId: user.id, guildId: message.channel.guild.id}
         });
 
         const embed = new MessageEmbed()
-            .setAuthor({ name: `${user.username} is level ${userInDb.level || "0"}!`, iconURL: user.avatarURL() })
-            .setDescription(`${userInDb.exp || "0"}/${userInDb.reqexp || "1000"} EXP`)
+            .setAuthor({ name: `${user.username} is level ${userInDb.level || "0"}!`})
+            .setDescription(`${userInDb.exp || "0"}/${userInDb.reqExp || "1000"} EXP`)
+            .setImage(user.avatarURL())
             .setColor(randomColor);
 
         message.channel.send({embeds: [embed]});
