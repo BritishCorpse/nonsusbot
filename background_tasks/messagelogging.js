@@ -6,6 +6,8 @@ module.exports = {
 
         // Message update logging
         client.on("messageUpdate", (oldMessage, newMessage) => {
+            if (oldMessage.author.bot) return;
+
             const logChannel = client.channels.cache.get(client.serverConfig.get(oldMessage.guild.id).log_channel_id);
 
             if (logChannel === undefined) return;
