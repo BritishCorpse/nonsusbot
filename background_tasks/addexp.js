@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 
-const { Users } = require(`${__basedir}/db_objects`);
+const { Levels } = require(`${__basedir}/db_objects`);
 const developmentConfig = require(`${__basedir}/development_config.json`);
 
 module.exports = {
@@ -32,32 +32,36 @@ module.exports = {
             if (message.author.bot && testing && message.author.id !== developmentConfig.testing_bot_discord_user_id) return;
 
             //find user, give user 1 exp, check reqexp, if exp >= reqexp, level ++;
-            const userInDb = await Users.findOne({
-                where: { user_id: message.author.id }
+            const userInDb = await Levels.findOne({
+                where: { userId: message.author.id, guildId: message.channel.guild.id }
             });
-
-            await userInDb.addExp();
-
-            if (userInDb.level === null) {
-                userInDb.level = 1;
+            if(userInDb === null) {
+                return Levels.create({ userId: message.author.id, guildId: message.channel.guild.id, level: 1, exp: 1, reqExp: 1000 });
             }
 
-            if (userInDb.exp >= userInDb.reqexp) {
-                await userInDb.addLevel();
+            if (!userInDb.exp) {
+                userInDb.exp = 0;
+            }
 
-                await userInDb.setReqExp();
+            userInDb.exp += 1;
+            userInDb.save();
 
-                await Users.update({exp: 1}, {where: {user_id: message.author.id}}).then(async () => {
+            if (userInDb.exp >= userInDb.reqExp) {
+                await Levels.update({level: userInDb.level + 1}, {where: {userId: message.author.id, guildId: message.channel.guild.id}});
+
+                await Levels.update({reqExp: userInDb.level * 1000}, {where: {userId: message.author.id, guildId: message.channel.guild.id}});
+
+                await Levels.update({exp: 1}, {where: {userId: message.author.id, guildId: message.channel.guild.id}}).then(async () => {
 
                     if (!levelChannel) {return;}
 
-                    const userInDbTwo = await Users.findOne({
-                        where: { user_id: message.author.id }
+                    const userInDbTwo = await Levels.findOne({
+                        where: { userId: message.author.id, guildId: message.channel.guild.id }
                     });
 
                     const embed = new MessageEmbed()
                         .setTitle(`${message.author.username} has reached level ${userInDbTwo.level}!`)
-                        .setDescription(`${userInDbTwo.reqexp} EXP until the next level.`)
+                        .setDescription(`${userInDbTwo.reqExp} EXP until the next level.`)
                         .setFooter({text: `For leveling up you earned ${userInDb.level * 1000} RIP coin!`})
                         .setImage(images[Math.floor(Math.random() * images.length)])
                         .setColor(randomColor);

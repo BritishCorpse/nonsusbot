@@ -5,5 +5,7 @@
   "verify_channel_id": "",
   "verify_role_id": "",
   "welcome_channel_id": "",
-  "levelup_channel_id": ""
+  "levelup_channel_id": "",
+  "suggestion_channel_id": "",
+  "send_suggestion_channel_id": ""
 }

@@ -30,7 +30,7 @@ module.exports = {
         { tag: "list", checks: {is: "list"} },
         { tag: "set", checks: {is: "set"}, 
             next: [
-                { tag: "option", checks: {isin: ["m_channel_id", "verify_channel_id", "log_channel_id", "levelup_channel_id", "welcome_channel_id"]},
+                { tag: "option", checks: {isin: ["m_channel_id", "verify_channel_id", "log_channel_id", "levelup_channel_id", "welcome_channel_id", "suggestion_channel_id", "send_suggestion_channel_id"]},
                     next: [
                         { tag: "channel-id", checks: {isinteger: null} }
                     ]
