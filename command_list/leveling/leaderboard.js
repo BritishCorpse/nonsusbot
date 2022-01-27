@@ -1,9 +1,9 @@
 const { MessageEmbed } = require("discord.js");
-const { Users } = require(`${__basedir}/db_objects`);
+const { Levels, Users } = require(`${__basedir}/db_objects`);
 
 module.exports = {
     name: ["leaderboard", "lb"],
-    description: "Displays the richest users on the leaderboard.",
+    description: "Shows the users with the highest levels.",
 
     usage: [
     ],
@@ -15,22 +15,25 @@ module.exports = {
             return Users.findOne({ where: {user_id: userId} });
         }
 
-        const embed = new MessageEmbed()
-            .setTitle("Top 10 Richest People Anywhere")
-            .setColor(randomColor);
+        const levels = await Levels.findAll({ where: {guildId: message.guild.id} });
+        levels.sort((a, b) => a.level === b.level ? b.exp - a.exp : b.level - a.level);
 
-        const topTen = message.client.currency.sort((a, b) => b.balance - a.balance)
-            .filter(user => message.client.users.cache.has(user.user_id))
-            .first(10);
+        const topTen = levels.slice(0, 10);
+
+        const embed = new MessageEmbed()
+            .setTitle("Top 10 Users On This Server")
+            .setColor(randomColor);
 
         if (topTen.length === 0) {
             embed.setDescription("According to my statisticas, there is no one on the leaderboard.");
         } else {
             // Sequential asynchronous loop from https://advancedweb.hu/how-to-use-async-functions-with-array-foreach-in-javascript/
-            await topTen.reduce(async (memo, user, position) => {
+            await topTen.reduce(async (memo, userLevel, position) => {
                 await memo; // Waits for previous to end.
-                const userInDb = await defineUser(message.client.users.cache.get(user.user_id).id);
-                embed.addField(`${position + 1}. ${userInDb.badge || ""}${message.client.users.cache.get(user.user_id).tag}`, `${user.balance}<:ripcoin:929759319296192543>`);
+                const userInDb = await defineUser(userLevel.userId);
+                const userInDiscord = await message.client.users.fetch(userLevel.userId);
+                console.log(userInDiscord);
+                embed.addField(`${position + 1}. ${userInDb.badge || ""}${userInDiscord.tag}`, `Level ${userLevel.level}, ${userLevel.exp}/${userLevel.reqExp} XP!`);
             }, undefined);
         }
 
