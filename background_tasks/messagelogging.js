@@ -10,7 +10,7 @@ module.exports = {
 
             const logChannel = client.channels.cache.get(client.serverConfig.get(oldMessage.guild.id).log_channel_id);
 
-            if (logChannel === undefined) return;
+            if (logChannel === undefined || !newMessage.content) return;
 
             const embed = new MessageEmbed()
                 .setAuthor({name: `${oldMessage.author.tag} edited a message.`, iconURL: oldMessage.author.avatarURL()})
@@ -26,7 +26,7 @@ module.exports = {
         client.on("messageDelete", async message => { 
             const logChannel = client.channels.cache.get(client.serverConfig.get(message.guild.id).log_channel_id);
 
-            if (logChannel === undefined) return;
+            if (logChannel === undefined || !message.content) return;
 
             const auditLog = await message.channel.guild.fetchAuditLogs({
                 limit: 1,
