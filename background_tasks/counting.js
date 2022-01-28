@@ -1,6 +1,7 @@
 const developmentConfig = require(`${__basedir}/development_config.json`);
 
-const { Counting } = require(`${__basedir}/db_objects`);
+const { Counting, Users } = require(`${__basedir}/db_objects`);
+
 
 module.exports = {
     name: "counting",
@@ -59,11 +60,13 @@ module.exports = {
                 return;
             }
 
+            // If number is correct.
             if (parseInt(newNumber) === lastNumber + 1) {
                 message.react("👍");
                 dbInfo.number += 1;
                 dbInfo.save();
 
+            // If number is anything except the correct number.
             } else {
                 message.channel.send(`${message.author} ruined counting at ${lastNumber + 1}!\nCounting starts at 1.`);
                 dbInfo.number = 0;
@@ -77,6 +80,25 @@ module.exports = {
             // Write down the person who got the number and store it in the database.
             dbInfo.lastCounterId = message.author.id;
             dbInfo.save();
+
+            // Add +1 amountCounted and amountCorrect to the user who got it correct.
+            const userInDb = await Users.findOne({
+                where: { user_id: message.author.id }
+            });
+            
+            if (!userInDb) return;
+
+            if (!userInDb.amountCounted) {
+                userInDb.amountCounted = 1;
+                userInDb.countedCorrect = 1;
+                userInDb.save();
+
+                return;
+            }
+
+            userInDb.amountCounted += 1;
+            userInDb.amountCorrect = 1;
+            userInDb.save();
         });
     }
 };

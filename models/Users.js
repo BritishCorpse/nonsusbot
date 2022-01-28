@@ -31,6 +31,14 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: true,
         },
+        amountCounted: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        },
+        countedCorrect: {
+            type: DataTypes.INTEGER,
+            allowNull: true,  
+        },
     }, {
         timestamps: false,
     });
