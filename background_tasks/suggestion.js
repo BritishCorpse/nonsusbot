@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "suggestion", 
     execute(client) {
-        client.on("message", async message => {
+        client.on("messageCreate", async message => {
             const randomColor = Math.floor(Math.random() * 16777215).toString(16);
 
             let suggestionChannel;
