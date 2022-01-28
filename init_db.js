@@ -13,6 +13,7 @@ require("./models/UserItems")(sequelize, Sequelize.DataTypes);
 require("./models/Stocks")(sequelize, Sequelize.DataTypes);
 require("./models/UserPortfolio")(sequelize, Sequelize.DataTypes);
 require("./models/Levels")(sequelize, Sequelize.DataTypes);
+require("./models/Counting")(sequelize, Sequelize.DataTypes);
 
 const force = process.argv.includes("--force") || process.argv.includes("-f");
 
