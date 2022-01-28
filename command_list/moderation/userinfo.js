@@ -17,15 +17,15 @@ module.exports = {
 
         const userInDb = await Users.findOne({ where: { user_id: user.id}});
 
-        const target = message.guild.members.cache.get(user.id);
-        if(!target) {
+        const target = await message.guild.members.fetch(user.id);
+        if (!target) {
             message.channel.send("You did not specify a user.");
             return;
         }
 
         else {
             const embed = new MessageEmbed()
-                .setTitle(`Userinfo about ${target}`)
+                .setTitle(`Userinfo about ${target.user.tag}`)
                 .setColor(randomColor)
                 .addField(`${user.username}'s badge is:`, `${userInDb.badge || "User does not have a badge."}`)
                 .addField(`${user.username}'s balance is:`, `${userInDb.balance}<:ripcoin:929440348831354980>`)

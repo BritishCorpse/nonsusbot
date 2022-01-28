@@ -4,8 +4,10 @@ module.exports = {
     name: "eventlogging",
     async execute(client) {
         client.on("guildScheduledEventCreate", async guildEvent => {
-            const logChannel = client.channels.cache.get(client.serverConfig.get(guildEvent.guild.id).log_channel_id);
-
+            let logChannel;
+            if (client.serverConfig.get(guildEvent.guild.id).log_channel_id) {
+                logChannel = await client.channels.fetch(client.serverConfig.get(guildEvent.guild.id).log_channel_id);
+            }
             if (logChannel === undefined) return;
 
             const creator = await client.users.fetch(guildEvent.creatorId);
@@ -33,8 +35,10 @@ module.exports = {
         });
 
         client.on("guildScheduledEventDelete", async guildEvent => {
-            const logChannel = client.channels.cache.get(client.serverConfig.get(guildEvent.guild.id).log_channel_id);
-
+            let logChannel;
+            if (client.serverConfig.get(guildEvent.guild.id).log_channel_id) {
+                logChannel = await client.channels.fetch(client.serverConfig.get(guildEvent.guild.id).log_channel_id);
+            }
             if (logChannel === undefined) return;
 
             const auditLog = await guildEvent.guild.fetchAuditLogs({

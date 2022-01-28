@@ -5,11 +5,13 @@ module.exports = {
     execute(client) {
 
         // Message update logging
-        client.on("messageUpdate", (oldMessage, newMessage) => {
+        client.on("messageUpdate", async (oldMessage, newMessage) => {
             if (oldMessage.author.bot) return;
 
-            const logChannel = client.channels.cache.get(client.serverConfig.get(oldMessage.guild.id).log_channel_id);
-
+            let logChannel;
+            if (client.serverConfig.get(oldMessage.guild.id).log_channel_id) {
+                logChannel = await client.channels.fetch(client.serverConfig.get(oldMessage.guild.id).log_channel_id);
+            }
             if (logChannel === undefined || !newMessage.content) return;
 
             const embed = new MessageEmbed()
@@ -24,8 +26,10 @@ module.exports = {
 
         // Deleted message logging
         client.on("messageDelete", async message => { 
-            const logChannel = client.channels.cache.get(client.serverConfig.get(message.guild.id).log_channel_id);
-
+            let logChannel;
+            if (client.serverConfig.get(message.guild.id).log_channel_id) {
+                logChannel = await client.channels.fetch(client.serverConfig.get(message.guild.id).log_channel_id);
+            }
             if (logChannel === undefined || !message.content) return;
 
             const auditLog = await message.channel.guild.fetchAuditLogs({

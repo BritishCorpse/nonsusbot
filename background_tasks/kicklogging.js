@@ -17,9 +17,11 @@ module.exports = {
             const { target, executor, reason } = kickLog; 
 
             // Define log channel, if it doesnt exist return, else send the ban log.
-            const logChannel = client.channels.cache.get(client.serverConfig.get(guildMember.guild.id).log_channel_id);
-
-            if (logChannel === undefined) return console.log("pembis");
+            let logChannel;
+            if (client.serverConfig.get(guildMember.guild.id).log_channel_id) {
+                logChannel = await client.channels.fetch(client.serverConfig.get(guildMember.guild.id).log_channel_id);
+            }
+            if (logChannel === undefined) return;
 
             //Make sure that the audit log entry exists.
             if (!kickLog) return;
