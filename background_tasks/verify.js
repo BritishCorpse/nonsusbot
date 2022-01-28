@@ -1,14 +1,16 @@
 module.exports = {
     name: "verify",
     execute (client) {
-        function verifyUser(message) {
+        async function verifyUser(message) {
             // disable DMs
             if (message.guild === null) return;
 
             if (message.channel.id === client.serverConfig.get(message.guild.id).verify_channel_id && message.author.id !== message.client.user.id) {
                 if (message.content.toLowerCase() == "yes") {
-                    const verifiedRoleID = client.serverConfig.get(message.guild.id).verify_role_id;
-                    const verifiedRole = message.guild.roles.cache.find(r => r.id === verifiedRoleID);
+                    let verifiedRole;
+                    if (client.serverConfig.get(message.guild.id).verify_role_id) {
+                        verifiedRole = await message.guild.roles.fetch(client.serverConfig.get(message.guild.id).verify_role_id);
+                    }
                     if (verifiedRole !== undefined) {
                         message.member.roles.add(verifiedRole);
                     }

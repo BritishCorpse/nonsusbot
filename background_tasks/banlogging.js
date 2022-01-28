@@ -20,12 +20,17 @@ module.exports = {
             const { target, executor, reason } = banLog; 
 
             // Define log channel, if it doesnt exist return, else send the ban log.
-            const logChannel = client.channels.cache.get(client.serverConfig.get(ban.guild.id).log_channel_id);
-
-            if (logChannel === undefined) return;
+            let logChannel;
+            if (client.serverConfig.get(ban.guild.id).log_channel_id) {
+                logChannel = await client.channels.fetch(client.serverConfig.get(ban.guild.id).log_channel_id);
+            }
+            if (!logChannel) return;
 
             //Make sure that the audit log entry exists.
-            if (!banLog) return logChannel.send(`${ban.user} was banned from ${ban.guild} but the reason and executor are not determined due to the audit search returning inconclusive.`);
+            if (!banLog) {
+                logChannel.send(`${ban.user} was banned from ${ban.guild} but the reason and executor are not determined due to the audit search returning inconclusive.`);
+                return;
+            }
 
             // Declare embeds existance. (Very useful comment :D)
             const embed = new MessageEmbed()

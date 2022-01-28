@@ -3,20 +3,26 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "suggestion", 
     execute(client) {
-        client.on("message", message => {
+        client.on("message", async message => {
             const randomColor = Math.floor(Math.random() * 16777215).toString(16);
 
-            const suggestionChannel = client.channels.cache.get(client.serverConfig.get(message.guild.id).suggestion_channel_id);
-            const sendSuggestionChannel = client.channels.cache.get(client.serverConfig.get(message.guild.id).send_suggestion_channel_id);
+            let suggestionChannel;
+            let sendSuggestionChannel;
+            if (client.serverConfig.get(message.guild.id).suggestion_channel_id) {
+                suggestionChannel = await client.channels.fetch(client.serverConfig.get(message.guild.id).suggestion_channel_id);
+            }
+            if (client.serverConfig.get(message.guild.id).send_suggestion_channel_id) {
+                sendSuggestionChannel = await client.channels.fetch(client.serverConfig.get(message.guild.id).send_suggestion_channel_id);
+            }
 
             // Check if both the suggestion channels exist.
-            if (!suggestionChannel || !sendSuggestionChannel) {return;}
+            if (!suggestionChannel || !sendSuggestionChannel) return;
 
             // Prevent embeds or integrated messages being sent.
             if (!message.content) {return;}
             
             // Check if the message is from sendSuggestionChannel
-            if (message.channel.id !== sendSuggestionChannel.id) {return;}
+            if (message.channel.id !== sendSuggestionChannel.id) return;
 
             // Delete message in the sendSuggestionChannel
             message.delete();

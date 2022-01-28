@@ -17,7 +17,7 @@ module.exports = {
 
         const userInDb = await Users.findOne({ where: { user_id: user.id}});
 
-        const target = message.guild.members.cache.get(user.id);
+        const target = await message.guild.members.fetch(user.id);
         if(!target) {
             message.channel.send("You did not specify a user.");
             return;

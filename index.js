@@ -90,14 +90,16 @@ for (const guildId in serverConfigJSON) {
 }
 
 
-function addNewGuildServerConfigs() {
+async function addNewGuildServerConfigs() {
     // add new guilds to the server_config.json file
-    client.guilds.cache.each(guild => {
+    const guilds = await client.guilds.fetch();
+    guilds.each(guild => {
         if (client.serverConfig.get(guild.id) === undefined) {
             // JSON.parse JSON.stringify makes a deep copy, which is needed to fix a bug where editing one config edits multiple configs because they are the same object
             client.serverConfig.set(guild.id, JSON.parse(JSON.stringify(defaultServerConfig))); 
         }
     });
+    // save it to the server_config.json file
     saveServerConfig(client.serverConfig);
 }
 

@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "userjoin",
     execute(client) {
-        client.on("guildMemberAdd", (guildMember) => {
+        client.on("guildMemberAdd", async (guildMember) => {
             const randomColor = Math.floor(Math.random()*16777215).toString(16);
 
             const funnyReplies = [
@@ -30,9 +30,11 @@ module.exports = {
                 "https://art.ngfiles.com/images/1949000/1949143_aleha84_graveyard-night.gif?f1626184451",
             ];
 
-            const channel = client.channels.cache.get(client.serverConfig.get(guildMember.guild.id).welcome_channel_id);
-
-            if (channel === null) return;
+            let channel;
+            if (client.serverConfig.get(guildMember.guild.id).welcome_channel_id) {
+                channel = await client.channels.fetch(client.serverConfig.get(guildMember.guild.id).welcome_channel_id);
+            }
+            if (channel === undefined) return;
 
             const embed = new MessageEmbed()
                 .setDescription(`Welcome <@!${guildMember.id}> to ${guildMember.guild.name}. ${funnyReplies[Math.floor(Math.random() * funnyReplies.length)]}`)

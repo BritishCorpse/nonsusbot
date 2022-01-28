@@ -5,7 +5,7 @@ module.exports = {
     async execute(client) {
         // Function for getting audit logs cause it saves time to make it a function or somth idk.
         async function fetchAudit(type, guild) {
-            const auditGuild = client.guilds.cache.get(guild);
+            const auditGuild = await client.guilds.fetch(guild);
 
             const auditLog = await auditGuild.fetchAuditLogs({
                 limit: 1,
@@ -17,7 +17,10 @@ module.exports = {
 
         // Channel creation logs.
         client.on("channelCreate", async channel => {
-            const logChannel = client.channels.cache.get(client.serverConfig.get(channel.guild.id).log_channel_id);
+            let logChannel;
+            if (client.serverConfig.get(channel.guild.id).log_channel_id) {
+                logChannel = await client.channels.fetch(client.serverConfig.get(channel.guild.id).log_channel_id);
+            }
             if (logChannel === undefined) return;
 
             const auditLog = await fetchAudit("CHANNEL_CREATE", channel.guild.id);
@@ -38,7 +41,10 @@ module.exports = {
 
         // Channel deletion logs.
         client.on("channelDelete", async channel => {
-            const logChannel = client.channels.cache.get(client.serverConfig.get(channel.guild.id).log_channel_id);
+            let logChannel;
+            if (client.serverConfig.get(channel.guild.id).log_channel_id) {
+                logChannel = await client.channels.fetch(client.serverConfig.get(channel.guild.id).log_channel_id);
+            }
             if (logChannel === undefined) return;
 
             const auditLog = await fetchAudit("CHANNEL_DELETE", channel.guild.id);
