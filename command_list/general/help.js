@@ -8,6 +8,7 @@ const {
     paginateEmbeds,
     formatBacktick,
 } = require(`${__basedir}/functions`);
+const developmentConfig = require(`${__basedir}/development_config.json`);
 
 
 function formatCategoryName(category) {
@@ -67,15 +68,30 @@ module.exports = {
             categories[category].push(command);
         });
 
+        function commandShouldNotBeShown(commandObject) {
+            // Only show developer commands to developers, or in the development servers
+            return commandObject.developer === true
+                   && !(developmentConfig.developer_discord_user_ids.includes(message.author.id)
+                        || developmentConfig.development_discord_server_ids.includes(message.guild.id));
+        }
+
         function createEmbedFromCategory(category) {
             let embedDescription = "";
             for (const command of categories[formatCategoryName(category)]) {
+                if (commandShouldNotBeShown(command)) {
+                    continue;
+                }
+
                 if (typeof command.name === "string") {
                     embedDescription += `${formatBacktick(prefix + command.name)}: `;
                 } else { // if it has multiple names (aliases)
                     embedDescription += `${command.name.map(n => formatBacktick(prefix + n)).join(", ")}: `;
                 }
                 embedDescription += command.description + "\n";
+            }
+
+            if (embedDescription.length === 0) {
+                embedDescription = "None of the commands in this category can be shown to you!";
             }
 
             return new MessageEmbed()
@@ -117,6 +133,11 @@ module.exports = {
                 const commandName = args[0].replace(/^_/, "");
 
                 const command = getCommandObjectByName(message.client.commands, commandName);
+
+                if (commandShouldNotBeShown(command)) {
+                    message.channel.send("This command cannot be shown to you!");
+                    return;
+                }
                 
                 if (command === undefined) {
                     const topCommands = getSimilarities(commandName, getAllCommandNames(message.client.commands))
