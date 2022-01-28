@@ -1,4 +1,21 @@
 {
+  "name": "nonsusbot",
+  "version": "1.2.4",
+  "main": "index.js",
+  "scripts": {
+    "start": "mkdir logs; node init_db.js && pm2 start ecosystem.config.js",
+    "log": "echo 'Streaming logs to http://127.0.0.1:9001' && frontail logs/*",
+    "status": "pm2 status discord-bot",
+    "stop": "pm2 stop index.js",
+    "test": "node init_db.js && jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "A general purpose discord bot.",
+  "private": "true",
+  "engines": {
+    "node": ">=16.x >=17.x"
+  },
   "dependencies": {
     "@mapbox/node-pre-gyp": "github:mapbox/node-pre-gyp",
     "discord.js": "^13.5.0",
@@ -19,21 +36,8 @@
     "jest": "^27.4.5",
     "jest-extended": "^1.2.0"
   },
-  "name": "nonsusbot",
-  "version": "1.2.4",
-  "main": "index.js",
-  "scripts": {
-    "start": "mkdir logs; node init_db.js && pm2 start ecosystem.config.js",
-    "log": "echo 'Streaming logs to http://127.0.0.1:9001' && frontail logs/*",
-    "status": "pm2 status discord-bot",
-    "stop": "pm2 stop index.js",
-    "test": "node init_db.js && jest"
-  },
-  "author": "",
-  "license": "ISC",
-  "description": "A general purpose discord bot.",
-  "private": "true",
-  "engines": {
-    "node": ">=16.x >=17.x"
+  "optionalDependencies": {
+    "bufferutil": "^4.0.6",
+    "utf-8-validate": "^5.0.8"
   }
 }
