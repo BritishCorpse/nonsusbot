@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: true,
         },
+        guildCounted: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        },
     }, {
         timestamps: false,
     });

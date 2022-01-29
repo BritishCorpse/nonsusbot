@@ -64,6 +64,7 @@ module.exports = {
             if (parseInt(newNumber) === lastNumber + 1) {
                 message.react("👍");
                 dbInfo.number += 1;
+                dbInfo.guildCounted += 1;
                 dbInfo.save();
 
             // If number is anything except the correct number.
