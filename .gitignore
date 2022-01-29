@@ -8,6 +8,9 @@ gh-md-toc # For making README.md table of contents (https://github.com/ekalinin/
 # Files created by installation
 node_modules
 
+# Token
+config.json
+
 # Files created while running bot
 *.sqlite
 server_config.json
