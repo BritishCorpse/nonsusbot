@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const { Users } = require("../../models/Users");
+const { Users } = require(`${__basedir}/models/Users`);
 
 module.exports = {
     name: ["countingprofile", "cprofile", "countinginfo", "cinfo"],
