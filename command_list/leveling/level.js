@@ -17,7 +17,7 @@ module.exports = {
 
         const userInDb = await Levels.findOne({
             where: {userId: user.id, guildId: message.guild.id}
-        });
+        }) || {}; // this makes it an empty object if it is null
 
         const embed = new MessageEmbed()
             .setAuthor({ name: `${user.username} is level ${userInDb.level || "0"}!`})
