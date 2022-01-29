@@ -10,6 +10,7 @@ node_modules
 
 # Token
 config.json
+development_config.json
 
 # Files created while running bot
 *.sqlite
