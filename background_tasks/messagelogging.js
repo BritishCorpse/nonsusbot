@@ -12,8 +12,12 @@ module.exports = {
             if (client.serverConfig.get(oldMessage.guild.id).log_channel_id) {
                 logChannel = await client.channels.fetch(client.serverConfig.get(oldMessage.guild.id).log_channel_id);
             }
+
             if (logChannel === undefined || !newMessage.content) return;
 
+            if (Object.values(client.serverConfig.get(oldMessage.guild.id)).includes(oldMessage.channel.id)) {
+                return;
+            }
             const embed = new MessageEmbed()
                 .setAuthor({name: `${oldMessage.author.tag} edited a message.`, iconURL: oldMessage.author.avatarURL()})
                 .setColor("BLUE")
@@ -39,6 +43,10 @@ module.exports = {
 
             const deleteLog = auditLog.entries.first();
             const { executor } = deleteLog; 
+
+            if (Object.values(client.serverConfig.get(message.guild.id)).includes(message.channel.id)) {
+                return;
+            }
 
             const embed = new MessageEmbed()
                 .setAuthor({name: `${executor.username} deleted a message.`, iconURL: executor.avatarURL()})
