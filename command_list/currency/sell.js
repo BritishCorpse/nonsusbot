@@ -29,6 +29,7 @@ module.exports = {
             where: { user_id: message.author.id, item_id: item.id}
         });
         
+        
         // Check if the item is in the inventory.
         if (!itemInDb) {
             message.channel.send("You do not own this item!");
@@ -41,9 +42,11 @@ module.exports = {
             return;
         }
 
+
         // Remove 1 item from the user.
         itemInDb.amount -= 1;
         itemInDb.save();
+
 
         // Add the money of the items cost to the user.
         message.client.currency.add(message.author.id, item.cost);
