@@ -7,7 +7,6 @@ module.exports = {
     description: "See how many numbers the guild has counted!",
     usage: [],
     async execute(message) {
-
         // Find the prefix in the server config.
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 

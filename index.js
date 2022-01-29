@@ -272,7 +272,53 @@ client.on("messageCreate", async message => {
     }
     
     // If all the checks passed, do the command
-    try {
+    try {        
+        // Here it does math, and there is a 1% the if statement is true, if it's true, send the embed and then give the user their hard earned money!
+        if (Math.random() < 0.01) {
+            // Make a fancy embed to show to the user.
+            const embed = new Discord.MessageEmbed()
+                .setTitle("You got lucky!")
+                .setDescription("+1000<:ripcoin:929759319296192543>")
+                .setColor("GREEN");
+
+            message.reply({ embeds: [embed]}); 
+            message.client.currency.add(message.author.id, 1000);
+        }
+
+        if (Math.random() < 0.0001) {
+            const moneyAmount = 3000;
+            const decidingNumber = Math.floor(Math.random() * 2);
+
+            const mathNumberOne = Math.floor(Math.random() * 100);
+            const mathNumberTwo = Math.floor(Math.random() * 100);
+
+            const mathType = "+";
+
+            const answer = mathNumberOne + (mathNumberTwo * (decidingNumber === 0 ? 1 : -1));
+
+            message.reply(`A random event has Happened!\n\nMath: What is ${mathNumberOne} ${mathType} ${mathNumberTwo}? If you answer correctly, you will get ${moneyAmount}<:ripcoin:929759319296192543>`)
+                .then(async () => {
+
+                    const filter = m => message.author.id === m.author.id;
+
+                    message.channel.awaitMessages({filter, time: 60000, max: 1, errors: ["time"]})
+                        .then(async collected => {
+
+                            if (collected.first().content === answer.toString()) {
+                                message.channel.send(`The answer is ${answer}. You were correct!\n+${moneyAmount}<:ripcoin:929759319296192543>`);
+                                message.client.currency.add(message.author.id, moneyAmount);
+                            }
+
+                            else {
+                                message.channel.send("Incorrect answer! The event has ended.");
+                            }
+                    
+                        }).catch(() => {
+                            message.channel.send("The random event has ended!");
+                        });
+                });
+        }
+
         doCommand(commandObject, message, args);
     } catch (error) {
         console.error(error.toString());
