@@ -69,10 +69,10 @@ module.exports = {
         });
 
         function commandShouldNotBeShown(commandObject) {
-            // Only show developer commands to developers, or in the development servers
+            // Only show developer commands to developers in the development servers
             return commandObject.developer === true
                    && !(developmentConfig.developer_discord_user_ids.includes(message.author.id)
-                        || developmentConfig.development_discord_server_ids.includes(message.guild.id));
+                        && developmentConfig.development_discord_server_ids.includes(message.guild.id));
         }
 
         function createEmbedFromCategory(category) {
