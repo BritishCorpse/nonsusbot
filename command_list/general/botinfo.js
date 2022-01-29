@@ -19,7 +19,7 @@ module.exports = {
             .addField("Version", require(`${__basedir}/package.json`).version)
             .addField("Creators", `<@!${developer_discord_user_ids.join("> <@!")}>`)
             .addField("Artists", `<@!${artist_discord_user_ids.join("> <@!")}>`)
-            .addField("Main library", "[discord.js](https://discord.js.org/)")
+            .addField("Made with", "[discord.js](https://discord.js.org/)")
             .addField("Servers", `${message.client.guilds.cache.size}`);
 
         message.channel.send({embeds: [embed]});
