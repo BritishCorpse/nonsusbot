@@ -303,18 +303,21 @@ function generateDescription(option) {
 }
 
 
-function sendUsage(message, usage, failedOn, failedArg) {
+function sendUsage(message, commandName, usage, failedOn, failedArg) {
     // TODO: if failedOn is null, it will show the complete usage
     if (failedOn === undefined) failedOn = usage;
 
+    const prefix = message.client.serverConfig.get(message.guild.id).prefix;
+
     const embed = new MessageEmbed()
         .setTitle("Incorrect Usage")
-        .setFooter({text: `Use ${message.client.serverConfig.get(message.guild.id).prefix}help for more information.`});
+        .setFooter({text: `Use ${prefix}help for more information.`});
 
     const paths = getAllUsagePaths(usage); // all possible argument combinations
     let description = "";
     for (const path of paths) {
-        description += `${formatBacktick(message.content.split(" ")[0])} `;
+        //description += `${formatBacktick(message.content.split(" ")[0])} `;
+        description += `${formatBacktick(prefix + commandName)} `;
         description += path.map(tag => formatBacktick(`<${tag}>`)).join(" ");
         description += "\n";
     }
@@ -512,7 +515,7 @@ function doCommand(commandObj, message, args) {
         .then(pass => {
             if (pass !== true) {
                 const [usage, depth] = pass;
-                sendUsage(message, commandObj.usage, usage, args[depth]);
+                sendUsage(message, typeof commandObj.name === "object" ? commandObj.name[0] : commandObj.name, commandObj.usage, usage, args[depth]);
             } else {
                 commandObj.execute(message, args);
             }

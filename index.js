@@ -272,7 +272,7 @@ client.on("messageCreate", async message => {
     }
     
     // If all the checks passed, do the command
-    try {        
+    try {
         // Here it does math, and there is a 1% the if statement is true, if it's true, send the embed and then give the user their hard earned money!
         if (Math.random() < 0.01) {
             // Make a fancy embed to show to the user.
@@ -281,7 +281,7 @@ client.on("messageCreate", async message => {
                 .setDescription("+1000<:ripcoin:929759319296192543>")
                 .setColor("GREEN");
 
-            message.reply({ embeds: [embed]}); 
+            message.reply({embeds: [embed]});
             message.client.currency.add(message.author.id, 1000);
         }
 
@@ -296,7 +296,7 @@ client.on("messageCreate", async message => {
 
             const answer = mathNumberOne + (mathNumberTwo * (decidingNumber === 0 ? 1 : -1));
 
-            message.reply(`A random event has Happened!\n\nMath: What is ${mathNumberOne} ${mathType} ${mathNumberTwo}? If you answer correctly, you will get ${moneyAmount}<:ripcoin:929759319296192543>`)
+            message.reply(`A random event has happened!\n\nMath: What is ${mathNumberOne} ${mathType} ${mathNumberTwo}? If you answer correctly, you will get ${moneyAmount}<:ripcoin:929759319296192543>`)
                 .then(async () => {
 
                     const filter = m => message.author.id === m.author.id;
