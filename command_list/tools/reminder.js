@@ -59,7 +59,7 @@ module.exports = {
         if (days > 0)
             string += `${days} day${plural(days)}`;
         if (hours > 0)
-            string += `${hours} hours${plural(hours)}`;
+            string += `${hours} hour${plural(hours)}`;
         if (minutes > 0)
             string += `${minutes} minute${plural(minutes)}`;
         if (seconds > 0)
