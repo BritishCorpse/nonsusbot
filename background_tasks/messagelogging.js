@@ -5,13 +5,19 @@ module.exports = {
     execute(client) {
 
         // Message update logging
-        client.on("messageUpdate", (oldMessage, newMessage) => {
+        client.on("messageUpdate", async (oldMessage, newMessage) => {
             if (oldMessage.author.bot) return;
 
-            const logChannel = client.channels.cache.get(client.serverConfig.get(oldMessage.guild.id).log_channel_id);
+            let logChannel;
+            if (client.serverConfig.get(oldMessage.guild.id).log_channel_id) {
+                logChannel = await client.channels.fetch(client.serverConfig.get(oldMessage.guild.id).log_channel_id);
+            }
 
             if (logChannel === undefined || !newMessage.content) return;
 
+            if (Object.values(client.serverConfig.get(oldMessage.guild.id)).includes(oldMessage.channel.id)) {
+                return;
+            }
             const embed = new MessageEmbed()
                 .setAuthor({name: `${oldMessage.author.tag} edited a message.`, iconURL: oldMessage.author.avatarURL()})
                 .setColor("BLUE")
@@ -24,8 +30,10 @@ module.exports = {
 
         // Deleted message logging
         client.on("messageDelete", async message => { 
-            const logChannel = client.channels.cache.get(client.serverConfig.get(message.guild.id).log_channel_id);
-
+            let logChannel;
+            if (client.serverConfig.get(message.guild.id).log_channel_id) {
+                logChannel = await client.channels.fetch(client.serverConfig.get(message.guild.id).log_channel_id);
+            }
             if (logChannel === undefined || !message.content) return;
 
             const auditLog = await message.channel.guild.fetchAuditLogs({
@@ -35,6 +43,10 @@ module.exports = {
 
             const deleteLog = auditLog.entries.first();
             const { executor } = deleteLog; 
+
+            if (Object.values(client.serverConfig.get(message.guild.id)).includes(message.channel.id)) {
+                return;
+            }
 
             const embed = new MessageEmbed()
                 .setAuthor({name: `${executor.username} deleted a message.`, iconURL: executor.avatarURL()})

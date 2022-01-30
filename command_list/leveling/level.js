@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const { Levels } = require("../../db_objects");
+const { Levels } = require(`${__basedir}/db_objects`);
 
 module.exports = {
     name: "level",
@@ -10,11 +10,14 @@ module.exports = {
 
         const user = message.mentions.users.first() || message.author;
         
-        if (user.bot) {return message.channel.send("Bots can't be ranked!");}
+        if (user.bot) {
+            message.channel.send("Bots can't be ranked!");
+            return;
+        }
 
         const userInDb = await Levels.findOne({
-            where: {userId: user.id, guildId: message.channel.guild.id}
-        });
+            where: {userId: user.id, guildId: message.guild.id}
+        }) || {}; // this makes it an empty object if it is null
 
         const embed = new MessageEmbed()
             .setAuthor({ name: `${user.username} is level ${userInDb.level || "0"}!`})

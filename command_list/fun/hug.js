@@ -38,6 +38,7 @@ module.exports = {
             const embed = new MessageEmbed()
                 .setTitle(`${message.author.username} hugs ${message.author.username} :heart:!`)
                 .setImage(images[Math.floor(Math.random() * images.length)])
+                .setFooter({text: "Powered by tenor."})
                 .setColor(randomColor);
         
             message.channel.send({embeds: [embed]});
@@ -50,6 +51,7 @@ module.exports = {
         const embed = new MessageEmbed()
             .setTitle(`${message.author.username} hugs ${hugTarget.username} :heart:!`)
             .setImage(images[Math.floor(Math.random() * images.length)])
+            .setFooter({text: "Powered by tenor."})
             .setColor(randomColor);
 
         message.channel.send({embeds: [embed]});

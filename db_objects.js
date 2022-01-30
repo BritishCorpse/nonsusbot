@@ -13,6 +13,7 @@ const UserItems = require("./models/UserItems")(sequelize, Sequelize.DataTypes);
 const Stocks = require("./models/Stocks")(sequelize, Sequelize.DataTypes);
 const UserPortfolio = require("./models/UserPortfolio")(sequelize, Sequelize.DataTypes);
 const Levels = require("./models/Levels")(sequelize, Sequelize.DataTypes);
+const Counting = require("./models/Counting")(sequelize, Sequelize.DataTypes);
 
 UserPortfolio.belongsTo(Stocks, { foreignKey: "share_id", as: "shares" });
 UserItems.belongsTo(CurrencyShop, { foreignKey: "item_id", as: "item" }); // foreignKey sets the key to be used from UserItems to look up in CurrencyShop
@@ -80,4 +81,4 @@ Users.prototype.getItems = function() {
     });
 };
 
-module.exports = { Users, CurrencyShop, UserItems, Stocks, UserPortfolio, Levels };
+module.exports = { Users, CurrencyShop, UserItems, Stocks, UserPortfolio, Levels, Counting };

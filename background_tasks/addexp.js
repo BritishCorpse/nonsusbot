@@ -26,8 +26,13 @@ module.exports = {
             ];
 
             const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-            const levelChannel = client.channels.cache.get(client.serverConfig.get(message.guild.id).levelup_channel_id);
 
+            let levelChannel;
+            if (client.serverConfig.get(message.guild.id).levelup_channel_id) {
+                levelChannel = await client.channels.fetch(client.serverConfig.get(message.guild.id).levelup_channel_id);
+            }
+
+            // Disable it for bots, except for the testing bot
             if (message.author.bot && !testing) return;
             if (message.author.bot && testing && message.author.id !== developmentConfig.testing_bot_discord_user_id) return;
 
@@ -53,7 +58,7 @@ module.exports = {
 
                 await Levels.update({exp: 1}, {where: {userId: message.author.id, guildId: message.channel.guild.id}}).then(async () => {
 
-                    if (!levelChannel) {return;}
+                    if (!levelChannel) return;
 
                     const userInDbTwo = await Levels.findOne({
                         where: { userId: message.author.id, guildId: message.channel.guild.id }

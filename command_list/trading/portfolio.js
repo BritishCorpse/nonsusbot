@@ -40,7 +40,7 @@ module.exports = {
             return portfolio;
         }
         
-        const shares = await getUserShares(message.author.id);
+        const shares = await getUserShares(targetUser.id);
 
         const embeds = [];
 
@@ -49,7 +49,7 @@ module.exports = {
         }
 
         if (shares.length === 0) {
-            message.channel.send(`${userInDb.badge || " "}${targetUser.username} has nothing!`);
+            message.channel.send(`${userInDb.badge || " "}<@!${targetUser.id}> has nothing!`);
             return;
         }
 

@@ -3,24 +3,6 @@ const defaultServerConfig = require(`${__basedir}/default_server_config.json`);
 const { saveServerConfig } = require(`${__basedir}/functions`);
 
 
-//function isValidGuildTextChannelId(guild, channelId) {
-//    const channel = guild.channels.cache.get(channelId);
-//    return channel !== undefined && channel.type === "GUILD_TEXT";
-//}
-//
-//
-//function isValidGuildRodeId(guild, roleId) {
-//    const role = guild.roles.cache.get(roleId);
-//    return role !== undefined;
-//}
-//
-//
-//function isValidPrefix(prefix) {
-//    // check if the length is max 3 (ex ab!) and that the last character is not a letter
-//    return prefix !== undefined && prefix !== "" && prefix.length < 4 && prefix.slice(-1) === prefix.slice(-1).toUpperCase();
-//}
-
-
 module.exports = {
     name: ["config", "settings", "options"],
     description: "Change bot settings for this server.",
@@ -30,7 +12,7 @@ module.exports = {
         { tag: "list", checks: {is: "list"} },
         { tag: "set", checks: {is: "set"}, 
             next: [
-                { tag: "option", checks: {isin: ["m_channel_id", "verify_channel_id", "log_channel_id", "levelup_channel_id", "welcome_channel_id", "suggestion_channel_id", "send_suggestion_channel_id"]},
+                { tag: "option", checks: {isin: ["m_channel_id", "verify_channel_id", "log_channel_id", "levelup_channel_id", "welcome_channel_id", "suggestion_channel_id", "send_suggestion_channel_id", "counting_channel_id"]},
                     next: [
                         { tag: "channel-id", checks: {isinteger: null} }
                     ]
@@ -50,38 +32,18 @@ module.exports = {
         }
     ],
 
-    execute (message, args) {
+    async execute (message, args) {
         const randomColor = Math.floor(Math.random()*16777215).toString(16);
         
         if (args[0] === "set") {
             if (args[1] in defaultServerConfig) {
-                // special cases for each config option
-                // (return; in case of error)
-
-                //if (["m_channel_id", "verify_channel_id", "log_channel_id", "level_channel_id", "welcome_channel_id"].includes(args[1])) {
-                //    if (!isValidGuildTextChannelId(message.guild, args[2])) {
-                //        message.channel.send("Channel ID is invalid.");
-                //        return;
-                //    }
-                //} else if (["verify_role_id", "vip_role_id"].includes(args[2])) {
-                //    if (!isValidGuildRodeId(args[2])) {
-                //        message.channel.send("Role ID is invalid.");
-                //        return;
-                //    }
-                //} else if (args[1] === "prefix") {
-                //    if (!isValidPrefix(args[2])) {
-                //        message.channel.send("Prefix is invalid");
-                //        return;
-                //    }
-                //}
-
-                /* eslint-disable-next-line prefer-const */ // remove this if edit newConfig
+                /* eslint-disable-next-line prefer-const */ // remove this comment if you edit newConfig
                 let newConfig = args[2]; // by default, otherwise edit this later
 
                 // extra stuff to do
                 // TODO: move this to background_tasks/verify.js
                 if (args[1] === "verify_channel_id") {
-                    const channel = message.client.channels.cache.get(newConfig);
+                    const channel = await message.client.channels.fetch(newConfig);
 
                     channel.send("Say 'yes' if you agree with the rules, and get verified!");
                     message.channel.send("Verify channel was setup. Edit the role to give using the config command, and manually edit the roles.");

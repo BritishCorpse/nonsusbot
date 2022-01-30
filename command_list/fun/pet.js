@@ -36,18 +36,20 @@ module.exports = {
             const embed = new MessageEmbed()
                 .setTitle(`${message.author.username} pets ${message.author.username}, how nice of them :heart:!`)
                 .setImage(images[Math.floor(Math.random() * images.length)])
+                .setFooter({text: "Powered by tenor."})
                 .setColor(randomColor);
         
             message.channel.send({embeds: [embed]});
             return;
         } else if (petTarget.id === message.client.user.id) {
-            message.channel.send("Thanks! How did you know I was hungry? :heart:");
+            message.channel.send("Thanks! How did you know I was hankering for a petting? :heart:");
             return;
         }
         
         const embed = new MessageEmbed()
             .setTitle(`${message.author.username} pets ${petTarget.username}, how nice of them :heart:!`)
             .setImage(images[Math.floor(Math.random() * images.length)])
+            .setFooter({text: "Powered by tenor."})
             .setColor(randomColor);
     
         message.channel.send({embeds: [embed]});
