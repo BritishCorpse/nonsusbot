@@ -15,7 +15,8 @@ module.exports = {
             return Users.findOne({ where: {user_id: userId} });
         }
 
-        const levels = await Levels.findAll({ where: {guildId: message.guild.id} });
+        let levels = await Levels.findAll({ where: {guildId: message.guild.id} });
+        levels = levels.filter(l => l.userId !== "1"); // filter out the casino user
         levels.sort((a, b) => a.level === b.level ? b.exp - a.exp : b.level - a.level);
 
         const topTen = levels.slice(0, 10);
@@ -32,7 +33,6 @@ module.exports = {
                 await memo; // Waits for previous to end.
                 const userInDb = await defineUser(userLevel.userId);
                 const userInDiscord = await message.client.users.fetch(userLevel.userId);
-                console.log(userInDiscord);
                 embed.addField(`${position + 1}. ${userInDb.badge || ""}${userInDiscord.tag}`, `Level ${userLevel.level}, ${userLevel.exp}/${userLevel.reqExp} XP!`);
             }, undefined);
         }
