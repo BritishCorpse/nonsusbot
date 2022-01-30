@@ -1,6 +1,6 @@
 {
   "name": "nonsusbot",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "main": "index.js",
   "scripts": {
     "start": "mkdir logs; node init_db.js && pm2 start ecosystem.config.js",
