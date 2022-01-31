@@ -44,7 +44,7 @@ module.exports = {
         const embed = new MessageEmbed()
             .setAuthor({name: `${message.author.username}`, iconURL: message.author.avatarURL()})
             .setDescription(`The moderators have spoken, ${kickUser.user.tag} has been kicked from ${message.guild.name}! ` + funnyReply)
-            .addField("Ban reason", kickReason)
+            .addField("Kick reason", kickReason)
             .addField("Moderator", message.author.tag)  
             .setColor(randomColor);
 
