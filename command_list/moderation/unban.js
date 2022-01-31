@@ -17,9 +17,9 @@ module.exports = {
     ],
 
     execute(message, args) {
-        const randomColor = Math.floor(Math.random()*16777215).toString(16);
+        const randomColor = Math.floor(Math.random() * 16777215).toString(16);
         
-        const unbanUser = args[0];
+        const unbanUser = message.mentions.members.first();
         const unbanReasons = args.slice(1);
         const unbanReason = unbanReasons.join(" ");
 
@@ -28,7 +28,7 @@ module.exports = {
         const { MessageEmbed } = require("discord.js");
         const embed = new MessageEmbed()
             .setAuthor({name: `${message.author.username}`, iconURL: message.author.avatarURL()})
-            .setDescription(`The moderators have spoken, the ban hammer has been lifted, ${unbanUser.tag} has been unbanned! ` + "Welcome back soldier.")
+            .setDescription(`The moderators have spoken, the ban hammer has been lifted, ${unbanUser.user.tag} has been unbanned! ` + "Welcome back soldier.")
             .addField("Unban reason", unbanReason)
             .addField("Moderator", message.author.tag)
             .setColor(randomColor);
