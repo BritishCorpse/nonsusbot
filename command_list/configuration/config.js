@@ -29,6 +29,20 @@ module.exports = {
                     
                 }
             ]
+        },
+        { tag: "reset", checks: {is: "reset"}, 
+            next: [
+                { tag: "option",
+                    checks: {
+                        isin: [
+                            "m_channel_id", "verify_channel_id", "log_channel_id",
+                            "levelup_channel_id", "welcome_channel_id", "suggestion_channel_id",
+                            "send_suggestion_channel_id", "counting_channel_id", "verify_role_id",
+                            "prefix"
+                        ]
+                    }
+                }
+            ]
         }
     ],
 
@@ -83,8 +97,21 @@ module.exports = {
 
             message.channel.send({embeds: [embed]});
 
+        } else if (args[0] === "reset") {
+            if (!(args[1] in defaultServerConfig)) {
+                message.channel.send("Uh oh! Something went wrong :(");
+                return;
+            }
+            
+            // set the config
+            message.client.serverConfig.get(message.guild.id)[args[1]] = defaultServerConfig[args[1]];
+
+            // write it to the file
+            saveServerConfig(message.client.serverConfig);
+
+            message.channel.send(`Reset value \`${args[1]}\`.`);
         } else { // no option given, or incorrect option given
-            message.channel.send("Options are: set, list");
+            message.channel.send("Options are: set, list, reset");
         }
     }
 };
