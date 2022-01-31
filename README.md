@@ -22,13 +22,21 @@ Table of contents
            * [Not](#not)
      * [Circular options](#circular-options)
 
+## Setting up
+
+Copy the `config.template.json` file to `config.json` and edit the options.
+
+Edit the `config.json` file to change the bot name, default prefix, discord bot token, and api keys.
+
+Copy the `development_config.template.json` file to `development_config.json` and edit the options.
+
 ## Running
 
 Preferred node version is 16.x, 17.x.
 
 Run `npm install` in the main directory to install the dependencies.
 
-Run `npm start` to run the bot.
+Run `npm start` to run the bot using pm2 (will restart after every crash), or `node .` to just run it once.
 
 Run `npm run log` to start the logging server and go to http://127.0.0.1:9001, or run `tail -f logs/*` to have it in your terminal.
 
@@ -38,9 +46,7 @@ Run `npm stop` to stop running the bot.
 
 Run `node init_db.js --force` to re-initialize the database, to reset the currency system.
 
-Edit the `config.json` file to change the bot name, default prefix, discord bot token, and api keys.
-
-Run `git clean -dfX` to clean the directory.
+Run `git clean -dfX` to clean the directory (note that this will reset the database, deleting all users' balances and items, and server specific settings).
 
 ## Configuration files
 
