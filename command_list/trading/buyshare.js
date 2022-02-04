@@ -33,16 +33,22 @@ module.exports = {
             }
         });
 
-        if (!share) return message.channel.send("That share doesn't exist.");
+        if (!share) {
+            message.channel.send("That share doesn't exist.");
+            return;
+        }
 
 
-        if (share.currentPrice > message.client.currency.getBalance(message.author.id)) {
+        if (share.currentPrice * amount > message.client.currency.getBalance(message.author.id)) {
             return message.channel.send(`You don't have enough <:ripcoin:929759319296192543>'s, ${message.author.username}`);
         }
 
-        if (share.currentPrice === "0") return message.channel.send("STOCK NOT AVAILABLE: Share price less than 1.");
+        if (share.currentPrice === "0") {
+            message.channel.send("STOCK NOT AVAILABLE: Share price less than 1.");
+            return;
+        }
 
-        message.reply(`You bought ${amount} ${share.name} share.`);
+        message.reply(`You bought ${amount} ${share.name} share{amount !== 1 ? 's' : ''}.`);
 
         const user = await Users.findOne({
             where: {
@@ -50,9 +56,8 @@ module.exports = {
             }
         });
 
-        message.client.currency.add(message.author.id, -share.currentPrice);
-
         for (let i = 0; i < amount; ++i) {
+            message.client.currency.add(message.author.id, -share.currentPrice);
             await user.addShare(share);
         }
     }
