@@ -31,7 +31,8 @@ async function promptOption(channel, user) {
 
     return new Promise((resolve) => {
         collector.on("collect", interaction => {
-            interaction.deferUpdate();
+            row.components[0].options[Number.parseInt(interaction.values[0]) - 1].default = true;
+            interaction.update({components: [row]});
             collector.stop();
             resolve(Number.parseInt(interaction.values[0]));
         });
@@ -47,7 +48,6 @@ async function createCategory(channel, user) {
     const filter = message => message.author.id === user.id;
     const messages = await channel.awaitMessages({filter, time: 2_147_483_647, max: 1, errors: ["time"]});
     const categoryName = messages.first().content;
-    console.log(categoryName);
     channel.send(`The name of the cateogry is ${categoryName}`)
 }
 
@@ -75,7 +75,6 @@ module.exports = {
 
             while (true) {
                 const optionChosen = await promptOption(message.channel, message.author);
-                console.log(optionChosen);
 
                 if (optionChosen === 1) {
                     await createCategory(message.channel, message.author);
