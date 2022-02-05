@@ -8,10 +8,21 @@ module.exports = {
     description: "Buy shares from the stock market!",
     usage: [
         circularUsageOption(
-            { tag: "item", checks: {matches: {not: /[^\w?!.,;:'"()]/}, isempty: {not: null}} }
-        )
+            { tag: "item", checks: {matches: {not: /[^a-zA-Z?!.,;:'"()]/}, isempty: {not: null}} }
+        ),
+        { tag: "amount", checks: {isinteger: null},
+            next: [
+                circularUsageOption(
+                    { tag: "item", checks: {matches: {not: /[^a-zA-Z?!.,;:'"()]/}, isempty: {not: null}} }
+                )
+            ]
+        }
     ],
     async execute(message, args ){
+        let amount = 1;
+        if (Number.parseInt(args[0]).toString() === args[0]) {
+            amount = Number.parseInt(args.shift());
+        }
 
         const share = await Stocks.findOne({
             where: {
@@ -21,24 +32,25 @@ module.exports = {
             }
         });
 
-
+        if (!share) {
+            message.channel.send("That share doesn't exist.");
+            return;
+        }
         
         // Find the share in the users portfolio.
         const shareInDb = await UserPortfolio.findOne({
             where: { user_id: message.author.id, share_id: share.id}
         });
 
-        
-
         // Check for share amount, if 0 complain that they dont have the share..
-        if (shareInDb.amount < 1) {
-            message.channel.send("You do not own this share!");
+        if (shareInDb.amount < amount) {
+            message.channel.send("You do not own enough of this share!");
             return;
         }
 
         // If it exists, remove one from the db.
         if (shareInDb) {
-            shareInDb.amount -= 1;
+            shareInDb.amount -= amount;
             shareInDb.save();
         }
         
@@ -49,12 +61,10 @@ module.exports = {
             return;
         }
 
-
         // Add money of share to user.
-        message.client.currency.add(message.author.id, share.currentPrice);
-
+        message.client.currency.add(message.author.id, share.currentPrice * amount);
 
         // Send congratulations message to let the user know that something actually happened.
-        message.channel.send(`You sold 1 ${share.name} for ${share.currentPrice}<:ripcoin:929759319296192543>!`);
+        message.channel.send(`You sold ${amount} ${share.name} for ${share.currentPrice * amount}<:ripcoin:929759319296192543>!`);
     }
 };
