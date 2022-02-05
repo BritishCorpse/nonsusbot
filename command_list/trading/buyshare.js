@@ -48,7 +48,7 @@ module.exports = {
             return;
         }
 
-        message.reply(`You bought ${amount} ${share.name} share{amount !== 1 ? 's' : ''}.`);
+        message.reply(`You bought ${amount} ${share.name} share${amount !== 1 ? "s" : ""}.`);
 
         const user = await Users.findOne({
             where: {
