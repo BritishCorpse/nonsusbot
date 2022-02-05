@@ -8,12 +8,12 @@ module.exports = {
     description: "Buy shares from the stock market!",
     usage: [
         circularUsageOption(
-            { tag: "item", checks: {matches: {not: /[^a-zA-Z?!.,;:'"()]/}, isempty: {not: null}} }
+            { tag: "item", checks: {matches: {not: /[^a-zA-Z?!.,;:'"()]/}, isempty: {not: null}, isinteger: {not: null}} } // is integer check needed if there is amount given
         ),
         { tag: "amount", checks: {isinteger: null},
             next: [
                 circularUsageOption(
-                    { tag: "item", checks: {matches: {not: /[^a-zA-Z?!.,;:'"()]/}, isempty: {not: null}} }
+                    { tag: "item", checks: {matches: {not: /[^a-zA-Z?!.,;:'"()]/}, isempty: {not: null}, isinteger: {not: null}} }
                 )
             ]
         }
