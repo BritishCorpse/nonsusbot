@@ -30,7 +30,7 @@ module.exports = {
             const embed = new MessageEmbed()
                 .setTitle(`Counting info about ${message.guild.name}`)
                 .addField("Numbers counted:", "0")
-                .addField("Currect number:", "1")
+                .addField("Correct number:", "1")
                 .setFooter({text: `${prefix}countingchannel to set the counting channel, and start counting!`})
                 .setColor(randomColor);
 

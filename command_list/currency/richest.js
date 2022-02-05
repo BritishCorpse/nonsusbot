@@ -21,6 +21,7 @@ module.exports = {
 
         const topTen = message.client.currency.sort((a, b) => b.balance - a.balance)
             //.filter(user => message.client.users.(user.user_id))
+            .filter(user => user.user_id !== "1") // filter out the casino user
             .first(10);
 
         if (topTen.length === 0) {

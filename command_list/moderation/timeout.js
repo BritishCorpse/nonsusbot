@@ -67,10 +67,10 @@ module.exports = {
 
         target.timeout(seconds * 1000 + minutes * 60 * 1000 + hours * 60 * 60 * 1000 + days * 24 * 60 * 60 * 1000, reason);
 
-        const funnyReply = funnyReplies[Math.floor(Math.random()*funnyReplies.length)];
+        const funnyReply = funnyReplies[Math.floor(Math.random() * funnyReplies.length)];
         const embed = new MessageEmbed()
             .setAuthor({name: `${message.author.username}`, iconURL: message.author.avatarURL()})
-            .setDescription(`The moderators have spoken, the timeout hammer has fallen, ${target.tag} has been timed out in ${message.guild.name}! ` + funnyReply)
+            .setDescription(`The moderators have spoken, the timeout hammer has fallen, ${target.user.tag} has been timed out in ${message.guild.name}! ` + funnyReply)
             .addField("Timeout duration:", `${string}`)
             .addField("Timeout reason:", `${reason || "No reason provided."}`)
             .addField("Moderator", `${message.author.tag}`)
