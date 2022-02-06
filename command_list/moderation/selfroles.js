@@ -2,21 +2,18 @@ const { MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu } = req
 //const { circularUsageOption } = require(`${__basedir}/functions`);
 
 
-async function promptOption(channel, user) {
+async function promptOptions(channel, user, promptMessage, options) {
     const row = new MessageActionRow()
         .addComponents(
             new MessageSelectMenu()
                 .setCustomId("dropdown")
-                .addOptions(
-                    {label: "1. Add a category", value: "1"},
-                    {label: "2. Edit a category", value: "2"},
-                    {label: "3. Choose the channel", value: "3"},
-                    {label: "4. Finish", value: "4"}
-                )
+                .addOptions(options.map((option, i) => {
+                    return {label: `${i + 1}. ${option}`, value: i.toString()};
+                }))
         );
-  
+
     const message = await channel.send({
-        content: "Here are your options:",
+        content: promptMessage,
         components: [row]
     });
 
@@ -31,12 +28,22 @@ async function promptOption(channel, user) {
 
     return new Promise((resolve) => {
         collector.on("collect", interaction => {
-            row.components[0].options[Number.parseInt(interaction.values[0]) - 1].default = true;
+            row.components[0].options[Number.parseInt(interaction.values[0])].default = true;
             interaction.update({components: [row]});
             collector.stop();
             resolve(Number.parseInt(interaction.values[0]));
         });
     });
+}
+
+
+function mainOptions(channel, user) {
+    return promptOptions(channel, user, "Here are your options:",[
+        "Add a category",
+        "Edit a category",
+        "Choose the channel",
+        "Finish"
+    ]);
 }
 
 
@@ -48,12 +55,34 @@ async function createCategory(channel, user) {
     const filter = message => message.author.id === user.id;
     const messages = await channel.awaitMessages({filter, time: 2_147_483_647, max: 1, errors: ["time"]});
     const categoryName = messages.first().content;
-    channel.send(`The name of the cateogry is ${categoryName}`)
+
+    channel.send(`The name of the cateogry is ${categoryName}`);
+
+    while (true) {
+        const optionChosen = await promptOptions(message.channel, message.author,
+            `Edit the category ${categoryName}`, [
+                "Add role",
+                "Remove role",
+                "Finish"
+            ]);
+
+        if (optionChosen === 0) {
+        } else if (optionChosen === 1) {
+        } else if (optionChosen === 2) {
+            message.channel.send("Finished creating the category");
+            break;
+        }
+    }
+
 }
 
 
-async function promptChannel(channel) {
+async function promptChannel(channel, user) {
     // ask for the channel where the self roles should be
+    const filter = message => message.author.id === user.id;
+    const messages = await channel.awaitMessages({filter, time: 2_147_483_647, max: 1, errors: ["time"]});
+    const channelName = messages.first().content;
+    channel.send(`The channel is ${channelName}`);
 }
 
 
@@ -74,15 +103,15 @@ module.exports = {
             message.channel.send("You are setting up self roles!");
 
             while (true) {
-                const optionChosen = await promptOption(message.channel, message.author);
+                const optionChosen = await mainOptions(message.channel, message.author);
 
-                if (optionChosen === 1) {
+                if (optionChosen === 0) {
                     await createCategory(message.channel, message.author);
+                } else if (optionChosen === 1) {
+
                 } else if (optionChosen === 2) {
 
                 } else if (optionChosen === 3) {
-
-                } else if (optionChosen === 4) {
                     message.channel.send("Finished setting up self roles!");
                     break;
                 }
