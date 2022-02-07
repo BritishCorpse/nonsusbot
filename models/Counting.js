@@ -1,3 +1,4 @@
+// TODO: remove allowNull: true ????? shouldn't be null
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define("countings", {
         guildId: {
