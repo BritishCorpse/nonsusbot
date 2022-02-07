@@ -117,6 +117,10 @@ if (!testing) {
     });
 }
 
+/*************************************************/
+/*     Setup collection to database functions    */
+/*************************************************/
+
 // Create functions for adding and setting money
 Reflect.defineProperty(client.currency, "add", {
     /* eslint-disable-next-line func-name-matching */

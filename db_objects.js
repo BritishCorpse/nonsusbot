@@ -14,9 +14,9 @@ const Stocks = require("./models/Stocks")(sequelize, Sequelize.DataTypes);
 const UserPortfolio = require("./models/UserPortfolio")(sequelize, Sequelize.DataTypes);
 const Levels = require("./models/Levels")(sequelize, Sequelize.DataTypes);
 const Counting = require("./models/Counting")(sequelize, Sequelize.DataTypes);
-const SelfRoleChannels = require("./models/SelfRoleChannels.js")(sequelize, Sequelize.DataTypes);
-const SelfRoleCategories = require("./models/SelfRoleCategories.js")(sequelize, Sequelize.DataTypes);
-const SelfRoleRoles = require("./models/SelfRoleRoles.js")(sequelize, Sequelize.DataTypes);
+const SelfRoleChannels = require("./models/SelfRoleChannels")(sequelize, Sequelize.DataTypes);
+const SelfRoleCategories = require("./models/SelfRoleCategories")(sequelize, Sequelize.DataTypes);
+const SelfRoleRoles = require("./models/SelfRoleRoles")(sequelize, Sequelize.DataTypes);
 
 UserPortfolio.belongsTo(Stocks, { foreignKey: "share_id", as: "shares" });
 UserItems.belongsTo(CurrencyShop, { foreignKey: "item_id", as: "item" }); // foreignKey sets the key to be used from UserItems to look up in CurrencyShop
