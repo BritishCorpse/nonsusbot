@@ -66,6 +66,13 @@ Levels.prototype.addLevel = async function() {
     return userInDb.save();
 };
 
+Users.prototype.getItems = function() {
+    return UserItems.findAll({
+        where: { user_id: this.user_id },
+        include: ["item"],
+    });
+};
+
 Levels.prototype.setReqExp = async function() {
     const userInDb = await Levels.findOne({
         where: { userId: this.userId, guildId: this.guildID }
@@ -78,13 +85,6 @@ Levels.prototype.setReqExp = async function() {
 
     userInDb.reqexp = 1000;
     return userInDb.save();
-};
-
-Users.prototype.getItems = function() {
-    return UserItems.findAll({
-        where: { user_id: this.user_id },
-        include: ["item"],
-    });
 };
 
 module.exports = {
