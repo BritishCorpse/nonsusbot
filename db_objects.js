@@ -14,10 +14,16 @@ const Stocks = require("./models/Stocks")(sequelize, Sequelize.DataTypes);
 const UserPortfolio = require("./models/UserPortfolio")(sequelize, Sequelize.DataTypes);
 const Levels = require("./models/Levels")(sequelize, Sequelize.DataTypes);
 const Counting = require("./models/Counting")(sequelize, Sequelize.DataTypes);
+const SelfRoleChannels = require("./models/SelfRoleChannels.js")(sequelize, Sequelize.DataTypes);
+const SelfRoleCategories = require("./models/SelfRoleCategories.js")(sequelize, Sequelize.DataTypes);
+const SelfRoleRoles = require("./models/SelfRoleRoles.js")(sequelize, Sequelize.DataTypes);
 
 UserPortfolio.belongsTo(Stocks, { foreignKey: "share_id", as: "shares" });
 UserItems.belongsTo(CurrencyShop, { foreignKey: "item_id", as: "item" }); // foreignKey sets the key to be used from UserItems to look up in CurrencyShop
 
+// table relationships for the self role system
+SelfRoleRoles.belongsTo(SelfRoleCategories, { foreignKey: "category_id", as: "category" });
+SelfRoleCategories.belongsTo(SelfRoleChannels, { foreignKey: "guild_id", as: "guild" });
 
 Users.prototype.addItem = async function(item) { // function is used instead of arrow function to be able to use the "this" variable
     const userItem = await UserItems.findOne({
@@ -81,4 +87,20 @@ Users.prototype.getItems = function() {
     });
 };
 
-module.exports = { Users, CurrencyShop, UserItems, Stocks, UserPortfolio, Levels, Counting };
+module.exports = {
+    Users,
+
+    CurrencyShop,
+    UserItems,
+
+    Stocks,
+    UserPortfolio,
+
+    Levels,
+
+    Counting,
+
+    SelfRoleChannels,
+    SelfRoleCategories,
+    SelfRoleRoles,
+};

@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
-        guildId: {
+        guild_id: {
             type: DataTypes.STRING,
             allowNull: false
         },
