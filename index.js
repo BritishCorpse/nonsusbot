@@ -178,6 +178,9 @@ Reflect.defineProperty(client.currency, "getBalance", {
     },
 });
 
+/*************************************************/
+/*        End of collection/database setup       */
+/*************************************************/
 
 client.once("ready", async () => {
     const storedBalances = await Users.findAll();
