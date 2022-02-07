@@ -37,29 +37,9 @@ async function promptOptions(channel, user, promptMessage, options) {
 }
 
 
-function mainOptions(channel, user) {
-    return promptOptions(channel, user, "Here are your options:",[
-        "Add a category",
-        "Edit a category",
-        "Choose the channel",
-        "Finish"
-    ]);
-}
-
-
-async function createCategory(channel, user) {
-    // create a new category of self roles
-    
-    await channel.send("Enter the name of the category:");
-    
-    const filter = message => message.author.id === user.id;
-    const messages = await channel.awaitMessages({filter, time: 2_147_483_647, max: 1, errors: ["time"]});
-    const categoryName = messages.first().content;
-
-    channel.send(`The name of the cateogry is ${categoryName}`);
-
+async function editCategory(channel, user, categoryName) {
     while (true) {
-        const optionChosen = await promptOptions(message.channel, message.author,
+        const optionChosen = await promptOptions(channel, user,
             `Edit the category ${categoryName}`, [
                 "Add role",
                 "Remove role",
@@ -67,13 +47,30 @@ async function createCategory(channel, user) {
             ]);
 
         if (optionChosen === 0) {
+          // add role to category
+          
         } else if (optionChosen === 1) {
+          // remove role from category
+          
         } else if (optionChosen === 2) {
-            message.channel.send("Finished creating the category");
+            channel.send("Finished creating the category");
             break;
         }
     }
+}
 
+
+async function createCategory(channel, user) {
+    // create a new category of self roles
+    
+    channel.send("Enter the name of the category:");
+    
+    const filter = message => message.author.id === user.id;
+    const messages = await channel.awaitMessages({filter, time: 2_147_483_647, max: 1, errors: ["time"]});
+    const categoryName = messages.first().content;
+
+    // Automatically enter category editing mode
+    await editCategory(channel, user, categoryName);
 }
 
 
@@ -103,15 +100,28 @@ module.exports = {
             message.channel.send("You are setting up self roles!");
 
             while (true) {
-                const optionChosen = await mainOptions(message.channel, message.author);
+                const optionChosen = await promptOptions(message.channel, message.author, "Here are your options:",[
+                    "Add a category",
+                    "Edit a category",
+                    "Remove a category",
+                    "Choose the channel",
+                    "Finish"
+                ]);
 
                 if (optionChosen === 0) {
                     await createCategory(message.channel, message.author);
                 } else if (optionChosen === 1) {
+                    // show the categories in a drop down and the edit it
+                    const categoryName = "TEST";
+                    await editCategory(message.channel, message.author, categoryName);
 
                 } else if (optionChosen === 2) {
+                    // show the categories and then delete it
 
                 } else if (optionChosen === 3) {
+                    // set the channel where the self roles are
+
+                } else if (optionChosen === 4) {
                     message.channel.send("Finished setting up self roles!");
                     break;
                 }
