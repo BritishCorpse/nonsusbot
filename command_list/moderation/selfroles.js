@@ -109,7 +109,8 @@ async function promptCategory(channel, user) {
     const categories = await SelfRoleCategories.findAll({
         where: {
             guild_id: channel.guild.id
-        }
+        },
+        include: ["roles"]
     });
 
     if (categories.length === 0) {
@@ -239,6 +240,9 @@ async function editCategory(channel, user, category) {
         } else if (optionChosen === 3) {
             // remove category
             if (await areYouSure(channel, user)) {
+                category.roles.forEach(role => {
+                    role.destroy();
+                });
                 category.destroy();
                 channel.send("Deleted the category!");
                 break;
