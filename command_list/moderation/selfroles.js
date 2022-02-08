@@ -7,7 +7,7 @@ async function promptOptions(channel, user, promptMessage, options) {
     const rows = [];
 
     let index = 0;
-    for (let i = 0; i < Math.ceil(options.length / 25); ++i) {
+    for (let i = 0; i < Math.min(Math.ceil(options.length / 25), 5); ++i) {
         const row = new MessageActionRow()
             .addComponents(
                 new MessageSelectMenu()
