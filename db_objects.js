@@ -14,7 +14,9 @@ const Stocks = require("./models/Stocks")(sequelize, Sequelize.DataTypes);
 const UserPortfolio = require("./models/UserPortfolio")(sequelize, Sequelize.DataTypes);
 const Levels = require("./models/Levels")(sequelize, Sequelize.DataTypes);
 const Counting = require("./models/Counting")(sequelize, Sequelize.DataTypes);
+
 const SelfRoleChannels = require("./models/SelfRoleChannels")(sequelize, Sequelize.DataTypes);
+const SelfRoleMessages = require("./models/SelfRoleMessages")(sequelize, Sequelize.DataTypes);
 const SelfRoleCategories = require("./models/SelfRoleCategories")(sequelize, Sequelize.DataTypes);
 const SelfRoleRoles = require("./models/SelfRoleRoles")(sequelize, Sequelize.DataTypes);
 
@@ -22,8 +24,11 @@ UserPortfolio.belongsTo(Stocks, { foreignKey: "share_id", as: "shares" });
 UserItems.belongsTo(CurrencyShop, { foreignKey: "item_id", as: "item" }); // foreignKey sets the key to be used from UserItems to look up in CurrencyShop
 
 // table relationships for the self role system
-SelfRoleRoles.belongsTo(SelfRoleCategories, { foreignKey: "category_id", as: "category" });
-SelfRoleCategories.belongsTo(SelfRoleChannels, { foreignKey: "guild_id", as: "guild" });
+//SelfRoleRoles.belongsTo(SelfRoleCategories, { foreignKey: "category_id", as: "category" });
+//SelfRoleCategories.belongsTo(SelfRoleChannels, { foreignKey: "guild_id", as: "channel" });
+
+SelfRoleCategories.hasMany(SelfRoleRoles, { sourceKey: "id", foreignKey: "category_id", as: "roles" });
+SelfRoleMessages.hasOne(SelfRoleCategories, { sourceKey: "category_id", foreignKey: "id", as: "category" });
 
 Users.prototype.addItem = async function(item) { // function is used instead of arrow function to be able to use the "this" variable
     const userItem = await UserItems.findOne({
@@ -101,6 +106,7 @@ module.exports = {
     Counting,
 
     SelfRoleChannels,
+    SelfRoleMessages,
     SelfRoleCategories,
     SelfRoleRoles,
 };

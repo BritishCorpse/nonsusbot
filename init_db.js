@@ -14,7 +14,9 @@ require("./models/Stocks")(sequelize, Sequelize.DataTypes);
 require("./models/UserPortfolio")(sequelize, Sequelize.DataTypes);
 require("./models/Levels")(sequelize, Sequelize.DataTypes);
 require("./models/Counting")(sequelize, Sequelize.DataTypes);
+
 require("./models/SelfRoleChannels")(sequelize, Sequelize.DataTypes);
+require("./models/SelfRoleMessages")(sequelize, Sequelize.DataTypes);
 require("./models/SelfRoleCategories")(sequelize, Sequelize.DataTypes);
 require("./models/SelfRoleRoles")(sequelize, Sequelize.DataTypes);
 

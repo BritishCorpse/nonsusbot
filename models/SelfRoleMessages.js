@@ -1,15 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define("self_role_categories", {
-        /*id: {
-            type: DataTypes.INTEGER,
+    return sequelize.define("self_role_messages", {
+        message_id: {
+            type: DataTypes.STRING,
             allowNull: false,
             primaryKey: true
-        },*/
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false
         },
-        guild_id: {
+        category_id: {
             type: DataTypes.STRING,
             allowNull: false
         },
