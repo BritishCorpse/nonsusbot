@@ -165,7 +165,7 @@ async function createRole(channel, user, category) {
         category_id: category.id
     });
 
-    channel.send(`Added role ${formatRole(role)}!`);
+    channel.send(`Added the role ${formatRole(role)}!`);
 }
 
 
@@ -265,11 +265,11 @@ async function createCategory(channel, user) {
         guild_id: channel.guild.id
     });
 
-    channel.send("Created category ${category.name}!");
+    channel.send(`Created category ${category.name}!`);
 }
 
 
-async function sendSelfRoleMessages(channel, save=false) {
+async function sendSelfRoleMessages(channel, targetChannel, save=false) {
     const categories = await SelfRoleCategories.findAll({
         where: {
             guild_id: channel.guild.id
@@ -277,12 +277,17 @@ async function sendSelfRoleMessages(channel, save=false) {
         include: ["roles"]
     });
 
+    if (categories.length === 0) {
+        channel.send("There are no categories!");
+        return false;
+    }
+
     categories.forEach(async category => {
         const embed = new MessageEmbed()
             .setTitle(category.name)
             .setDescription(category.roles.map(role => formatRole(role)).join("\n"));
         
-        const message = await channel.send({ embeds: [embed] });
+        const message = await targetChannel.send({ embeds: [embed] });
 
         if (save) {
             SelfRoleMessages.create({
@@ -295,6 +300,8 @@ async function sendSelfRoleMessages(channel, save=false) {
             await message.react(role.emoji);
         });
     });
+
+    return true;
 }
 
 
@@ -338,17 +345,19 @@ module.exports = {
                 }
             }
         } else if (args[0] === "preview") {
-            sendSelfRoleMessages(message.channel);
+            sendSelfRoleMessages(message.channel, message.channel);
         } else if (args[0] === "send") {
             // set the channel where the self roles are
             const selfRoleChannel = await promptChannel(message.channel, message.author);
 
-            SelfRoleChannels.upsert({
-                guild_id: message.guild.id,
-                channel_id: selfRoleChannel.id
-            });
-
-            sendSelfRoleMessages(selfRoleChannel, true);
+            const success = sendSelfRoleMessages(message.channel, selfRoleChannel, true);
+            // success is false if there are 0 categories
+            if (success) {
+                SelfRoleChannels.upsert({
+                    guild_id: message.guild.id,
+                    channel_id: selfRoleChannel.id
+                });
+            }
         }
     }
 };
