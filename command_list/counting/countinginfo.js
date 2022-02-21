@@ -1,15 +1,16 @@
 const { MessageEmbed } = require("discord.js");
-const { Users } = require(`${__basedir}/models/Users`);
+const { Users } = require(`${__basedir}/db_objects`);
 
 module.exports = {
     name: ["countingprofile", "cprofile", "countinginfo", "cinfo"],
-    description: "See the amount of numbers a user has counted, how many theyve gotten wrong and how many right!",
+    description: "See the amount of numbers a user has counted, how many they've gotten wrong and how many right!",
     usage: [],
     async execute(message) {
         const randomColor = Math.floor(Math.random() * 16777215).toString(16);
 
         const target = message.mentions.users.first() || message.author;
 
+      console.log(Users);
         const userInDb = await Users.findOne({
             where: {user_id: target.id}
         });
@@ -19,7 +20,7 @@ module.exports = {
         }
 
         const embed = new MessageEmbed()
-            .setTitle(`${target}'s counting profile.`)
+            .setTitle(`${target.username}'s counting profile.`)
             .addField("Amount counted:", `${target.amountCounted || "0"}`)
             .addField("Correctly counted:", `${target.countedCorrect || "0"}`)
             .addField("Incorrectly counted:", `${target.amountCounted || 0 - target.countedCorrect || 0}`)
