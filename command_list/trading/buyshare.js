@@ -9,12 +9,12 @@ module.exports = {
     description: "Buy shares from the stock market!",
     usage: [
         circularUsageOption(
-            { tag: "item", checks: {matches: {not: /[^a-zA-Z?!.,;:'"()]/}, isempty: {not: null}} }
+            { tag: "item", checks: {matches: {not: /[^a-zA-Z?!.,;:'"()]/}, isempty: {not: null}, isinteger: {not: null}} } // is integer check needed if there is a number before it
         ),
         { tag: "amount", checks: {isinteger: null},
             next: [
                 circularUsageOption(
-                    { tag: "item", checks: {matches: {not: /[^a-zA-Z?!.,;:'"()]/}, isempty: {not: null}} }
+                    { tag: "item", checks: {matches: {not: /[^a-zA-Z?!.,;:'"()]/}, isempty: {not: null}, isinteger: {not: null}} }
                 )
             ]
         }
@@ -48,7 +48,7 @@ module.exports = {
             return;
         }
 
-        message.reply(`You bought ${amount} ${share.name} share{amount !== 1 ? 's' : ''}.`);
+        message.reply(`You bought ${amount} ${share.name} share${amount !== 1 ? "s" : ""}.`);
 
         const user = await Users.findOne({
             where: {
@@ -56,8 +56,8 @@ module.exports = {
             }
         });
 
+        message.client.currency.add(message.author.id, -share.currentPrice * amount);
         for (let i = 0; i < amount; ++i) {
-            message.client.currency.add(message.author.id, -share.currentPrice);
             await user.addShare(share);
         }
     }
