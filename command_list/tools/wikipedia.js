@@ -18,6 +18,11 @@ module.exports = {
     execute (message, args) {
         request("https://en.wikipedia.org/w/api.php?action=opensearch&limit=1&namespace=0&format=json&search=" + args.join(" "), (error, response, body) => {
             const parsedBody = JSON.parse(body);
+
+            if(parsedBody[3].length === 0) {
+                return message.reply("Definition not found.");
+            }
+
             message.channel.send(parsedBody[1][0] + ": " + parsedBody[3][0]);
         });
     }

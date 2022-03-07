@@ -23,7 +23,7 @@
     "node": "^17.3.0",
     "node-html-parser": "^5.2.0",
     "node-pre-gyp": "^0.17.0",
-    "pm2": "^5.1.2",
+    "pm2": "^5.2.0",
     "request": "^2.88.2",
     "sequelize": "^6.13.0",
     "sqlite": "^4.0.23",
