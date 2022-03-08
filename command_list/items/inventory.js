@@ -47,7 +47,7 @@ module.exports = {
             }
             if (item.amount === 0) {continue;}
 
-            embed.addField(`${item.item.itemEmoji}${item.item.name}`, `Amount: ${item.amount}, (${item.item.cost})`);
+            embed.addField(`${item.item.itemEmoji}${item.item.name}`, `Amount: ${item.amount}, Cost: ${item.item.cost}<:ripcoin:929759319296192543>`);
 
             itemsWorth += parseInt(items[i].item.cost * items[i].amount);
             embed.setDescription(`Inventory worth: ${itemsWorth}<:ripcoin:929759319296192543>`);
