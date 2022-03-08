@@ -36,6 +36,7 @@ module.exports = {
         }
 
         let embed;
+        let itemsWorth = 0;
 
         for (let i = 0; i < items.length; ++i) {
             const item = items[i];
@@ -46,7 +47,10 @@ module.exports = {
             }
             if (item.amount === 0) {continue;}
 
-            embed.addField(`${item.item.itemEmoji}${item.item.name}`, `Amount: ${item.amount}`);
+            embed.addField(`${item.item.itemEmoji}${item.item.name}`, `Amount: ${item.amount}, (${item.item.cost})`);
+
+            itemsWorth += parseInt(items[i].item.cost * items[i].amount);
+            embed.setDescription(`Inventory worth: ${itemsWorth}<:ripcoin:929759319296192543>`);
         }
 
         // Check if an embed has 0 fields, due to skipped items in the db, if so, remove the embed entirely from the array.
