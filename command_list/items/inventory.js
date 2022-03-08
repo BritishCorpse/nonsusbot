@@ -35,7 +35,6 @@ module.exports = {
             return;
         }
 
-        
         let embed;
 
         for (let i = 0; i < items.length; ++i) {
