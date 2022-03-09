@@ -56,9 +56,24 @@ module.exports = {
             }
         });
 
+        let increase = 0;
+
         message.client.currency.add(message.author.id, -share.currentPrice * amount);
         for (let i = 0; i < amount; ++i) {
             await user.addShare(share);
+
+            increase++;
         }
+
+        const stockPrice = parseInt(share.currentPrice);
+        const newStockPrice = stockPrice + increase;
+
+        const currentAmountBought = share.amountBought;
+        const amountToIncrease = currentAmountBought + increase;
+
+        await Stocks.update({ amountBought: amountToIncrease }, { where: { id: share.id } });
+
+        await Stocks.update({ oldPrice: share.currentPrice }, { where: { id: share.id } });
+        await Stocks.update({ currentPrice: newStockPrice }, { where: { id: share.id } });
     }
 };

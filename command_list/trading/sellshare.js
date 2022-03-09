@@ -53,7 +53,6 @@ module.exports = {
             shareInDb.amount -= amount;
             shareInDb.save();
         }
-        
     
         // Complain if the user does not have the share.
         else {
@@ -66,5 +65,16 @@ module.exports = {
 
         // Send congratulations message to let the user know that something actually happened.
         message.channel.send(`You sold ${amount} ${share.name} for ${share.currentPrice * amount}<:ripcoin:929759319296192543>!`);
+
+        const currentAmountBought = share.amountBought;
+        const newAmount = currentAmountBought - amount;
+
+        await Stocks.update({ amountBought: newAmount }, { where: { id: share.id } });
+
+        const stockPrice = parseInt(share.currentPrice);
+        const newStockPrice = stockPrice - amount;
+        
+        await Stocks.update({ oldPrice: share.currentPrice }, { where: { id: share.id } });
+        await Stocks.update({ currentPrice: newStockPrice }, { where: { id: share.id } });
     }
 };
