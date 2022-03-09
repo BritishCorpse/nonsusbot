@@ -8,6 +8,7 @@ module.exports = {
         client.on("messageUpdate", async (oldMessage, newMessage) => {
             if (oldMessage.author.bot) return;
 
+            if (oldMessage.content === newMessage.content) {return;}
             let logChannel;
             if (client.serverConfig.get(oldMessage.guild.id).log_channel_id) {
                 logChannel = await client.channels.fetch(client.serverConfig.get(oldMessage.guild.id).log_channel_id);
