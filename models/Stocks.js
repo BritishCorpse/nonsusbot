@@ -24,6 +24,14 @@ module.exports = (sequelize, DataTypes) => {
         lastUpdated: {
             type: DataTypes.STRING,
             allowNull: true
+        },
+        displayName: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        amountBought: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
         }
 
     }, {

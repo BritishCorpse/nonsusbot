@@ -10,14 +10,29 @@ const sequelize = new Sequelize("currency_database", "username", "password", {
 const CurrencyShop = require("./models/CurrencyShop")(sequelize, Sequelize.DataTypes);
 require("./models/Users")(sequelize, Sequelize.DataTypes);
 require("./models/UserItems")(sequelize, Sequelize.DataTypes);
-require("./models/Stocks")(sequelize, Sequelize.DataTypes);
+const Stocks = require("./models/Stocks")(sequelize, Sequelize.DataTypes);
 require("./models/UserPortfolio")(sequelize, Sequelize.DataTypes);
 require("./models/Levels")(sequelize, Sequelize.DataTypes);
 require("./models/Counting")(sequelize, Sequelize.DataTypes);
 
 const force = process.argv.includes("--force") || process.argv.includes("-f");
 
+
+// Here I present, organised spaghetti code, this is just a base format for the tables to makes sure that everything exists.
 sequelize.sync({ force }).then(async () => {
+    const stocks = [
+        Stocks.upsert({ id: 1000, name: "GC", oldPrice: "2287135438", currentPrice: "2287135438", averageChange: "1", lastUpdated: "0", displayName: "Graveyard Casino", amountBought: 0}),
+        Stocks.upsert({ id: 1001, name: "PAS", oldPrice: "0", currentPrice: "1000", averageChange: "0.5", lastUpdated: "0", displayName: "Pets And Stuff", amountBought: 0}),
+        Stocks.upsert({ id: 1002, name: "AWS", oldPrice: "0", currentPrice: "33333", averageChange: "5", lastUpdated: "0", displayName: "Amazing", amountBought: 0}),
+        Stocks.upsert({ id: 1003, name: "GS", oldPrice: "0", currentPrice: "1007", averageChange: "3", lastUpdated: "0", displayName: "GameStep", amountBought: 0}),
+        Stocks.upsert({ id: 1004, name: "GRND", oldPrice: "0", currentPrice: "900", averageChange: "0.3", lastUpdated: "0", displayName: "Grandma's Cookie Factory", amountBought: 0}),
+        Stocks.upsert({ id: 1005, name: "NVD", oldPrice: "0", currentPrice: "2349", averageChange: "10", lastUpdated: "0", displayName: "Nvooders", amountBought: 0}),
+        Stocks.upsert({ id: 1006, name: "DNF", oldPrice: "0", currentPrice: "1000000", averageChange: "2", lastUpdated: "0", displayName: "Danish Films", amountBought: 0}),
+        Stocks.upsert({ id: 1007, name: "EE", oldPrice: "0", currentPrice: "4000", averageChange: "4", lastUpdated: "0", displayName: "Egirl Empire", amountBought: 0}),
+        Stocks.upsert({ id: 1008, name: "TWC", oldPrice: "0", currentPrice: "345", averageChange: "10", lastUpdated: "0", displayName: "Twootch", amountBought: 0}),
+        Stocks.upsert({ id: 1009, name: "KMBP", oldPrice: "0", currentPrice: "3000000", averageChange: "1", lastUpdated: "0", displayName: "Kim & Bap", amountBought: 0})
+    ];
+
     const shop = [ 
         CurrencyShop.upsert({ itemEmoji: "<:gembadge:926886708497248416>", name: "Gem Badge", cost: 1000000, itemDescription: "Ooh shiny!", category: "Badges"}),
         CurrencyShop.upsert({ itemEmoji: "<:bluebadge:926888981306691634>", name: "Diamond Badge", cost: 1000000, itemDescription: "Ooh shiny!", category: "Badges"}),
@@ -121,6 +136,8 @@ sequelize.sync({ force }).then(async () => {
         CurrencyShop.upsert({ itemEmoji: "🚙", name: "Fresh car smell in a bottle", cost: 40, itemDescription: "SO REFRESHING😍", category: "Weird Things"}),
         CurrencyShop.upsert({ itemEmoji: "🪵", name: "Wooden plank", cost: 20, itemDescription: "Literally a wooden plank.", category: "Wooden"}),
     ];
+    await Promise.all(stocks);
+    console.log("Stocks database synced.");
     await Promise.all(shop);
     console.log("Currency database synced.");
 

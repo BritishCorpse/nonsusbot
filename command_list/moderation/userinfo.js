@@ -23,14 +23,19 @@ module.exports = {
             return;
         }
 
+        if (target.bot) {
+            message.channel.send("Shh, bots are private!");
+            return;
+        }
+
         else {
             const embed = new MessageEmbed()
                 .setTitle(`Userinfo about ${target.user.tag}`)
                 .setColor(randomColor)
                 .addField(`${user.username}'s badge is:`, `${userInDb.badge || "User does not have a badge."}`)
-                .addField(`${user.username}'s balance is:`, `${userInDb.balance}<:ripcoin:929440348831354980>`)
+                .addField(`${user.username}'s balance is:`, `${userInDb.balance}<:ripcoin:929759319296192543>`)
                 .addField(`${user.username} joined at:`, ` ${new Date(target.joinedTimestamp)}`, true)
-                .addField(`${user.username}'s account was created at:`, ` ${new Date(target.createdTimestamp)}`, true)
+                .addField(`${user.username}'s account was created at:`, ` ${new Date(target.user.createdTimestamp)}`, true)
                 .addField(`${user.username}'s nickname is:`, ` ${target.nickname || "None"}`, true)
                 .addField(`${user.username}'s presence is:`, ` ${target.presence || "No presence"}`, true)
                 .addField(`${user.username}'s role amount is:`, `${target.roles.cache.size - 1}`, true)
@@ -42,7 +47,7 @@ module.exports = {
                 .addField(`${user.username}'s display colour in hexadecimal code is:`, `${target.displayHexColor}`, true)
                 .addField(`${user.username}'s id is:`, `${target.id}`, true)
                 .setImage(target.displayAvatarURL({ format: "png"}));
-    
+                
             message.channel.send({embeds: [embed]});
         }
 

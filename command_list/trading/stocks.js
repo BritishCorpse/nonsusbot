@@ -36,7 +36,7 @@ module.exports = {
             }
 
             else {
-                embed.addField(`${stock.name}`, `Last price: ${stock.oldPrice}<:ripcoin:929759319296192543>, Current price: ${stock.currentPrice}<:ripcoin:929759319296192543>`);
+                embed.addField(`${stock.name} (${stock.displayName})`, `Yesterday's price: ${stock.oldPrice}<:ripcoin:929759319296192543>, Current price: ${stock.currentPrice}<:ripcoin:929759319296192543>, Amount of shares bought: ${stock.amountBought}, Average change rate: ${stock.averageChange}%`);
             }
         }
 
