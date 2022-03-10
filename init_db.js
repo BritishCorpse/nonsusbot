@@ -54,12 +54,7 @@ sequelize.sync({ force }).then(async () => {
         Stocks.upsert({ id: 10030, name: "BNB", oldPrice: "0", currentPrice: "60093", averageChange: "4", lastUpdted: "0", displayName: "Beet & Beef", amountBought: 0}),
         Stocks.upsert({ id: 10031, name: "LTW", oldPrice: "0", currentPrice: "89232", averageChange: "2", lastUpdated: "0", displayName: "Light The World", amountBought: 0}),
         Stocks.upsert({ id: 10032, name: "GWSC", oldPrice: "0", currentPrice: "9524", averageChange: "0", lastUpdated: "0", displayName: "Glowsticks Corp", amountBought: 0}),
-        Stocks.upsert({ id: 10033, name: "TGD", oldPrice: "0", currentPrice: "1573985323", averageChange: "10", lastUpdated: "0", displayName: "The Gamblers Dream", amountBought: 0}),
-        
-
-
-
-        
+        Stocks.upsert({ id: 10033, name: "TGD", oldPrice: "0", currentPrice: "1573985323", averageChange: "10", lastUpdated: "0", displayName: "The Gamblers Dream", amountBought: 0}),        
     ];
 
     const shop = [ 
