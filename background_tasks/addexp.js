@@ -44,7 +44,7 @@ module.exports = {
                 where: { userId: message.author.id, guildId: message.channel.guild.id }
             });
             if(userInDb === null) {
-                return Levels.create({ userId: message.author.id, guildId: message.channel.guild.id, level: 1, exp: 1, reqExp: 1000 });
+                return Levels.create({ userId: message.author.id, guildId: message.channel.guild.id, level: 1, exp: 1, reqExp: 200 });
             }
 
             if (!userInDb.exp) {
@@ -57,7 +57,7 @@ module.exports = {
             if (userInDb.exp >= userInDb.reqExp) {
                 await Levels.update({level: userInDb.level + 1}, {where: {userId: message.author.id, guildId: message.channel.guild.id}});
 
-                await Levels.update({reqExp: userInDb.level * 1000}, {where: {userId: message.author.id, guildId: message.channel.guild.id}});
+                await Levels.update({reqExp: userInDb.level * 200}, {where: {userId: message.author.id, guildId: message.channel.guild.id}});
 
                 await Levels.update({exp: 1}, {where: {userId: message.author.id, guildId: message.channel.guild.id}}).then(async () => {
 
