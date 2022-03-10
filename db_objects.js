@@ -28,6 +28,7 @@ UserItems.belongsTo(CurrencyShop, { foreignKey: "item_id", as: "item" }); // for
 //SelfRoleCategories.belongsTo(SelfRoleChannels, { foreignKey: "guild_id", as: "channel" });
 
 SelfRoleCategories.hasMany(SelfRoleRoles, { sourceKey: "id", foreignKey: "category_id", as: "roles" });
+SelfRoleChannels.hasMany(SelfRoleMessages, { sourceKey: "channel_id", foreignKey: "channel_id", as: "messages" });
 SelfRoleMessages.hasOne(SelfRoleCategories, { sourceKey: "category_id", foreignKey: "id", as: "category" });
 
 Users.prototype.addItem = async function(item) { // function is used instead of arrow function to be able to use the "this" variable

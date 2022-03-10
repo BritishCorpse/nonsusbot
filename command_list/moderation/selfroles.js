@@ -1,5 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu, DiscordAPIError } = require("discord.js");
-const { /*circularUsageOption,*/ formatBacktick } = require(`${__basedir}/functions`);
+const { MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu } = require("discord.js");
 const { SelfRoleChannels, SelfRoleMessages, SelfRoleCategories, SelfRoleRoles } = require(`${__basedir}/db_objects`);
 
 
@@ -26,9 +25,9 @@ async function promptOptions(channel, user, promptMessage, options) {
     });
 
     const filter = interaction => interaction.user.id === user.id;
-    // max time for collector
+    // max time for collector is below (but reduced it to 60 seconds)
     //const collector = message.createMessageComponentCollector({filter, time: 2_147_483_647});
-    const collector = message.createMessageComponentCollector({filter, time: 10000});
+    const collector = message.createMessageComponentCollector({filter, time: 60000});
 
     return new Promise((resolve, reject) => {
         collector.on("end", () => {
@@ -175,7 +174,7 @@ async function inputEmoji(channel, user) {
         testMessage = await channel.send("Testing for emoji...");
         looping = false;
         await testMessage.react(emoji)
-            .catch(error => {
+            .catch(() => {
                 testMessage.edit(`${emoji} is not an emoji! Please try again!`);
                 looping = true;
             });
@@ -187,15 +186,37 @@ async function inputEmoji(channel, user) {
 }
 
 
+async function promptDiscordRole(channel, user) {
+    // this only prompts for roles that are under the user's highest role in the channel.guild
+    // also this removes the @everyone role (@everyone role id is equal to guild id)
+    const guildMember = await channel.guild.members.fetch(user);
+    const allRolesUnderUser = (await channel.guild.roles.fetch())
+        .filter(role => {
+            console.log(role.id === channel.guild.id, role.name);
+            return role.id !== channel.guild.id
+                && role.comparePositionTo(
+                    guildMember.roles.highest
+                ) < 0;
+        });
+
+    const optionChosen = await promptOptions(channel, user,
+        "Enter the discord role:", allRolesUnderUser.map(role => `${role.name}`));
+    
+    return allRolesUnderUser.at(optionChosen);
+}
+
+
 async function createRole(channel, user, category) {
     // add role to category
     const roleName = await inputText(channel, user, "Enter the name of the role:");
     const emoji = await inputEmoji(channel, user);
+    const discordRole = await promptDiscordRole(channel, user);
 
     const role = await SelfRoleRoles.create({
         name: roleName,
         emoji: emoji,
-        category_id: category.id
+        category_id: category.id,
+        role_id: discordRole.id
     });
 
     channel.send(`Added the role ${formatRole(role)}!`);
@@ -209,6 +230,7 @@ async function editRole(channel, user, role) {
             `Edit the role ${formatRole(role)}:`, [
                 "Edit emoji",
                 "Rename",
+                "Change the discord role",
                 "Delete",
                 "Finish"
             ]);
@@ -228,6 +250,12 @@ async function editRole(channel, user, role) {
             });
 
         } else if (optionChosen === 2) {
+            const discordRole = await promptDiscordRole(channel, user);
+
+            role.update({
+                role_id: discordRole.id
+            });
+        } else if (optionChosen === 3) {
             // remove role from category
             if (await areYouSure(channel, user)) {
                 role.destroy();
@@ -235,7 +263,7 @@ async function editRole(channel, user, role) {
                 looping = false;
             }
           
-        } else if (optionChosen === 3) {
+        } else if (optionChosen === 4) {
             channel.send("Finished editing the role.");
             looping = false;
         }
@@ -257,14 +285,14 @@ async function editCategory(channel, user, category) {
 
         if (optionChosen === 0) {
             await createRole(channel, user, category)
-                .catch(error => {
+                .catch(() => {
                     looping = false; // stop if user fell asleep
                     asleepWarning(channel, user);
                 });
         } else if (optionChosen === 1) {
             // show the roles in a drop down and then edit it
             const role = await promptRole(channel, user, category)
-                .catch(error => {
+                .catch(() => {
                     asleepWarning(channel, user);
                 });
 
@@ -274,7 +302,7 @@ async function editCategory(channel, user, category) {
 
         } else if (optionChosen === 2) {
             const categoryName = await inputText(channel, user, "Enter the name of the category:")
-                .catch(error => {
+                .catch(() => {
                     asleepWarning(channel, user);
                 });
 
@@ -288,7 +316,7 @@ async function editCategory(channel, user, category) {
             // remove category
               
             const sure = await areYouSure(channel, user)
-                .catch(error => {
+                .catch(() => {
                     looping = false; // stop if user fell asleep
                     asleepWarning(channel, user);
                 });
@@ -346,7 +374,8 @@ async function sendSelfRoleMessages(channel, targetChannel, save=false) {
         if (save) {
             SelfRoleMessages.create({
                 message_id: message.id,
-                category_id: category.id
+                category_id: category.id,
+                channel_id: targetChannel.id
             });
         }
 
@@ -393,27 +422,27 @@ module.exports = {
                     "Add a category",
                     "Edit a category",
                     "Finish"
-                ]).catch(error => {
+                ]).catch(() => {
                     fellAsleep(message.channel, message.author);
                     looping = false;
                 });
 
                 if (optionChosen === 0) {
                     await createCategory(message.channel, message.author)
-                        .catch(error => {
+                        .catch(() => {
                             asleepWarning(message.channel, message.author);
                         });
                 } else if (optionChosen === 1) {
                     // show the categories in a drop down and then edit it
                     const category = await promptCategory(message.channel, message.author)
-                        .catch(error => {
+                        .catch(() => {
                             asleepWarning(message.channel, message.author);
                         });
 
                     if (!category) continue;
 
                     await editCategory(message.channel, message.author, category)
-                        .catch(error => {
+                        .catch(() => {
                             asleepWarning(message.channel, message.author);
                         });
                     
@@ -427,9 +456,9 @@ module.exports = {
             sendSelfRoleMessages(message.channel, message.channel);
 
         } else if (args[0] === "send") {
-            // set the channel where the self roles are
+            // set the channel where the self roles are to be sent
             const selfRoleChannel = await promptChannel(message.channel, message.author)
-                .catch(error => {
+                .catch(() => {
                     fellAsleep(message.channel, message.author);
                 });
 

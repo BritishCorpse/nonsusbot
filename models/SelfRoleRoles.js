@@ -17,6 +17,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        role_id: {
+            type: DataTypes.STRING,
+            unique: true,
+            allowNull: false,
+        },
     }, {
         timestamps: false,
     });

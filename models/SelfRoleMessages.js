@@ -5,6 +5,10 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             primaryKey: true
         },
+        channel_id: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         category_id: {
             type: DataTypes.STRING,
             allowNull: false
