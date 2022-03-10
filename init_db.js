@@ -30,7 +30,36 @@ sequelize.sync({ force }).then(async () => {
         Stocks.upsert({ id: 1006, name: "DNF", oldPrice: "0", currentPrice: "1000000", averageChange: "2", lastUpdated: "0", displayName: "Danish Films", amountBought: 0}),
         Stocks.upsert({ id: 1007, name: "EE", oldPrice: "0", currentPrice: "4000", averageChange: "4", lastUpdated: "0", displayName: "Egirl Empire", amountBought: 0}),
         Stocks.upsert({ id: 1008, name: "TWC", oldPrice: "0", currentPrice: "345", averageChange: "10", lastUpdated: "0", displayName: "Twootch", amountBought: 0}),
-        Stocks.upsert({ id: 1009, name: "KMBP", oldPrice: "0", currentPrice: "3000000", averageChange: "1", lastUpdated: "0", displayName: "Kim & Bap", amountBought: 0})
+        Stocks.upsert({ id: 1009, name: "KMBP", oldPrice: "0", currentPrice: "3000000", averageChange: "1", lastUpdated: "0", displayName: "Kim & Bap", amountBought: 0}),
+        Stocks.upsert({ id: 10010, name: "SAS", oldPrice: "0", currentPrice: "10653", averageChange: "2", lastUpdated: "0", displayName: "Sheep & Shite", amountBought: 0}),
+        Stocks.upsert({ id: 10011, name: "SB", oldPrice: "0", currentPrice: "1534", averageChange: "1", lastUpdated: "0", displayName: "Soduko Bros", amountBought: 0}),
+        Stocks.upsert({ id: 10012, name: "MS", oldPrice: "0", currentPrice: "1476543", averageChange: "0.5", lastUpdated: "0", displayName: "Megasoft", amountBought: 0}),
+        Stocks.upsert({ id: 10013, name: "PR", oldPrice: "0", currentPrice: "1126894", averageChange: "0.5", lastUpdated: "0", displayName: "Pear", amountBought: 0}),
+        Stocks.upsert({ id: 10014, name: "NTA", oldPrice: "0", currentPrice: "573849", averageChange: "1", lastUpdated: "0", displayName: "Nature Association", amountBought: 0}),
+        Stocks.upsert({ id: 10015, name: "DISC", oldPrice: "0", currentPrice: "573242", averageChange: "1", lastUpdated: "0", displayName: "Disc-Org", amountBought: 0}),
+        Stocks.upsert({ id: 10016, name: "PHLS", oldPrice: "0", currentPrice: "750439", averageChange: "3", lastUpdated: "0", displayName: "Phils", amountBought: 0}),
+        Stocks.upsert({ id: 10017, name: "MRSP", oldPrice: "0", currentPrice: "12535", averageChange: "0.9", lastUpdated: "0", displayName: "Mrs Prongs", amountBought: 0}),
+        Stocks.upsert({ id: 10018, name: "WWW", oldPrice: "0", currentPrice: "1235426548", averageChange: "0.5", lastUpdated: "0", displayName: "Wizard's and Witches' Wands", amountBought: 0}),
+        Stocks.upsert({ id: 10019, name: "BGEL", oldPrice: "0", currentPrice: "16254262520", averageChange: "1", lastUpdated: "0", displayName: "Big Evil", amountBought: 0}),
+        Stocks.upsert({ id: 10020, name: "GGS", oldPrice: "0", currentPrice: "100245787865", averageChange: "0.3", lastUpdated: "0", displayName: "Girthy Gems", amountBought: 0}),
+        Stocks.upsert({ id: 10021, name: "SM", oldPrice: "0", currentPrice: "1573829", averageChange: "2", lastUpdated: "0", displayName: "Silky Milk", amountBought: 0}),
+        Stocks.upsert({ id: 10022, name: "ASS", oldPrice: "0", currentPrice: "100583953", averageChange: "4", lastUpdated: "0", displayName: "Arson Assassins", amountBought: 0}),
+        Stocks.upsert({ id: 10023, name: "CP", oldPrice: "0", currentPrice: "303869", averageChange: "1", lastUpdated: "0", displayName: "Corn Palace", amountBought: 0}),
+        Stocks.upsert({ id: 10024, name: "RX", oldPrice: "0", currentPrice: "1859392", averageChange: "1", lastUpdated: "0", displayName: "Rotex", amountBought: 0}),
+        Stocks.upsert({ id: 10025, name: "GM", oldPrice: "0", currentPrice: "15938492", averageChange: "0.5", lastUpdated: "0", displayName: "Graveyard Market", amountBought: 0}),
+        Stocks.upsert({ id: 10026, name: "THD", oldPrice: "0", currentPrice: "30583", averageChange: "0.8", lastUpdated: "0", displayName: "THE Dentist", amountBought: 0}),
+        Stocks.upsert({ id: 10027, name: "KBS", oldPrice: "0", currentPrice: "45938", averageChange: "1", lastUpdated: "0", displayName: "Keem Switches Corp", amountBought: 0}),
+        Stocks.upsert({ id: 10028, name: "KBC", oldPrice: "0", currentPrice: "25948", averageChange: "1", lastUpdated: "0", displayName: "Keep Caps Corp", amountBought: 0}),
+        Stocks.upsert({ id: 10029, name: "PPGB", oldPrice: "0", currentPrice: "750398", averageChange: "2", lastUpdated: "0", displayName: "Propaganda Bros", amountBought: 0}),
+        Stocks.upsert({ id: 10030, name: "BNB", oldPrice: "0", currentPrice: "60093", averageChange: "4", lastUpdted: "0", displayName: "Beet & Beef", amountBought: 0}),
+        Stocks.upsert({ id: 10031, name: "LTW", oldPrice: "0", currentPrice: "89232", averageChange: "2", lastUpdated: "0", displayName: "Light The World", amountBought: 0}),
+        Stocks.upsert({ id: 10032, name: "GWSC", oldPrice: "0", currentPrice: "9524", averageChange: "0", lastUpdated: "0", displayName: "Glowsticks Corp", amountBought: 0}),
+        Stocks.upsert({ id: 10033, name: "TGD", oldPrice: "0", currentPrice: "1573985323", averageChange: "10", lastUpdated: "0", displayName: "The Gamblers Dream", amountBought: 0}),
+        
+
+
+
+        
     ];
 
     const shop = [ 
