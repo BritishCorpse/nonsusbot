@@ -36,6 +36,9 @@ module.exports = {
             if (message.author.bot && !testing) return;
             if (message.author.bot && testing && message.author.id !== developmentConfig.testing_bot_discord_user_id) return;
 
+            // Check the word count and assign the variable expAmount to it.
+            const expAmount = message.content.split(" ").length;
+
             //find user, give user 1 exp, check reqexp, if exp >= reqexp, level ++;
             const userInDb = await Levels.findOne({
                 where: { userId: message.author.id, guildId: message.channel.guild.id }
@@ -48,7 +51,7 @@ module.exports = {
                 userInDb.exp = 0;
             }
 
-            userInDb.exp += 1;
+            userInDb.exp += expAmount;
             userInDb.save();
 
             if (userInDb.exp >= userInDb.reqExp) {
