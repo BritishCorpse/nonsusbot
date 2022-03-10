@@ -44,40 +44,54 @@ module.exports = {
                 where: { userId: message.author.id, guildId: message.channel.guild.id }
             });
             if(userInDb === null) {
-                return Levels.create({ userId: message.author.id, guildId: message.channel.guild.id, level: 1, exp: 1, reqExp: 200 });
+                return Levels.create({ userId: message.author.id, guildId: message.channel.guild.id, level: 1, exp: 1, reqExp: 200, lastMessage: Date.now() });
             }
 
             if (!userInDb.exp) {
                 userInDb.exp = 0;
-            }
+            }       
 
-            userInDb.exp += expAmount;
-            userInDb.save();
-
-            if (userInDb.exp >= userInDb.reqExp) {
-                await Levels.update({level: userInDb.level + 1}, {where: {userId: message.author.id, guildId: message.channel.guild.id}});
-
-                await Levels.update({reqExp: userInDb.level * 200}, {where: {userId: message.author.id, guildId: message.channel.guild.id}});
-
-                await Levels.update({exp: 1}, {where: {userId: message.author.id, guildId: message.channel.guild.id}}).then(async () => {
-
-                    if (!levelChannel) return;
-
-                    const userInDbTwo = await Levels.findOne({
-                        where: { userId: message.author.id, guildId: message.channel.guild.id }
+            if((Date.now() - 5000 ) > userInDb.lastMessage) {
+                userInDb.exp += expAmount;
+                userInDb.lastMessage = Date.now();
+                userInDb.save();
+    
+    
+                if (userInDb.exp >= userInDb.reqExp) {
+                    await Levels.update({level: userInDb.level + 1}, {where: {userId: message.author.id, guildId: message.channel.guild.id}});
+    
+                    await Levels.update({reqExp: userInDb.level * 200}, {where: {userId: message.author.id, guildId: message.channel.guild.id}});
+                    
+                    await Levels.update({exp: 1}, {where: {userId: message.author.id, guildId: message.channel.guild.id}}).then(async () => {
+    
+                        if (!levelChannel) return;
+    
+                        const userInDbTwo = await Levels.findOne({
+                            where: { userId: message.author.id, guildId: message.channel.guild.id }
+                        });
+    
+                        const embed = new MessageEmbed()
+                            .setTitle(`${message.author.username} has reached level ${userInDbTwo.level}!`)
+                            .setDescription(`${userInDbTwo.reqExp} EXP until the next level.`)
+                            .setFooter({text: `For leveling up you earned ${userInDb.level * 1000} RIP coin!`})
+                            .setImage(images[Math.floor(Math.random() * images.length)])
+                            .setColor(randomColor);
+    
+                        levelChannel.send({embeds: [embed]});
+                        message.client.currency.add(message.author.id, userInDb.level * 1000);
                     });
+                }
 
-                    const embed = new MessageEmbed()
-                        .setTitle(`${message.author.username} has reached level ${userInDbTwo.level}!`)
-                        .setDescription(`${userInDbTwo.reqExp} EXP until the next level.`)
-                        .setFooter({text: `For leveling up you earned ${userInDb.level * 1000} RIP coin!`})
-                        .setImage(images[Math.floor(Math.random() * images.length)])
-                        .setColor(randomColor);
 
-                    levelChannel.send({embeds: [embed]});
-                    message.client.currency.add(message.author.id, userInDb.level * 1000);
-                });
             }
+
+            else {              
+                userInDb.lastMessage = Date.now();
+                userInDb.save();
+                return;
+            }
+
+
         });
     }
 };

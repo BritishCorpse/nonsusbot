@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
         reqExp: {
             type: DataTypes.INTEGER,
             allowNull: true
+        },
+        lastMessage: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
         }
     }, {
         timestamps: false,
