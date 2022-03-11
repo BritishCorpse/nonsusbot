@@ -190,12 +190,17 @@ async function promptDiscordRole(channel, user) {
     // this only prompts for roles that are under the user's highest role in the channel.guild
     // also this removes the @everyone role (@everyone role id is equal to guild id)
     const guildMember = await channel.guild.members.fetch(user);
+    const botGuildMember = await channel.guild.members.fetch(channel.client.user);
+
     const allRolesUnderUser = (await channel.guild.roles.fetch())
         .filter(role => {
             console.log(role.id === channel.guild.id, role.name);
             return role.id !== channel.guild.id
                 && role.comparePositionTo(
                     guildMember.roles.highest
+                ) < 0
+                && role.comparePositionTo(
+                    botGuildMember.roles.highest
                 ) < 0;
         });
 
