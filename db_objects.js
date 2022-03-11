@@ -23,12 +23,11 @@ const SelfRoleRoles = require("./models/SelfRoleRoles")(sequelize, Sequelize.Dat
 UserPortfolio.belongsTo(Stocks, { foreignKey: "share_id", as: "shares" });
 UserItems.belongsTo(CurrencyShop, { foreignKey: "item_id", as: "item" }); // foreignKey sets the key to be used from UserItems to look up in CurrencyShop
 
-// table relationships for the self role system
+// table relationships for the self role system (the ones that aren't used, but could be in the future, are commented out)
 //SelfRoleRoles.belongsTo(SelfRoleCategories, { foreignKey: "category_id", as: "category" });
 //SelfRoleCategories.belongsTo(SelfRoleChannels, { foreignKey: "guild_id", as: "channel" });
-
 SelfRoleCategories.hasMany(SelfRoleRoles, { sourceKey: "id", foreignKey: "category_id", as: "roles" });
-SelfRoleChannels.hasMany(SelfRoleMessages, { sourceKey: "channel_id", foreignKey: "channel_id", as: "messages" });
+//SelfRoleChannels.hasMany(SelfRoleMessages, { sourceKey: "channel_id", foreignKey: "channel_id", as: "messages" });
 SelfRoleMessages.hasOne(SelfRoleCategories, { sourceKey: "category_id", foreignKey: "id", as: "category" });
 
 Users.prototype.addItem = async function(item) { // function is used instead of arrow function to be able to use the "this" variable
