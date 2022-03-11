@@ -47,6 +47,7 @@ const client = new Discord.Client({
         Discord.Intents.FLAGS.GUILD_BANS,
         Discord.Intents.FLAGS.GUILD_SCHEDULED_EVENTS,
     ],
+    partials: ["MESSAGE", "REACTION"],      // allows emitting reaction add events on previous messages (needed for self roles)
     allowedMentions: {parse: []} // make mentions not ping people
 });
 
