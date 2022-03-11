@@ -47,6 +47,7 @@ const client = new Discord.Client({
         Discord.Intents.FLAGS.GUILD_BANS,
         Discord.Intents.FLAGS.GUILD_SCHEDULED_EVENTS,
     ],
+    partials: ["MESSAGE", "REACTION"],      // allows emitting reaction add events on previous messages (needed for self roles)
     allowedMentions: {parse: []} // make mentions not ping people
 });
 
@@ -117,6 +118,10 @@ if (!testing) {
     });
 }
 
+/*************************************************/
+/*     Setup collection to database functions    */
+/*************************************************/
+
 // Create functions for adding and setting money
 Reflect.defineProperty(client.currency, "add", {
     /* eslint-disable-next-line func-name-matching */
@@ -174,6 +179,9 @@ Reflect.defineProperty(client.currency, "getBalance", {
     },
 });
 
+/*************************************************/
+/*        End of collection/database setup       */
+/*************************************************/
 
 client.once("ready", async () => {
     const storedBalances = await Users.findAll();

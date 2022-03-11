@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
         countedCorrect: {
             type: DataTypes.INTEGER,
             allowNull: true,  
-        },
+        }
     }, {
         timestamps: false,
     });
