@@ -289,6 +289,7 @@ async function editCategory(channel, user, category) {
             `Edit the category ${category.name}:`, [
                 "Add role",
                 "Edit role",
+                "Edit color",
                 "Rename",
                 "Delete",
                 "Finish"
@@ -317,6 +318,28 @@ async function editCategory(channel, user, category) {
             await editRole(channel, user, role);
 
         } else if (optionChosen === 2) {
+            let color;
+            let looping2 = true;
+            while (looping2) {
+                color = await inputText(channel, user, "Pick a color on https://colorpicker.me/ and copy the hex code:")
+                    .catch(() => {
+                        asleepWarning(channel, user);
+                        looping2 = false;
+                    });
+                
+                if (/#[0-9a-fA-F]/.test(color)) looping2 = false;
+
+                if (!looping2) break;
+
+                await channel.send("That is not a valid hex code! It must be in the format `#abcdef`.");
+            }
+
+            if (!/#[0-9a-fA-F]/.test(color)) return; // stop if the user fell asleep
+
+            category.update({
+                color: color
+            });
+        } else if (optionChosen === 3) {
             const categoryName = await inputText(channel, user, "Enter the name of the category:", 20)
                 .catch(() => {
                     asleepWarning(channel, user);
@@ -328,7 +351,7 @@ async function editCategory(channel, user, category) {
                 name: categoryName
             });
 
-        } else if (optionChosen === 3) {
+        } else if (optionChosen === 4) {
             // remove category
               
             const sure = await areYouSure(channel, user)
@@ -345,7 +368,7 @@ async function editCategory(channel, user, category) {
                 channel.send("Deleted the category!");
                 looping = false;
             }
-        } else if (optionChosen === 4) {
+        } else if (optionChosen === 5) {
             channel.send("Finished creating the category.");
             looping = false;
         }
@@ -360,7 +383,8 @@ async function createCategory(channel, user) {
 
     const category = await SelfRoleCategories.create({
         name: categoryName,
-        guild_id: channel.guild.id
+        guild_id: channel.guild.id,
+        color: "DEFAULT" // default color string
     });
 
     channel.send(`Created category ${category.name}!`);
@@ -383,7 +407,8 @@ async function sendSelfRoleMessages(channel, targetChannel, save=false) {
     categories.forEach(async category => {
         const embed = new MessageEmbed()
             .setTitle(category.name)
-            .setDescription(category.roles.map(role => formatRole(role)).join("\n"));
+            .setDescription(category.roles.map(role => formatRole(role)).join("\n"))
+            .setColor(category.color);
         
         const message = await targetChannel.send({ embeds: [embed] });
 
