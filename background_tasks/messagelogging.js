@@ -37,20 +37,11 @@ module.exports = {
             }
             if (logChannel === undefined || !message.content) return;
 
-            const auditLog = await message.channel.guild.fetchAuditLogs({
-                limit: 1,
-                type: "MESSAGE_DELETE"
-            });
-
-            const deleteLog = auditLog.entries.first();
-            const { executor } = deleteLog; 
-
             if (Object.values(client.serverConfig.get(message.guild.id)).includes(message.channel.id)) {
                 return;
             }
 
             const embed = new MessageEmbed()
-                .setAuthor({name: `${executor.username} deleted a message.`, iconURL: executor.avatarURL()})
                 .setColor("RED")
                 .addField("Message author:", `${message.author}`)
                 .addField("Content:", `${message.content || "This message is either integrated or an embed."}`);
