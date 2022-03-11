@@ -77,7 +77,6 @@ module.exports = {
                 return;
             }
 
-
             // Write down the person who got the number and store it in the database.
             dbInfo.lastCounterId = message.author.id;
             dbInfo.save();
@@ -93,12 +92,11 @@ module.exports = {
                 userInDb.amountCounted = 1;
                 userInDb.countedCorrect = 1;
                 userInDb.save();
-
                 return;
             }
 
-            userInDb.amountCounted += 1;
-            userInDb.amountCorrect = 1;
+            userInDb.amountCounted ++;
+            userInDb.countedCorrect ++;
             userInDb.save();
         });
     }

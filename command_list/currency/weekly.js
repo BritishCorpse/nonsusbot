@@ -11,7 +11,6 @@ module.exports = {
 
         const d = new Date();
         const time = d.getTime();
-        console.log(time);
 
         const weeklyMoney = 10000;
 

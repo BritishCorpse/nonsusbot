@@ -10,7 +10,6 @@ module.exports = {
 
         const target = message.mentions.users.first() || message.author;
 
-      console.log(Users);
         const userInDb = await Users.findOne({
             where: {user_id: target.id}
         });
@@ -21,9 +20,9 @@ module.exports = {
 
         const embed = new MessageEmbed()
             .setTitle(`${target.username}'s counting profile.`)
-            .addField("Amount counted:", `${target.amountCounted || "0"}`)
-            .addField("Correctly counted:", `${target.countedCorrect || "0"}`)
-            .addField("Incorrectly counted:", `${target.amountCounted || 0 - target.countedCorrect || 0}`)
+            .addField("Amount counted:", `${userInDb.amountCounted || "0"}`)
+            .addField("Correctly counted:", `${userInDb.countedCorrect || "0"}`)
+            .addField("Incorrectly counted:", `${userInDb.amountCounted - userInDb.countedCorrect || 0 - userInDb.countedCorrect || 0}`)
             .setColor(randomColor);
 
         message.channel.send({ embeds: [embed] });
