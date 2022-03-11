@@ -77,7 +77,7 @@ async function areYouSure(channel, user) {
     const filter = interaction => interaction.user.id === user.id;
     // max time for collector
     //const collector = message.createMessageComponentCollector({filter, time: 2_147_483_647});
-    const collector = message.createMessageComponentCollector({filter, time: 10000});
+    const collector = message.createMessageComponentCollector({filter, time: 60000});
 
     return new Promise((resolve, reject) => {
         collector.on("end", () => {
@@ -99,12 +99,19 @@ async function areYouSure(channel, user) {
 }
 
 
-async function inputText(channel, user, promptMessage) {
-    channel.send(promptMessage);
-    const filter = message => message.author.id === user.id;
-    //const messages = await channel.awaitMessages({filter, time: 2_147_483_647, max: 1, errors: ["time"]});
-    const messages = await channel.awaitMessages({filter, time: 10000, max: 1, errors: ["time"]});
-    return messages.first().content;
+async function inputText(channel, user, promptMessage, maxLength=-1) {
+    while (true) { /* eslint-disable-line no-constant-condition */
+        channel.send(promptMessage);
+        const filter = message => message.author.id === user.id;
+        //const messages = await channel.awaitMessages({filter, time: 2_147_483_647, max: 1, errors: ["time"]});
+        const messages = await channel.awaitMessages({filter, time: 60000, max: 1, errors: ["time"]});
+        
+        if (maxLength >= 0 && messages.first().content.length > maxLength) {
+            await channel.send("The message you sent is too long, please try again!");
+        } else {
+            return messages.first().content;
+        }
+    }
 }
 
 
@@ -175,7 +182,7 @@ async function inputEmoji(channel, user) {
         looping = false;
         await testMessage.react(emoji)
             .catch(() => {
-                testMessage.edit(`${emoji} is not an emoji! Please try again!`);
+                testMessage.edit(`"${emoji}" is not a valid emoji! Please try again!`);
                 looping = true;
             });
     }
@@ -212,7 +219,7 @@ async function promptDiscordRole(channel, user) {
 
 async function createRole(channel, user, category) {
     // add role to category
-    const roleName = await inputText(channel, user, "Enter the name of the role:");
+    const roleName = await inputText(channel, user, "Enter the name of the role:", 20);
     const emoji = await inputEmoji(channel, user);
     const discordRole = await promptDiscordRole(channel, user);
 
@@ -247,7 +254,7 @@ async function editRole(channel, user, role) {
             });
             
         } else if (optionChosen === 1) {
-            const roleName = await inputText(channel, user, "Enter the name of the role:");
+            const roleName = await inputText(channel, user, "Enter the name of the role:", 20);
 
             role.update({
                 name: roleName
@@ -305,7 +312,7 @@ async function editCategory(channel, user, category) {
             await editRole(channel, user, role);
 
         } else if (optionChosen === 2) {
-            const categoryName = await inputText(channel, user, "Enter the name of the category:")
+            const categoryName = await inputText(channel, user, "Enter the name of the category:", 20)
                 .catch(() => {
                     asleepWarning(channel, user);
                 });
@@ -344,7 +351,7 @@ async function editCategory(channel, user, category) {
 async function createCategory(channel, user) {
     // create a new category of self roles
     
-    const categoryName = await inputText(channel, user, "Enter the name of the category:");
+    const categoryName = await inputText(channel, user, "Enter the name of the category:", 20);
 
     const category = await SelfRoleCategories.create({
         name: categoryName,
