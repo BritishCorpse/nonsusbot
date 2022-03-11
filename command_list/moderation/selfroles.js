@@ -295,6 +295,11 @@ async function editCategory(channel, user, category) {
             ]);
 
         if (optionChosen === 0) {
+            if (category.roles.length >= 20) {
+                await channel.send("You cannot have more than 20 roles per category!");
+                continue;
+            }
+
             await createRole(channel, user, category)
                 .catch(() => {
                     looping = false; // stop if user fell asleep
