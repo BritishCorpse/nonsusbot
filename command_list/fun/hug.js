@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "hug",
-    description: "Hug whoever you'd want to.",
+    description: "Hug whoever you'd like to.",
 
     usage: [
         { tag: "user", checks: {isuseridinguild: null}, example: "786301097953591326" }

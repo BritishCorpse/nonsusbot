@@ -16,7 +16,7 @@ const funnyReplies = [
 
 module.exports = {
     name: ["timeout", "to"],
-    description: "Reminds you about something.",
+    description: "Sets a user in timeout.",
 
     usage: [ // This should probably be filled with something useful that could actually be understood and work :smile:
     ],

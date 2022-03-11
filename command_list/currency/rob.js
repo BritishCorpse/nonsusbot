@@ -2,7 +2,7 @@ const { Users } = require(`${__basedir}/db_objects`);
 
 module.exports = {
     name: "rob",
-    description: "Rob a user.",
+    description: "Robs a user.",
     usage: [],
     
     async execute(message) {
