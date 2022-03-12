@@ -8,7 +8,8 @@ const { very_ninja_php_session_id } = require(`${__basedir}/config.json`);
 
 module.exports = {
     name: "mp4",
-    description: "Searches for the MP4 file of any video you want.",
+    description: "Unavailable command",
+    //description: "Searches for the MP4 file of any video you want.",
 
     // regex from http://urlregex.com
     usage: [
