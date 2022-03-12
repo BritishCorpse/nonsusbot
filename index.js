@@ -264,7 +264,7 @@ client.on("messageCreate", async message => {
             }
         }
 
-        message.channel.send(`You do not have these required permissions: ${missingPermissions.map(formatBacktick).join(", ")}`);
+        message.channel.send(`You do not have these required permissions in this channel or server: ${missingPermissions.map(formatBacktick).join(", ")}`);
         return;
     }
 
@@ -285,7 +285,6 @@ client.on("messageCreate", async message => {
     }
 
     // Check for bot permissions
-    console.log(message.guild.me.permissionsIn(message.channel).toArray());
     if (!message.guild.me.permissionsIn(message.channel).has((commandObject.botPermissions || []))) {
         const missingPermissions = [];
         for (const permission of commandObject.botPermissions) {
@@ -294,7 +293,7 @@ client.on("messageCreate", async message => {
             }
         }
 
-        message.channel.send(`I do not have these required permissions: ${missingPermissions.map(formatBacktick).join(", ")}`);
+        message.channel.send(`I do not have these required permissions in this channel or server: ${missingPermissions.map(formatBacktick).join(", ")}`);
         return;
     }
 
