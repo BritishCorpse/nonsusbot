@@ -1,6 +1,6 @@
 module.exports = {
     name: "transfer",
-    description: "Transfer coins from your account to someone else.",
+    description: "Transfer coins from your account to someone else's.",
 
     usage: [
         { tag: "user", checks: {isuseridinguild: null},
@@ -24,6 +24,6 @@ module.exports = {
         message.client.currency.add(transferTarget.id, transferAmount);
         await message.client.currency.add(message.author.id, -transferAmount); // only need to await this one to show the correct number in the message
 
-        return message.channel.send(`Successfully transferred ${transferAmount}<:ripcoin:929759319296192543> to ${transferTarget.tag}. Your remaining balance is: ${message.client.currency.getBalance(message.author.id)}<:ripcoin:929759319296192543>`);
+        message.channel.send(`Successfully transferred ${transferAmount}<:ripcoin:929759319296192543> to ${transferTarget.tag}. Your remaining balance is: ${message.client.currency.getBalance(message.author.id)}<:ripcoin:929759319296192543>`);
     }
 };

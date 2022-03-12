@@ -16,7 +16,9 @@ const funnyReplies = [
 
 module.exports = {
     name: ["timeout", "to"],
-    description: "Reminds you about something.",
+    description: "Sets a user in timeout.",
+    botPermissions: ["MODERATE_MEMBERS"],
+    userPermissions: ["MODERATE_MEMBERS"],
 
     usage: [ // This should probably be filled with something useful that could actually be understood and work :smile:
     ],
@@ -34,7 +36,9 @@ module.exports = {
         }
 
         // Time stuff
-        const timeString = args[1];
+        const timeString = args[1]; 
+
+        if(!args[1]) return message.channel.send("You did not specify a time.");
 
         const timeRegex = /(?:0*(\d+)d)?(?:0*((?:\d)|(?:1\d)|(?:2[0-3]))h)?(?:0*((?:\d)|(?:[1-5]\d))m)?(?:0*((?:\d)|(?:[1-5]\d))s)?/;
 

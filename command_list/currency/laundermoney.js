@@ -1,16 +1,11 @@
 const { MessageEmbed } = require("discord.js");
 
-const { Stocks } = require(`${__basedir}/db_objects`);  
-
 module.exports = {
     name: ["laundermoney", "launder", "lm"],
-    description: "Launder money and get up to 100 thousan<:ripcoin:929759319296192543>! But beware, there is a high chance of being caught!",
+    description: "Launder money and get up to 100 thousand<:ripcoin:929759319296192543>! But beware, there is a high chance of being caught!",
     usage: [],
-    async execute(message) {
-
-        const bankStock = await Stocks.findOne({ where: { id: 3} });
-        
-        const amount = Math.floor(Math.random() * 5000) + 150000 + parseInt(bankStock.currentPrice);
+    async execute(message) {      
+        const amount = Math.floor(Math.random() * 5000) + 150000;
 
         const failOrSuccess = Math.floor(Math.random() * 6);
 

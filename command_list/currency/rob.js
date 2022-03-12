@@ -2,7 +2,7 @@ const { Users } = require(`${__basedir}/db_objects`);
 
 module.exports = {
     name: "rob",
-    description: "Rob a user.",
+    description: "Robs a user.",
     usage: [],
     
     async execute(message) {
@@ -29,7 +29,8 @@ module.exports = {
         }
 
         if (time - 3600000 < userInDb.lastRobbed) {
-            return message.channel.send("Don't beat them while they're down! This person has already been robbed in the past 60 minutes.");
+            message.channel.send("Don't beat them while they're down! This person has already been robbed in the past 60 minutes.");
+            return;
         }
 
         const result = Math.floor(Math.random() * 3);

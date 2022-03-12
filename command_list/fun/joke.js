@@ -10,6 +10,7 @@ const offensive = [];
 module.exports = {
     name: "joke",
     description: "Finds a joke from the database, then sends it in the channel.",
+    botPermissions: ["ADD_REACTIONS"],
 
     usage: [
     ],

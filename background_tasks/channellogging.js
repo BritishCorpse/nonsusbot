@@ -32,7 +32,6 @@ module.exports = {
                 .setAuthor({name: `${executor.tag} created a channel.`, iconURL: executor.avatarURL()})
                 .addField("Channel name:", `${channel.toString()}`)
                 .addField("Channel type:", `${channel.type}`)
-                .addField("Voice channel:", `${channel.isVoice()}`)
                 .addField("Created at:", `${channel.createdAt}`)
                 .setColor("GREEN");
 
@@ -56,7 +55,6 @@ module.exports = {
                 .setAuthor({name: `${executor.tag} deleted a channel.`, iconURL: executor.avatarURL()})
                 .addField("Channel name:", `#${channel.name}`)
                 .addField("Channel type:", `${channel.type}`)
-                .addField("Voice channel:", `${channel.isVoice()}`)
                 .addField("Created at:", `${channel.createdAt}`)
                 .setColor("RED");
 

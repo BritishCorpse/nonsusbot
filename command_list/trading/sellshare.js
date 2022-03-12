@@ -5,7 +5,7 @@ const { UserPortfolio } = require(`${__basedir}/db_objects`);
 
 module.exports = {
     name: "sellshare",
-    description: "Buy shares from the stock market!",
+    description: "Sell shares from the stock market!",
     usage: [
         circularUsageOption(
             { tag: "item", checks: {matches: {not: /[^a-zA-Z?!.,;:'"()]/}, isempty: {not: null}, isinteger: {not: null}} } // is integer check needed if there is amount given

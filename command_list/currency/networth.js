@@ -5,7 +5,7 @@ const { getUserItems } = require(`${__basedir}/functions`);
 
 module.exports = {
     name: "networth",
-    description: "See your net worth!",
+    description: "See your, or someone else's net worth!",
     
     usage: [
         { tag: "user", checks: {isuseridinguild: null} },

@@ -6,7 +6,7 @@ const { saveServerConfig } = require(`${__basedir}/functions`);
 module.exports = {
     name: ["config", "settings", "options"],
     description: "Change bot settings for this server.",
-    userPermissions: ["ADMINISTRATOR"],
+    userPermissions: ["MANAGE_CHANNELS", "MANAGE_MESSAGES", "MANAGE_ROLES"],
 
     usage: [
         { tag: "list", checks: {is: "list"} },
@@ -47,7 +47,7 @@ module.exports = {
     ],
 
     async execute (message, args) {
-        const randomColor = Math.floor(Math.random()*16777215).toString(16);
+        const randomColor = Math.floor(Math.random() * 16777215).toString(16);
         
         if (args[0] === "set") {
             if (args[1] in defaultServerConfig) {

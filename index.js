@@ -56,6 +56,11 @@ client.backgroundTasks = new Discord.Collection();
 client.serverConfig = new Discord.Collection();
 client.currency = new Discord.Collection();
 
+process.on("unhandledRejection", error => {
+    // have this here in case of missing permissions, etc.
+    console.error(error);
+});
+
 // Load commands from the command_list folder
 const categoryFolders = getCommandCategories();
 for (const category of categoryFolders) {
@@ -111,7 +116,7 @@ client.login(config.bot_token)
 client.on("guildCreate", addNewGuildServerConfigs);
 
 
-// start the background tasks once, but not two times becuase that would be a bit silly. 
+// start the background tasks once, but not two times because that would be a bit silly. 
 if (!testing) {
     client.backgroundTasks.forEach(backgroundTask => {
         backgroundTask.execute(client);
@@ -186,7 +191,7 @@ Reflect.defineProperty(client.currency, "getBalance", {
 client.once("ready", async () => {
     const storedBalances = await Users.findAll();
     storedBalances.forEach(b => client.currency.set(b.user_id, b));
-    client.user.setActivity("with dead people | @ me for my prefix!");
+    client.user.setActivity("@ me for my prefix!");
     console.log("Ready and logged in as " + client.user.tag + "!");
     console.log("\u0007"); // bell sound that sounds pretty cool
 
@@ -202,9 +207,9 @@ client.on("messageCreate", async message => {
     // Disable DMs
     if (message.guild === null) return;
 
-    // Log messages
-    const date = new Date(message.createdTimestamp);
-    console.log(`${date.toGMTString()} | ${message.guild.name} | #${message.channel.name} | ${message.author.tag}: ${message.content} ${message.type}`);
+    // Log messages (removed due to TOS reasons)
+    //const date = new Date(message.createdTimestamp);
+    //console.log(`${date.toGMTString()} | ${message.guild.name} | #${message.channel.name} | ${message.author.tag}: ${message.content} ${message.type}`);
 
     let prefix;
     if (testing)
@@ -250,7 +255,7 @@ client.on("messageCreate", async message => {
         }
     }
 
-    // Check for permissions
+    // Check for user permissions
     if (!message.member.permissionsIn(message.channel).has(commandObject.userPermissions || [])) {
         const missingPermissions = [];
         for (const permission of commandObject.userPermissions) {
@@ -259,7 +264,7 @@ client.on("messageCreate", async message => {
             }
         }
 
-        message.channel.send(`You do not have these required permissions: ${missingPermissions.map(formatBacktick).join(", ")}`);
+        message.channel.send(`You do not have these required permissions in this channel or server: ${missingPermissions.map(formatBacktick).join(", ")}`);
         return;
     }
 
@@ -278,7 +283,20 @@ client.on("messageCreate", async message => {
         //message.channel.send("Developer only commands are currently disabled.");
         //return;
     }
-    
+
+    // Check for bot permissions
+    if (!message.guild.me.permissionsIn(message.channel).has((commandObject.botPermissions || []))) {
+        const missingPermissions = [];
+        for (const permission of commandObject.botPermissions) {
+            if (!message.guild.me.permissionsIn(message.channel).has(permission)) {
+                missingPermissions.push(permission);
+            }
+        }
+
+        message.channel.send(`I do not have these required permissions in this channel or server: ${missingPermissions.map(formatBacktick).join(", ")}`);
+        return;
+    }
+
     // If all the checks passed, do the command
     try {
         // Here it does math, and there is a 1% the if statement is true, if it's true, send the embed and then give the user their hard earned money!

@@ -290,6 +290,7 @@ async function editCategory(channel, user, category) {
                 "Add role",
                 "Edit role",
                 "Edit color",
+                "Edit ordering",
                 "Rename",
                 "Delete",
                 "Finish"
@@ -340,6 +341,17 @@ async function editCategory(channel, user, category) {
                 color: color
             });
         } else if (optionChosen === 3) {
+            const orderChosen = await promptOptions(channel, user,
+                "How would you like to order the roles?", [
+                    "By the order they were entered (default)",
+                    "Alphabetically"
+                ]);
+
+            category.update({
+                roleOrder: orderChosen
+            });
+
+        } else if (optionChosen === 4) {
             const categoryName = await inputText(channel, user, "Enter the name of the category:", 20)
                 .catch(() => {
                     asleepWarning(channel, user);
@@ -351,7 +363,7 @@ async function editCategory(channel, user, category) {
                 name: categoryName
             });
 
-        } else if (optionChosen === 4) {
+        } else if (optionChosen === 5) {
             // remove category
               
             const sure = await areYouSure(channel, user)
@@ -368,7 +380,7 @@ async function editCategory(channel, user, category) {
                 channel.send("Deleted the category!");
                 looping = false;
             }
-        } else if (optionChosen === 5) {
+        } else if (optionChosen === 6) {
             channel.send("Finished creating the category.");
             looping = false;
         }
@@ -384,7 +396,8 @@ async function createCategory(channel, user) {
     const category = await SelfRoleCategories.create({
         name: categoryName,
         guild_id: channel.guild.id,
-        color: "DEFAULT" // default color string
+        color: "DEFAULT", // default color string
+        roleOrder: 0,     // default order by input order
     });
 
     channel.send(`Created category ${category.name}!`);
@@ -405,9 +418,20 @@ async function sendSelfRoleMessages(channel, targetChannel, save=false) {
     }
 
     categories.forEach(async category => {
+        const roles = category.roles;
+        if (category.roleOrder === 0) { // order they were entered
+            roles.sort((roleA, roleB) => roleA.id - roleB.id);
+        } else if (category.roleOrder === 1) { // alphabetically
+            // do nothing, as it automatically sorts alphabetically
+        }
+
         const embed = new MessageEmbed()
             .setTitle(category.name)
-            .setDescription(category.roles.map(role => formatRole(role)).join("\n"))
+            .setDescription(
+                roles
+                    .map(role => formatRole(role))
+                    .join("\n")
+            )
             .setColor(category.color);
         
         const message = await targetChannel.send({ embeds: [embed] });
@@ -442,6 +466,7 @@ async function fellAsleep(channel, user) {
 module.exports = {
     name: "selfroles",
     description: "Manage self roles",
+    botPermissions: ["ADD_REACTIONS"],
     userPermissions: ["MANAGE_CHANNELS", "MANAGE_ROLES"],
 
     usage: [
