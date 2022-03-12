@@ -56,6 +56,11 @@ client.backgroundTasks = new Discord.Collection();
 client.serverConfig = new Discord.Collection();
 client.currency = new Discord.Collection();
 
+process.on("unhandledRejection", error => {
+    // have this here in case of missing permissions, etc.
+    console.error(error);
+});
+
 // Load commands from the command_list folder
 const categoryFolders = getCommandCategories();
 for (const category of categoryFolders) {
@@ -111,7 +116,7 @@ client.login(config.bot_token)
 client.on("guildCreate", addNewGuildServerConfigs);
 
 
-// start the background tasks once, but not two times becuase that would be a bit silly. 
+// start the background tasks once, but not two times because that would be a bit silly. 
 if (!testing) {
     client.backgroundTasks.forEach(backgroundTask => {
         backgroundTask.execute(client);
@@ -250,7 +255,7 @@ client.on("messageCreate", async message => {
         }
     }
 
-    // Check for permissions
+    // Check for user permissions
     if (!message.member.permissionsIn(message.channel).has(commandObject.userPermissions || [])) {
         const missingPermissions = [];
         for (const permission of commandObject.userPermissions) {
@@ -278,7 +283,21 @@ client.on("messageCreate", async message => {
         //message.channel.send("Developer only commands are currently disabled.");
         //return;
     }
-    
+
+    // Check for bot permissions
+    console.log(message.guild.me.permissionsIn(message.channel).toArray());
+    if (!message.guild.me.permissionsIn(message.channel).has((commandObject.botPermissions || []))) {
+        const missingPermissions = [];
+        for (const permission of commandObject.botPermissions) {
+            if (!message.guild.me.permissionsIn(message.channel).has(permission)) {
+                missingPermissions.push(permission);
+            }
+        }
+
+        message.channel.send(`I do not have these required permissions: ${missingPermissions.map(formatBacktick).join(", ")}`);
+        return;
+    }
+
     // If all the checks passed, do the command
     try {
         // Here it does math, and there is a 1% the if statement is true, if it's true, send the embed and then give the user their hard earned money!

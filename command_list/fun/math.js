@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "math", 
-    description: "Solve a mathmatical equation for a random amount of ripcoin!",
+    description: "Solve a mathematical equation for a random amount of ripcoin!",
     usage: [],
     execute(message) {
 
@@ -11,7 +11,6 @@ module.exports = {
         const thirdNumber = Math.floor(Math.random() * 10);
 
         const answer = firstNumber + secondNumber * thirdNumber;
-        console.log(answer);
 
         const moneyAmount = Math.floor(Math.random() * 2000) + 1000;
 
@@ -26,8 +25,6 @@ module.exports = {
 
                 message.channel.awaitMessages({filter, time: 30000, max: 1, errors: ["time"]})
                     .then(async collected => {
-
-                        console.log(collected.first().content);
 
                         if (collected.first().content === answer.toString()) {
                             message.channel.send(`The answer is ${answer}. You were correct!\n+${moneyAmount}💰`);

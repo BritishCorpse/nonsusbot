@@ -10,6 +10,8 @@ module.exports = {
     name: "mp4",
     description: "Unavailable command",
     //description: "Searches for the MP4 file of any video you want.",
+    
+    botPermissions: ["ATTACH_FILES"],
 
     // regex from http://urlregex.com
     usage: [

@@ -19,7 +19,8 @@ module.exports = {
 
         // Make sure they cant claim again in 7 days
         if (time - 3600000 < userInDb.lastWorked) {
-            return message.channel.send("WOAH WOAH SLOW DOWN! You're overworked! It hasn't been an hour since you last worked!");
+            message.channel.send("WOAH WOAH SLOW DOWN! You're overworked! It hasn't been an hour since you last worked!");
+            return;
         }
 
         const jobs = ["Doctor",

@@ -3,7 +3,7 @@ const { Levels, Users } = require(`${__basedir}/db_objects`);
 
 module.exports = {
     name: ["leaderboard", "lb"],
-    description: "Shows the user's with the highest levels.",
+    description: "Shows the users with the highest levels.",
 
     usage: [
     ],

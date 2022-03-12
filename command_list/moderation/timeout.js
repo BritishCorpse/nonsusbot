@@ -17,6 +17,8 @@ const funnyReplies = [
 module.exports = {
     name: ["timeout", "to"],
     description: "Sets a user in timeout.",
+    botPermissions: ["MODERATE_MEMBERS"],
+    userPermissions: ["MODERATE_MEMBERS"],
 
     usage: [ // This should probably be filled with something useful that could actually be understood and work :smile:
     ],

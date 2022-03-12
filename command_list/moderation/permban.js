@@ -16,6 +16,7 @@ const funnyReplies = [
 module.exports = {
     name: "permban",
     description: "Permanently bans a user from the guild.",
+    botPermissions: ["BAN_MEMBERS"],
     userPermissions: ["BAN_MEMBERS"],
 
     usage: [

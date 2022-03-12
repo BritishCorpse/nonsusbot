@@ -466,6 +466,7 @@ async function fellAsleep(channel, user) {
 module.exports = {
     name: "selfroles",
     description: "Manage self roles",
+    botPermissions: ["ADD_REACTIONS"],
     userPermissions: ["MANAGE_CHANNELS", "MANAGE_ROLES"],
 
     usage: [

@@ -17,6 +17,7 @@ const funnyReplies = [
 module.exports = {
     name: "tempban",
     description: "Temporarily bans a user from the guild, for a determined amount of days.",
+    botPermissions: ["BAN_MEMBERS"],
     userPermissions: ["BAN_MEMBERS"],
 
     usage: [
