@@ -23,7 +23,7 @@ module.exports = {
             const selfRoleRoles = await SelfRoleRoles.findAll({
                 where: {
                     category_id: selfRoleMessage.category.id,
-                    emoji: reactionEvent.emoji.name
+                    emoji: reactionEvent.emoji.toString()
                 }
             });
 
