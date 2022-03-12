@@ -6,7 +6,7 @@ module.exports = {
 
         // Message update logging
         client.on("messageUpdate", async (oldMessage, newMessage) => {
-            if (oldMessage.author.bot) {return;}
+            //This line crashes the bot for some reason? So im commeting it out until we figure out whats happening. if (oldMessage.author.bot) {return;}
 
             if (oldMessage.content === newMessage.content) {return;}
             let logChannel;
