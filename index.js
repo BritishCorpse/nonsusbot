@@ -186,7 +186,7 @@ Reflect.defineProperty(client.currency, "getBalance", {
 client.once("ready", async () => {
     const storedBalances = await Users.findAll();
     storedBalances.forEach(b => client.currency.set(b.user_id, b));
-    client.user.setActivity("with dead people | @ me for my prefix!");
+    client.user.setActivity("@ me for my prefix!");
     console.log("Ready and logged in as " + client.user.tag + "!");
     console.log("\u0007"); // bell sound that sounds pretty cool
 
