@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
         color: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        roleOrder: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     }, {
         timestamps: false,
