@@ -6,7 +6,7 @@ const { saveServerConfig } = require(`${__basedir}/functions`);
 module.exports = {
     name: ["config", "settings", "options"],
     description: "Change bot settings for this server.",
-    userPermissions: ["ADMINISTRATOR"],
+    userPermissions: ["MANAGE_CHANNELS", "MANAGE_MESSAGES", "MANAGE_ROLES"],
 
     usage: [
         { tag: "list", checks: {is: "list"} },
