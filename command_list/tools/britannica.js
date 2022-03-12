@@ -1,6 +1,6 @@
 const request = require("request");
 const { parse } = require("node-html-parser");
-const { circularUsageOption } = require(`${__basedir}/functions`);
+const { circularUsageOption, formatBacktick } = require(`${__basedir}/functions`);
 
 
 module.exports = {
@@ -14,10 +14,15 @@ module.exports = {
     ],
 
     execute (message, args) {
-        request("https://www.britannica.com/search?query=test" + args.join(" "), (error, response, body) => {
+        request("https://www.britannica.com/search?query=" + args.join(" "), (error, response, body) => {
             const root = parse(body);
-      
-            const articles = root.querySelectorAll("li[class='mb-45']").splice(0, 1);
+
+            const articles = root.querySelectorAll("li[class*='RESULT-']").splice(0, 1);
+
+            if (articles.length === 0) {
+                message.channel.send(`No article meeting your search query ${formatBacktick(args.join(" "))} was found on Britannica.`);
+                return;
+            }
 
             for (const article of articles) {
                 let responseMessage = article.querySelector("a").innerHTML.trim();
