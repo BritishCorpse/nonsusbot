@@ -17,7 +17,7 @@ function formatCategoryName(category) {
 
 
 module.exports = {
-    name: "help",
+    name: "oldhelp",
     description: "What you're reading right now!",
 
     usage: [
