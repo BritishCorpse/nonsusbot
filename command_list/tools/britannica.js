@@ -6,6 +6,7 @@ const { circularUsageOption, formatBacktick } = require(`${__basedir}/functions`
 module.exports = {
     name: "britannica",
     description: "Searches articles on Britannica.",
+    nsfw: true,
 
     usage: [
         circularUsageOption(
@@ -16,6 +17,15 @@ module.exports = {
     execute (message, args) {
         request("https://www.britannica.com/search?query=" + args.join(" "), (error, response, body) => {
             const root = parse(body);
+
+            if (body.toLowerCase().includes("loli")
+                || body.toLowerCase().includes("pedo")
+                || body.toLowerCase().includes("paedo")
+                || body.toLowerCase().includes("rape")
+            ) {
+                message.reply("Unfortunately, this definition cannot be shared with you.");
+                return;
+            }
 
             const articles = root.querySelectorAll("li[class*='RESULT-']").splice(0, 1);
 

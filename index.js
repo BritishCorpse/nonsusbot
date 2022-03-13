@@ -39,7 +39,7 @@ const developmentConfig = require(`${__basedir}/development_config.json`);
 const client = new Discord.Client({
     intents: [
         Discord.Intents.FLAGS.GUILDS,
-        Discord.Intents.FLAGS.GUILD_MESSAGES,   
+        Discord.Intents.FLAGS.GUILD_MESSAGES,
         Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
         Discord.Intents.FLAGS.DIRECT_MESSAGES,
         Discord.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
@@ -207,7 +207,7 @@ client.on("messageCreate", async message => {
     // Disable DMs
     if (message.guild === null) return;
 
-    // Log messages (removed due to TOS reasons)
+    // Log messages (removed due to top.gg rules)
     //const date = new Date(message.createdTimestamp);
     //console.log(`${date.toGMTString()} | ${message.guild.name} | #${message.channel.name} | ${message.author.tag}: ${message.content} ${message.type}`);
 
@@ -253,6 +253,12 @@ client.on("messageCreate", async message => {
             message.channel.send(`The command ${formatBacktick(command)} does not exist. Did you mean: ${topCommands.map(c => formatBacktick(c.string)).join(", ")}?`);
             return;
         }
+    }
+
+    // Check for commands which can only be used in NSFW channels (due to top.gg rules)  
+    if (commandObject.nsfw === true && !message.channel.nsfw) {
+        message.channel.send("Unfortunately, this command can only be run in NSFW channels due to some content potentially being NSFW. We are hoping to add a filter soon!");
+        return;
     }
 
     // Check for user permissions
