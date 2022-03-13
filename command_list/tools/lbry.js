@@ -5,6 +5,7 @@ const { circularUsageOption } = require(`${__basedir}/functions`);
 module.exports = {
     name: ["lbry", "odysee"],
     description: "Searches for videos on the LBRY blockchain/odysee.",
+    nsfw: true,
 
     usage: [
         circularUsageOption(

@@ -47,7 +47,7 @@ const client = new Discord.Client({
         Discord.Intents.FLAGS.GUILD_BANS,
         Discord.Intents.FLAGS.GUILD_SCHEDULED_EVENTS,
     ],
-    partials: ["MESSAGE", "REACTION"],      // allows emitting reaction add events on previous messages (needed for self roles)
+    partials: ["MESSAGE", "CHANNEL", "REACTION"],      // allows emitting reaction add events on previous messages (needed for self roles)
     allowedMentions: {parse: []} // make mentions not ping people
 });
 
@@ -207,7 +207,7 @@ client.on("messageCreate", async message => {
     // Disable DMs
     if (message.guild === null) return;
 
-    // Log messages (removed due to TOS reasons)
+    // Log messages (removed due to top.gg rules)
     //const date = new Date(message.createdTimestamp);
     //console.log(`${date.toGMTString()} | ${message.guild.name} | #${message.channel.name} | ${message.author.tag}: ${message.content} ${message.type}`);
 
@@ -255,6 +255,12 @@ client.on("messageCreate", async message => {
         }
     }
 
+    // Check for commands which can only be used in NSFW channels (due to top.gg rules)  
+    if (commandObject.nsfw === true && !message.channel.nsfw) {
+        message.channel.send("Unfortunately, this command can only be run in NSFW channels due to some content potentially being NSFW. We are hoping to add a filter soon!");
+        return;
+    }
+
     // Check for user permissions
     if (!message.member.permissionsIn(message.channel).has(commandObject.userPermissions || [])) {
         const missingPermissions = [];
@@ -299,56 +305,19 @@ client.on("messageCreate", async message => {
 
     // If all the checks passed, do the command
     try {
-        // Here it does math, and there is a 1% the if statement is true, if it's true, send the embed and then give the user their hard earned money!
-        if (Math.random() < 0.01) {
-            // Make a fancy embed to show to the user.
-            const embed = new Discord.MessageEmbed()
-                .setTitle("You got lucky!")
-                .setDescription("+1000<:ripcoin:929759319296192543>")
-                .setColor("GREEN");
-
-            message.reply({embeds: [embed]});
-            message.client.currency.add(message.author.id, 1000);
-        }
-
-        if (Math.random() < 0.0001) {
-            const moneyAmount = 3000;
-            const decidingNumber = Math.floor(Math.random() * 2);
-
-            const mathNumberOne = Math.floor(Math.random() * 100);
-            const mathNumberTwo = Math.floor(Math.random() * 100);
-
-            const mathType = "+";
-
-            const answer = mathNumberOne + (mathNumberTwo * (decidingNumber === 0 ? 1 : -1));
-
-            message.reply(`A random event has happened!\n\nMath: What is ${mathNumberOne} ${mathType} ${mathNumberTwo}? If you answer correctly, you will get ${moneyAmount}<:ripcoin:929759319296192543>`)
-                .then(async () => {
-
-                    const filter = m => message.author.id === m.author.id;
-
-                    message.channel.awaitMessages({filter, time: 60000, max: 1, errors: ["time"]})
-                        .then(async collected => {
-
-                            if (collected.first().content === answer.toString()) {
-                                message.channel.send(`The answer is ${answer}. You were correct!\n+${moneyAmount}<:ripcoin:929759319296192543>`);
-                                message.client.currency.add(message.author.id, moneyAmount);
-                            }
-
-                            else {
-                                message.channel.send("Incorrect answer! The event has ended.");
-                            }
-                    
-                        }).catch(() => {
-                            message.channel.send("The random event has ended!");
-                        });
-                });
-        }
-
+        console.log(`Someone triggered the command: ${commandObject.name[0]}, category: (${commandObject.category}) at: ${Date()}`);
         doCommand(commandObject, message, args);
     } catch (error) {
+        message.reply("We've encountered an error while attempting to execute this command. Please report this error at: https://discord.gg/tkXEhrnXjY");
+
+        const errorChannel = await client.channels.fetch("923614192508993576");
+        const errorMessage = `An error occured while trying to execute the command: ${commandObject.name[0]}, category: ${commandObject.category}.\nThe arguments entered in to the command were: [${args}] This error occured at: ${Date()}`;
+
+        console.log(errorMessage);
+        errorChannel.send(errorMessage);
+         
         console.error(error.toString());
         console.trace();
-        message.reply("There was an error trying to execute that command!");
+        return;
     }
 });

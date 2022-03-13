@@ -5,7 +5,7 @@ const { circularUsageOption } = require(`${__basedir}/functions`);
 
 module.exports = {
     name: ["youtube", "yt"],
-    description: "Searches for videos on youtube.com then sends the link in the channel.",
+    description: "Searches for videos on YouTube!",
 
     usage: [
         { tag: "query", checks: {isempty: {not: null}}, circular: true,
