@@ -255,6 +255,12 @@ client.on("messageCreate", async message => {
         }
     }
 
+    // Check for commands which can only be used in NSFW channels (due to top.gg rules)  
+    if (commandObject.nsfw === true && !message.channel.nsfw) {
+        message.channel.send("Unfortunately, this command can only be run in NSFW channels due to some content potentially being NSFW. We are hoping to add a filter soon!");
+        return;
+    }
+
     // Check for user permissions
     if (!message.member.permissionsIn(message.channel).has(commandObject.userPermissions || [])) {
         const missingPermissions = [];

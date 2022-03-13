@@ -4,13 +4,16 @@ const stupidstuff = require(`${__basedir}/data/jokes/stupidstuff.json`);
 const wocka = require(`${__basedir}/data/jokes/wocka.json`);
 const jokes = redditjokes.concat(stupidstuff, wocka);
 
-//const offensive = ["horny", "penis", "vagine", "dick", "cock", "sex", "porn", "screw", "baby", "racist", "semen", "fuck", "shit", "sperm"];
+//const offensive = ["horny", "penis", "vagina", "dick", "cock", "sex", "porn",
+//                   "screw", "baby", "racist", "semen", "fuck", "shit",
+//                   "sperm", "nigger", "nigga", "loli", "cunt", "bitch"];
 const offensive = [];
 
 module.exports = {
     name: "joke",
-    description: "Finds a joke from the database, then sends it in the channel.",
+    description: "Tells a joke!",
     botPermissions: ["ADD_REACTIONS"],
+    nsfw: true,
 
     usage: [
     ],

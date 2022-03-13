@@ -6,6 +6,7 @@ const { circularUsageOption, formatBacktick } = require(`${__basedir}/functions`
 module.exports = {
     name: "britannica",
     description: "Searches articles on Britannica.",
+    nsfw: true,
 
     usage: [
         circularUsageOption(

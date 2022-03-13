@@ -8,6 +8,7 @@ const { paginateEmbeds } = require(`${__basedir}/functions`);
 module.exports = {
     name: ["urban", "ud"],
     description: "Searches Urban Dictionary for anything you'd like.",
+    nsfw: true,
 
     usage: [
         { tag: "query", checks: {isempty: {not: null}},

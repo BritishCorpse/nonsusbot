@@ -4,6 +4,7 @@ const { circularUsageOption } = require(`${__basedir}/functions`);
 module.exports = {
     name: ["wikipedia", "wiki"],
     description: "Searches Wikipedia for anything you'd like.",
+    nsfw: true,
 
     usage: [
         { tag: "query", checks: {isempty: {not: null}}, circular: true,
