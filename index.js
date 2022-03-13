@@ -305,7 +305,7 @@ client.on("messageCreate", async message => {
 
     // If all the checks passed, do the command
     try {
-        console.log(`Someone triggered the command: ${commandObject.name}, category: (${commandObject.category}) at: ${Date()}`);
+        console.log(`Someone triggered the command: ${commandObject.name}, category: (${commandObject.category}), with the arguments: ${commandObject.args} at: ${Date()}`);
         doCommand(commandObject, message, args);
     } catch (error) {
         message.reply("We've encountered an error while attempting to execute this command. Please report this error at: https://discord.gg/tkXEhrnXjY");
