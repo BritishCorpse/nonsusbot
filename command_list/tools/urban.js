@@ -39,6 +39,15 @@ module.exports = {
             const parsedBody = JSON.parse(body);
             const embeds = [];
 
+            if (body.toLowerCase().includes("loli")
+                || body.toLowerCase().includes("pedo")
+                || body.toLowerCase().includes("paedo")
+                || body.toLowerCase().includes("rape")
+            ) {
+                message.reply("Unfortunately, this definition cannot be shared with you.");
+                return;
+            }
+
 
             for (const definition of parsedBody.list) {
                 const embed = new MessageEmbed()

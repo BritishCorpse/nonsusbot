@@ -18,6 +18,15 @@ module.exports = {
         request("https://www.britannica.com/search?query=" + args.join(" "), (error, response, body) => {
             const root = parse(body);
 
+            if (body.toLowerCase().includes("loli")
+                || body.toLowerCase().includes("pedo")
+                || body.toLowerCase().includes("paedo")
+                || body.toLowerCase().includes("rape")
+            ) {
+                message.reply("Unfortunately, this definition cannot be shared with you.");
+                return;
+            }
+
             const articles = root.querySelectorAll("li[class*='RESULT-']").splice(0, 1);
 
             if (articles.length === 0) {
