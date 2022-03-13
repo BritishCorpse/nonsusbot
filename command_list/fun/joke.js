@@ -7,7 +7,7 @@ const jokes = redditjokes.concat(stupidstuff, wocka);
 //const offensive = ["horny", "penis", "vagina", "dick", "cock", "sex", "porn",
 //                   "screw", "baby", "racist", "semen", "fuck", "shit",
 //                   "sperm", "nigger", "nigga", "loli", "cunt", "bitch"];
-const offensive = [];
+const offensive = ["loli", "pedo", "rape"];
 
 module.exports = {
     name: "joke",
