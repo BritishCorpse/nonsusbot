@@ -207,7 +207,7 @@ client.on("messageCreate", async message => {
     // Disable DMs
     if (message.guild === null) return;
 
-    // Log messages (removed due to TOS reasons)
+    // Log messages (removed due to top.gg rules)
     //const date = new Date(message.createdTimestamp);
     //console.log(`${date.toGMTString()} | ${message.guild.name} | #${message.channel.name} | ${message.author.tag}: ${message.content} ${message.type}`);
 
