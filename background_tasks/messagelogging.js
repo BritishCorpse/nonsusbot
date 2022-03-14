@@ -43,6 +43,7 @@ module.exports = {
 
             const embed = new MessageEmbed()
                 .setColor("RED")
+                .setTitle("A message was deleted.")
                 .addField("Message author:", `${message.author}`)
                 .addField("Content:", `${message.content || "This message is either integrated or an embed."}`);
 
