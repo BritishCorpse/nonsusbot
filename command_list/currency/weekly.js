@@ -22,7 +22,13 @@ module.exports = {
 
         // Make sure they cant claim again in 7 days
         if (time - 86400000 * 7 < userInDb.lastWeekly) {
-            message.channel.send("WOAH WOAH SLOW DOWN! It hasn't been 7 days since your last weekly!");
+
+            const embed1 = new MessageEmbed()
+                .setTitle("You can't claim your weekly yet!")
+                .setColor(randomColor)
+                .setDescription(`You can claim your next weekly reward at: ${new Date(userInDb.lastDaily + 86400000 * 7).toUTCString()}`);
+
+            message.channel.send({ embeds: [embed1] });
             return;
         }
 
