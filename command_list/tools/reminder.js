@@ -27,7 +27,7 @@ module.exports = {
         }
     ],
 
-    execute (message, args) {
+    async execute (message, args) {
         const timeString = args[0];
         const reminderMessage = args.slice(1).join(" ");
 

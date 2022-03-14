@@ -10,7 +10,7 @@ module.exports = {
     usage: [
     ],
 
-    execute (message) {
+    async execute (message) {
         const embeds = [
 
             new MessageEmbed()

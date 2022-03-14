@@ -9,7 +9,7 @@ module.exports = {
         { tag: "ip", checks: {matchesfully: /(?:\d{1,3}\.){3}\d{1,3}/} }
     ],
 
-    execute (message, args) {
+    async execute (message, args) {
         const randomColor = Math.floor(Math.random()*16777215).toString(16);
 
         const ipExpr = /(?:\d{1,3}\.){3}\d{1,3}/;

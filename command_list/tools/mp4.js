@@ -23,7 +23,7 @@ module.exports = {
         }
     ],
 
-    execute (message, args) {
+    async execute (message, args) {
         message.channel.send("The MP4 command is currently broken. We apologize for the inconvenience.");
         return;
 

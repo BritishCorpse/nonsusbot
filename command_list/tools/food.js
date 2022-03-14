@@ -37,7 +37,7 @@ module.exports = {
         )
     ],
 
-    execute (message, args) {
+    async execute (message, args) {
         const options = {
             url: "https://edamam-food-and-grocery-database.p.rapidapi.com/parser",
             headers: {

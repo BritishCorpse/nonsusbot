@@ -17,7 +17,7 @@ module.exports = {
         }
     ],
 
-    execute (message, args) {
+    async execute (message, args) {
         const options = {
             url: "https://youtube-v31.p.rapidapi.com/search",
             headers: {

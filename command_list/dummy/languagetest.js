@@ -9,7 +9,7 @@ module.exports = {
     usage: [
     ],
 
-    execute (message) {
+    async execute (message) {
         message.channel.send(translateForGuild(message.guild, "Hello"));
     }
 };

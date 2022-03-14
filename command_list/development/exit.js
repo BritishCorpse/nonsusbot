@@ -6,7 +6,7 @@ module.exports = {
     usage: [
     ],
 
-    execute (message) {
+    async execute (message) {
         message.channel.send("Shutting down the bot...")
             .then(() => {
                 process.exit();
