@@ -12,7 +12,7 @@ module.exports = {
         const numberOfMessages = Number.parseInt(args[0]);
 
         if (numberOfMessages.toString() !== args[0] || numberOfMessages.toString() === "NaN") {
-            message.channel.send("Invalid number of messages to delete. Please enter a number").
+            message.channel.send("Invalid number of messages to delete. Please enter a number.").
                 return;
         }
 
