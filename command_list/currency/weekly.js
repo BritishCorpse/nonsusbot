@@ -26,7 +26,7 @@ module.exports = {
             const embed1 = new MessageEmbed()
                 .setTitle("You can't claim your weekly yet!")
                 .setColor(randomColor)
-                .setDescription(`You can claim your next weekly reward at: ${new Date(userInDb.lastDaily + 86400000 * 7).toUTCString()}`);
+                .setDescription(`You can claim your next weekly reward at: ${new Date(userInDb.lastDaily + 86400000 * 7).toGMTString()}`);
 
             message.channel.send({ embeds: [embed1] });
             return;
