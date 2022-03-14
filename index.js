@@ -207,6 +207,7 @@ client.on("messageCreate", async message => {
     // Disable DMs
     if (message.guild === null) return;
 
+    console.log(new Date().toGMTString());
     // Log messages (removed due to top.gg rules)
     //const date = new Date(message.createdTimestamp);
     //console.log(`${date.toGMTString()} | ${message.guild.name} | #${message.channel.name} | ${message.author.tag}: ${message.content} ${message.type}`);
@@ -305,13 +306,13 @@ client.on("messageCreate", async message => {
 
     // If all the checks passed, do the command
     try {
-        console.log(`Someone triggered the command: ${commandObject.name}, category: (${commandObject.category}), with the arguments: ${commandObject.args} at: ${Date().toUTCString()}`);
+        console.log(`Someone triggered the command: ${commandObject.name}, category: (${commandObject.category}), with the arguments: ${commandObject.args} at: ${new Date().toGMTString()}`);
         doCommand(commandObject, message, args);
     } catch (error) {
         message.reply("We've encountered an error while attempting to execute this command. Please report this error at: https://discord.gg/tkXEhrnXjY");
 
         const errorChannel = await client.channels.fetch("952538219344441344");
-        const errorMessage = `An error occured while trying to execute the command: ${commandObject.name}, category: ${commandObject.category}.\nThe arguments entered in to the command were: [${args}] This error occured at: ${Date().toUTCString()}`;
+        const errorMessage = `An error occured while trying to execute the command: ${commandObject.name}, category: ${commandObject.category}.\nThe arguments entered in to the command were: [${args}] This error occured at: ${new Date().toGMTString()}`;
 
         console.log(errorMessage);
         errorChannel.send(errorMessage);
