@@ -310,7 +310,7 @@ client.on("messageCreate", async message => {
     } catch (error) {
         message.reply("We've encountered an error while attempting to execute this command. Please report this error at: https://discord.gg/tkXEhrnXjY");
 
-        const errorChannel = await client.channels.fetch("923614192508993576");
+        const errorChannel = await client.channels.fetch("952538219344441344");
         const errorMessage = `An error occured while trying to execute the command: ${commandObject.name}, category: ${commandObject.category}.\nThe arguments entered in to the command were: [${args}] This error occured at: ${Date()}`;
 
         console.log(errorMessage);
