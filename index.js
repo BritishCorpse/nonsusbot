@@ -15,6 +15,7 @@ global.__basedir = __dirname;
 
 const fs = require("fs");
 const Discord = require("discord.js");
+const i18n = require("i18n");
 
 const { Users/*, CurrencyShop*/ } = require(`${__basedir}/db_objects`);
 
@@ -27,6 +28,7 @@ const {
     getSimilarities,
     formatBacktick,
     doCommand,
+    getLanguages,
 
 } = require(`${__basedir}/functions`);
 
@@ -59,6 +61,15 @@ client.currency = new Discord.Collection();
 process.on("unhandledRejection", error => {
     // have this here in case of missing permissions, etc.
     console.error(error);
+});
+
+// setup language system
+i18n.configure({
+    // list all the locales here (don't forget to add to config.js usage rules)
+    locales: getLanguages(), // automatically reads all the locales from the locales folder
+    directory: `${__basedir}/locales`,
+    updateFiles: false, // disables adding new translations to the files when an unknown string is used
+    //defaultLocale: "en",
 });
 
 // Load commands from the command_list folder
