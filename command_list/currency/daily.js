@@ -25,9 +25,10 @@ module.exports = {
             const embed1 = new MessageEmbed()
                 .setTitle("You can't claim your daily yet!")
                 .setColor(randomColor)
-                .setDescription(`You can claim your next daily reward at: ${new Date(userInDb.lastDaily + 86400000)}`);
+                .setDescription(`You can claim your next daily reward at: ${new Date(userInDb.lastDaily + 86400000).toUTCString()}`);
 
             message.channel.send({ embeds: [embed1] });
+            return;
         }
 
         message.client.currency.add(message.author.id, dailyMoney);
