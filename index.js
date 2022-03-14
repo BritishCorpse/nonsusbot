@@ -305,13 +305,13 @@ client.on("messageCreate", async message => {
 
     // If all the checks passed, do the command
     try {
-        console.log(`Someone triggered the command: ${commandObject.name[0]}, category: (${commandObject.category}) at: ${Date()}`);
+        console.log(`Someone triggered the command: ${commandObject.name}, category: (${commandObject.category}), with the arguments: ${commandObject.args} at: ${Date()}`);
         doCommand(commandObject, message, args);
     } catch (error) {
         message.reply("We've encountered an error while attempting to execute this command. Please report this error at: https://discord.gg/tkXEhrnXjY");
 
-        const errorChannel = await client.channels.fetch("923614192508993576");
-        const errorMessage = `An error occured while trying to execute the command: ${commandObject.name[0]}, category: ${commandObject.category}.\nThe arguments entered in to the command were: [${args}] This error occured at: ${Date()}`;
+        const errorChannel = await client.channels.fetch("952538219344441344");
+        const errorMessage = `An error occured while trying to execute the command: ${commandObject.name}, category: ${commandObject.category}.\nThe arguments entered in to the command were: [${args}] This error occured at: ${Date()}`;
 
         console.log(errorMessage);
         errorChannel.send(errorMessage);
