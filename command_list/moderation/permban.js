@@ -29,7 +29,7 @@ module.exports = {
         }
     ],
 
-    execute (message, args) {
+    async execute (message, args) {
         const randomColor = Math.floor(Math.random()*16777215).toString(16);
         const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 

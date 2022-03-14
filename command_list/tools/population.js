@@ -14,7 +14,7 @@ module.exports = {
         { tag: "nothing", checks: {isempty: null} }
     ],
 
-    execute (message, args) {
+    async execute (message, args) {
         let apiURL;
         if (args.join(" ") === undefined || args.join(" ") === "") {
             apiURL = "https://world-population.p.rapidapi.com/worldpopulation";

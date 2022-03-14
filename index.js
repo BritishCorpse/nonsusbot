@@ -58,9 +58,18 @@ client.backgroundTasks = new Discord.Collection();
 client.serverConfig = new Discord.Collection();
 client.currency = new Discord.Collection();
 
-process.on("unhandledRejection", error => {
+process.on("unhandledRejection", async error => {
     // have this here in case of missing permissions, etc.
-    console.error(error);
+    console.error(error.name);
+
+    const errorChannel = await client.channels.fetch("952538219344441344");
+    const errorMessage = `An unhandled rejection occured at: ${new Date().toGMTString()}. Please check the logs immediately.`;
+
+    console.log(errorMessage);
+    errorChannel.send(errorMessage);
+     
+    console.error(error.toString());
+    console.trace();
 });
 
 // setup language system

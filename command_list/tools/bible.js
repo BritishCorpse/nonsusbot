@@ -14,7 +14,7 @@ module.exports = {
         )
     ],
 
-    execute (message, args) {
+    async execute (message, args) {
         const randomColor = Math.floor(Math.random()*16777215).toString(16);
   
         request("https://www.openbible.info/topics/" + args.join("_"), (error, response, body) => {

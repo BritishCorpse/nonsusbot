@@ -13,7 +13,7 @@ module.exports = {
         )
     ],
 
-    execute (message, args) {
+    async execute (message, args) {
         request("https://lighthouse.lbry.com/search?s=" + args.join(" "), (error, response, body) => {
             const parsedBody = JSON.parse(body);
 

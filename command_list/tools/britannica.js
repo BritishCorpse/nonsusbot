@@ -14,7 +14,7 @@ module.exports = {
         )
     ],
 
-    execute (message, args) {
+    async execute (message, args) {
         request("https://www.britannica.com/search?query=" + args.join(" "), (error, response, body) => {
             const root = parse(body);
 

@@ -8,7 +8,7 @@ module.exports = {
         { tag: "number", checks: {ispositiveinteger: null} }
     ],
 
-    execute(message, args) {
+    async execute(message, args) {
         const numberOfMessages = Number.parseInt(args[0]);
 
         if (numberOfMessages.toString() !== args[0] || numberOfMessages.toString() === "NaN") {
