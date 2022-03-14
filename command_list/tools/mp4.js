@@ -58,7 +58,7 @@ module.exports = {
                             return;
                         }
                         const attachment = new MessageAttachment(buffer, `${title}.mp4`);
-                        message.reply("here is the MP4 file you requested.", attachment);
+                        message.reply("Here is the MP4 file you requested.", attachment);
                     });
                 });
         });

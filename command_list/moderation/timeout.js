@@ -10,7 +10,7 @@ const funnyReplies = [
     "Ouch! That hurt.", "You wont be missed!",
     "Farewell, traveler.",
     "You will be forever missed!",
-    "Adiós fuckboy.",
+    //"Adiós fuckboy.",
     "I never really liked that guy."
 ];
 
