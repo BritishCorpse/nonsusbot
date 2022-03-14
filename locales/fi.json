@@ -1,3 +1,7 @@
 {
-  "Hello": "Hei"
+  "Hello": "Hei",
+  "You can't claim your daily reward yet!": "Et voi lunastaa päivittäistä palkintoasi vielä!",
+  "You can claim your next daily reward at: {{time}}": "Voit lunastaa seuraavan päivittäisen palkintosi tähän aikaan: {{time}}",
+  "Your daily reward!": "Sinun päivittäinen palkintosi!",
+  "You earned": "Sinä tienasit"
 }

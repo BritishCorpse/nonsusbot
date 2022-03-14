@@ -17,7 +17,9 @@ module.exports = {
         const userInDb = await Users.findOne({ where: {user_id: target.id }});
 
         const embed = new MessageEmbed()
-            .setTitle(`${userInDb.badge || " "} ${target.username} has ${message.client.currency.getBalance(target.id)}<:ripcoin:929759319296192543>`)
+            .setTitle(`${userInDb.badge || " "} ${target.username}`)
+            .addField("Balance", `${message.client.currency.getBalance(target.id)}<:ripcoin:929759319296192543>`)
+            .setDescription("Remember, this is just wallet worth, *NOT* net worth.")
             .setColor(randomColor);
 
         message.reply({ embeds: [embed] });

@@ -21,7 +21,7 @@ module.exports = {
         }
 
         if (affinity > 100) {
-            embed.setTitle(`**${message.author.username}** and **${target.username}** are extraordinary and have a ${affinity}% compatibility!!`);
+            embed.setTitle(`**${message.author.username}** and **${target.username}** are ${affinity}% compatible! That's fantastic!`);
         }
 
         message.channel.send({embeds: [embed]});

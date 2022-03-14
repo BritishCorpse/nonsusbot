@@ -25,7 +25,7 @@ module.exports = {
         const embeds = [];
 
         function makeEmbed() {
-            return new MessageEmbed().setTitle(`${userInDb.badge || " "}${targetUser.username}'s badges`).setColor(randomColor);
+            return new MessageEmbed().setTitle(`Badge list of: ${userInDb.badge || " "}${targetUser.username}`).setColor(randomColor);
         }
  
         if (items.length === 0) {

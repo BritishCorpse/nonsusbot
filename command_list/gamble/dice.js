@@ -34,10 +34,10 @@ module.exports = {
             message.channel.send({embeds: [embed]});
             return;
         } else if (userBet > 1000000000 || userBet <= 0) {
-            message.channel.send("🎲Your bet is too larrge or invalid.🎲");
+            message.channel.send("🎲Your bet is too large or invalid.🎲");
             return;
         } else if (userBet > message.client.currency.getBalance(message.author.id)) {
-            message.channel.send("🎲You don't have enouugh money!🎲");
+            message.channel.send("🎲You don't have enough money!🎲");
             return;
         }
 

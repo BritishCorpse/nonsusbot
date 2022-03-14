@@ -1,5 +1,6 @@
 const { Users } = require(`${__basedir}/db_objects`);
 const { MessageEmbed } = require("discord.js");
+const { translateForGuild } = require(`${__basedir}/functions`);
 
 module.exports = {
     name: "daily",
@@ -23,9 +24,9 @@ module.exports = {
         if (time - 86400000 < userInDb.lastDaily) {
 
             const embed1 = new MessageEmbed()
-                .setTitle("You can't claim your daily yet!")
+                .setTitle(translateForGuild(message.guild, "You can't claim your daily reward yet!"))
                 .setColor(randomColor)
-                .setDescription(`You can claim your next daily reward at: ${new Date(userInDb.lastDaily + 86400000).toGMTString()}`);
+                .setDescription(translateForGuild(message.guild, "You can claim your next daily reward at: {{time}}", { time: new Date(new Date(userInDb.lastDaily + 86400000).toGMTString()) }));
 
             message.channel.send({ embeds: [embed1] });
             return;
@@ -37,9 +38,9 @@ module.exports = {
         await Users.update({ lastDaily: time }, { where: { user_id: message.author.id } });
 
         const embed = new MessageEmbed()
-            .setTitle("Your daily reward!")
+            .setTitle(translateForGuild(message.guild, "Your daily reward!"))
             .setColor(randomColor)
-            .setDescription(`You earned ${dailyMoney}<:ripcoin:929759319296192543>!`);
+            .setDescription(translateForGuild(message.guild, "You earned") + `: ${dailyMoney}<:ripcoin:929759319296192543>!`);
 
         message.channel.send({ embeds: [embed] });
 
