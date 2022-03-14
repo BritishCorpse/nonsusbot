@@ -54,7 +54,7 @@ module.exports = {
                 await Stocks.update({ lastUpdated: time - 86400000 }, { where: { id: 1000 } });
             }
 
-            if (time - 84600000 > itemInDb.lastUpdated) {
+            if (time - 84600000 <= itemInDb.lastUpdated) {
                 await doDaily();
             }
         });

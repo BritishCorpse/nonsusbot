@@ -21,7 +21,13 @@ module.exports = {
         }
 
         if (time - 86400000 < userInDb.lastDaily) {
-            return message.channel.send("SLOW DOWN! It hasn't been 24 hours since your last daily!");
+
+            const embed1 = new MessageEmbed()
+                .setTitle("You can't claim your daily yet!")
+                .setColor(randomColor)
+                .setDescription(`You can claim your next daily reward at: ${new Date(userInDb.lastDaily + 86400000)}`);
+
+            message.channel.send({ embeds: [embed1] });
         }
 
         message.client.currency.add(message.author.id, dailyMoney);
