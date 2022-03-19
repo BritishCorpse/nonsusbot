@@ -540,12 +540,7 @@ function translateForGuild(guild, string, replace=null) {
     // Translate a string for a guild's configs (this uses the translations in the ./locales folder)
     const language = guild.client.serverConfig.get(guild.id).language;
 
-    i18n.setLocale(language);
-
-    if (replace === null)
-        return i18n.__(string);
-    else
-        return i18n.__(string, replace);
+    return i18n.__({phrase: string, locale: language}, replace || undefined);
 }
 
 
