@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 
+
 module.exports = {
     name: "kicklogging",
     async execute(client) {
@@ -30,7 +31,7 @@ module.exports = {
                 .setTitle(`User ${guildMember.displayName} was kicked from ${guildMember.guild.name}.`)
                 .setColor(randomColor);
 
-            if (guildMember.user.id === target.id) embed.setDescription(`Reason for ban: ${reason || "No reason provided."} \n Banned by ${executor}`);
+            if (guildMember.user.id === target.id) embed.setDescription(`Reason for kick: ${reason || "No reason provided."} \n Kicked by ${executor}`);
 
             console.log(reason);
             logChannel.send({embeds: [embed]});
