@@ -160,7 +160,7 @@
   "Target does not exist in the database!": "",
   "{{username}}'s portfolio!": "",
   "{{username}} has nothing!": "",
-  "{{shareName}}, Worth: ${currentPrice}<:ripcoin:929759319296192543>": "",
+  "{{shareName}}, Worth: {{currentPrice}}<:ripcoin:929759319296192543>": "",
   "Sell shares from the stock market!": "",
   "You do not own enough of this share!": "",
   "You do not own this share!": "",
