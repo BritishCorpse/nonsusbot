@@ -20,6 +20,8 @@ require("./models/SelfRoleMessages")(sequelize, Sequelize.DataTypes);
 require("./models/SelfRoleCategories")(sequelize, Sequelize.DataTypes);
 require("./models/SelfRoleRoles")(sequelize, Sequelize.DataTypes);
 
+require("./models/AutoRoleRoles")(sequelize, Sequelize.DataTypes);
+
 const force = process.argv.includes("--force") || process.argv.includes("-f");
 
 
