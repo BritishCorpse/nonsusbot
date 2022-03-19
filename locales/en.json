@@ -278,7 +278,7 @@
   "Incorrect usage. Proper usage, {{prefix}}tempban {{user}} time reason": "",
   "Ban duration is too long.": "",
   "No ban reason specified.": "",
-  "The moderators have spoken, the ban hammer has fallen, {{userTag} has been banned from {{guildName}}! ": "",
+  "The moderators have spoken, the ban hammer has fallen, {{userTag}} has been banned from {{guildName}}! ": "",
   "You have been banned from {{guildName}}!": "",
   "Reason: {{banReason}}": "",
   "Sets a user in timeout.": "",
