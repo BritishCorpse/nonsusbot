@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@mapbox/node-pre-gyp": "github:mapbox/node-pre-gyp",
+    "canvas": "^2.9.1",
     "discord.js": "^13.5.0",
     "i18n": "^0.14.2",
     "js-levenshtein": "^1.1.6",
