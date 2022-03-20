@@ -20,6 +20,8 @@ require("./models/SelfRoleMessages")(sequelize, Sequelize.DataTypes);
 require("./models/SelfRoleCategories")(sequelize, Sequelize.DataTypes);
 require("./models/SelfRoleRoles")(sequelize, Sequelize.DataTypes);
 
+require("./models/AutoRoleRoles")(sequelize, Sequelize.DataTypes);
+
 const force = process.argv.includes("--force") || process.argv.includes("-f");
 
 
@@ -159,7 +161,7 @@ sequelize.sync({ force }).then(async () => {
         CurrencyShop.upsert({ id: 7566 ,  itemEmoji: ":coin:", name: "Premium Cookie", cost: 100, itemDescription: "What even is this?", category: "Food" }),
         CurrencyShop.upsert({ id: 9663 ,  itemEmoji: "<:coke:933696840023539743>", name: "Coke E Cola", cost: 3, itemDescription: "Don't want a lawsuit after all ;)", category: "Food" }),
         CurrencyShop.upsert({ id: 4795 ,  itemEmoji: "🍝", name: "Father's spaghetti", cost: 243, itemDescription: "For when you don't have a mom to cook for you.", category: "Food"}),
-        CurrencyShop.upsert({ id: 3587 ,  itemEmoji: ":egg: :fish:", name: "Fish eggs", cost: 100, itemDescription: "YUM!", category: "Food"}),
+        CurrencyShop.upsert({ id: 3587 ,  itemEmoji: ":egg: :fish:", name: "Fish eggs", cost: 100, itemDescription: "YUM!", category: "Food", affectedBy: "KMBP", affectPercent: "1"}),
 
         //Other
         CurrencyShop.upsert({ id: 5912 ,  itemEmoji: "🚙", name: "Fresh car smell in a bottle", cost: 40, itemDescription: "SO REFRESHING😍", category: "Weird Things"}),

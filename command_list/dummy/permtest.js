@@ -8,7 +8,7 @@ module.exports = {
     usage: [
     ],
 
-    execute (message) {
+    async execute (message) {
         message.channel.send("the command executed");
     }
 };

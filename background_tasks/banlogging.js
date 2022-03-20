@@ -28,7 +28,7 @@ module.exports = {
 
             //Make sure that the audit log entry exists.
             if (!banLog) {
-                logChannel.send(`${ban.user} was banned from ${ban.guild} but the reason and executor are not determined due to the audit search returning inconclusive.`);
+                logChannel.send(`${ban.user} was banned from ${ban.guild} but the reason and executor are unknown.`);
                 return;
             }
 

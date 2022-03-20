@@ -12,7 +12,7 @@ module.exports = {
         )
     ],
 
-    execute (message, args) {
+    async execute (message, args) {
         // Check below no longer needed
         //if (/@/m.test(args.join(" "))) {
         //    message.channel.send("No no nooo, very baaad! :poop:");

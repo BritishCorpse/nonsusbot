@@ -4,7 +4,7 @@ module.exports = {
     name: "love",
     description: "Find out your compatibility with other server members!",
     usage: [],
-    execute(message) {
+    async execute(message) {
         const target = message.mentions.users.first() || message.author;
 
         const randomColor = Math.floor(Math.random() * 16777215).toString(16);
@@ -21,7 +21,7 @@ module.exports = {
         }
 
         if (affinity > 100) {
-            embed.setTitle(`**${message.author.username}** and **${target.username}** are extraordinary and have a ${affinity}% compatibility!!`);
+            embed.setTitle(`**${message.author.username}** and **${target.username}** are ${affinity}% compatible! That's fantastic!`);
         }
 
         message.channel.send({embeds: [embed]});

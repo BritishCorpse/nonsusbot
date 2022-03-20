@@ -26,14 +26,14 @@ module.exports = {
             .setColor(randomColor);
 
         if (topTen.length === 0) {
-            embed.setDescription("According to my statisticas, there is no one on the leaderboard.");
+            embed.setDescription("No users were found in the database.");
         } else {
             // Sequential asynchronous loop from https://advancedweb.hu/how-to-use-async-functions-with-array-foreach-in-javascript/
             await topTen.reduce(async (memo, userLevel, position) => {
                 await memo; // Waits for previous to end.
                 const userInDb = await defineUser(userLevel.userId);
                 const userInDiscord = await message.client.users.fetch(userLevel.userId);
-                embed.addField(`${position + 1}. ${userInDb.badge || ""}${userInDiscord.tag}`, `Level ${userLevel.level}, ${userLevel.exp}/${userLevel.reqExp} XP!`);
+                embed.addField(`${position + 1}. ${userInDb.badge || ""}${userInDiscord.tag}`, `Level ${userLevel.level}, ${userLevel.exp}/${userLevel.reqExp} EXP!`);
             }, undefined);
         }
 

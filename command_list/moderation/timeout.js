@@ -10,7 +10,7 @@ const funnyReplies = [
     "Ouch! That hurt.", "You wont be missed!",
     "Farewell, traveler.",
     "You will be forever missed!",
-    "Adiós fuckboy.",
+    //"Adiós fuckboy.",
     "I never really liked that guy."
 ];
 
@@ -23,7 +23,7 @@ module.exports = {
     usage: [ // This should probably be filled with something useful that could actually be understood and work :smile:
     ],
 
-    execute (message, args) {
+    async execute (message, args) {
         // Random colour for the embed.
         const randomColor = Math.floor(Math.random()*16777215).toString(16);
 

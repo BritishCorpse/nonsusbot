@@ -15,6 +15,7 @@ global.__basedir = __dirname;
 
 const fs = require("fs");
 const Discord = require("discord.js");
+const i18n = require("i18n");
 
 const { Users/*, CurrencyShop*/ } = require(`${__basedir}/db_objects`);
 
@@ -27,6 +28,7 @@ const {
     getSimilarities,
     formatBacktick,
     doCommand,
+    getLanguages,
 
 } = require(`${__basedir}/functions`);
 
@@ -56,9 +58,27 @@ client.backgroundTasks = new Discord.Collection();
 client.serverConfig = new Discord.Collection();
 client.currency = new Discord.Collection();
 
-process.on("unhandledRejection", error => {
+process.on("unhandledRejection", async error => {
     // have this here in case of missing permissions, etc.
-    console.error(error);
+    console.error(error.name);
+
+    const errorChannel = await client.channels.fetch("952538219344441344");
+    const errorMessage = `An unhandled rejection occured at: ${new Date().toGMTString()}. Please check the logs immediately.`;
+
+    console.log(errorMessage);
+    errorChannel.send(errorMessage);
+     
+    console.error(error.toString());
+    console.trace();
+});
+
+// setup language system
+i18n.configure({
+    // list all the locales here (don't forget to add to config.js usage rules)
+    locales: getLanguages(), // automatically reads all the locales from the locales folder
+    directory: `${__basedir}/locales`,
+    updateFiles: false, // disables adding new translations to the files when an unknown string is used
+    //defaultLocale: "en",
 });
 
 // Load commands from the command_list folder
@@ -207,7 +227,6 @@ client.on("messageCreate", async message => {
     // Disable DMs
     if (message.guild === null) return;
 
-    console.log(new Date().toGMTString());
     // Log messages (removed due to top.gg rules)
     //const date = new Date(message.createdTimestamp);
     //console.log(`${date.toGMTString()} | ${message.guild.name} | #${message.channel.name} | ${message.author.tag}: ${message.content} ${message.type}`);

@@ -17,17 +17,17 @@ module.exports = {
         const topTen = countings.slice(0, 10);
 
         const embed = new MessageEmbed()
-            .setTitle("Top 10 Servers That Have Counted")
+            .setTitle("The top 10 servers who have counted the most!")
             .setColor(randomColor);
 
         if (topTen.length === 0) {
-            embed.setDescription("According to my statisticas, there are no servers the leaderboard.");
+            embed.setDescription("No guilds were found in the database.");
         } else {
             // Sequential asynchronous loop from https://advancedweb.hu/how-to-use-async-functions-with-array-foreach-in-javascript/
             await topTen.reduce(async (memo, counting, position) => {
                 await memo; // Waits for previous to end.
                 const guild = await message.client.guilds.fetch(counting.guildId);
-                embed.addField(`${position + 1}. ${guild.name}`, `Counted ${counting.guildCounted} time${counting.guildCounted > 1 ? "s" : ""}!`);
+                embed.addField(`${position + 1}. ${guild.name}`, `Counted ${counting.guildCounted} times!`);
             }, undefined);
         }
 

@@ -39,7 +39,7 @@ module.exports = {
         },
     ],
 
-    execute (message) {
+    async execute (message) {
         message.reply("i worked yay");
     }
 };

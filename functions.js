@@ -3,6 +3,7 @@ const { URL } = require("url");
 const levenshtein = require("js-levenshtein");
 const { MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu } = require("discord.js");
 const { Op } = require("sequelize");
+const i18n = require("i18n");
 
 const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
 
@@ -528,6 +529,21 @@ function doCommand(commandObj, message, args) {
 }
 
 
+function getLanguages() {
+    return fs.readdirSync(`${__basedir}/locales`)
+        .filter(file => file.endsWith(".json"))
+        .map(file => file.slice(0, -5));
+}
+
+
+function translateForGuild(guild, string, replace=null) {
+    // Translate a string for a guild's configs (this uses the translations in the ./locales folder)
+    const language = guild.client.serverConfig.get(guild.id).language;
+
+    return i18n.__({phrase: string, locale: language}, replace || undefined);
+}
+
+
 module.exports = {
     collectionToJSON,
     getCommandCategories,
@@ -544,4 +560,6 @@ module.exports = {
     doCommand,
     circularUsageOption,
     formatBacktick,
+    getLanguages,
+    translateForGuild,
 };

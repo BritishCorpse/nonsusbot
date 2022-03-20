@@ -7,7 +7,7 @@ module.exports = {
         { tag: "amount", checks: {isinteger: null} }
     ],
 
-    execute (message, args) {
+    async execute (message, args) {
         const moneyAmount = Number.parseInt(args[0]);
 
         if (moneyAmount.toString() === "NaN") {

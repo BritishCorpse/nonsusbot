@@ -17,7 +17,7 @@ module.exports = {
         }
     ],
 
-    execute (message, args) {
+    async execute (message, args) {
         const randomColor = Math.floor(Math.random()*16777215).toString(16);
 
         request(`https://dictionaryapi.com/api/v3/references/collegiate/json/${args[0]}?key=${dictionary_api_key}`, (error, response, body) => {

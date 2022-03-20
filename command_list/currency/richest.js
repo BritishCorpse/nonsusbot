@@ -16,7 +16,7 @@ module.exports = {
         }
 
         const embed = new MessageEmbed()
-            .setTitle("Top 10 Richest People Anywhere")
+            .setTitle("Top 10 richest people anywhere!")
             .setColor(randomColor);
 
         const topTen = message.client.currency.sort((a, b) => b.balance - a.balance)
@@ -25,7 +25,7 @@ module.exports = {
             .first(10);
 
         if (topTen.length === 0) {
-            embed.setDescription("According to my statisticas, there is no one on the leaderboard.");
+            embed.setDescription("No users were found in the database.");
         } else {
             // Sequential asynchronous loop from https://advancedweb.hu/how-to-use-async-functions-with-array-foreach-in-javascript/
             await topTen.reduce(async (memo, user, position) => {

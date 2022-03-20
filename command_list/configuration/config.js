@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const defaultServerConfig = require(`${__basedir}/default_server_config.json`);
-const { saveServerConfig } = require(`${__basedir}/functions`);
+const { saveServerConfig, getLanguages } = require(`${__basedir}/functions`);
 
 
 module.exports = {
@@ -27,6 +27,11 @@ module.exports = {
                         { tag: "prefix", checks: {matchesfully: /[a-zA-Z0-9~`!@#$%^&*()_+\-={}|[\]\\:";'<>?,./]{0,2}[~`!@#$%^&*()_+\-={}|[\]\\:";'<>?,./]/} }
                     ]
                     
+                },
+                { tag: "option", checks: {isin: ["language"]},
+                    next: [
+                        { tag: "language", checks: {isin: getLanguages()} }
+                    ]
                 }
             ]
         },
@@ -38,7 +43,7 @@ module.exports = {
                             "m_channel_id", "verify_channel_id", "log_channel_id",
                             "levelup_channel_id", "welcome_channel_id", "suggestion_channel_id",
                             "send_suggestion_channel_id", "counting_channel_id", "verify_role_id",
-                            "prefix"
+                            "prefix", "language"
                         ]
                     }
                 }

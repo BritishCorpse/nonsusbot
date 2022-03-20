@@ -2,7 +2,7 @@ module.exports = {
     name: "contact",
     description: "See Graveyard's contact information.",
     usage: [],
-    execute(message) {
+    async execute(message) {
         message.reply("https://talloween.github.io/graveyardbot/contact.html");
     }
 };

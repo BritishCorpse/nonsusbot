@@ -7,7 +7,7 @@ module.exports = {
     usage: [
     ],
 
-    execute (message) {
+    async execute (message) {
         message.channel.send(`Command disabled due to using pm2. Use ${message.client.serverConfig.get(message.guild.id).prefix}exit instead.`);
         return;
 
