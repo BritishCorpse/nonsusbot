@@ -22,11 +22,18 @@ require("./models/SelfRoleRoles")(sequelize, Sequelize.DataTypes);
 
 require("./models/AutoRoleRoles")(sequelize, Sequelize.DataTypes);
 
+const Items = require("./models/Items")(sequelize, Sequelize.DataTypes);
+
 const force = process.argv.includes("--force") || process.argv.includes("-f");
 
 
 // Here I present, organised spaghetti code, this is just a base format for the tables to makes sure that everything exists.
 sequelize.sync({ force }).then(async () => {
+    Items.upsert({ name: "Gem", itemEmoji: "<:gembadge:955562792394567740>"}),
+    Items.upsert({ name: "Red Gem", itemEmoji: "<:gembadgered:955562792369389609>"});
+    const items = [
+    ];
+
     const stocks = [
         Stocks.upsert({ id: 1000, name: "GC", oldPrice: "2287135438", currentPrice: "2287135438", averageChange: "1", lastUpdated: "0", displayName: "Graveyard Casino", amountBought: 0}),
         Stocks.upsert({ id: 1001, name: "PAS", oldPrice: "0", currentPrice: "1000", averageChange: "0.5", lastUpdated: "0", displayName: "Pets And Stuff", amountBought: 0}),
@@ -167,10 +174,13 @@ sequelize.sync({ force }).then(async () => {
         CurrencyShop.upsert({ id: 5912 ,  itemEmoji: "🚙", name: "Fresh car smell in a bottle", cost: 40, itemDescription: "SO REFRESHING😍", category: "Weird Things"}),
         CurrencyShop.upsert({ id: 2097 ,  itemEmoji: "🪵", name: "Wooden plank", cost: 20, itemDescription: "Literally a wooden plank.", category: "Wooden"}),
     ];
+
     await Promise.all(stocks);
     console.log("Stocks database synced.");
     await Promise.all(shop);
     console.log("Currency database synced.");
+    await Promise.all(items);
+    console.log("Items have been updated.");
 
     sequelize.close();
 }).catch(console.error);

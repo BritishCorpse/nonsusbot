@@ -22,6 +22,8 @@ const SelfRoleRoles = require("./models/SelfRoleRoles")(sequelize, Sequelize.Dat
 
 const AutoRoleRoles = require("./models/AutoRoleRoles")(sequelize, Sequelize.DataTypes);
 
+const Items = require("./models/Items")(sequelize, Sequelize.DataTypes);
+
 UserPortfolio.belongsTo(Stocks, { foreignKey: "share_id", as: "shares" });
 UserItems.belongsTo(CurrencyShop, { foreignKey: "item_id", as: "item" }); // foreignKey sets the key to be used from UserItems to look up in CurrencyShop
 
@@ -113,4 +115,6 @@ module.exports = {
     SelfRoleRoles,
     
     AutoRoleRoles,
+
+    Items,
 };
