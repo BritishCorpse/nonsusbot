@@ -29,9 +29,20 @@ const force = process.argv.includes("--force") || process.argv.includes("-f");
 
 // Here I present, organised spaghetti code, this is just a base format for the tables to makes sure that everything exists.
 sequelize.sync({ force }).then(async () => {
-    Items.upsert({ name: "Gem", itemEmoji: "<:gembadge:955562792394567740>"}),
-    Items.upsert({ name: "Red Gem", itemEmoji: "<:gembadgered:955562792369389609>"});
+
     const items = [
+        Items.upsert({ name: "Gem", item_emoji: "<:gembadge:955562792394567740>", category: "Gemstone"}),
+        Items.upsert({ name: "Red gem", item_emoji: "<:gembadgered:955562792369389609>", category: "Gemstone"}),
+        Items.upsert({ name: "Green gem", item_emoji: "<:gembadgegreen:955562792201621565>", category: "Gemstone"}),
+        Items.upsert({ name: "Gray gem", item_emoji: "<:gembadgegray:955562792302288958>", category: "Gemstone"}),
+        Items.upsert({ name: "Blue gem", item_emoji: "<:gembadgeblue:955562792503640164>", category: "Gemstone"}),
+        Items.upsert({ name: "Pink gem", item_emoji: "<:gembadgelavender:955562792080011275>", category: "Gemstone"}),
+        Items.upsert({ name: "Dark green gem", item_emoji: "<:gembadgedarkgreen:955562795175387256>", category: "Gemstone"}),
+        Items.upsert({ name: "Nugget", item_emoji: "<:chickennugget:955856197632794755>", category: "Food"}),
+        Items.upsert({ name: "Water", item_emoji: "<:water:955856197926395944>", category : "Food"})    
+        
+
+        
     ];
 
     const stocks = [

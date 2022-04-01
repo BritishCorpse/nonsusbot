@@ -9,5 +9,6 @@
   "suggestion_channel_id": "",
   "send_suggestion_channel_id": "",
   "counting_channel_id": "",
-  "language": "en"
+  "language": "en",
+  "detailed_logging": "false"
 }

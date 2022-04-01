@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
         item_emoji: {
             type: DataTypes.STRING,
             allowNull: true,
+        },
+        category: {
+            type: DataTypes.STRING,
+            allowNull: true,
         }
     }, {
         timestamps: false,
