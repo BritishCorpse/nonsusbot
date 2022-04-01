@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const { Users } = require(`${__basedir}/db_objects`);
+const { gravestone } = require(`${__basedir}/emojis.json`);
 
 module.exports = {
     name: ["balance", "bal"],
@@ -18,7 +19,7 @@ module.exports = {
 
         const embed = new MessageEmbed()
             .setTitle(`${userInDb.badge || " "} ${target.username}`)
-            .addField("Balance", `${message.client.currency.getBalance(target.id)}<:ripcoin:929759319296192543>`)
+            .addField("Balance", `${message.client.currency.getBalance(target.id)}${gravestone}`)
             .setDescription("Remember, this is just wallet worth, *NOT* net worth.")
             .setColor(randomColor);
 

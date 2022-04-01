@@ -2,7 +2,6 @@ const { MessageEmbed } = require("discord.js");
 const defaultServerConfig = require(`${__basedir}/default_server_config.json`);
 const { saveServerConfig, getLanguages } = require(`${__basedir}/functions`);
 
-
 module.exports = {
     name: ["config", "settings", "options"],
     description: "Change bot settings for this server.",
@@ -32,6 +31,11 @@ module.exports = {
                     next: [
                         { tag: "language", checks: {isin: getLanguages()} }
                     ]
+                },
+                { tag: "option", checks: {is: "detailed_logging"},
+                    next: [
+                        { tag: "boolean", checks: {isin: ["true", "false"]} }
+                    ]
                 }
             ]
         },
@@ -43,7 +47,7 @@ module.exports = {
                             "m_channel_id", "verify_channel_id", "log_channel_id",
                             "levelup_channel_id", "welcome_channel_id", "suggestion_channel_id",
                             "send_suggestion_channel_id", "counting_channel_id", "verify_role_id",
-                            "prefix", "language"
+                            "prefix", "language", "detailed_logging"
                         ]
                     }
                 }
@@ -59,6 +63,11 @@ module.exports = {
                 /* eslint-disable-next-line prefer-const */ // remove this comment if you edit newConfig
                 let newConfig = args[2]; // by default, otherwise edit this later
 
+                if (args[1] === "detailed_logging") {
+                    if (args[2] === "true") {
+                        message.client.serverConfig.get(message.guild.id)[args[1]] = newConfig;
+                    }
+                }
                 // extra stuff to do
                 // TODO: move this to background_tasks/verify.js
                 if (args[1] === "verify_channel_id") {

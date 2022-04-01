@@ -22,11 +22,29 @@ require("./models/SelfRoleRoles")(sequelize, Sequelize.DataTypes);
 
 require("./models/AutoRoleRoles")(sequelize, Sequelize.DataTypes);
 
+const Items = require("./models/Items")(sequelize, Sequelize.DataTypes);
+
 const force = process.argv.includes("--force") || process.argv.includes("-f");
 
 
 // Here I present, organised spaghetti code, this is just a base format for the tables to makes sure that everything exists.
 sequelize.sync({ force }).then(async () => {
+
+    const items = [
+        Items.upsert({ name: "Gem", item_emoji: "<:gembadge:955562792394567740>", category: "Gemstone"}),
+        Items.upsert({ name: "Red gem", item_emoji: "<:gembadgered:955562792369389609>", category: "Gemstone"}),
+        Items.upsert({ name: "Green gem", item_emoji: "<:gembadgegreen:955562792201621565>", category: "Gemstone"}),
+        Items.upsert({ name: "Gray gem", item_emoji: "<:gembadgegray:955562792302288958>", category: "Gemstone"}),
+        Items.upsert({ name: "Blue gem", item_emoji: "<:gembadgeblue:955562792503640164>", category: "Gemstone"}),
+        Items.upsert({ name: "Pink gem", item_emoji: "<:gembadgelavender:955562792080011275>", category: "Gemstone"}),
+        Items.upsert({ name: "Dark green gem", item_emoji: "<:gembadgedarkgreen:955562795175387256>", category: "Gemstone"}),
+        Items.upsert({ name: "Nugget", item_emoji: "<:chickennugget:955856197632794755>", category: "Food"}),
+        Items.upsert({ name: "Water", item_emoji: "<:water:955856197926395944>", category : "Food"})    
+        
+
+        
+    ];
+
     const stocks = [
         Stocks.upsert({ id: 1000, name: "GC", oldPrice: "2287135438", currentPrice: "2287135438", averageChange: "1", lastUpdated: "0", displayName: "Graveyard Casino", amountBought: 0}),
         Stocks.upsert({ id: 1001, name: "PAS", oldPrice: "0", currentPrice: "1000", averageChange: "0.5", lastUpdated: "0", displayName: "Pets And Stuff", amountBought: 0}),
@@ -167,10 +185,13 @@ sequelize.sync({ force }).then(async () => {
         CurrencyShop.upsert({ id: 5912 ,  itemEmoji: "🚙", name: "Fresh car smell in a bottle", cost: 40, itemDescription: "SO REFRESHING😍", category: "Weird Things"}),
         CurrencyShop.upsert({ id: 2097 ,  itemEmoji: "🪵", name: "Wooden plank", cost: 20, itemDescription: "Literally a wooden plank.", category: "Wooden"}),
     ];
+
     await Promise.all(stocks);
     console.log("Stocks database synced.");
     await Promise.all(shop);
     console.log("Currency database synced.");
+    await Promise.all(items);
+    console.log("Items have been updated.");
 
     sequelize.close();
 }).catch(console.error);
