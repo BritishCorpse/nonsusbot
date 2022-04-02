@@ -1,29 +1,4 @@
-
-
-async function sendLog(client, guildId, color, title, info) {
-    //Base embed to fill with userful information in the events.
-    const embed = {
-        color: color,
-
-        title: title,
-
-        author: {
-            name: "Logger.",
-            icon_url: client.user.displayAvatarURL(),
-            url: "https://talloween.github.io/graveyardbot/",
-        },
-
-        fields: [
-            info
-        ],
-
-        timestamp: new Date(),
-
-        footer: {
-            text: "Powered by Graveyard",
-        },
-    };
-
+async function sendLog(client, guildId, color, title, info, attachment) {
     //Check if the log channel exists.
     let logChannel;
 
@@ -33,7 +8,61 @@ async function sendLog(client, guildId, color, title, info) {
 
     if (logChannel === undefined) return;
 
-    logChannel.send({embeds: [embed]});
+    //Base embed to fill with userful information in the events.
+    if(!attachment){
+        const embed = {
+            color: color,
+    
+            title: title,
+    
+            author: {
+                name: "Logger.",
+                icon_url: client.user.displayAvatarURL(),
+                url: "https://talloween.github.io/graveyardbot/",
+            },
+    
+            fields: [
+                info
+            ],
+
+            timestamp: new Date(),
+    
+            footer: {
+                text: "Powered by Graveyard",
+            },
+        };
+
+        return logChannel.send({embeds: [embed]});
+    } else {
+        const embed = {
+            color: color,
+
+            title: title,
+
+            author: {
+                name: "Logger.",
+                icon_url: client.user.displayAvatarURL(),
+                url: "https://talloween.github.io/graveyardbot/",
+            },
+
+            fields: [
+                info
+            ],
+
+            image: {
+                url: `${attachment}`
+            },
+            timestamp: new Date(),
+
+            footer: {
+                text: "Powered by Graveyard",
+            },
+        };
+
+        return logChannel.send({embeds: [embed]});
+    }
+
+
 }
 
 module.exports = {
@@ -61,22 +90,36 @@ module.exports = {
                         value: `${message.author}`
                     },
                     {
-                        name: "Content",
-                        value: `${message.cleanContent}`
-                    },
-                    {
                         name: "ID",
                         value: `${message.id}`
                     }
                 ];
 
+                //This is for images.
+                if(message.content) {
+                    info.push({
+                        name: "Content",
+                        value: `${message.cleanContent}`},);
+                }
+
+                else {
+                    info.push({name: "Content", value: "(Image)"});
+                }
+
                 sendLog(client, message.guild.id, "RED", "A message was deleted.", info);
             });
 
             client.on("messageUpdate", async (oldMessage, newMessage) => {
+                //Don't do this if it came from a bot.
+                if(oldMessage.author.bot) return;
+
                 let oldContent = oldMessage.cleanContent;
                 let newContent = newMessage.cleanContent;
 
+                //Don't send a message update log if it only added an embed or removed an embed.
+                if (oldMessage.cleanContent === newMessage.cleanContent) return;
+
+                //This checks for like image stuff.
                 if(!oldMessage.content) {
                     oldContent = oldMessage.attachments;
                 }
@@ -275,7 +318,7 @@ module.exports = {
                     },
                     {
                         name: "Permissions",
-                        value: `${role.permissions}`
+                        value: `${role.permissions.FLAGS}`
                     },
                     {
                         name: "Mentionable",
@@ -316,7 +359,7 @@ module.exports = {
                         },
                     ];
     
-                    sendLog(client, channel.guild.id, "YELLOW", "A channels pinned messages were updated.", info);
+                    sendLog(client, channel.guild.id, "YELLOW", "A channel's pinned messages were updated.", info);
                 }else return;
             });
 
@@ -462,6 +505,126 @@ module.exports = {
                     ];
 
                     sendLog(client, invite.guild.id, "RED", "An invite was deleted.", info);
+                }
+            });
+        
+            //Requires detailed logging.
+            client.on("roleUpdate", async (oldRole, newRole) => {
+                const DL = await checkDL(oldRole.guild.id);
+                if (DL === true) {
+                    const info = [];
+
+                    //If nothing changed, return.
+                    if (oldRole === newRole) return;
+
+                    //Compares the names of the roles.
+                    if(oldRole.name !== newRole.name) {
+                        info.push({
+                            name: "New name",
+                            value: `${newRole.name}`
+                        });
+                    }
+
+                    //Compares the permissions of the roles.
+                    if(oldRole.permissions.length !== newRole.permissions.length) {                
+                        let perms = newRole.permissions.toArray();
+
+                        for (let i = 0; i < perms.length; i++) {
+                            perms = perms.toString().replace(",", "\n");
+                        } 
+
+                        info.push({
+                            name: "New permissions",
+                            value: `\`${perms.toLowerCase()}\``
+                        });
+                    }
+
+                    //Compares the colours of the roles.
+                    if(oldRole.color !== newRole.color) {
+                        info.push({
+                            name: "New color",
+                            value: `${newRole.hexColor}`
+                        });
+                    }
+
+                    info.push(
+                        {
+                            name: "ID",
+                            value: `${newRole.id}`
+                        });
+
+                    sendLog(client, newRole.guild.id, "YELLOW", "A role was updated.", info);
+                }
+            });
+
+            //Requires detailed logging.
+            client.on("guildMemberUpdate", async (oldMember, newMember) => {
+                const DL = await checkDL(oldMember.guild.id);
+                if (DL === true) {
+                    const info = [
+                        {
+                            name: "Tag",
+                            value: `${newMember.user.tag}`
+                        }
+                    ];
+
+                    //Check for the users displayname
+                    if(oldMember.displayName !== newMember.displayName) {
+                        info.push({
+                            name: "New name",
+                            value: `${newMember.displayName}`
+                        });
+                    }
+
+                    //Check for pfp
+                    if(oldMember.avatar !== newMember.avatar) {
+                        info.push({
+                            name: "Avatar",
+                            value: "See attached image."
+                        });
+
+                        return sendLog(client, newMember.guild.id, "YELLOW", "A user updated their avatar.", info, newMember.displayAvatarURL());
+                    }
+
+                    //Check for the users color
+                    if(oldMember.displayHexColor !== newMember.displayHexColor) {
+                        info.push({
+                            name: "New color",
+                            value: `${newMember.displayHexColor}`
+                        });
+                    }
+
+                    //Check for the users roles 
+                    const oldRoles = oldMember.roles.cache.filter((roles) => roles.id !== newMember.guild.id).map((role) => ` ${role.toString().replace(",", "")}`);
+                    const newRoles = newMember.roles.cache.filter((roles) => roles.id !== newMember.guild.id).map((role) => ` ${role.toString().replace(",", "")}`);
+
+                    if(oldRoles.length > newRoles.length || oldRoles.length < newRoles.length) {
+                        if (newRoles.length > 1) {
+                            info.push({
+                                name: "Updated Roles",
+                                value: `${newRoles || "No roles"}`
+                            });
+                        } else {
+                            info.push({
+                                name: "Updated Roles",
+                                value: "No roles"
+                            });
+                        }
+
+
+                        return sendLog(client, newMember.guild.id, "YELLOW", "A user's roles were updated.", info);
+                    }
+
+                    //Check if the user is moderatabale.
+                    if(oldMember.manageable !== newMember.manageable) {
+                        console.log(newMember.manageable);
+                        info.push({
+                            name: "Manageable",
+                            value: `${newMember.manageable || "No"}`
+                        });
+                    }
+
+                    sendLog(client, newMember.guild.id, "YELLOW", "A user was updated.", info);
                 }
             });
             
