@@ -1,22 +1,8 @@
-const { MessageEmbed } = require("discord.js");
-
-function plural(number) {
-    return number !== 1 ? "s" : "";
-}
-
-const funnyReplies = [
-    "101 0011 0001 1000 0000 0000 1000",
-    "Guess they should've followed the rules.",
-    "Ouch! That hurt.", "You wont be missed!",
-    "Farewell, traveler.",
-    "You will be forever missed!",
-    //"Adiós fuckboy.",
-    "I never really liked that guy."
-];
+const { Permissions } = require('discord.js');
 
 module.exports = {
     name: ["timeout", "to"],
-    description: "Sets a user in timeout.",
+    description: "Sets a user in timeout. Enter the time in hours.",
     botPermissions: ["MODERATE_MEMBERS"],
     userPermissions: ["MODERATE_MEMBERS"],
 
@@ -24,62 +10,80 @@ module.exports = {
     ],
 
     async execute (message, args) {
-        // Random colour for the embed.
-        const randomColor = Math.floor(Math.random()*16777215).toString(16);
 
-        // Target who will be timeouted.
+        //Define who to timeout, how long it should last, and the reason for the timeout.
         const target = message.mentions.members.first();
+        let duration = args[1];
+        let reason = args[2];
 
-        if (!target) {
-            message.channel.send("You did not specify a target.");
+        //Check if there's a target.
+        if (!target) return message.channel.send("You did not specify a target.");
+
+        //Check if theres a duration
+        if (!duration) {
+            message.channel.send("No time was provided, defaulting to 1 hour.");
+
+            //This is the default duration
+            duration = 1;
+        }   
+
+        //Check if the reason exists.
+        if (!reason) {
+            reason = "No reason provided";
+        }
+
+        //Check if the user is lower in the role list.
+        if (message.member.roles.highest.position < target.roles.highest.position) {
+            message.channel.send("You are not able to timeout this member.");
             return;
         }
 
-        // Time stuff
-        const timeString = args[1]; 
-
-        if(!args[1]) return message.channel.send("You did not specify a time.");
-
-        const timeRegex = /(?:0*(\d+)d)?(?:0*((?:\d)|(?:1\d)|(?:2[0-3]))h)?(?:0*((?:\d)|(?:[1-5]\d))m)?(?:0*((?:\d)|(?:[1-5]\d))s)?/;
-
-        // Make sure that there is a reason to timeout them.
-        const reason = args.slice(2).join(" ");
-
-        // More time stuff.
-        const match = timeString.match(timeRegex);
-
-        if (match[0] !== timeString) {
-            message.channel.send("Invalid time. Format: 0d0h0m0s. Hours can be between 0 and 23, minutes and seconds between 0 and 60.");
+        //Check if the bot is able to timeout the target.
+        if (message.guild.me.roles.highest.position < target.roles.highest.position || target.permissions.has(Permissions.FLAGS.ADMINISTRATOR || message.guild.ownerId === target.id)) {
+            message.channel.send("I am not able to timeout this member.");
             return;
         }
 
-        const days = Number.parseInt(match[1]) || 0;
-        const hours = Number.parseInt(match[2]) || 0;
-        const minutes = Number.parseInt(match[3]) || 0;
-        const seconds = Number.parseInt(match[4]) || 0;
+        //Timeout the target
+        target.timeout(duration * 60 * 1000, reason);
 
-        let string = "";
-        if (days > 0)
-            string += `${days} day${plural(days)}`;
-        if (hours > 0)
-            string += `${hours} hour${plural(hours)}`;
-        if (minutes > 0)
-            string += `${minutes} minute${plural(minutes)}`;
-        if (seconds > 0)
-            string += `${seconds} second${plural(seconds)}`;
+        //Fancy embed to show to the user
+        const embed = {
+            color: "RED",
+    
+            title: "A user was timed out.",
+    
+            author: {
+                name: "Logger.",
+                icon_url: message.client.user.displayAvatarURL(),
+                url: "https://talloween.github.io/graveyardbot/",
+            },
+    
+            fields: [
+                {
+                    name: "Timed out user",
+                    value: `${target.user}`
+                },
+                {
+                    name: "Duration",
+                    value: `${duration}h`
+                },
+                {
+                    name: "Reason",
+                    value: `${reason}`
+                }
+            ],
+
+            timestamp: new Date(),
             
+            thumbnail: `${target.user.displayAvatarURL()}`,
 
-        target.timeout(seconds * 1000 + minutes * 60 * 1000 + hours * 60 * 60 * 1000 + days * 24 * 60 * 60 * 1000, reason);
+            footer: {
+                text: "Powered by Graveyard",
+            },
+        };
 
-        const funnyReply = funnyReplies[Math.floor(Math.random() * funnyReplies.length)];
-        const embed = new MessageEmbed()
-            .setAuthor({name: `${message.author.username}`, iconURL: message.author.avatarURL()})
-            .setDescription(`The moderators have spoken, the timeout hammer has fallen, ${target.user.tag} has been timed out in ${message.guild.name}! ` + funnyReply)
-            .addField("Timeout duration:", `${string}`)
-            .addField("Timeout reason:", `${reason || "No reason provided."}`)
-            .addField("Moderator", `${message.author.tag}`)
-            .setColor(randomColor);
-
-        message.channel.send({embeds: [embed]});
+        //send the fancy embed.
+        message.channel.send({ embeds: [embed]});
     }
 };
