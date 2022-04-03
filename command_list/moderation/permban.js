@@ -1,56 +1,79 @@
-const { MessageEmbed } = require("discord.js");
-const { circularUsageOption } = require(`${__basedir}/functions`);
-
-
-const funnyReplies = [
-    "101 0011 0001 1000 0000 0000 1000",
-    "Guess they should've followed the rules.",
-    "Ouch! That hurt.", "You wont be missed!",
-    "Farewell, traveler.",
-    "You will be forever missed!",
-    //"Adiós fuckboy.",
-    "I never really liked that guy."
-];
-
+const { Permissions } = require("discord.js");
 
 module.exports = {
     name: "permban",
-    description: "Permanently bans a user from the guild.",
+    description: "Permanently bans a member from the guild.",
     botPermissions: ["BAN_MEMBERS"],
     userPermissions: ["BAN_MEMBERS"],
 
-    usage: [
-        { tag: "user", checks: {isuseridinguild: null},
-            next: [
-                circularUsageOption(
-                    { tag: "reason", checks: {matches: {not: /[^\w?!.,;:'"()/]/}, isempty: {not: null}} }
-                )
-            ]
-        }
-    ],
+    usage: [],
 
     async execute (message, args) {
-        const randomColor = Math.floor(Math.random()*16777215).toString(16);
-        const prefix = message.client.serverConfig.get(message.guild.id).prefix;
 
-        const banUser = message.mentions.members.first();
-        const banReason = args.slice(1).join(" ");
+        //Define who to ban, and the reason for the ban.
+        const target = message.mentions.members.first();
+        let reason = args[1];
 
-        if (!banUser || !banReason) {
-            return message.channel.send(`Incorrect usage. Proper usage: ${prefix}permban {user} reason`);
+        //Check if there's a target.
+        if (!target) return message.channel.send("You did not specify a target.");
+
+        //Check if the reason exists.
+        if (!reason) {
+            reason = "No reason provided";
         }
 
-        const funnyReply = funnyReplies[Math.floor(Math.random()*funnyReplies.length)];
-        const embed = new MessageEmbed()
-            .setAuthor({name: `${message.author.username}`, iconURL: message.author.avatarURL()})
-            .setDescription(`The moderators have spoken, the ban hammer has fallen, ${banUser.user.tag} has been banned from ${message.guild.name}! ` + funnyReply)
-            .addField("Ban duration", "Permanent")
-            .addField("Ban reason", banReason)
-            .addField("Moderator", message.author.tag)
-            .setColor(randomColor);
+        //Check if the user is lower in the role list.
+        if (message.member.roles.highest.position < target.roles.highest.position) {
+            message.channel.send("You are not able to timeout this member.");
+            return;
+        }
 
-        message.channel.send({embeds: [embed]});
-        banUser.ban({reason: banReason})
-            .catch(console.error);
+        //Check if the bot is able to timeout the target.
+        if (message.guild.me.roles.highest.position < target.roles.highest.position || target.permissions.has(Permissions.FLAGS.ADMINISTRATOR || message.guild.ownerId === target.id)) {
+            message.channel.send("I am not able to timeout this member.");
+            return;
+        }
+
+        //Ban the target using the predetermined values.
+        target.ban({ days: 0, reason: reason });
+
+        //Fancy embed to show to the user
+        const embed = {
+            color: "#ff8800",
+    
+            title: "A user was banned.",
+    
+            author: {
+                name: "Logger.",
+                icon_url: message.client.user.displayAvatarURL(),
+                url: "https://talloween.github.io/graveyardbot/",
+            },
+    
+            fields: [
+                {
+                    name: "Banned user",
+                    value: `${target.user}`
+                },
+                {
+                    name: "Duration",
+                    value: "Permanent"
+                },
+                {
+                    name: "Reason",
+                    value: `${reason}`
+                }
+            ],
+
+            timestamp: new Date(),
+            
+            thumbnail: `${target.user.displayAvatarURL()}`,
+
+            footer: {
+                text: "Powered by Graveyard",
+            },
+        };
+
+        //send the fancy embed.
+        message.channel.send({ embeds: [embed]});
     }
 };

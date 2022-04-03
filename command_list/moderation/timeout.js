@@ -1,4 +1,4 @@
-const { Permissions } = require('discord.js');
+const { Permissions } = require("discord.js");
 
 module.exports = {
     name: ["timeout", "to"],
@@ -44,6 +44,56 @@ module.exports = {
             return;
         }
 
+        //Option to remove the timeout of a user
+        if (args[1] === "remove") {
+            //Remove the timeout
+            target.timeout(0, reason);
+
+            const embed = {
+                color: "GREEN",
+
+                title: "A user's timeout was removed.",
+    
+                author: {
+                    name: "Logger.",
+                    icon_url: message.client.user.displayAvatarURL(),
+                    url: "https://talloween.github.io/graveyardbot/",
+                },
+        
+                fields: [
+                    {
+                        name: "Timed out user",
+                        value: `${target.user}`
+                    },
+                    {
+                        name: "Duration",
+                        value: `${duration}h`
+                    },
+                    {
+                        name: "Reason",
+                        value: `${reason}`
+                    }
+                ],
+    
+                timestamp: new Date(),
+                
+                thumbnail: `${target.user.displayAvatarURL()}`,
+    
+                footer: {
+                    text: "Powered by Graveyard",
+                },
+            };
+
+            message.channel.send({ embeds: [embed] });
+            return;
+        }
+
+        //Check if its a number.
+        if (isNaN(duration)) {
+            message.channel.send("Invalid number of hours. Please specify a time using **ONLY** numbers.");
+            return;
+        }
+
         //Timeout the target
         target.timeout(duration * 60 * 1000, reason);
 
@@ -85,5 +135,16 @@ module.exports = {
 
         //send the fancy embed.
         message.channel.send({ embeds: [embed]});
+
+        //Check if the log channel exists.
+        let logChannel;
+
+        if (message.client.serverConfig.get(message.guild.id).log_channel_id) {
+            logChannel = await message.client.channels.fetch(message.client.serverConfig.get(message.guild.id).log_channel_id);
+        }  
+
+        if (logChannel === undefined) return;
+
+        logChannel.send({embeds: [embed]});
     }
 };

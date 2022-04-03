@@ -32,10 +32,6 @@ module.exports = {
         context.strokeStyle = "#000000";
         context.strokeRect(0, 0, canvas.width, canvas.height);
 
-
-
-
-
         const randomColor = Math.floor(Math.random() * 16777215).toString(16);
 
         function defineUser(userId) {
@@ -65,13 +61,14 @@ module.exports = {
 
                 context.font = applyText(canvas, `${userInDiscord.tag}!`, 60);
                 context.fillStyle = "#ffffff";
-                context.fillText(`${userInDiscord.tag}`, canvas.width / 4, canvas.height - canvasPos);
+                context.fillText(`🍎${userInDiscord.tag}`, canvas.width / 4, canvas.height - canvasPos);
 
                 embed.addField(`${position + 1}. ${userInDb.badge || ""}${userInDiscord.tag}`, `Level ${userLevel.level}, ${userLevel.exp}/${userLevel.reqExp} EXP!`);
 
                 canvasPos -= 90;
             }, undefined);
         }
+
 
         const attachment = new MessageAttachment(canvas.toBuffer(), "image.png");
 
