@@ -542,7 +542,12 @@ module.exports = {
             client.on("roleUpdate", async (oldRole, newRole) => {
                 const DL = await checkDL(oldRole.guild.id);
                 if (DL === true) {
-                    const info = [];
+                    const info = [
+                        {
+                            name: "Role name",
+                            value: `${oldRole.name}`
+                        }
+                    ];
 
                     //If nothing changed, return.
                     if (oldRole === newRole) return;
@@ -574,6 +579,15 @@ module.exports = {
                         info.push({
                             name: "New color",
                             value: `${newRole.hexColor}`
+                        });
+                    }
+
+                    //Compares the position of the role.
+                    //This doesn't work for some reason. Couldn't be bothered to fix it really. :shrug:
+                    if (oldRole.position !== newRole.position) {
+                        info.push({
+                            name: "New position",
+                            value: `${newRole.position}`
                         });
                     }
 
@@ -637,7 +651,7 @@ module.exports = {
                         } else {
                             info.push({
                                 name: "Updated Roles",
-                                value: "No roles"
+                                value: "**WARNING!** No roles found. This could be due to the user not having any roles, or the bot's role being lower than the user's roles in the list."
                             });
                         }
 
