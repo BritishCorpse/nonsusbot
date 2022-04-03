@@ -9,7 +9,7 @@ async function sendLog(client, guildId, color, title, info, attachment) {
     if (logChannel === undefined) return;
 
     //Base embed to fill with userful information in the events.
-    if(!attachment){
+    if (!attachment){
         const embed = {
             color: color,
     
@@ -84,6 +84,8 @@ module.exports = {
 
         try { 
             client.on("messageDelete", async (message) => {
+
+
                 const info = [
                     {
                         name: "Author",
@@ -95,15 +97,28 @@ module.exports = {
                     }
                 ];
 
-                //This is for images.
-                if(message.content) {
+                //If there is an attachment and text
+                if (message.attachments.size > 0 && message.content) {
+                    info.push({
+                        name: "Content", 
+                        value: `${message.cleanContent} + (Attached Image[s])`
+                    });
+                }   
+
+                //If there is only an attachment. (It flags as no message content)
+                if (!message.content) {
                     info.push({
                         name: "Content",
-                        value: `${message.cleanContent}`},);
+                        value: "(Image)"
+                    });
                 }
 
-                else {
-                    info.push({name: "Content", value: "(Image)"});
+                //If there is no attachment
+                if (message.attachments.size < 1 && message.content) {
+                    info.push({
+                        name: "Content",
+                        value: `${message.content}`
+                    });
                 }
 
                 sendLog(client, message.guild.id, "RED", "A message was deleted.", info);
@@ -111,7 +126,7 @@ module.exports = {
 
             client.on("messageUpdate", async (oldMessage, newMessage) => {
                 //Don't do this if it came from a bot.
-                if(oldMessage.author.bot) return;
+                if (oldMessage.author.bot) return;
 
                 let oldContent = oldMessage.cleanContent;
                 let newContent = newMessage.cleanContent;
@@ -120,11 +135,11 @@ module.exports = {
                 if (oldMessage.cleanContent === newMessage.cleanContent) return;
 
                 //This checks for like image stuff.
-                if(!oldMessage.content) {
+                if (!oldMessage.content) {
                     oldContent = oldMessage.attachments;
                 }
 
-                if(!newMessage.content) {
+                if (!newMessage.content) {
                     newContent = newMessage.attachments;
                 }
 
@@ -413,6 +428,21 @@ module.exports = {
                 }else return;
             });
 
+            //Requires detailed logging.
+            client.on("emojiUpdate", async (newEmoji) => {
+                const DL = await checkDL(newEmoji.guild.id);
+                if (DL === true) {
+                    const info = [
+                        {
+                            name: "New name",
+                            value: `${newEmoji.name}`
+                        }
+                    ];
+
+                    sendLog(client, newEmoji.guild.id, "YELLOW", "An emoji was updated.", info);
+                }
+            });
+            
             //Require detailed logging.
             client.on("guildMemberAdd", async (GuildMember) => {
                 const DL = await checkDL(GuildMember.guild.id);
@@ -518,7 +548,7 @@ module.exports = {
                     if (oldRole === newRole) return;
 
                     //Compares the names of the roles.
-                    if(oldRole.name !== newRole.name) {
+                    if (oldRole.name !== newRole.name) {
                         info.push({
                             name: "New name",
                             value: `${newRole.name}`
@@ -526,7 +556,7 @@ module.exports = {
                     }
 
                     //Compares the permissions of the roles.
-                    if(oldRole.permissions.length !== newRole.permissions.length) {                
+                    if (oldRole.permissions.length !== newRole.permissions.length) {                
                         let perms = newRole.permissions.toArray();
 
                         for (let i = 0; i < perms.length; i++) {
@@ -540,7 +570,7 @@ module.exports = {
                     }
 
                     //Compares the colours of the roles.
-                    if(oldRole.color !== newRole.color) {
+                    if (oldRole.color !== newRole.color) {
                         info.push({
                             name: "New color",
                             value: `${newRole.hexColor}`
@@ -569,7 +599,7 @@ module.exports = {
                     ];
 
                     //Check for the users displayname
-                    if(oldMember.displayName !== newMember.displayName) {
+                    if (oldMember.displayName !== newMember.displayName) {
                         info.push({
                             name: "New name",
                             value: `${newMember.displayName}`
@@ -577,7 +607,7 @@ module.exports = {
                     }
 
                     //Check for pfp
-                    if(oldMember.avatar !== newMember.avatar) {
+                    if (oldMember.avatar !== newMember.avatar) {
                         info.push({
                             name: "Avatar",
                             value: "See attached image."
@@ -587,7 +617,7 @@ module.exports = {
                     }
 
                     //Check for the users color
-                    if(oldMember.displayHexColor !== newMember.displayHexColor) {
+                    if (oldMember.displayHexColor !== newMember.displayHexColor) {
                         info.push({
                             name: "New color",
                             value: `${newMember.displayHexColor}`
@@ -598,7 +628,7 @@ module.exports = {
                     const oldRoles = oldMember.roles.cache.filter((roles) => roles.id !== newMember.guild.id).map((role) => ` ${role.toString().replace(",", "")}`);
                     const newRoles = newMember.roles.cache.filter((roles) => roles.id !== newMember.guild.id).map((role) => ` ${role.toString().replace(",", "")}`);
 
-                    if(oldRoles.length > newRoles.length || oldRoles.length < newRoles.length) {
+                    if (oldRoles.length > newRoles.length || oldRoles.length < newRoles.length) {
                         if (newRoles.length > 1) {
                             info.push({
                                 name: "Updated Roles",
@@ -616,7 +646,7 @@ module.exports = {
                     }
 
                     //Check if the user is moderatabale.
-                    if(oldMember.manageable !== newMember.manageable) {
+                    if (oldMember.manageable !== newMember.manageable) {
                         console.log(newMember.manageable);
                         info.push({
                             name: "Manageable",
@@ -627,7 +657,7 @@ module.exports = {
                     sendLog(client, newMember.guild.id, "YELLOW", "A user was updated.", info);
                 }
             });
-            
+
         //Don't think this really matters, it's just here for shits and giggles.
         }catch (error) {
             console.log("An error occured.");
