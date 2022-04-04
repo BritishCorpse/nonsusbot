@@ -1,7 +1,7 @@
 const { MessageAttachment } = require("discord.js");
 const { Levels, Users } = require(`${__basedir}/db_objects`);
 const Canvas = require("canvas");
-const { translateForGuild } = require(`${__basedir}/functions`);
+const { translateForGuild, formatRank } = require(`${__basedir}/functions`);
 
 module.exports = {
     name: "level",
@@ -24,7 +24,7 @@ module.exports = {
         const context = canvas.getContext("2d");
 
         //Loads the background image.
-        const background = await Canvas.loadImage("./images/levelbackground.png");        
+        const background = await Canvas.loadImage("./images/background1.png");        
         //Load another image, this time it's the avatar of the user.
         const avatar = await Canvas.loadImage(user.displayAvatarURL({ format: "jpg" }));
 
@@ -40,7 +40,6 @@ module.exports = {
         if (userInDbTwo.badge) {
             const myArray = userInDbTwo.badge.split(":");
             const word = myArray[1];
-            console.log(word);
 
             const badge = await Canvas.loadImage(`./badges/${word}.png`);
 
@@ -49,21 +48,37 @@ module.exports = {
             } else {
                 context.drawImage(badge, 25, 190, badge.width / 1.5, badge.height / 1.5);
             }
-
-
         }
 
-        //Write some text next to the badge
-        context.font = "26px Arial";
+        //Write the username
+        context.font = "28px Roboto";
         context.fillStyle = "white";
-        context.fillText(user.tag, 90, 225);
 
-        //Write some more text next to the pfp
-        context.font = "40px Arial";
+        let rank = user.tag;
+
+        //Check if they have a rank.
+        if (userInDbTwo.rank) {
+            const formattedRank = formatRank(userInDbTwo.rank, user.tag);
+            rank = formattedRank[0];
+            const colour = formattedRank[1];  
+
+            //Set the colour of the brush
+            context.fillStyle = colour;
+
+        }
+        
+        //Write the tag of the user.
+        context.fillText(rank, 90, 225);
+
+        //colour for the level and things
+        context.fillStyle = "white";
+        
+        //Write the userlevel
+        context.font = "44px Roboto Light";
         context.fillText(translateForGuild(message.guild, "Level") + `: ${userInDb.level || "0"}  `, 25, 50);
 
-        //write some subtext
-        context.font = "26px Arial";
+        //Write the userlevel
+        context.font = "28px Roboto Light";
         context.fillText(translateForGuild(message.guild, "EXP") + `: ${userInDb.exp}/${userInDb.reqExp}`, 25, 100);
 
         //This draws a circle, the first 2 args are the xy coords, the third one is the radius.

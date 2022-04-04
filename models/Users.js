@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
         countedCorrect: {
             type: DataTypes.INTEGER,
             allowNull: true,  
+        },
+        rank: {
+            type: DataTypes.STRING,
+            allowNull: true,
         }
     }, {
         timestamps: false,
