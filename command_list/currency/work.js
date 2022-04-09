@@ -1,4 +1,5 @@
 const { Users } = require(`${__basedir}/db_objects`);
+const { gravestone } = require(`${__basedir}/emojis.json`);
 
 module.exports = {
     name: "work",
@@ -51,7 +52,7 @@ module.exports = {
         message.client.currency.add(message.author.id, earnedMoney);
         await Users.update({ lastWorked: time }, { where: { user_id: message.author.id } });
 
-        message.channel.send(`You earned ${earnedMoney}<:ripcoin:929759319296192543> working as (${jobs[jobIndex]})`);
+        message.channel.send(`You earned ${earnedMoney}${gravestone} working as (${jobs[jobIndex]})`);
     }
 
 };

@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const { Users } = require(`${__basedir}/db_objects`);
+const { gravestone } = require(`${__basedir}emojis.json`);
 
 module.exports = {
     name: ["richest", "rich"],
@@ -32,7 +33,7 @@ module.exports = {
                 await memo; // Waits for previous to end.
                 const userInDb = await defineUser(user.user_id);
                 const userInDiscord = await message.client.users.fetch(user.user_id);
-                embed.addField(`${position + 1}. ${userInDb.badge || ""}${userInDiscord.tag}`, `${user.balance}<:ripcoin:929759319296192543>`);
+                embed.addField(`${position + 1}. ${userInDb.badge || ""}${userInDiscord.tag}`, `${user.balance}${gravestone}`);
             }, undefined);
         }
 

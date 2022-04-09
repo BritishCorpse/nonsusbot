@@ -1,6 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 const { CurrencyShop } = require(`${__basedir}/db_objects`);
 const { paginateEmbeds } = require(`${__basedir}/functions`);
+const { gravestone } = require(`${__basedir}/emojis.json`);
 
 module.exports = {
     name: "shop",
@@ -30,7 +31,7 @@ module.exports = {
                 embeds.push(embed);  
             }
                         
-            embed.addField(`${item.itemEmoji}${item.name}, ${item.itemDescription}`, `${item.cost}<:ripcoin:929759319296192543>`);
+            embed.addField(`${item.itemEmoji}${item.name}, ${item.itemDescription}`, `${item.cost}${gravestone}`);
         }
 
         paginateEmbeds(message.channel, message.author, embeds, {useDropdown: true});

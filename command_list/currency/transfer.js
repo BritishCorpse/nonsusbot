@@ -1,3 +1,5 @@
+const { gravestone } = require(`${__basedir}/emojis.json`);
+
 module.exports = {
     name: "transfer",
     description: "Transfer coins from your account to someone else's.",
@@ -24,6 +26,6 @@ module.exports = {
         message.client.currency.add(transferTarget.id, transferAmount);
         await message.client.currency.add(message.author.id, -transferAmount); // only need to await this one to show the correct number in the message
 
-        message.channel.send(`Successfully transferred ${transferAmount}<:ripcoin:929759319296192543> to ${transferTarget.tag}. Your remaining balance is: ${message.client.currency.getBalance(message.author.id)}<:ripcoin:929759319296192543>`);
+        message.channel.send(`Successfully transferred ${transferAmount}${gravestone} to ${transferTarget.tag}. Your remaining balance is: ${message.client.currency.getBalance(message.author.id)}${gravestone}`);
     }
 };

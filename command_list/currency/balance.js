@@ -2,7 +2,7 @@ const { Users } = require(`${__basedir}/db_objects`);
 
 const { MessageAttachment } = require("discord.js");
 const Canvas = require("canvas");
-const { formatRank } = require(`${__basedir}/functions`);
+const { formatRank, formatNumber } = require(`${__basedir}/functions`);
 
 module.exports = {
     name: ["balance", "bal"],
@@ -79,13 +79,19 @@ module.exports = {
             //Write the balance
             context.font = "38px Roboto Light";
             context.fillText("Wallet in GS:", 25, 60);
+            //does cool color thingy
+            context.fillStyle = formatNumber(message.client.currency.getBalance(user.id) || 0);
             context.fillText(`\n${message.client.currency.getBalance(user.id) || "0"}`, 25, 60);
         } else {
             //Write the balance
             context.font = "38px Roboto Light";
+            //does cool color thingy
+            context.fillStyle = formatNumber(message.client.currency.getBalance(user.id) || 0);
             context.fillText("Wallet in GS:" + "> 1 quintillion.", 25, 60);
         }
 
+        //change the color back to normal
+        context.fillStyle = "white";
 
         //a quick infomratin thingy
         context.font = "20px Roboto Light";

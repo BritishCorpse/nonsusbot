@@ -85,7 +85,9 @@ module.exports = {
 
         //Write the things
         context.font = "44px Roboto Light";
+        context.fillStyle = "#ff9300";
         context.fillText("+10000 Gravestones!", 25, 60);
+        context.fillStyle = "white";
 
         //Inform the amount
         context.font = "20px Roboto Light";

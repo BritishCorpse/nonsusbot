@@ -88,8 +88,10 @@ module.exports = {
 
         //Write the things
         context.font = "44px Roboto Light";
+        context.fillStyle = "#ff9300";
         context.fillText("+2000 Gravestones!", 25, 60);
-
+        context.fillStyle = "white";
+        
         //Inform the amount
         context.font = "20px Roboto Light";
         context.fillText("You claimed your daily reward!", 25, 100); 
