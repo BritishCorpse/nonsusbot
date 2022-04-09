@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const { Users } = require(`${__basedir}/db_objects`);
-const { gravestone } = require(`${__basedir}emojis.json`);
+const { gravestone } = require(`${__basedir}/emojis.json`);
 
 module.exports = {
     name: ["richest", "rich"],
