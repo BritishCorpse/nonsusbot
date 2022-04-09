@@ -66,9 +66,10 @@ process.on("unhandledRejection", async error => {
     const errorChannel = await client.channels.fetch("955880094625320980");
     const errorMessage = `An unhandled rejection occured at: ${new Date().toGMTString()}. Please check the logs immediately.`;
 
-    console.log(errorMessage);
     errorChannel.send(errorMessage);
-     
+    errorChannel.send(error);
+
+    console.log(`ERROR AT ${new Date()}`);
     console.error(error.toString());
     console.trace();
 });
@@ -326,7 +327,7 @@ client.on("messageCreate", async message => {
 
     // If all the checks passed, do the command
     try {
-        console.log(`Someone triggered the command: ${commandObject.name}, category: (${commandObject.category}), with the arguments: ${commandObject.args} at: ${new Date().toGMTString()}`);
+        console.log(`The command ${commandObject.name} was triggered at: ${new Date().toGMTString()}`);
         doCommand(commandObject, message, args);
     } catch (error) {
         message.reply("We've encountered an error while attempting to execute this command. Please report this error at: https://discord.gg/tkXEhrnXjY");
