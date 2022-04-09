@@ -24,7 +24,7 @@ module.exports = {
         const context = canvas.getContext("2d");
 
         //Loads the background image.
-        const background = await Canvas.loadImage("./images/background1.png");        
+        const background = await Canvas.loadImage("./images/background2.png");        
         //Load another image, this time it's the avatar of the user.
         const avatar = await Canvas.loadImage(user.displayAvatarURL({ format: "jpg" }));
 

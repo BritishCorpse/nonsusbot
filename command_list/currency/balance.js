@@ -2,8 +2,7 @@ const { Users } = require(`${__basedir}/db_objects`);
 
 const { MessageAttachment } = require("discord.js");
 const Canvas = require("canvas");
-const { translateForGuild, formatRank } = require(`${__basedir}/functions`);
-
+const { formatRank } = require(`${__basedir}/functions`);
 
 module.exports = {
     name: ["balance", "bal"],
@@ -33,7 +32,7 @@ module.exports = {
         const context = canvas.getContext("2d");
 
         //Loads the background image.
-        const background = await Canvas.loadImage("./images/background1.png");        
+        const background = await Canvas.loadImage("./images/background2.png");        
         //Load another image, this time it's the avatar of the user.
         const avatar = await Canvas.loadImage(user.displayAvatarURL({ format: "jpg" }));
 
@@ -68,22 +67,30 @@ module.exports = {
 
             //Set the colour of the brush
             context.fillStyle = colour;
-
         }
         
         //Write the tag of the user.
         context.fillText(rank, 90, 225);
 
-        //colour for the level and things
+        //colour
         context.fillStyle = "white";
 
-        //Write the balance
-        context.font = "44px Roboto Light";
-        context.fillText("Wallet: " + ` ${message.client.currency.getBalance(user.id) || "0"}`, 25, 60);
+        if(message.client.currency.getBalance(user.id) < 1000000000000000000){
+            //Write the balance
+            context.font = "38px Roboto Light";
+            context.fillText("Wallet in GS:", 25, 60);
+            context.fillText(`\n${message.client.currency.getBalance(user.id) || "0"}`, 25, 60);
+
+        } else {
+            //Write the balance
+            context.font = "38px Roboto Light";
+            context.fillText("Wallet in GS:" + "> 1 quintillion.", 25, 60);
+        }
+
 
         //Write the total networth.
         context.font = "20px Roboto Light";
-        context.fillText("Remember, this is only the money in a \nwallet, not the total net worth!", 25, 100); 
+        context.fillText("\n\nRemember, this is only the money in a \nwallet, not the total net worth!", 25, 100); 
 
 
         //Make the pfp a circle
