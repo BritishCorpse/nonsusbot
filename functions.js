@@ -577,6 +577,16 @@ function formatRank(rank, userTag) {
     }
 }
 
+function formatNumber(number) {
+    if (number < 1000) return "#dd0000";
+
+    else if (number > 10000) return "#ff9300";
+
+    else if (number > 100000) return "#fff000";
+
+    else if (number > 1000000) return "#9cff4f";
+}
+
 
 module.exports = {
     collectionToJSON,
@@ -597,4 +607,5 @@ module.exports = {
     getLanguages,
     translateForGuild,
     formatRank,
+    formatNumber
 };

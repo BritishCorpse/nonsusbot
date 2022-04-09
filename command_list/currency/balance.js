@@ -80,7 +80,6 @@ module.exports = {
             context.font = "38px Roboto Light";
             context.fillText("Wallet in GS:", 25, 60);
             context.fillText(`\n${message.client.currency.getBalance(user.id) || "0"}`, 25, 60);
-
         } else {
             //Write the balance
             context.font = "38px Roboto Light";
@@ -88,7 +87,7 @@ module.exports = {
         }
 
 
-        //Write the total networth.
+        //a quick infomratin thingy
         context.font = "20px Roboto Light";
         context.fillText("\n\nRemember, this is only the money in a \nwallet, not the total net worth!", 25, 100); 
 
