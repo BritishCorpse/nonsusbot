@@ -95,7 +95,7 @@ module.exports = {
 
         //a quick infomratin thingy
         context.font = "20px Roboto Light";
-        context.fillText("\n\nRemember, this is only the money in a \nwallet, not the total net worth!", 25, 100); 
+        context.fillText("\nNote. This is only wallet worth, NOT net worth.", 25, 100); 
 
 
         //Make the pfp a circle
