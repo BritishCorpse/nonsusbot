@@ -1,4 +1,5 @@
 const { Users } = require(`${__basedir}/db_objects`);
+const { gravestone } = require(`${__basedir}/emojis.json`);
 
 module.exports = {
     name: "rob",
@@ -13,7 +14,7 @@ module.exports = {
         const time = d.getTime();
 
         if (!target || target.id === message.author.id) {
-            message.reply("You robbed yourself! +0<:ripcoin:929759319296192543>");
+            message.reply("You robbed yourself! +0${gravestone}");
             return;
         }
 
@@ -35,14 +36,14 @@ module.exports = {
 
         const result = Math.floor(Math.random() * 3);
         if (result === 0) {
-            message.channel.send(`${target} caught you stealing! You paid them ${amount}<:ripcoin:929759319296192543>`);
+            message.channel.send(`${target} caught you stealing! You paid them ${amount}${gravestone}`);
 
             message.client.currency.add(target.id, amount);
             message.client.currency.add(message.author.id, -amount);
             return;
         }
 
-        message.channel.send(`You robbed ${target} and got ${amount}<:ripcoin:929759319296192543>`);
+        message.channel.send(`You robbed ${target} and got ${amount}${gravestone}`);
 
         message.client.currency.add(target.id, -amount);
         message.client.currency.add(message.author.id, amount);

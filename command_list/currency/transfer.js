@@ -58,24 +58,6 @@ module.exports = {
         //draws the background image
         context.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-        //Check if they have a badge.
-        if (userInDb.badge) {
-            const myArray = userInDb.badge.split(":");
-            const word = myArray[1];
-
-            const badge = await Canvas.loadImage(`./badges/${word}.png`);
-
-            if (badge.height <= 50) {
-                context.drawImage(badge, 25, 315, badge.width, badge.height);
-            } else {
-                context.drawImage(badge, 25, 315, badge.width / 1.5, badge.height / 1.5);
-            }
-        }
-
-
-
-
-
         const fonts = {
             transferInfo: ["50px Roboto", "#000000"],
             recipientFont: ["50px Roboto", "#000000"],
