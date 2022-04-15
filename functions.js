@@ -543,6 +543,50 @@ function translateForGuild(guild, string, replace=null) {
     return i18n.__({phrase: string, locale: language}, replace || undefined);
 }
 
+function formatRank(rank, userTag) {
+    if (rank === "developer") {
+        //Colour for the rank.
+        const colour = "#b30000";
+
+        //Formatting for the rank.
+        return [`[DEV] ${userTag}`, colour];
+    }
+
+    else if (rank === "contributor") {
+        const colour = "#94ff6e";
+
+        return [`[CONTRIBUTOR] ${userTag}`, colour];
+    }
+
+    else if (rank === "artist") {
+        const colour = "#6675ff";
+
+        return [`[ARTIST] ${userTag}`, colour];
+    }
+
+    else if (rank === "translator") {
+        const colour = "#fffc66";
+
+        return [`[TRANSLATE] ${userTag}`, colour];
+    }
+
+    else if (rank === "supporter") {
+        const colour = "#ff00ea";
+
+        return [`[SUPPORT] ${userTag}`, colour];
+    }
+}
+
+function formatNumber(number) {
+    if (number < 1000) return "#dd0000";
+
+    else if (number > 10000) return "#ff9300";
+
+    else if (number > 100000) return "#fff000";
+
+    else if (number > 1000000) return "#9cff4f";
+}
+
 
 module.exports = {
     collectionToJSON,
@@ -562,4 +606,6 @@ module.exports = {
     formatBacktick,
     getLanguages,
     translateForGuild,
+    formatRank,
+    formatNumber
 };
