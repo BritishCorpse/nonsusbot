@@ -2,7 +2,7 @@ const request = require("request");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
-    name: "geoip",
+    name: ["geoip"],
     description: "Geolocates an IP. The IP address should be the first argument.",
 
     usage: [

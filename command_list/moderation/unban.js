@@ -2,7 +2,7 @@ const { circularUsageOption } = require(`${__basedir}/functions`);
 
 
 module.exports = {
-    name: "unban",
+    name: ["unban"],
     description: "Unbans a user from the guild using userID.",
     botPermissions: ["BAN_MEMBERS"],
     userPermissions: ["BAN_MEMBERS"],

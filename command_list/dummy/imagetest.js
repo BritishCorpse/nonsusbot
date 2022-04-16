@@ -2,7 +2,7 @@ const { MessageAttachment } = require("discord.js");
 const Canvas = require("canvas");
 
 module.exports = {
-    name: "imagetest",
+    name: ["imagetest"],
     usage: [],
     developer: true,
     async execute(message) {

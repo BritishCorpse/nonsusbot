@@ -3,7 +3,7 @@ const { userHasItem } = require(`${__basedir}/functions`);
 
 
 module.exports = {
-    name: "dice",
+    name: ["dice"],
     description: "Play against the computer in a game of dice.",
 
     usage: [

@@ -1,5 +1,5 @@
 module.exports = {
-    name: "resetmoney",
+    name: ["resetmoney"],
     description: "Resets a user's balance back to default.",
     developer: true,
 

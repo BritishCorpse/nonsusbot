@@ -4,7 +4,7 @@ const { circularUsageOption } = require(`${__basedir}/functions`);
 
 
 module.exports = {
-    name: "population",
+    name: ["population"],
     description: "Finds the population of a country, then sends it in the channel.",
 
     usage: [

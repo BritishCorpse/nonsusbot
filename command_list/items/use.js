@@ -5,7 +5,7 @@ const { circularUsageOption } = require(`${__basedir}/functions`);
 
 
 module.exports = {
-    name: "use",
+    name: ["use"],
     description: "Use an item from your inventory.",
 
     usage: [

@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
-    name: "love",
+    name: ["love"],
     description: "Find out your compatibility with other server members!",
     usage: [],
     async execute(message) {

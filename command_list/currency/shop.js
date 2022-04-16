@@ -4,7 +4,7 @@ const { paginateEmbeds } = require(`${__basedir}/functions`);
 const { gravestone } = require(`${__basedir}/emojis.json`);
 
 module.exports = {
-    name: "shop",
+    name: ["shop"],
     description: "Displays the shop.",
     
     usage: [

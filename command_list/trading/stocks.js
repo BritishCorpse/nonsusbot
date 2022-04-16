@@ -4,7 +4,7 @@ const { paginateEmbeds } = require(`${__basedir}/functions`);
 
 
 module.exports = {
-    name: "stocks",
+    name: ["stocks"],
     description: "Displays the stock market!",
     
     usage: [

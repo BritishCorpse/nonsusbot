@@ -5,7 +5,7 @@ const Canvas = require("canvas");
 const { formatRank } = require(`${__basedir}/functions`);
 
 module.exports = {
-    name: "transfer",
+    name: ["transfer"],
     description: "Transfer coins from your account to someone else's.",
 
     usage: [

@@ -10,7 +10,7 @@ const jokes = redditjokes.concat(stupidstuff, wocka);
 const offensive = ["loli", "pedo", "rape", "paedo"];
 
 module.exports = {
-    name: "joke",
+    name: ["joke"],
     description: "Tells a joke!",
     botPermissions: ["ADD_REACTIONS"],
     nsfw: true,

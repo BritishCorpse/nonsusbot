@@ -2,7 +2,7 @@ const { Users } = require(`${__basedir}/db_objects`);
 const { gravestone } = require(`${__basedir}/emojis.json`);
 
 module.exports = {
-    name: "work",
+    name: ["work"],
     description: "Work a random job for some quick cash.",
     usage: [
 
