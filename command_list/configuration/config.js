@@ -73,8 +73,8 @@ module.exports = {
                 if (args[1] === "verify_channel_id") {
                     const channel = await message.client.channels.fetch(newConfig);
 
-                    channel.send("Say 'yes' if you agree with the rules, and get verified!");
-                    message.channel.send("Verify channel was setup. Edit the role to give using the config command, and manually edit the roles.");
+                    channel.send("You will receive verification information here!");
+                    message.channel.send("You will now receive verification information in the channel you chose.");
                 }
                
                 // set the config
