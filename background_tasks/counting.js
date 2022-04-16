@@ -7,6 +7,12 @@ module.exports = {
     name: "counting",
     execute(client) {
         client.on("messageCreate", async message => {
+            //These are checks to make sure that messages are being handled in the guild.
+            if (message.author.id === client.id) return;
+            if (message.guild === null) return;
+            if (message.author.bot && !testing) return;
+            if (message.author.bot && testing && message.author.id !== developmentConfig.testing_bot_discord_user_id) return;
+
             // Declare what the counting channel is, if it does not exist, or if this is not the counting channel, return.
             let countingChannel;
             if (client.serverConfig.get(message.guild.id).counting_channel_id) {
@@ -14,12 +20,6 @@ module.exports = {
             }
             
             if (message.channel !== countingChannel || !countingChannel) return;
-
-
-            // Disable bots, except the testing bot.
-            if (message.author.bot && !testing) return;
-            if (message.author.bot && testing && message.author.id !== developmentConfig.testing_bot_discord_user_id) return;
-
 
             // Check if the message is a number.
             const newNumber = message.content;

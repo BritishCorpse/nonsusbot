@@ -119,7 +119,7 @@ async function createRole(channel, user, guildId) {
 
 
 module.exports = {
-    name: "autoroles",
+    name: ["autoroles"],
     description: "Assign certain roles to be given to users when they join the server!",
     //please fill this. thank you
     usage: [],

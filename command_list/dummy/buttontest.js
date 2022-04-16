@@ -2,7 +2,7 @@ const { MessageActionRow, MessageButton } = require("discord.js");
 
 
 module.exports = {
-    name: "buttontest",
+    name: ["buttontest"],
     description: "test buttons",
     developer: true,
 

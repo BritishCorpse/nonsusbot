@@ -22,6 +22,11 @@ const SelfRoleRoles = require("./models/SelfRoleRoles")(sequelize, Sequelize.Dat
 
 const AutoRoleRoles = require("./models/AutoRoleRoles")(sequelize, Sequelize.DataTypes);
 
+const VerifyQuestions = require("./models/VerifyQuestions")(sequelize, Sequelize.DataTypes);
+const VerifyMessages = require("./models/VerifyMessages")(sequelize, Sequelize.DataTypes);
+const VerifyChannels = require("./models/VerifyChannels")(sequelize, Sequelize.DataTypes);
+const VerifyRoles = require("./models/VerifyRoles")(sequelize, Sequelize.DataTypes);
+
 const Items = require("./models/Items")(sequelize, Sequelize.DataTypes);
 
 UserPortfolio.belongsTo(Stocks, { foreignKey: "share_id", as: "shares" });
@@ -117,4 +122,9 @@ module.exports = {
     AutoRoleRoles,
 
     Items,
+
+    VerifyQuestions,
+    VerifyMessages,
+    VerifyChannels,
+    VerifyRoles,
 };

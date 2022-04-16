@@ -4,7 +4,7 @@ const Canvas = require("canvas");
 const { translateForGuild, formatRank } = require(`${__basedir}/functions`);
 
 module.exports = {
-    name: "level",
+    name: ["level"],
     usage: [],
     description: "See your or someone else's level.",
     async execute(message) {

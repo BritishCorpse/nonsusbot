@@ -4,7 +4,7 @@ const { formatRank } = require(`${__basedir}/functions`);
 const { MessageAttachment } = require("discord.js");
 
 module.exports = {
-    name: "weekly",
+    name: ["weekly"],
     description: "Claim your weekly coins!",
     usage: [],
     

@@ -5,7 +5,7 @@ const { paginateEmbeds, circularUsageOption } = require(`${__basedir}/functions`
 
 
 module.exports = {
-    name: "bible",
+    name: ["bible"],
     description: "Get bible verses. Topic is the first argument.",
 
     usage: [

@@ -3,7 +3,7 @@ const { paginateEmbeds } = require(`${__basedir}/functions`);
 
 
 module.exports = {
-    name: "paginatortest",
+    name: ["paginatortest"],
     description: "test paginator",
     developer: true,
     

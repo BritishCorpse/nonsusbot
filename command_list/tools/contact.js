@@ -1,5 +1,5 @@
 module.exports = {
-    name: "contact",
+    name: ["contact"],
     description: "See Graveyard's contact information.",
     usage: [],
     async execute(message) {

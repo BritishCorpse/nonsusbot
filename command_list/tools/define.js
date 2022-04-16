@@ -5,7 +5,7 @@ const { paginateEmbeds } = require(`${__basedir}/functions`);
 
 
 module.exports = {
-    name: "define",
+    name: ["define"],
     description: "Define the first argument. Optionally include the type of the word (noun, verb, adjective, adverb, etc) as the second argument.",
 
     usage: [

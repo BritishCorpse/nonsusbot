@@ -1,5 +1,5 @@
 module.exports = {
-    name: "permtest",
+    name: ["permtest"],
     description: "test permissions check",
     botPermissions: ["ADMINISTRATOR"],
     userPermissions: ["MANAGE_CHANNELS", "ADMINISTRATOR", "VIEW_CHANNEL"],

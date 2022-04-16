@@ -1,7 +1,7 @@
 const { Permissions } = require("discord.js");
 
 module.exports = {
-    name: "permban",
+    name: ["permban"],
     description: "Permanently bans a member from the guild.",
     botPermissions: ["BAN_MEMBERS"],
     userPermissions: ["BAN_MEMBERS"],

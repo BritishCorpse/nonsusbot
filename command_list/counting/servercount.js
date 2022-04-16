@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 const { Counting } = require(`${__basedir}/db_objects`);
 
 module.exports = {
-    name: "servercount",
+    name: ["servercount"],
     description: "See how many numbers the guild has counted!",
     usage: [],
     async execute(message) {

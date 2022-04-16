@@ -1,7 +1,7 @@
 const { Permissions } = require("discord.js");
 
 module.exports = {
-    name: "tempban",
+    name: ["tempban"],
     description: "Temporarily bans a user from the guild, for a determined amount of days.",
     botPermissions: ["BAN_MEMBERS"],
     userPermissions: ["BAN_MEMBERS"],

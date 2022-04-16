@@ -67,11 +67,10 @@ process.on("unhandledRejection", async error => {
     const errorMessage = `An unhandled rejection occured at: ${new Date().toGMTString()}. Please check the logs immediately.`;
 
     errorChannel.send(errorMessage);
-    errorChannel.send(error);
 
-    console.log(`ERROR AT ${new Date()}`);
+    console.log(`--------ERROR AT ${new Date()}--------`);
     console.error(error.toString());
-    console.trace();
+    console.trace(error);
 });
 
 // setup language system
@@ -227,6 +226,7 @@ client.once("ready", async () => {
 // For handling commands
 client.on("messageCreate", async message => {
     // Disable DMs
+    if (message.author.id === client.id) return;
     if (message.guild === null) return;
 
     // Log messages (removed due to top.gg rules)
@@ -330,16 +330,7 @@ client.on("messageCreate", async message => {
         console.log(`The command ${commandObject.name} was triggered at: ${new Date().toGMTString()}`);
         doCommand(commandObject, message, args);
     } catch (error) {
-        message.reply("We've encountered an error while attempting to execute this command. Please report this error at: https://discord.gg/tkXEhrnXjY");
-
-        const errorChannel = await client.channels.fetch("955880094625320980");
-        const errorMessage = `An error occured while trying to execute the command: ${commandObject.name}, category: ${commandObject.category}.\nThe arguments entered in to the command were: [${args}] This error occured at: ${new Date().toGMTString()}`;
-
-        console.log(errorMessage);
-        errorChannel.send(errorMessage);
-         
-        console.error(error.toString());
-        console.trace();
+        console.log(error);
         return;
     }
 });

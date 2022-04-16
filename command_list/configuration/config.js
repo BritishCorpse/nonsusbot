@@ -47,7 +47,7 @@ module.exports = {
                             "m_channel_id", "verify_channel_id", "log_channel_id",
                             "levelup_channel_id", "welcome_channel_id", "suggestion_channel_id",
                             "send_suggestion_channel_id", "counting_channel_id", "verify_role_id",
-                            "prefix", "language", "detailed_logging", "mute_role_id"
+                            "prefix", "language", "detailed_logging", "mute_role_id",
                         ]
                     }
                 }

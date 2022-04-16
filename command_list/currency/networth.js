@@ -7,7 +7,7 @@ const Canvas = require("canvas");
 const { formatRank } = require(`${__basedir}/functions`);
 
 module.exports = {
-    name: "networth",
+    name: ["networth"],
     description: "See your, or someone else's net worth!",
     
     usage: [

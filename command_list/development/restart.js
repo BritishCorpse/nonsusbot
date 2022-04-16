@@ -1,6 +1,6 @@
 /* eslint-disable no-unreachable */
 module.exports = {
-    name: "restart",
+    name: ["restart"],
     description: "Restarts the bot.",
     developer: true,
 

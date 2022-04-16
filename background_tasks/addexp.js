@@ -27,14 +27,20 @@ module.exports = {
 
             const randomColor = Math.floor(Math.random() * 16777215).toString(16);
 
-            let levelChannel;
-            if (client.serverConfig.get(message.guild.id).levelup_channel_id) {
-                levelChannel = await client.channels.fetch(client.serverConfig.get(message.guild.id).levelup_channel_id);
-            }
-
-            // Disable it for bots, except for the testing bot
+            if (message.author.id === client.id) return;
+            if (message.guild === null) return;
             if (message.author.bot && !testing) return;
             if (message.author.bot && testing && message.author.id !== developmentConfig.testing_bot_discord_user_id) return;
+
+            let levelChannel;
+            if (client.serverConfig.get(message.guild.id).levelup_channel_id) {
+                levelChannel = await client.channels.fetch(client.serverConfig.get(message.guild.id).levelup_channel_id) || null;
+            }
+            
+            if (levelChannel === null) return;
+
+            // Disable it for bots, except for the testing bot
+
 
             // Check the word count and assign the variable expAmount to it.
             const expAmount = message.content.split(" ").length;

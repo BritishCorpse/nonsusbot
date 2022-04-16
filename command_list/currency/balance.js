@@ -93,11 +93,6 @@ module.exports = {
         //change the color back to normal
         context.fillStyle = "white";
 
-        //a quick infomratin thingy
-        context.font = "20px Roboto Light";
-        context.fillText("\nNote. This is only wallet worth, NOT net worth.", 25, 100); 
-
-
         //Make the pfp a circle
         context.beginPath();
         context.arc(600, 90, 75, 0, Math.PI * 2, true);
