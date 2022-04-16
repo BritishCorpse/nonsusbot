@@ -2,7 +2,7 @@ const { translateForGuild } = require(`${__basedir}/functions`);
 
 
 module.exports = {
-    name: "languagetest",
+    name: ["languagetest"],
     description: "test translations",
     developer: true,
 

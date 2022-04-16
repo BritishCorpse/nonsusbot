@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const { Users } = require(`${__basedir}/db_objects`);
 
 module.exports = {
-    name: "userinfo",
+    name: ["userinfo"],
     description: "See information about a specified user.",
     userPermissions: ["MODERATE_MEMBERS"], // not really a needed permission but it's for making it available only to high ups
 

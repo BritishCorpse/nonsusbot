@@ -4,7 +4,7 @@ const { circularUsageOption } = require(`${__basedir}/functions`);
 
 
 module.exports = {
-    name: "buy",
+    name: ["buy"],
     description: "Buys an item from the shop.",
 
     usage: [

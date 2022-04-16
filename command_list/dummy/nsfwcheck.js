@@ -1,5 +1,5 @@
 module.exports = {
-    name: "nsfwcheck",
+    name: ["nsfwcheck"],
     description: "Test the NSFW checking mechanism",
     developer: true,
     nsfw: true,

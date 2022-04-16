@@ -94,7 +94,7 @@ function getCardEmbedFieldArguments(card, player, cardNumber) {
 
 
 module.exports = {
-    name: "blackjack",
+    name: ["blackjack"],
     description: "Play against the computer in a game of blackjack.",
 
     usage: [

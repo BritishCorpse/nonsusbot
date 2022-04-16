@@ -28,7 +28,7 @@ function embedFromFoodData(foodData, index, maxIndex) {
 
 
 module.exports = {
-    name: "food",
+    name: ["food"],
     description: "Searches for nutritional values for food items, then sends it in the channel.",
 
     usage: [

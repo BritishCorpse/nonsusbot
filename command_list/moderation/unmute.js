@@ -1,5 +1,5 @@
 module.exports = {
-    name: "unmute",
+    name: ["unmute"],
     description: "Unmutes a muted member.",
     botPermissions: ["MANAGE_ROLES"],
     userPermissions: ["MUTE_MEMBERS"],

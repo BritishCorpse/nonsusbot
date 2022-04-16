@@ -3,7 +3,7 @@ const { userHasItem } = require(`${__basedir}/functions`);
 
 
 module.exports = {
-    name: "coinflip",
+    name: ["coinflip"],
     description: "Flip a coin!",
 
     usage: [

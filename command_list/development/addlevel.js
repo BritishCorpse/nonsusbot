@@ -1,7 +1,7 @@
 const { Levels } = require("../../db_objects");
 
 module.exports = {
-    name: "addlevel",
+    name: ["addlevel"],
     developer: true,
     usage: [],
     async execute(message) {

@@ -1,5 +1,5 @@
 module.exports = {
-    name: "purge",
+    name: ["purge"],
     description: "Deletes a specified amount of messages.",
     botPermissions: ["MANAGE_MESSAGES"],
     userPermissions: ["MANAGE_MESSAGES"],

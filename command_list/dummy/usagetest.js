@@ -1,5 +1,5 @@
 module.exports = {
-    name: "usagetest",
+    name: ["usagetest"],
     description: "test usage checking",
     developer: true,
 

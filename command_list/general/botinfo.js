@@ -3,7 +3,7 @@ const { bot_name } = require(`${__basedir}/config.json`);
 const { developer_discord_user_ids, artist_discord_user_ids, translator_discord_user_ids } = require(`${__basedir}/development_config.json`);
 
 module.exports = {
-    name: "botinfo",
+    name: ["botinfo"],
     description: "Shows information on the bot.",
 
     usage: [

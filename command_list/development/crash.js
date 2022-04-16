@@ -1,5 +1,5 @@
 module.exports = {
-    name: "crash",
+    name: ["crash"],
     description: "Sends an unhandled error.",
     developer: true,
     

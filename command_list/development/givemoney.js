@@ -1,5 +1,5 @@
 module.exports = {
-    name: "givemoney",
+    name: ["givemoney"],
     description: "Adds coins to user (not everyone is viable for free coins), second argument is how much money it'll give.",
     developer: true,
 

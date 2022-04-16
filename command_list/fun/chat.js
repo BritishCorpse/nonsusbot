@@ -3,7 +3,7 @@ const { circularUsageOption } = require(`${__basedir}/functions`);
 
 
 module.exports = {
-    name: "chat",
+    name: ["chat"],
     description: "Talk with an AI! Powered by: https://api.affiliateplus.xyz/api/chatbot",
 
     usage: [

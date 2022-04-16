@@ -15,7 +15,7 @@ const funnyReplies = [
 
 
 module.exports = {
-    name: "kick",
+    name: ["kick"],
     description: "Kicks a user from the guild.",
     botPermissions: ["KICK_MEMBERS"],
     userPermissions: ["KICK_MEMBERS"],
