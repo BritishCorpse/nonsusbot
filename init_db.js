@@ -22,6 +22,11 @@ require("./models/SelfRoleRoles")(sequelize, Sequelize.DataTypes);
 
 require("./models/AutoRoleRoles")(sequelize, Sequelize.DataTypes);
 
+require("./models/VerifyQuestions")(sequelize, Sequelize.DataTypes);
+require("./models/VerifyMessages")(sequelize, Sequelize.DataTypes);
+require("./models/VerifyChannels")(sequelize, Sequelize.DataTypes);
+require("./models/VerifyRoles")(sequelize, Sequelize.DataTypes);
+
 const Items = require("./models/Items")(sequelize, Sequelize.DataTypes);
 
 const force = process.argv.includes("--force") || process.argv.includes("-f");
