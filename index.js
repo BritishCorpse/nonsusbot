@@ -86,10 +86,10 @@ i18n.configure({
 const categoryFolders = getCommandCategories();
 for (const category of categoryFolders) {
     const commandFiles = fs.readdirSync(`${__basedir}/command_list/${category}`)
-        .filter(file => file.endsWith(".js"));
+        .filter(commandFile => commandFile.endsWith(".js"));
 
-    for (const file of commandFiles) {
-        const command = require(`${__basedir}/command_list/${category}/${file}`);
+    for (const commandFile of commandFiles) {
+        const command = require(`${__basedir}/command_list/${category}/${commandFile}`);
         command.category = category;
         client.commands.set(command.name, command);
     }
@@ -97,9 +97,9 @@ for (const category of categoryFolders) {
 
 // Load background tasks from the background_tasks folder
 const backgroundTasksFiles = fs.readdirSync(`${__basedir}/background_tasks`)
-    .filter(file => file.endsWith(".js"));
-for (const file of backgroundTasksFiles) {
-    const backgroundTask = require(`${__basedir}/background_tasks/${file}`);
+    .filter(backgroundTasksFile => backgroundTasksFile.endsWith(".js"));
+for (const backgroundTasksFile of backgroundTasksFiles) {
+    const backgroundTask = require(`${__basedir}/background_tasks/${backgroundTasksFile}`);
     client.backgroundTasks.set(backgroundTask.name, backgroundTask);
 }
 
@@ -137,7 +137,7 @@ client.login(config.bot_token)
 client.on("guildCreate", addNewGuildServerConfigs);
 
 
-// start the background tasks once, but not two times because that would be a bit silly. 
+// start the background tasks once, but not two times because that would be a bit silly
 if (!testing) {
     client.backgroundTasks.forEach(backgroundTask => {
         backgroundTask.execute(client);
