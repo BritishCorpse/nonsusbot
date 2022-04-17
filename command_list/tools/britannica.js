@@ -1,6 +1,6 @@
 const request = require("request");
 const { parse } = require("node-html-parser");
-const { circularUsageOption, formatBacktick } = require(`${__basedir}/functions`);
+const { circularUsageOption, formatBacktick } = require(`${__basedir}/utilities`);
 
 
 module.exports = {

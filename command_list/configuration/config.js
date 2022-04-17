@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const defaultServerConfig = require(`${__basedir}/default_server_config.json`);
-const { saveServerConfig, getLanguages } = require(`${__basedir}/functions`);
+const { saveServerConfig, getLanguages } = require(`${__basedir}/utilities`);
 
 module.exports = {
     name: ["config", "settings", "options"],

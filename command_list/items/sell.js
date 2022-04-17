@@ -1,6 +1,6 @@
 const { Op } = require("sequelize");
 const { CurrencyShop, UserItems } = require(`${__basedir}/db_objects`);
-const { circularUsageOption } = require(`${__basedir}/functions`);
+const { circularUsageOption } = require(`${__basedir}/utilities`);
 
 
 module.exports = {

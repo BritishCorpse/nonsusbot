@@ -1,4 +1,4 @@
-const { translateForGuild } = require(`${__basedir}/functions`);
+const { translateForGuild } = require(`${__basedir}/utilities`);
 
 
 module.exports = {

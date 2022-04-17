@@ -1,10 +1,10 @@
 const { Users } = require(`${__basedir}/db_objects`);
 const { UserPortfolio } = require(`${__basedir}/db_objects`);
-const { getUserItems } = require(`${__basedir}/functions`);
+const { getUserItems } = require(`${__basedir}/utilities`);
 
 const { MessageAttachment } = require("discord.js");
 const Canvas = require("canvas");
-const { formatRank } = require(`${__basedir}/functions`);
+const { formatRank } = require(`${__basedir}/utilities`);
 
 module.exports = {
     name: ["networth"],

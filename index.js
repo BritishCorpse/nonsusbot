@@ -30,7 +30,7 @@ const {
     doCommand,
     getLanguages,
 
-} = require(`${__basedir}/functions`);
+} = require(`${__basedir}/utilities`);
 
 const config = require(`${__basedir}/config.json`);
 const defaultServerConfig = require(`${__basedir}/default_server_config.json`);

@@ -1,4 +1,4 @@
-const { circularUsageOption } = require(`${__basedir}/functions`);
+const { circularUsageOption } = require(`${__basedir}/utilities`);
 
 
 function plural(number) {

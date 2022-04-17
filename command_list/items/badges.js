@@ -1,6 +1,6 @@
-const { getUserItems } = require(`${__basedir}/functions`);
+const { getUserItems } = require(`${__basedir}/utilities`);
 const { MessageEmbed } = require("discord.js");
-const { paginateEmbeds } = require(`${__basedir}/functions`);
+const { paginateEmbeds } = require(`${__basedir}/utilities`);
 const { Users } = require(`${__basedir}/db_objects`);
 
 module.exports = {

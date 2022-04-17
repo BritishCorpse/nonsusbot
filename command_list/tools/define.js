@@ -1,7 +1,7 @@
 const request = require("request");
 const { MessageEmbed } = new require("discord.js");
 const { dictionary_api_key } = require(`${__basedir}/config.json`);
-const { paginateEmbeds } = require(`${__basedir}/functions`);
+const { paginateEmbeds } = require(`${__basedir}/utilities`);
 
 
 module.exports = {

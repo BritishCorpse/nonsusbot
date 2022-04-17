@@ -1,6 +1,6 @@
 const { Users } = require(`${__basedir}/db_objects`);
 const Canvas = require("canvas");
-const { formatRank } = require(`${__basedir}/functions`);
+const { formatRank } = require(`${__basedir}/utilities`);
 const { MessageAttachment } = require("discord.js");
 
 module.exports = {

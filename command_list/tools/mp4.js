@@ -2,7 +2,7 @@
 const request = require("request");
 const { parse } = require("node-html-parser");
 const { MessageAttachment, MessageEmbed } = require("discord.js");
-const { formatBacktick } = require(`${__basedir}/functions`);
+const { formatBacktick } = require(`${__basedir}/utilities`);
 const { very_ninja_php_session_id } = require(`${__basedir}/config.json`);
 
 

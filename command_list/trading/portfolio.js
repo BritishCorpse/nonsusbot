@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const { paginateEmbeds } = require(`${__basedir}/functions`);
+const { paginateEmbeds } = require(`${__basedir}/utilities`);
 const { Users } = require(`${__basedir}/db_objects`);
 const { UserPortfolio } = require(`${__basedir}/db_objects`);
 

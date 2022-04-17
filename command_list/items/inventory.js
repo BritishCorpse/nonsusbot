@@ -1,6 +1,6 @@
-const { getUserItems } = require(`${__basedir}/functions`);
+const { getUserItems } = require(`${__basedir}/utilities`);
 const { MessageEmbed } = require("discord.js");
-const { paginateEmbeds } = require(`${__basedir}/functions`);
+const { paginateEmbeds } = require(`${__basedir}/utilities`);
 const { Users } = require(`${__basedir}/db_objects`);
 
 module.exports = {
@@ -21,7 +21,7 @@ module.exports = {
         // Find the user in the database to make sure that they exist using the targetusers id.
         const userInDb = await Users.findOne({ where: { user_id: targetUser.id } });
 
-        // Get all of the users items, function is from functions.js
+        // Get all of the users items, function is from functions.js (NOT ANYMORE in functions.js)
         const items = await getUserItems(targetUser.id);
 
         const embeds = [];

@@ -7,7 +7,7 @@ const {
     getAllUsagePaths,
     paginateEmbeds,
     formatBacktick,
-} = require(`${__basedir}/functions`);
+} = require(`${__basedir}/utilities`);
 const developmentConfig = require(`${__basedir}/development_config.json`);
 
 

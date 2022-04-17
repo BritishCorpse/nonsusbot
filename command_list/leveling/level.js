@@ -1,7 +1,7 @@
 const { MessageAttachment } = require("discord.js");
 const { Levels, Users } = require(`${__basedir}/db_objects`);
 const Canvas = require("canvas");
-const { translateForGuild, formatRank } = require(`${__basedir}/functions`);
+const { translateForGuild, formatRank } = require(`${__basedir}/utilities`);
 
 module.exports = {
     name: ["level"],
