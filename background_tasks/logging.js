@@ -84,7 +84,7 @@ module.exports = {
 
         try { 
             client.on("messageDelete", async (message) => {
-
+                if (!message.guild) return;
 
                 const info = [
                     {
@@ -125,6 +125,7 @@ module.exports = {
             });
 
             client.on("messageUpdate", async (oldMessage, newMessage) => {
+                if (!oldMessage.guild) return;
                 //Don't do this if it came from a bot.
                 if (oldMessage.author.bot) return;
 
