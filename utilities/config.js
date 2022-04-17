@@ -95,9 +95,47 @@ async function promptConfigChannel(channel, user) {
     return allChannels.at(optionChosen);
 }
 
+async function promptConfigRole(channel, user) {
+    // this only prompts for roles that are under the user's highest role in the channel.guild
+    // also this removes the @everyone role (@everyone role id is equal to guild id)
+    const guildMember = await channel.guild.members.fetch(user);
+    const botGuildMember = await channel.guild.members.fetch(channel.client.user);
+
+    const allRolesUnderUser = (await channel.guild.roles.fetch())
+        .filter(role => {
+            return role.id !== channel.guild.id
+                && role.comparePositionTo(
+                    guildMember.roles.highest
+                ) < 0
+                && role.comparePositionTo(
+                    botGuildMember.roles.highest
+                ) < 0;
+        });
+
+    const optionChosen = await promptOptions(channel, user,
+        "Enter the discord role:", allRolesUnderUser.map(role => `${role.name}`));
+    
+    return allRolesUnderUser.at(optionChosen);
+}
+
+async function inputConfigText(channel, user, promptMessage, maxLength=-1) {
+    while (true) { /* eslint-disable-line no-constant-condition */
+        channel.send(promptMessage);
+        const filter = message => message.author.id === user.id;
+        //const messages = await channel.awaitMessages({filter, time: 2_147_483_647, max: 1, errors: ["time"]});
+        const messages = await channel.awaitMessages({filter, time: 60000, max: 1, errors: ["time"]});
+        
+        if (maxLength >= 0 && messages.first().content.length > maxLength) {
+            await channel.send("The message you sent is too long, please try again!");
+        } else {
+            return messages.first().content;
+        }
+    }
+}
 
 module.exports = {
     //all the functions
     promptConfig,
     promptConfigChannel,
+    promptConfigRole,
 };
