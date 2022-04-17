@@ -16,23 +16,23 @@ module.exports = {
                         { tag: "channel-id", checks: {isinteger: null} }
                     ]
                 },
-                { tag: "option", checks: {isin: ["verify_role_id", "mute_role_id"]},
+                { tag: "option", checks: {isin: ["verify_role_id", "mute_role_id"] },
                     next: [
                         { tag: "role-id", checks: {isinteger: null} }
                     ]
                 },
-                { tag: "option", checks: {is: "prefix"},
+                { tag: "option", checks: {is: "prefix" },
                     next: [
                         { tag: "prefix", checks: {matchesfully: /[a-zA-Z0-9~`!@#$%^&*()_+\-={}|[\]\\:";'<>?,./]{0,2}[~`!@#$%^&*()_+\-={}|[\]\\:";'<>?,./]/} }
                     ]
                     
                 },
-                { tag: "option", checks: {isin: ["language"]},
+                { tag: "option", checks: {isin: ["language"] },
                     next: [
                         { tag: "language", checks: {isin: getLanguages()} }
                     ]
                 },
-                { tag: "option", checks: {is: "detailed_logging"},
+                { tag: "option", checks: {isin: ["detailed_logging", "allow_illegal_names"] },
                     next: [
                         { tag: "boolean", checks: {isin: ["true", "false"]} }
                     ]
@@ -47,7 +47,7 @@ module.exports = {
                             "m_channel_id", "verify_channel_id", "log_channel_id",
                             "levelup_channel_id", "welcome_channel_id", "suggestion_channel_id",
                             "send_suggestion_channel_id", "counting_channel_id", "verify_role_id",
-                            "prefix", "language", "detailed_logging", "mute_role_id",
+                            "prefix", "language", "detailed_logging", "mute_role_id", "allow_illegal_names"
                         ]
                     }
                 }
@@ -62,12 +62,7 @@ module.exports = {
             if (args[1] in defaultServerConfig) {
                 /* eslint-disable-next-line prefer-const */ // remove this comment if you edit newConfig
                 let newConfig = args[2]; // by default, otherwise edit this later
-
-                if (args[1] === "detailed_logging") {
-                    if (args[2] === "true") {
-                        message.client.serverConfig.get(message.guild.id)[args[1]] = newConfig;
-                    }
-                }
+                
                 // extra stuff to do
                 // TODO: move this to background_tasks/verify.js
                 if (args[1] === "verify_channel_id") {
