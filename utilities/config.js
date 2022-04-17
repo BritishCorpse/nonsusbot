@@ -138,4 +138,5 @@ module.exports = {
     promptConfig,
     promptConfigChannel,
     promptConfigRole,
+    inputConfigText,
 };
