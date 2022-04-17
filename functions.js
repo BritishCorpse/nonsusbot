@@ -588,6 +588,7 @@ function formatNumber(number) {
 }
 
 
+
 module.exports = {
     collectionToJSON,
     getCommandCategories,
@@ -607,5 +608,5 @@ module.exports = {
     getLanguages,
     translateForGuild,
     formatRank,
-    formatNumber
+    formatNumber,
 };
