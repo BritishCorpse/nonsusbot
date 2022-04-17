@@ -464,5 +464,4 @@ module.exports = {
     sendSelfRoleMessages,
     asleepWarning,
     fellAsleep
-    
 };

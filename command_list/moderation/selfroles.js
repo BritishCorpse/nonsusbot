@@ -1,5 +1,5 @@
 const { SelfRoleChannels } = require(`${__basedir}/db_objects`);
-const { promptOptions, promptCategory, promptChannel, editCategory, createCategory, asleepWarning, fellAsleep, sendSelfRoleMessages } = require(`${__basedir}/utilities/menu.js`);
+const { promptOptions, promptCategory, promptChannel, editCategory, createCategory, asleepWarning, fellAsleep, sendSelfRoleMessages } = require(`${__basedir}/utilities`);
 
 module.exports = {
     name: ["selfroles"],
