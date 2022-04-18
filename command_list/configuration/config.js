@@ -3,7 +3,8 @@ const { saveServerConfig } = require(`${__basedir}/utilities`);
 const defaultServerConfig = require(`${__basedir}/default_server_config.json`);
 const { channelMention, roleMention } = require("@discordjs/builders");
 
-//here are the configs that the promptConfig function will need.
+
+// here are the configs that the promptConfig function will need.
 const simpleConfigs = {
     "m_channel_id": "Spam Channel",
     "log_channel_id": "Log Channel",
@@ -71,7 +72,7 @@ module.exports = {
 
         let looping = true;
         while (looping) {
-            //this is the start screen where we let the user decide what to do
+            // this is the start screen where we let the user decide what to do
             const startOptionChosen = await promptOptions(message.channel, message.author, "What would you like to do:",[
                 "Edit an option",
                 "Help",
@@ -81,19 +82,19 @@ module.exports = {
                 looping = false;
             });
 
-            //edit an option
+            // edit an option
             if (startOptionChosen === 0) {
                 const editOptionChosen = await promptConfig(message.channel, message.author).catch(() => {
                     console.error();
                     asleepWarning(message.channel, message.author);
                 });
 
-                //find the "true" name of the config by using this cool function i found on stackoverflow.
+                // find the "true" name of the config by using this cool function i found on stackoverflow.
                 const trueConfig = await getKeyByValue(simpleConfigs, editOptionChosen);
 
-                //now we check to see if it is in the channelConfigs array.
+                // now we check to see if it is in the channelConfigs array.
                 if (channelConfigs.includes(trueConfig)) {
-                    //prompt the user with what to with the option they chose
+                    // prompt the user with what to with the option they chose
                     const channelOptionChosen = await promptOptions(message.channel, message.author, `You are editing the option ${editOptionChosen}.\n${configDescriptions[trueConfig]}`,[
                         "Change the channel this option is set to",
                         "View the channel this option is set to",
@@ -104,7 +105,7 @@ module.exports = {
                         asleepWarning(message.channel, message.author);
                     });
 
-                    //"Change the channel this option is set to"
+                    // "Change the channel this option is set to"
                     if (channelOptionChosen === 0) {
                         const channelChosen = await promptConfigChannel(message.channel, message.author);
 
@@ -119,7 +120,7 @@ module.exports = {
                         message.channel.send(`${editOptionChosen} was set to the channel ${channelMention(newConfig)}`);
                     }
 
-                    //"View the channel this option is set to"
+                    // "View the channel this option is set to"
                     if (channelOptionChosen === 1) {
                         const channel = await message.client.serverConfig.get(message.guild.id)[trueConfig] || null;
 
@@ -131,25 +132,25 @@ module.exports = {
                         }
                     }
 
-                    //"Reset this option"
+                    // "Reset this option"
                     if (channelOptionChosen === 2) {
-                        //reset the config
+                        // reset the config
                         message.client.serverConfig.get(message.guild.id)[trueConfig] = defaultServerConfig[trueConfig];
 
-                        //write it to the file
+                        // write it to the file
                         saveServerConfig(message.client.serverConfig);
 
                         message.channel.send(`${editOptionChosen} was reset.`);
                     }
 
-                    //"Back to menu"
+                    // "Back to menu"
                     if (channelOptionChosen === 3) {
-                        //im pretty sure this just goes to the next iteration of the loop
+                        // I'm pretty sure this just goes to the next iteration of the loop
                         continue;
                     }
                 }
 
-                //here we check to see if it's a role config
+                // here we check to see if it's a role config
                 if (roleConfigs.includes(trueConfig)) {
                     const roleOptionChosen = await promptOptions(message.channel, message.author, `You are editing the option ${editOptionChosen}.\n${configDescriptions[trueConfig]}`,[
                         "Change the role this option is set to",
@@ -161,7 +162,7 @@ module.exports = {
                         asleepWarning(message.channel, message.author);
                     });
 
-                    //"Change the channel this option is set to"
+                    // "Change the channel this option is set to"
                     if (roleOptionChosen === 0) {
                         const roleChosen = await promptConfigRole(message.channel, message.author);
 
@@ -176,7 +177,7 @@ module.exports = {
                         message.channel.send(`${editOptionChosen} was set to the role ${roleMention(newConfig)}`);
                     }
 
-                    //"View the role this option is set to"
+                    // "View the role this option is set to"
                     if (roleOptionChosen === 1) {
                         const role = await message.client.serverConfig.get(message.guild.id)[trueConfig] || null;
 
@@ -188,25 +189,25 @@ module.exports = {
                         }
                     }
 
-                    //"Reset this option"
+                    // "Reset this option"
                     if (roleOptionChosen === 2) {
-                        //reset the config
+                        // reset the config
                         message.client.serverConfig.get(message.guild.id)[trueConfig] = defaultServerConfig[trueConfig];
 
-                        //write it to the file
+                        // write it to the file
                         saveServerConfig(message.client.serverConfig);
 
                         message.channel.send(`${editOptionChosen} was reset.`);
                     }
 
-                    //"Back to menu"
+                    // "Back to menu"
                     if (roleOptionChosen === 3) {
-                        //im pretty sure this just goes to the next iteration of the loop
+                        // I'm pretty sure this just goes to the next iteration of the loop
                         continue;
                     }
                 }
 
-                //check if its a boolean config
+                // check if its a boolean config
                 if (booleanConfigs.includes(trueConfig)) {
                     const booleanOptionChosen = await promptOptions(message.channel, message.author, `You are editing the option ${editOptionChosen}.\n${configDescriptions[trueConfig]}`,[
                         "Change the value of this option",
@@ -218,7 +219,7 @@ module.exports = {
                         asleepWarning(message.channel, message.author);
                     });
 
-                    //"Change the value of this option.",
+                    // "Change the value of this option.",
                     if (booleanOptionChosen === 0) {
                         let trueOrFalse = await promptOptions(message.channel, message.author, "You can set the option to either True or False:",[
                             "True",
@@ -237,7 +238,7 @@ module.exports = {
                         message.channel.send(`${editOptionChosen} was set to ${trueOrFalse}`);
                     }
 
-                    //list the value,
+                    // list the value,
                     if (booleanOptionChosen === 1) {
                         const trueOrFalse = await message.client.serverConfig.get(message.guild.id)[trueConfig] || null;
 
@@ -249,18 +250,18 @@ module.exports = {
                         }
                     }
 
-                    //reset config
+                    // reset config
                     if (booleanOptionChosen === 2) {
-                        //reset the config
+                        // reset the config
                         message.client.serverConfig.get(message.guild.id)[trueConfig] = defaultServerConfig[trueConfig];
 
-                        //write it to the file
+                        // write it to the file
                         saveServerConfig(message.client.serverConfig);
 
                         message.channel.send(`${editOptionChosen} was reset.`);
                     }
 
-                    //back to meny
+                    // back to meny
                     if (booleanOptionChosen === 3) {
                         continue;
                     }
@@ -301,10 +302,10 @@ module.exports = {
                     }
 
                     if (prefixOptionChosen === 2) {
-                        //reset the config
+                        // reset the config
                         message.client.serverConfig.get(message.guild.id)[trueConfig] = defaultServerConfig[trueConfig];
 
-                        //write it to the file
+                        // write it to the file
                         saveServerConfig(message.client.serverConfig);
 
                         message.channel.send(`${editOptionChosen} was reset.`);   
@@ -312,7 +313,7 @@ module.exports = {
                 }
             }
 
-            //finish
+            // finish
             else if (startOptionChosen === 2) {
                 message.channel.send("Exiting the options menu.");
                 looping = false;
