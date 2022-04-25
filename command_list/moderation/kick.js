@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const { circularUsageOption } = require(`${__basedir}/functions`);
+const { circularUsageOption } = require(`${__basedir}/utilities`);
 
 
 const funnyReplies = [

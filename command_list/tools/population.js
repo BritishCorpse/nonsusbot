@@ -1,6 +1,6 @@
 const request = require("request");
 const { x_rapidapi_key } = require(`${__basedir}/config.json`);
-const { circularUsageOption } = require(`${__basedir}/functions`);
+const { circularUsageOption } = require(`${__basedir}/utilities`);
 
 
 module.exports = {

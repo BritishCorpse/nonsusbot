@@ -1,7 +1,7 @@
 const request = require("request");
 const { MessageEmbed } = require("discord.js");
 const { parse } = require("node-html-parser");
-const { paginateEmbeds, circularUsageOption } = require(`${__basedir}/functions`);
+const { paginateEmbeds, circularUsageOption } = require(`${__basedir}/utilities`);
 
 
 module.exports = {

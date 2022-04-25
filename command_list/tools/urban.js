@@ -1,8 +1,8 @@
 const request = require("request");
 const { MessageEmbed } = new require("discord.js");
 const { x_rapidapi_key } = require(`${__basedir}/config.json`);
-const { circularUsageOption } = require(`${__basedir}/functions`);
-const { paginateEmbeds } = require(`${__basedir}/functions`);
+const { circularUsageOption } = require(`${__basedir}/utilities`);
+const { paginateEmbeds } = require(`${__basedir}/utilities`);
 
 
 module.exports = {

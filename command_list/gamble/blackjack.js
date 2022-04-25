@@ -1,5 +1,5 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
-const { userHasItem } = require(`${__basedir}/functions`);
+const { userHasItem } = require(`${__basedir}/utilities`);
 
 
 /* Rules:

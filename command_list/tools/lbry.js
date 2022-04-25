@@ -1,5 +1,5 @@
 const request = require("request");
-const { circularUsageOption } = require(`${__basedir}/functions`);
+const { circularUsageOption } = require(`${__basedir}/utilities`);
 
 
 module.exports = {

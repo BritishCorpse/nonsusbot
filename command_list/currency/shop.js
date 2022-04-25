@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const { CurrencyShop } = require(`${__basedir}/db_objects`);
-const { paginateEmbeds } = require(`${__basedir}/functions`);
+const { paginateEmbeds } = require(`${__basedir}/utilities`);
 const { gravestone } = require(`${__basedir}/emojis.json`);
 
 module.exports = {
