@@ -279,3 +279,5 @@ Guild tags: `GUILD-INFO, GUILD-ERROR, GUILD-UPDATE, GUILD-WARN`
 Client tags: `CLIENT-INFO, CLIENT-ERROR, CLIENT-UPDATE, CLIENT-WARN`
 
 After the tag, create a parentheses after the tag. Inside the parentheses specify the log further using 2-7 words. Eg. `console.log(-----GUILD-INFO(ADDED A ROLE)-----);`
+
+On the next line of the log create an in depth description of the log thats around 10-20 words.
