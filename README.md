@@ -21,7 +21,9 @@ Table of contents
            * [Passes](#passes)
            * [Not](#not)
      * [Circular options](#circular-options)
-
+* [Logging information](#logging-information)
+  * [Different types of logs](#different-types-of-logs)
+  * [Logging etiquette](#logging-etiquette)
 ## Setting up
 
 Copy the `config.template.json` file to `config.json` and edit the options.
@@ -266,3 +268,14 @@ It will also set the `circular` property to `true`.
 | option | [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) | | The option to be made infinite. |
 
 Returns: [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).
+
+## Logging information
+
+### Different types of logs
+
+The "tag" of a log is a quick description to easily identify what the log is about.
+The tag should be one of these.
+Guild tags: `GUILD-INFO, GUILD-ERROR, GUILD-UPDATE, GUILD-WARN`
+Client tags: `CLIENT-INFO, CLIENT-ERROR, CLIENT-UPDATE, CLIENT-WARN`
+
+After the tag, create a parentheses after the tag. Inside the parentheses specify the log further using 2-7 words. Eg. `console.log(-----GUILD-INFO(ADDED A ROLE)-----);`
