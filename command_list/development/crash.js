@@ -7,6 +7,6 @@ module.exports = {
     ],
 
     async execute () {
-        throw "apsodifjasdf(oi5jpaoidfj";
+        throw "Intentionally causing an error.";
     }
 };

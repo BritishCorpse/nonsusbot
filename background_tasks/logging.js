@@ -1,3 +1,5 @@
+const { infoLog, errorLog } = require(`${__basedir}/utilities`);
+
 async function sendLog(client, guildId, color, title, info, attachment) {
     //Check if the log channel exists.
     let logChannel;
@@ -32,7 +34,14 @@ async function sendLog(client, guildId, color, title, info, attachment) {
             },
         };
 
-        return logChannel.send({embeds: [embed]});
+        try {
+            infoLog("A log was sent succesfully", `${__dirname}/${__filename}`, "GUILD-INFO");
+            return logChannel.send({embeds: [embed]});
+        } catch (error) {
+            errorLog([1, 3, 8], `${__dirname}/${__filename}.js`, "1", "The code should be working correctly, it's most likely a PEBCAK or missing permissions.", "TEST-ERROR", "Unable to send a log."); 
+            return;
+        }
+
     } else {
         const embed = {
             color: color,
@@ -59,7 +68,13 @@ async function sendLog(client, guildId, color, title, info, attachment) {
             },
         };
 
-        return logChannel.send({embeds: [embed]});
+        try {
+            infoLog("A log was sent succesfully", `${__dirname}/${__filename}`, "GUILD-INFO");
+            return logChannel.send({embeds: [embed]});
+        } catch (error) {
+            errorLog([1, 3, 8], `${__dirname}/${__filename}.js`, "1", "The code should be working correctly, it's most likely a PEBCAK or missing permissions.", "TEST-ERROR", "Unable to send a log."); 
+            return;
+        }
     }
 
 
@@ -76,9 +91,9 @@ module.exports = {
                 detailedLogging = await client.serverConfig.get(guildId).detailed_logging;
             }
 
-            if (detailedLogging === undefined | "false") return false;
+            if (detailedLogging === undefined || detailedLogging === "false" || detailedLogging === false) return false;
 
-            if (detailedLogging === "true") return true;
+            if (detailedLogging === true) return true;
         
         }
 
@@ -644,18 +659,22 @@ module.exports = {
                     const newRoles = newMember.roles.cache.filter((roles) => roles.id !== newMember.guild.id).map((role) => ` ${role.toString().replace(",", "")}`);
 
                     if (oldRoles.length > newRoles.length || oldRoles.length < newRoles.length) {
-                        if (newRoles.length > 1) {
+                        const addedRoles = newRoles.filter(role => !oldRoles.includes(role)) || null;
+                        const removedRoles = oldRoles.filter(role => !newRoles.includes(role)) || null;
+
+                        if (addedRoles.length > 0) {
                             info.push({
-                                name: "Updated Roles",
-                                value: `${newRoles || "No roles"}`
-                            });
-                        } else {
-                            info.push({
-                                name: "Updated Roles",
-                                value: "**WARNING!** No roles found. This could be due to the user not having any roles, or the bot's role being lower than the user's roles in the list."
+                                name: "Added roles",
+                                value: `${addedRoles.join("\n") || "No roles"}`
                             });
                         }
 
+                        if (removedRoles.length > 0) {
+                            info.push({
+                                name: "Removed roles",
+                                value: `${removedRoles.join("\n") || "No roles"}`
+                            });
+                        }
 
                         return sendLog(client, newMember.guild.id, "YELLOW", "A user's roles were updated.", info);
                     }

@@ -1,3 +1,5 @@
+const { warningLog } = require(`${__basedir}/utilities`);
+
 module.exports = {
     name: "m",
     execute (client) {
@@ -10,7 +12,14 @@ module.exports = {
             if (!m_channel_id) return;
 
             if (message.channel.id === m_channel_id && message.content !== "m") {
-                message.delete();
+                //try catch error handling
+                try {
+                    message.delete();
+                } catch (error) {
+                    warningLog("Unable to send a log", `${__dirname}/${__filename}.js`, "Most likely a PEBCAK permission error.", "GUILD-ERROR");
+                    return;
+                }
+
             }
         }
 

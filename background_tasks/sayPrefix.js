@@ -2,6 +2,7 @@ module.exports = {
     name: "say_prefix",
     execute (client) {
         client.on("messageCreate", message => {
+
             if (message.channel === null) return; // ignore dms
 
             if (message.mentions.has(client.user.id, {ignoreRoles: true, ignoreEveryone: true})) {
