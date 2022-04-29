@@ -32,12 +32,21 @@ module.exports = {
             const newNumber = message.content;
 
             if (isNaN(newNumber)) {
+                // if they donta allow non numbers
                 if (numberCheck === "false") {
                     try {
                         message.delete();
                     } catch (error) {
                         warningLog("Unable to delete non number message in a counting channel.", `${__dirname}/${__filename}.js`, "This is most likely a PEBCAK permission error. Therefore it is not solvable.", "GUILD-WARNING", "The guild has set the config numbers_in_counting to false, therefore I tried to delete the message.");
                     }
+                    
+                // if they allow non numbers
+                } else if (numberCheck === "true") {
+                    return;
+
+                //if the config is set to neither
+                } else {
+                    warningLog(`Illegal config with the name: ${numberCheck}`, `${__dirname}/${__filename}.js`, "This is a very rare occurance, and overall shouldn't be possible. Requires manural review.", "CLIENT-ERROR");
                 }
             } 
 
