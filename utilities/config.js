@@ -70,7 +70,8 @@ const allConfigs = {
     "prefix": "Prefix",
     "language": "Language",
     "detailed_logging": "In-depth Logging",
-    "allow_illegal_names": "Simplify Names"
+    "allow_illegal_names": "Simplify Names",
+    "numbers_in_counting": "Allow Normal Messages In The Counting Channel"
 };
 
 async function promptConfig(channel, user) {

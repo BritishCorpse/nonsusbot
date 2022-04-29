@@ -11,5 +11,6 @@
   "counting_channel_id": "",
   "language": "en",
   "detailed_logging": "false",
-  "allow_illegal_names": "true"
+  "allow_illegal_names": "true",
+  "numbers_in_counting": "true"
 }
