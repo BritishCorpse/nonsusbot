@@ -18,7 +18,8 @@ const simpleConfigs = {
     "prefix": "Prefix",
     "language": "Language",
     "detailed_logging": "In-depth Logging",
-    "allow_illegal_names": "Simplify Names"
+    "allow_illegal_names": "Simplify Names",
+    "numbers_in_counting": "Allow Normal Messages In The Counting Channel"
 };
 
 const channelConfigs = [
@@ -38,7 +39,8 @@ const roleConfigs = [
 
 const booleanConfigs = [
     "detailed_logging",
-    "allow_illegal_names"
+    "allow_illegal_names",
+    "numbers_in_counting"
 ];
 
 const configDescriptions = {
