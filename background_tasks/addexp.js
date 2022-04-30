@@ -39,12 +39,6 @@ module.exports = {
             
             if (levelChannel === null) return;
 
-            // Disable it for bots, except for the testing bot
-
-
-            // Check the word count and assign the variable expAmount to it.
-            const expAmount = message.content.split(" ").length;
-
             //find user, give user 1 exp, check reqexp, if exp >= reqexp, level ++;
             const userInDb = await Levels.findOne({
                 where: { userId: message.author.id, guildId: message.channel.guild.id }
@@ -53,22 +47,26 @@ module.exports = {
                 return Levels.create({ userId: message.author.id, guildId: message.channel.guild.id, level: 1, exp: 1, reqExp: 200, lastMessage: Date.now() });
             }
 
+            // Check the word count and assign the variable expAmount to it.
+            const expAmount = message.content.split(" ").length + Math.floor(Math.random() * 50) / userInDb.level;
+
             if (!userInDb.exp) {
                 userInDb.exp = 0;
             }       
 
             if((Date.now() - 5000 ) > userInDb.lastMessage) {
-                userInDb.exp += expAmount;
+                userInDb.exp += Math.round(expAmount);
                 userInDb.lastMessage = Date.now();
                 userInDb.save();
-    
+
+                console.log(expAmount);
     
                 if (userInDb.exp >= userInDb.reqExp) {
                     await Levels.update({level: userInDb.level + 1}, {where: {userId: message.author.id, guildId: message.channel.guild.id}});
     
                     await Levels.update({reqExp: userInDb.level * 200}, {where: {userId: message.author.id, guildId: message.channel.guild.id}});
                     
-                    await Levels.update({exp: 1}, {where: {userId: message.author.id, guildId: message.channel.guild.id}}).then(async () => {
+                    await Levels.update({exp: userInDb.exp - userInDb.reqExp}, {where: {userId: message.author.id, guildId: message.channel.guild.id}}).then(async () => {
     
                         if (!levelChannel) return;
     
@@ -92,11 +90,8 @@ module.exports = {
             }
 
             else {              
-                userInDb.lastMessage = Date.now();
-                userInDb.save();
                 return;
             }
-
 
         });
     }
