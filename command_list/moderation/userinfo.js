@@ -1,6 +1,8 @@
 const { MessageEmbed } = require("discord.js");
 const { Users } = require(`${__basedir}/db_objects`);
 
+const { gravestone } = require(`${__basedir}/emojis.json`);
+
 module.exports = {
     name: ["userinfo"],
     description: "See information about a specified user.",
@@ -33,7 +35,7 @@ module.exports = {
                 .setTitle(`Userinfo about ${target.user.tag}`)
                 .setColor(randomColor)
                 .addField(`${user.username}'s badge is:`, `${userInDb.badge || "User does not have a badge."}`)
-                .addField(`${user.username}'s balance is:`, `${userInDb.balance}<:ripcoin:929759319296192543>`)
+                .addField(`${user.username}'s balance is:`, `${userInDb.balance}${gravestone}`)
                 .addField(`${user.username} joined at:`, ` ${new Date(target.joinedTimestamp)}`, true)
                 .addField(`${user.username}'s account was created at:`, ` ${new Date(target.user.createdTimestamp)}`, true)
                 .addField(`${user.username}'s nickname is:`, ` ${target.nickname || "None"}`, true)

@@ -1,6 +1,7 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 const { userHasItem } = require(`${__basedir}/utilities`);
 
+const { gravestone } = require(`${__basedir}/emojis.json`);
 
 /* Rules:
  * Each participant attempts to beat the dealer by getting a count as close to
@@ -238,7 +239,7 @@ module.exports = {
                     .addField("\u200b", "\u200b") // space
                     .addField("The dealer's total amount is:", `${dealerScore}`)
                     .addField(`${username}'s total amount is:`, `${userScore}`)
-                    .addField(`${gameOverMessage}`, `${userBalanceChange >= 0 ? "+" : ""}${userBalanceChange}<:ripcoin:929759319296192543>`);
+                    .addField(`${gameOverMessage}`, `${userBalanceChange >= 0 ? "+" : ""}${userBalanceChange}${gravestone}`);
 
                 message.client.currency.add(message.author.id, userBet + userBalanceChange);
 
@@ -307,7 +308,7 @@ module.exports = {
             
             collector.on("end", () => {
                 if (!gameEnded) {
-                    message.channel.send(`Hello? Did you fall asleep?\nYou can't escape the loss, You lost ${userBet}<:ripcoin:929759319296192543>`);
+                    message.channel.send(`Hello? Did you fall asleep?\nYou can't escape the loss, You lost ${userBet}${gravestone}`);
                     // don't give the bet back
                 }
 

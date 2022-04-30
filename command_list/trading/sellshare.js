@@ -3,6 +3,7 @@ const { Stocks } = require(`${__basedir}/db_objects`);
 const { circularUsageOption } = require(`${__basedir}/utilities`);
 const { UserPortfolio } = require(`${__basedir}/db_objects`);
 
+const { gravestone } = require(`${__basedir}/emojis.json`);
 module.exports = {
     name: ["sellshare"],
     description: "Sell shares from the stock market!",
@@ -64,7 +65,7 @@ module.exports = {
         message.client.currency.add(message.author.id, share.currentPrice * amount);
 
         // Send congratulations message to let the user know that something actually happened.
-        message.channel.send(`You sold ${amount} ${share.name} for ${share.currentPrice * amount}<:ripcoin:929759319296192543>!`);
+        message.channel.send(`You sold ${amount} ${share.name} for ${share.currentPrice * amount}${gravestone}!`);
 
         const currentAmountBought = share.amountBought;
         const newAmount = currentAmountBought - amount;

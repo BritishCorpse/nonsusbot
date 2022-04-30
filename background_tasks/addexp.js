@@ -58,8 +58,6 @@ module.exports = {
                 userInDb.exp += Math.round(expAmount);
                 userInDb.lastMessage = Date.now();
                 userInDb.save();
-
-                console.log(expAmount);
     
                 if (userInDb.exp >= userInDb.reqExp) {
                     await Levels.update({level: userInDb.level + 1}, {where: {userId: message.author.id, guildId: message.channel.guild.id}});
