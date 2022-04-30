@@ -1,7 +1,6 @@
-const { MessageAttachment } = require("discord.js");
 const { Levels, Users } = require(`${__basedir}/db_objects`);
-const Canvas = require("canvas");
-const { translateForGuild, formatRank } = require(`${__basedir}/utilities`);
+
+const { userMention } = require("@discordjs/builders");
 
 module.exports = {
     name: ["level"],
@@ -17,96 +16,62 @@ module.exports = {
 
         const userInDb = await Levels.findOne({
             where: {userId: user.id, guildId: message.guild.id}
-        }) || {}; // this makes it an empty object if it is null
-
-        //Creates an imaginary canvas with the size of 700x250
-        const canvas = Canvas.createCanvas(700, 250);
-        const context = canvas.getContext("2d");
-
-        //Loads the background image.
-        const background = await Canvas.loadImage("./images/background2.png");        
-        //Load another image, this time it's the avatar of the user.
-        const avatar = await Canvas.loadImage(user.displayAvatarURL({ format: "jpg" }));
-
-        //This draws the background image. First 2 parameters are the starting point, and then the last 2 paramters stretch the image to match the entire canvas.
-        context.drawImage(background, 0, 0, canvas.width, canvas.height);
+        }) || null; // this makes it an empty object if it is null
         
         //Find the user in the db.
         const userInDbTwo = await Users.findOne({
             where: { user_id: user.id }
-        }) || {};
+        }) || null;
 
-        //Check if they have a badge.
+
+        // cool badge to show next to the user if they have one
+        let userBadge;
         if (userInDbTwo.badge) {
-            const myArray = userInDbTwo.badge.split(":");
-            const word = myArray[1];
-
-            const badge = await Canvas.loadImage(`./badges/${word}.png`);
-
-            if (badge.height <= 50) {
-                context.drawImage(badge, 25, 190, badge.width, badge.height);
-            } else {
-                context.drawImage(badge, 25, 190, badge.width / 1.5, badge.height / 1.5);
-            }
+            userBadge = userInDbTwo.badge;
         }
 
-        //Write the username
-        context.font = "28px Roboto";
-        context.fillStyle = "white";
-
-        let rank = user.tag;
-
-        //Check if they have a rank.
+        //their rank if they have one   
+        let userRank;
         if (userInDbTwo.rank) {
-            const formattedRank = formatRank(userInDbTwo.rank, user.tag);
-            rank = formattedRank[0];
-            const colour = formattedRank[1];  
-
-            //Set the colour of the brush
-            context.fillStyle = colour;
-
+            userRank = userInDbTwo.rank;
         }
-        
-        //Write the tag of the user.
-        context.fillText(rank, 90, 225);
 
-        //colour for the level and things
-        context.fillStyle = "white";
-        
-        //Write the userlevel
-        context.font = "44px Roboto Light";
-        context.fillText(translateForGuild(message.guild, "Level") + `: ${userInDb.level || "0"}  `, 25, 50);
+        const embed = {
+            description: `${userBadge || ""}${userMention(user.id)}'s level`,
 
-        //Write the userlevel
-        context.font = "28px Roboto Light";
-        context.fillText(translateForGuild(message.guild, "EXP") + `: ${userInDb.exp}/${userInDb.reqExp}`, 25, 100);
+            author: {
+                name: "EXP Merchant",
+                icon_url: `${message.client.user.avatarURL()}`,
+                url: "https://talloween.github.io/graveyardbot/",
+            },
 
-        //This draws a circle, the first 2 args are the xy coords, the third one is the radius.
-        //To draw a circle the fourth and fifth arguments must be 0 and 2*pi.
-        //This must be before you load the avatar image other wise it won't work.
-        context.beginPath();
-        context.arc(600, 90, 75, 0, Math.PI * 2, true);
-        context.closePath();
-        context.clip();
+            fields: [
+                {
+                    name: "Level",
+                    value: `${userInDb.level}`
+                },
 
-        //This draws the avatar of the user.
-        context.drawImage(avatar, canvas.width - 175, 15, 150, 150);
+                {
+                    name: "EXP",
+                    value: `${userInDb.exp}/${userInDb.reqExp}`
+                },
 
-        //Sets the colour of the brush.
-        context.strokeStyle = "#ffffff";
-        //Sets the size of the brush.
-        context.lineWidth = 30;
+                {
+                    name: "Rank",
+                    value: `${userRank || "None"}`
+                }
+            ],
+
+            color: "33a5ff",
+
+            timestamp: new Date(),
     
-        //Draws a rectangle around the entire screen. 
-        //Change the first 2 parameters to determine the start point.
-        //Change the last 2 paramateres to determine the bottom right corner of the rectangle.
-        context.strokeRect(0, 0, canvas.width, canvas.height);
+            footer: {
+                text: "Powered by Graveyard",
+            },
+        };
 
-        //MAKE SURE THIS IS LAST.
-        //Attach the image that we have drawn to the message.
-        const attachment = new MessageAttachment(canvas.toBuffer(), "test.png");
-        //Send the message
-        message.channel.send({ files: [attachment] });
+        message.channel.send({ embeds: [embed] });
 
     }       
 };

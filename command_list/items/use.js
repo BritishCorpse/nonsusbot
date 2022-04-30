@@ -35,10 +35,7 @@ module.exports = {
                 return ("It was SCRUMPTIOUS! +100 EXP.");
             }
         }
-
-
-
-
+        
         //Find the users level in the database.
         const userLevel = await Levels.findOne({
             where: {userId: message.author.id, guildId: message.guild.id}
