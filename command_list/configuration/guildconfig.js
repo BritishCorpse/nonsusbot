@@ -65,7 +65,7 @@ function getKeyByValue(object, value) {
 
 
 module.exports = {
-    name: ["config", "settings", "options"],
+    name: ["guildconfig", "guildsettings", "guildoptions"],
     description: "Change your server's configurations!",
     userPermissions: ["MANAGE_CHANNELS", "MANAGE_MESSAGES", "MANAGE_ROLES"],
     usage: [],

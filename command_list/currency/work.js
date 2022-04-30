@@ -24,7 +24,8 @@ module.exports = {
             return;
         }
 
-        const jobs = ["Doctor",
+        const jobs = [
+            "Doctor",
             "Fireman",
             "Police",
             "Programmer", 
