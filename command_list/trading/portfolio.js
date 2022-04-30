@@ -3,6 +3,8 @@ const { paginateEmbeds } = require(`${__basedir}/utilities`);
 const { Users } = require(`${__basedir}/db_objects`);
 const { UserPortfolio } = require(`${__basedir}/db_objects`);
 
+const { gravestone } = require(`${__basedir}/emojis.json`);
+
 module.exports = {
     name: ["portfolio", "pf"],
     description: "Shows your portfolio.",
@@ -64,7 +66,7 @@ module.exports = {
         
             if (shares[i].amount === 0) {console.log(shares[i].amount); continue;}
 
-            embed.addField(`${shares[i].shares.name}, Worth: ${shares[i].shares.currentPrice}<:ripcoin:929759319296192543>`, `Owned: ${shares[i].amount}`);
+            embed.addField(`${shares[i].shares.name}, Worth: ${shares[i].shares.currentPrice}${gravestone}`, `Owned: ${shares[i].amount}`);
             
         }
 

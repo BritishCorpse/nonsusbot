@@ -2,6 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const { Stocks } = require(`${__basedir}/db_objects`);
 const { paginateEmbeds } = require(`${__basedir}/utilities`);
 
+const { gravestone } = require(`${__basedir}/emojis.json`);
 
 module.exports = {
     name: ["stocks"],
@@ -36,7 +37,7 @@ module.exports = {
             }
 
             else {
-                embed.addField(`${stock.name} (${stock.displayName})`, `Yesterday's price: ${stock.oldPrice}<:ripcoin:929759319296192543>, Current price: ${stock.currentPrice}<:ripcoin:929759319296192543>, Amount of shares bought: ${stock.amountBought}, Average change rate: ${stock.averageChange}%`);
+                embed.addField(`${stock.name} (${stock.displayName})`, `Yesterday's price: ${stock.oldPrice}${gravestone}, Current price: ${stock.currentPrice}<:ripcoin:929759319296192543>, Amount of shares bought: ${stock.amountBought}, Average change rate: ${stock.averageChange}%`);
             }
         }
 

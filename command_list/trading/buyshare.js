@@ -3,6 +3,7 @@ const { Users } = require(`${__basedir}/db_objects`);
 const { Stocks } = require(`${__basedir}/db_objects`);
 const { circularUsageOption } = require(`${__basedir}/utilities`);
 
+const { gravestone } = require(`${__basedir}/emojis.json`);
 
 module.exports = {
     name: ["buyshare"],
@@ -40,7 +41,7 @@ module.exports = {
 
 
         if (share.currentPrice * amount > message.client.currency.getBalance(message.author.id)) {
-            return message.channel.send(`You don't have enough <:ripcoin:929759319296192543>'s, ${message.author.username}`);
+            return message.channel.send(`You don't have enough ${gravestone}'s, ${message.author.username}`);
         }
 
         if (share.currentPrice === "0") {
