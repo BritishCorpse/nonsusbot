@@ -60,17 +60,14 @@ client.serverConfig = new Discord.Collection();
 client.currency = new Discord.Collection();
 
 process.on("unhandledRejection", async error => {
+    const { errorLog } = require(`${__basedir}/utilities`);
     // have this here in case of missing permissions, etc.
-    console.error(error.name);
+    const log = await errorLog([10], `${console.trace(error)}`, "6", "Requires manual review.", "UNHANDLED REJECTION", `${error.toString()}`);
 
     const errorChannel = await client.channels.fetch("955880094625320980");
-    const errorMessage = `An unhandled rejection occured at: ${new Date().toGMTString()}. Please check the logs immediately.`;
 
-    errorChannel.send(errorMessage);
-
-    console.log(`--------ERROR AT ${new Date()}--------`);
-    console.error(error.toString());
-    console.trace(error);
+    errorChannel.send(`${log.join("\n")}`);
+    return;
 });
 
 // setup language system

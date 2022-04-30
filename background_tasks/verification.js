@@ -23,10 +23,10 @@ module.exports = {
             }) || null;
 
             //Check if it is the correct message.
-            if (verifyMessage === null) return console.log("This is not the message you are looking for.");
+            if (verifyMessage === null) return;
 
             //Check if it is the correct reaction.
-            if (reactionAddEvent.emoji.name !== "✅") return console.log("This is not the emoji you are looking for.");
+            if (reactionAddEvent.emoji.name !== "✅") return;
 
             //find all of the questions in the database.
             const verifyQuestions = await VerifyQuestions.findAll({

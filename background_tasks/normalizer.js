@@ -1,3 +1,5 @@
+const { warningLog } = require(`${__basedir}/utilities`);
+
 module.exports = {
     name: "normalizer",
     execute(client) {
@@ -14,7 +16,6 @@ module.exports = {
                 allowNames = await client.serverConfig.get(newMember.guild.id).allow_illegal_names;
             } 
 
-
             //if they arent allowing illegal names, return.
             if (allowNames === "false") {
                 //try and normalize the username
@@ -25,7 +26,8 @@ module.exports = {
                     //sets the nickname to the new normalized name
                     await newMember.setNickname(normalizedName);
                 } catch (error) {
-                    return console.log(error);
+                    warningLog("Unable to send a log", `${__dirname}/${__filename}.js`, "Most likely a PEBCAK permission error.", "GUILD-ERROR");
+                    return;
                 }
 
                 // an embed to send in the log channel
@@ -66,7 +68,17 @@ module.exports = {
                 }
 
                 //if they've defined the logchannel send the thingy there.
-                if (logChannel !== null) logChannel.send({ embeds: [updateEmbed] });
+                if (logChannel !== null) {
+
+                    try {
+                        logChannel.send({ embeds: [updateEmbed] });
+                    } catch (error) {
+                        warningLog("Unable to send a log", `${__dirname}/${__filename}.js`, "Most likely a PEBCAK permission error.", "GUILD-ERROR");
+                        return;
+                    }
+
+                }
+
             }
         });
     }

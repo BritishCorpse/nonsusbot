@@ -146,5 +146,9 @@ module.exports = {
         if (logChannel === undefined) return;
 
         logChannel.send({embeds: [embed]});
+
+        console.log("-----GUILD-INFO(LOG SENT)-----");
+        console.log("A was timed out.");
+        console.log("\n\n");
     }
 };

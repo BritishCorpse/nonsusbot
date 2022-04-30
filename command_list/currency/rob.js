@@ -14,7 +14,7 @@ module.exports = {
         const time = d.getTime();
 
         if (!target || target.id === message.author.id) {
-            message.reply("You robbed yourself! +0${gravestone}");
+            message.reply(`You robbed yourself! +0${gravestone}`);
             return;
         }
 

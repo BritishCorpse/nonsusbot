@@ -2,6 +2,7 @@ const developmentConfig = require(`${__basedir}/development_config.json`);
 
 const { Counting, Users } = require(`${__basedir}/db_objects`);
 
+const { warningLog } = require(`${__basedir}/utilities`);
 
 module.exports = {
     name: "counting",
@@ -21,18 +22,41 @@ module.exports = {
             
             if (message.channel !== countingChannel || !countingChannel) return;
 
-            // Check if the message is a number.
-            const newNumber = message.content;
-            if (isNaN(newNumber)) return message.delete();
+            // Check if the guild is allowing non number messages in the counting channel.
+            let numberCheck;
+            if (client.serverConfig.get(message.guild.id).numbers_in_counting) {
+                numberCheck = await client.serverConfig.get(message.guild.id).numbers_in_counting;
+            }
 
+            //If the guild isnt allowing non numbers, try to delete the message.
+            const newNumber = message.content;
+
+            if (isNaN(newNumber)) {
+                // if they donta allow non numbers
+                if (numberCheck === "false" || numberCheck === false) {
+                    try {
+                        message.delete();
+                    } catch (error) {
+                        warningLog("Unable to delete non number message in a counting channel.", `${__dirname}/${__filename}.js`, "This is most likely a PEBCAK permission error. Therefore it is not solvable.", "GUILD-WARNING", "The guild has set the config numbers_in_counting to false, therefore I tried to delete the message.");
+                    }
+
+                // if they allow non numbers
+                } else if (numberCheck === true) {
+                    return;
+
+                //if the config is set to neither
+                } else {
+                    warningLog(`Illegal config with the name: ${numberCheck}`, `${__dirname}/${__filename}.js`, "This is a very rare occurance, and overall shouldn't be possible. Requires manural review.", "CLIENT-ERROR");
+                }
+            } 
 
             // Find the guild in db, if it doesnt exist, create it and then find it again.
             let dbInfo = await Counting.findOne({
                 where: { guildId: message.channel.guild.id }
             });
             if (!dbInfo) {
+                warningLog("No database information found.", `${__dirname}/${__filename}.js`, "Very rare error, no need to solve. Most likely caused by just having joined a new guild.", "GUILD-WARNING");
                 await Counting.create({guildId: message.channel.guild.id, number: 0, lastCounterId: 0});
-                console.log("hello");
             }
             dbInfo = await Counting.findOne({
                 where: { guildId: message.channel.guild.id }
@@ -99,5 +123,7 @@ module.exports = {
             userInDb.countedCorrect ++;
             userInDb.save();
         });
+
+        //add something here that will check for when someone deletes a message that was already counted, so that they cant trick people into saying the wrong number.
     }
 };

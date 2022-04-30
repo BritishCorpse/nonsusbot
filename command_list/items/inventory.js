@@ -3,6 +3,8 @@ const { MessageEmbed } = require("discord.js");
 const { paginateEmbeds } = require(`${__basedir}/utilities`);
 const { Users } = require(`${__basedir}/db_objects`);
 
+const { gravestone } = require(`${__basedir}/emojis.json`); 
+
 module.exports = {
     name: ["inventory", "inv"],
     description: "Shows your inventory, or someone else's.",
@@ -14,7 +16,7 @@ module.exports = {
 
     async execute (message) {
         // Random colour for the embed.
-        const randomColor = Math.floor(Math.random()*16777215).toString(16);
+        const randomColor = "33a5ff";
         
         const targetUser = message.mentions.users.first() || message.author;
 
@@ -47,10 +49,10 @@ module.exports = {
             }
             if (item.amount === 0) {continue;}
 
-            embed.addField(`${item.item.itemEmoji}${item.item.name}`, `Amount: ${item.amount}, Cost: ${item.item.cost}<:ripcoin:929759319296192543>`);
+            embed.addField(`${item.item.itemEmoji}${item.item.name}`, `Amount: ${item.amount}, Cost: ${item.item.cost}${gravestone}`);
 
             itemsWorth += parseInt(items[i].item.cost * items[i].amount);
-            embed.setDescription(`Inventory worth: ${itemsWorth}<:ripcoin:929759319296192543>`);
+            embed.setDescription(`Inventory worth: ${itemsWorth}${gravestone}`);
         }
 
         // Check if an embed has 0 fields, due to skipped items in the db, if so, remove the embed entirely from the array.

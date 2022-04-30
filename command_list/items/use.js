@@ -17,27 +17,26 @@ module.exports = {
     async execute (message, args) {
         // Functions for the usage system.
         function scrumptiousnessLevel() {
-            const randInt = Math.floor(Math.random() * 3);
+            const randInt = Math.floor(Math.random() * 10);
+
+            const itemCost = item.cost;
 
             if (randInt === 0) {
                 return ("It wasn't edible! +0 EXP.");
             }
 
-            else if (randInt === 1) {
-                userLevel.exp += 30;
+            else if (randInt < 10) {
+                userLevel.exp += itemCost +5;
                 userLevel.save();
-                return ("It was decent! +30 EXP.");
+                return (`It was decent! +${itemCost+5} EXP.`);
             } 
 
-            else if (randInt === 2) {
-                userLevel.exp += 100;
+            else if (randInt === 10) {
+                userLevel.exp += 50;
                 userLevel.save();
-                return ("It was SCRUMPTIOUS! +100 EXP.");
+                return (`It was SCRUMPTIOUS! +${itemCost+10} EXP.`);
             }
         }
-
-
-
 
         //Find the users level in the database.
         const userLevel = await Levels.findOne({

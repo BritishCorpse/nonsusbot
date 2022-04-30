@@ -32,7 +32,19 @@ module.exports = {
             if (message.channel.id !== sendSuggestionChannel.id) return;
 
             // Delete message in the sendSuggestionChannel
-            message.delete();
+            try {
+                message.delete();
+            } catch (error) {
+                console.log("-----GUILD-ERROR(FAILED TO DELETE MESSAGE)-----");
+                console.log("This happened in the suggestion.js file. Most likely a missing permissions error.");
+                console.log(`-----ERROR-AT-----\n${new Date.now()}`);
+                console.trace(error);
+                console.error();
+                console.log("\n\n");
+
+                return;
+            }
+
 
             const embed = new MessageEmbed()
                 .setAuthor({name: `${message.author.tag}`, iconURL: message.author.avatarURL()})

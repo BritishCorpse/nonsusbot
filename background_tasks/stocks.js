@@ -33,7 +33,23 @@ async function doDaily() {
         }
     }
 
-    await Stocks.update({ lastUpdated: Date().now }, { where: { id: 1000 } });
+    try {
+        await Stocks.update({ lastUpdated: Date().now }, { where: { id: 1000 } });
+    } catch (error) {
+        console.log("-----CLIENT-ERROR(FAILED TO UPDATE STOCKS)-----");
+        console.log("This could've happened because of many different reasons, but mostly likely it's something missing in the database, or illegal entry id's.");
+        console.log(`-----ERROR-AT-----\n${new Date.now()}`);
+        console.trace(error);
+        console.error();
+        console.log("\n\n");
+
+        return;
+    }
+
+    console.log("-----CLIENT-INFO(STOCKS UPDATED)-----");
+    console.log("Stocks have been updated.");
+    console.log(new Date.now());
+    console.log("\n\n");
 
     //console.log(`Stocks have finished updated at: ${Date()}`);
 }
