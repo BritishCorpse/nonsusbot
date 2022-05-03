@@ -1,9 +1,9 @@
 const { MessageEmbed } = require("discord.js");
 const { bot_name } = require(`${__basedir}/config.json`);
-const { developer_discord_user_ids, artist_discord_user_ids, translator_discord_user_ids } = require(`${__basedir}/development_config.json`);
+const { developer_shoutouts, artist_shoutouts, translator_shoutouts } = require(`${__basedir}/development_config.json`);
 
 module.exports = {
-    name: ["botinfo"],
+    name: ["info"],
     description: "Shows information on the bot.",
 
     usage: [
@@ -17,11 +17,11 @@ module.exports = {
             .setTitle(bot_name)
             .setDescription("Graveyard is a powerful Discord bot, which eliminates the need to fill up your server with an unnecessarily large amount of bots!")
             .setURL("https://talloween.github.io/graveyardbot/")
-            .setThumbnail("https://cdn.discordapp.com/avatars/825779650822275152/3b40ed3b6e37de5018ec2bce8794ddb4.png?size=256")
+            .setThumbnail(message.client.user.avatarURL())
             .addField("Version", require(`${__basedir}/package.json`).version)
-            .addField("Developers", `<@!${developer_discord_user_ids.join("> <@!")}>`)
-            .addField("Artists", `<@!${artist_discord_user_ids.join("> <@!")}>`)
-            .addField("Tranlators", `<@!${translator_discord_user_ids.join("> <@!")}>`)
+            .addField("Developers", `${developer_shoutouts.join("")}`)
+            .addField("Artists", `${artist_shoutouts.join("")}`)
+            .addField("Tranlators", `${translator_shoutouts.join("")}`)
             .addField("Made with", "[discord.js](https://discord.js.org/)")
             .addField("Servers", `${message.client.guilds.cache.size}`);
 
