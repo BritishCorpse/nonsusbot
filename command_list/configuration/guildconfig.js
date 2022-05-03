@@ -19,7 +19,9 @@ const simpleConfigs = {
     "language": "Language",
     "detailed_logging": "In-depth Logging",
     "allow_illegal_names": "Simplify Names",
-    "numbers_in_counting": "Allow Normal Messages In The Counting Channel"
+    "numbers_in_counting": "Allow Normal Messages In The Counting Channel",
+    "profanity_filter": "Swear word filter",
+    "allow_links": "Allow links in chat",
 };
 
 const channelConfigs = [
@@ -40,7 +42,9 @@ const roleConfigs = [
 const booleanConfigs = [
     "detailed_logging",
     "allow_illegal_names",
-    "numbers_in_counting"
+    "numbers_in_counting",
+    "profanity_filter",
+    "allow_links",
 ];
 
 const configDescriptions = {
@@ -56,7 +60,9 @@ const configDescriptions = {
     "detailed_logging": "Whether or not to send detailed information to the logging channel, such as a channel's pinned messages being updated.",
     "allow_illegal_names": "If a user has 'un-pingable' font in their name, change their name to standard unicode text. For example: 𝔐𝔶𝔘𝔰𝔢𝔯𝔫𝔞𝔪𝔢1 to MyUsername1",
     "language": "The language that is displayed when running commands.",
-    "prefix": "The prefix that the bot replies to. The default prefix is '_'."
+    "prefix": "The prefix that the bot replies to. The default prefix is '_'.",
+    "profanity_filter": "Used to ban swearing except in NSFW channels.",
+    "allow_links": "Whether or not to allow users to send links such as https://talloween.github.io/graveyardbot/ in the chat.",
 };
 
 function getKeyByValue(object, value) {

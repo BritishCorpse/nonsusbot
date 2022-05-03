@@ -71,7 +71,9 @@ const allConfigs = {
     "language": "Language",
     "detailed_logging": "In-depth Logging",
     "allow_illegal_names": "Simplify Names",
-    "numbers_in_counting": "Allow Normal Messages In The Counting Channel"
+    "numbers_in_counting": "Allow Normal Messages In The Counting Channel",
+    "profanity_filter": "Swear word filter",
+    "allow_links": "Allow links in chat",
 };
 
 async function promptConfig(channel, user) {

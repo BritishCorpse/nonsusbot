@@ -12,5 +12,7 @@
   "language": "en",
   "detailed_logging": "false",
   "allow_illegal_names": "true",
-  "numbers_in_counting": "true"
+  "numbers_in_counting": "true",
+  "profanity_filter": "false",
+  "allow_links": "true"
 }
