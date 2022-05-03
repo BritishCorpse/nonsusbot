@@ -1,6 +1,8 @@
 const developmentConfig = require(`${__basedir}/development_config.json`);
 const { MessageEmbed } = require("discord.js");
 
+const { SuggestionMessages} = require(`${__basedir}/db_objects.js`); 
+
 module.exports = {
     name: "suggestion", 
     execute(client) {
@@ -51,9 +53,11 @@ module.exports = {
                 .addField("Suggestion:", `${message.content}`)
                 .setColor(randomColor);
 
-            suggestionChannel.send({ embeds: [embed] }) .then(suggestionMessage => {
+            suggestionChannel.send({ embeds: [embed] }) .then(async suggestionMessage => {
                 suggestionMessage.react("🟩");
                 suggestionMessage.react("🟥");
+
+                await SuggestionMessages.create({message_id: suggestionMessage.id, user_id: message.author.id, sent_at: Date.now()});
             });
 
         });

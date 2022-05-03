@@ -72,6 +72,9 @@ require("./models/VerifyMessages")(sequelize, Sequelize.DataTypes);
 require("./models/VerifyChannels")(sequelize, Sequelize.DataTypes);
 require("./models/VerifyRoles")(sequelize, Sequelize.DataTypes);
 
+require("./models/UserKarma")(sequelize, Sequelize.DataTypes);
+require("./models/SuggestionMessages")(sequelize, Sequelize.DataTypes);
+
 const force = process.argv.includes("--force") || process.argv.includes("-f");
 
 

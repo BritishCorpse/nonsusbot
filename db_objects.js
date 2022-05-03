@@ -27,6 +27,9 @@ const VerifyMessages = require("./models/VerifyMessages")(sequelize, Sequelize.D
 const VerifyChannels = require("./models/VerifyChannels")(sequelize, Sequelize.DataTypes);
 const VerifyRoles = require("./models/VerifyRoles")(sequelize, Sequelize.DataTypes);
 
+const UserKarma = require("./models/UserKarma")(sequelize, Sequelize.DataTypes);
+const SuggestionMessages = require("./models/SuggestionMessages")(sequelize, Sequelize.DataTypes);
+
 UserPortfolio.belongsTo(Stocks, { foreignKey: "share_id", as: "shares" });
 UserItems.belongsTo(CurrencyShop, { foreignKey: "item_id", as: "item" }); // foreignKey sets the key to be used from UserItems to look up in CurrencyShop
 
@@ -123,4 +126,7 @@ module.exports = {
     VerifyMessages,
     VerifyChannels,
     VerifyRoles,
+
+    UserKarma,
+    SuggestionMessages,
 };
