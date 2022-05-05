@@ -1,7 +1,8 @@
 {
-  "developer_discord_user_ids": ["604013405254189070", "786301097953591326"],
-  "artist_discord_user_ids": ["484644637420552202", "870459600883818587"],
-  "translator_discord_user_ids": ["530605094467796992", "327117250781773825", "544925681188864055", "870459600883818587", "484644637420552202", "786301097953591326", "952895251264208916", "888188241096888370"],
+  "bot_socials": ["Twitter: graveyarddeveloper"],
+  "developer_shoutouts": ["talloween/Instagram: photosfromthenordic\n", "poki\n"],
+  "artist_shoutouts": ["talloween/Instagram: photosfromthenordic\n", "poki\n"],
+  "translator_shoutouts": ["spicular/Tiktok: .spicular\n", "diana/Instagram: lovelydianan\n", "finnish egirl/Twitter: EgirlFinnish/Instagram: finnish_egirl/Tiktok: copeharder2.com\n", "vicky/Tiktok: vicksphobia\n", "poki\n", "steph\n", "indigo\n"],
   "development_discord_server_ids": ["955522612346359809"],
   "main_bot_discord_user_id": "923609069598695516",
   "testing_bot_token": "OTI1MzExMTUwMjQ4MzAwNTc0.YcrRKQ.zaVB6nM0eoA23lxSHxQl8W3gBvg",

@@ -14,7 +14,7 @@ module.exports = {
         //Define who to timeout, how long it should last, and the reason for the timeout.
         const target = message.mentions.members.first();
         let duration = args[1];
-        let reason = args[2];
+        let reason = args.slice(2).join(" ");
 
         //Check if there's a target.
         if (!target) return message.channel.send("You did not specify a target.");

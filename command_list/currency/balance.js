@@ -14,39 +14,48 @@ module.exports = {
     ],
 
     async execute(message) {
+        /* Checking if the user has mentioned someone. If they have, it will set the user variable to the
+        mentioned user. If they haven't, it will set the user variable to the author of the message. */
         const user = message.mentions.users.first() || message.author;
 
-        //Find the target in the database.
+        /* Finding the user in the database. */
         const userInDb = await Users.findOne({
             where: {user_id: user.id}
-        }) || null; // this makes it an empty object if it is null
+        }) || null;
 
-        //Crashes with bots so this is acheck to see if the user running is a bot.
+        /* Checking if the user is a bot. If they are, it will send a message saying that bots cannot be
+        ranked. */
         if(user.bot) {
             message.channel.send("Bots cannot be ranked!");
             return;
         }
 
+        /* Checking if the user is in the database. If they are not, it will send a message saying that the
+        user was not found. */
         if (userInDb === null) {
             message.channel.send("This user was not found.");
             return;
         }
 
-        // this is just how many coins the user has
+        /* Getting the user's balance from the database. */
         const userBalance = userInDb.balance;
 
-        // cool badge to show next to the user if they have one
+
+        /* Checking if the user has a badge. If they do, it will set the userBadge variable to the user's
+        badge. If they don't, it will set it to null. */
         let userBadge;
         if (userInDb.badge) {
             userBadge = userInDb.badge;
         }
 
-        //their rank if they have one   
+        /* Checking if the user has a rank. If they do, it will set the userRank variable to the user's rank.
+        If they don't, it will set it to null. */
         let userRank;
         if (userInDb.rank) {
             userRank = userInDb.rank;
         }
 
+        /* Creating an embed. */
         const embed = {
             description: `${userBadge || ""}${userMention(user.id)}'s balance`,
 
@@ -77,6 +86,7 @@ module.exports = {
             },
         };
 
+        /* Sending the embed to the channel. */
         message.channel.send({ embeds: [embed], allowedMentions: {repliedUser: true} });
     }       
 

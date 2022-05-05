@@ -29,11 +29,11 @@ module.exports = {
         const embeds = [];
 
         function makeEmbed() {
-            return new MessageEmbed().setTitle(`Inventory of: ${userInDb.badge || " "}${targetUser.username}`).setColor(randomColor);
+            return new MessageEmbed().setTitle(`Inventory of: ${userInDb.badge || ""}${targetUser.username}`).setColor(randomColor);
         }
 
         if (items.length === 0) {
-            message.channel.send(`${userInDb.badge || " "}${targetUser.username} has nothing!`);
+            message.channel.send(`${userInDb.badge || ""}${targetUser.username} has nothing!`);
             return;
         }
 
@@ -49,10 +49,13 @@ module.exports = {
             }
             if (item.amount === 0) {continue;}
 
-            embed.addField(`${item.item.itemEmoji}${item.item.name}`, `Amount: ${item.amount}, Cost: ${item.item.cost}${gravestone}`);
+            let itemEmoji;
+            if(item.item.itemEmoji !== null) itemEmoji = item.item.itemEmoji;
+
+            embed.addField(`${itemEmoji || ""}${item.item.name || ""}`, `Amount: ${item.amount || ""}\nCost: ${item.item.cost || ""}${gravestone}`);
 
             itemsWorth += parseInt(items[i].item.cost * items[i].amount);
-            embed.setDescription(`Inventory worth: ${itemsWorth}${gravestone}`);
+            embed.setDescription(`Inventory worth: ${itemsWorth || ""}${gravestone || ""}`);
         }
 
         // Check if an embed has 0 fields, due to skipped items in the db, if so, remove the embed entirely from the array.
@@ -63,7 +66,7 @@ module.exports = {
         }
 
         // Check if any embeds were added to the embeds array, sanity check because items.amount can be 0 due to sell command.
-        if (embeds.length < 1) {return message.channel.send(`${userInDb.badge || " "}${targetUser.username} has nothing!`);}
+        if (embeds.length < 1) {return message.channel.send(`${userInDb.badge || ""}${targetUser.username} has nothing!`);}
         
         paginateEmbeds(message.channel, message.author, embeds);
     }

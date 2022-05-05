@@ -1,5 +1,7 @@
 {
   "prefix": "_",
+  "welcome_message": "{user} left {server}. What a shame!",
+  "leave_message": "Welcome {user} to {server}. Glad to have you here!",
   "m_channel_id": "",
   "log_channel_id": "",
   "verify_channel_id": "",
@@ -12,5 +14,8 @@
   "language": "en",
   "detailed_logging": "false",
   "allow_illegal_names": "true",
-  "numbers_in_counting": "true"
+  "numbers_in_counting": "true",
+  "profanity_filter": "false",
+  "allow_links": "true",
+  "max_word_count": ""
 }

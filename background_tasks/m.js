@@ -7,6 +7,7 @@ module.exports = {
             // disable DMs
             if (message.guild === null) return;
             
+            /* It's getting the channel ID from the serverConfig.json file. */
             const m_channel_id = client.serverConfig.get(message.guild.id).m_channel_id;
         
             if (!m_channel_id) return;
@@ -27,7 +28,7 @@ module.exports = {
             deleteIfNotM(message);
         });
 
-        client.on("messageUpdate", (oldMessage, message) => {
+        client.on("messageUpdate", (message) => {
             deleteIfNotM(message);
         });
     }
