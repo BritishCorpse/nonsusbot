@@ -27,6 +27,8 @@ const simpleConfigs = {
     "profanity_filter": "Swear word filter",
     "allow_links": "Allow links in chat",
     "max_word_count": "Maximum word count in a message",
+    "welcome_message": "The message that will show when a user joins the server!",
+    "leave_message": "The message that will show when a user leaves the server.",
 };
 
 const channelConfigs = [
@@ -73,7 +75,9 @@ const configDescriptions = {
     "prefix": "The prefix that the bot replies to. The default prefix is '_'.",
     "profanity_filter": "Used to ban swearing except in NSFW channels.",
     "allow_links": "Whether or not to allow users to send links such as https://talloween.github.io/graveyardbot/ in the chat.",
-    "max_word_count": "The maximum words allowed per message, if a message has more than the maximum word count, it will be automatically deleted."
+    "max_word_count": "The maximum words allowed per message, if a message has more than the maximum word count, it will be automatically deleted.",
+    "welcome_message": "Welcome message.",
+    "leave_message": "Leave message.",
 };
 
 /**
@@ -406,7 +410,7 @@ module.exports = {
                     while (looping1 === true) {
                         /* Asking the user to choose an option from the list of options. */
                         const prefixOptionChosen = await promptOptions(message.channel, message.author, `You are editing the option ${editOptionChosen}.\n${configDescriptions[trueConfig]}`,[
-                            "Change the value of this optiom",
+                            "Change the value of this option",
                             "View the value of this option",
                             "Reset this option",
                             "Back to menu"
@@ -460,6 +464,126 @@ module.exports = {
                         }
                     }
 
+                }
+
+                if (trueConfig === "welcome_message") {
+                    let looping1 = true;
+                    while (looping1 === true) {
+                        /* Asking the user to choose an option from the list of options. */
+                        const prefixOptionChosen = await promptOptions(message.channel, message.author, `You are editing the option ${editOptionChosen}.\n${configDescriptions[trueConfig]}`,[
+                            "Change the value of this option",
+                            "View the value of this option",
+                            "Reset this option",
+                            "Back to menu"
+                        ]).catch(() => {
+                            console.error();
+                            asleepWarning(message.channel, message.author);
+                        });
+    
+                        /* Setting the prefix to the user's input. */
+                        if (prefixOptionChosen === 0) {
+                            const prefix = await inputConfigText(message.channel, message.author, "Enter the new welcome message.", 90);
+    
+                            // set the config
+                            message.client.serverConfig.get(message.guild.id)[trueConfig] = prefix;
+    
+                            // write it to the file
+                            saveServerConfig(message.client.serverConfig);
+    
+                            message.channel.send(`${editOptionChosen} was set to ${prefix}`);                        
+                        }
+    
+                        /* Checking if the prefixOptionChosen is equal to 1. If it is, it will then check if the prefix is
+                        null. If it is, it will send a message saying that the prefix is not currently defined. If it is not
+                        null, it will send a message saying that the prefix is currently the prefix. */
+
+                        // ^^^ i mean close enough i guess??
+                        if (prefixOptionChosen === 1) {
+                            const prefix = await message.client.serverConfig.get(message.guild.id)[trueConfig] || null;
+    
+                            if (prefix === null) {
+                                message.channel.send(`${editOptionChosen} is not currently defined.`);
+                                continue;   
+                            } else {
+                                message.channel.send(`${editOptionChosen} is currently ${prefix}`);
+                            } 
+                        }
+    
+                        /* Resetting the config to the default value. */
+                        if (prefixOptionChosen === 2) {
+                            // reset the config
+                            message.client.serverConfig.get(message.guild.id)[trueConfig] = defaultServerConfig[trueConfig];
+    
+                            // write it to the file
+                            saveServerConfig(message.client.serverConfig);
+    
+                            message.channel.send(`${editOptionChosen} was reset.`);   
+                        }
+
+                        if (prefixOptionChosen === 3) {
+                            looping1 = false;
+                        }
+                    }
+                }
+
+                if (trueConfig === "leave_message") {
+                    let looping1 = true;
+                    while (looping1 === true) {
+                        /* Asking the user to choose an option from the list of options. */
+                        const prefixOptionChosen = await promptOptions(message.channel, message.author, `You are editing the option ${editOptionChosen}.\n${configDescriptions[trueConfig]}`,[
+                            "Change the value of this option",
+                            "View the value of this option",
+                            "Reset this option",
+                            "Back to menu"
+                        ]).catch(() => {
+                            console.error();
+                            asleepWarning(message.channel, message.author);
+                        });
+    
+                        /* Setting the prefix to the user's input. */
+                        if (prefixOptionChosen === 0) {
+                            const prefix = await inputConfigText(message.channel, message.author, "Enter the new welcome message.", 90);
+    
+                            // set the config
+                            message.client.serverConfig.get(message.guild.id)[trueConfig] = prefix;
+    
+                            // write it to the file
+                            saveServerConfig(message.client.serverConfig);
+    
+                            message.channel.send(`${editOptionChosen} was set to ${prefix}`);                        
+                        }
+    
+                        /* Checking if the prefixOptionChosen is equal to 1. If it is, it will then check if the prefix is
+                        null. If it is, it will send a message saying that the prefix is not currently defined. If it is not
+                        null, it will send a message saying that the prefix is currently the prefix. */
+
+                        // ^^^ i mean close enough i guess??
+                        if (prefixOptionChosen === 1) {
+                            const prefix = await message.client.serverConfig.get(message.guild.id)[trueConfig] || null;
+    
+                            if (prefix === null) {
+                                message.channel.send(`${editOptionChosen} is not currently defined.`);
+                                continue;   
+                            } else {
+                                message.channel.send(`${editOptionChosen} is currently ${prefix}`);
+                            } 
+                        }
+    
+                        /* Resetting the config to the default value. */
+                        if (prefixOptionChosen === 2) {
+                            // reset the config
+                            message.client.serverConfig.get(message.guild.id)[trueConfig] = defaultServerConfig[trueConfig];
+    
+                            // write it to the file
+                            saveServerConfig(message.client.serverConfig);
+    
+                            message.channel.send(`${editOptionChosen} was reset.`);   
+                        }
+
+                        if (prefixOptionChosen === 3) {
+                            looping1 = false;
+                        }
+                    }
                 }
             }
 

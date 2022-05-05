@@ -75,6 +75,8 @@ const allConfigs = {
     "profanity_filter": "Swear word filter",
     "allow_links": "Allow links in chat",
     "max_word_count": "Maximum word count in a message",
+    "welcome_message": "Welcome message",
+    "leave_message": "Leave message",
 };
 
 async function promptConfig(channel, user) {

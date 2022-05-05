@@ -1,5 +1,7 @@
 {
   "prefix": "_",
+  "welcome_message": "{user} left {server}. What a shame!",
+  "leave_message": "Welcome {user} to {server}. Glad to have you here!",
   "m_channel_id": "",
   "log_channel_id": "",
   "verify_channel_id": "",
