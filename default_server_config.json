@@ -14,5 +14,6 @@
   "allow_illegal_names": "true",
   "numbers_in_counting": "true",
   "profanity_filter": "false",
-  "allow_links": "true"
+  "allow_links": "true",
+  "max_word_count": ""
 }

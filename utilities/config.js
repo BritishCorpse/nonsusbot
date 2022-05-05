@@ -74,6 +74,7 @@ const allConfigs = {
     "numbers_in_counting": "Allow Normal Messages In The Counting Channel",
     "profanity_filter": "Swear word filter",
     "allow_links": "Allow links in chat",
+    "max_word_count": "Maximum word count in a message",
 };
 
 async function promptConfig(channel, user) {
