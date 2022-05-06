@@ -11,7 +11,7 @@ module.exports = {
             if (!message.author) return;
             if (message.author.bot) return;
 
-            if (linkFilter === true) return console.log("tes");
+            if (linkFilter === true) return;
 
             if (message.content.includes("https:") || message.content.includes("http:")) {
                 try {
