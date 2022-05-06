@@ -121,7 +121,6 @@ module.exports = {
             if (verifyQuestions === null || verifyQuestions.length < 1) {
                 //find the verifyRole in the guilds cache
                 const role = reactionAddEvent.message.guild.roles.cache.find(role => role.id === verifyRole.role_id) || null;
-                console.log(role.name);
 
                 if (role === null) return console.log("role not found");
 
@@ -129,7 +128,6 @@ module.exports = {
                 const member = reactionAddEvent.message.guild.members.cache.find(member => member.id === user.id);
 
                 await member.roles.add(role);
-                console.log(role.name);
 
                 //send the success embed to the verifyChannel if everything works
                 verifyChannel.send({ embeds: [successEmbed] });
