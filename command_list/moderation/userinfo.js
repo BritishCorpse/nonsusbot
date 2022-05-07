@@ -1,7 +1,4 @@
-const { MessageEmbed } = require("discord.js");
 const { Users } = require(`${__basedir}/db_objects`);
-
-const { gravestone } = require(`${__basedir}/emojis.json`);
 
 module.exports = {
     name: ["userinfo"],
@@ -12,46 +9,70 @@ module.exports = {
         { tag: "user", checks: {isuseridinguild: null} }
     ],
 
-    async execute(message) {
-        const randomColor = Math.floor(Math.random()*16777215).toString(16);
-        
-        const user = message.mentions.users.first() || message.member.user;
+    async execute(message) {        
+        const userInDiscord = message.mentions.users.first() || message.member.user;
+        const userInGuild = message.mentions.members.first() || message.member;
+        const userInDb = await Users.findOne({ where: { user_id: userInDiscord.id}});
 
-        const userInDb = await Users.findOne({ where: { user_id: user.id}});
+        //Fixes an error where it doesnt find the badge for bots.
+        if (userInDiscord.bot) return message.channel.send("Bot's cannot be viewed!");
 
-        const target = await message.guild.members.fetch(user.id);
-        if (!target) {
-            message.channel.send("You did not specify a user.");
-            return;
+        const embed = {
+            color: "33a5ff",
+
+            title: "User information",
+
+            url: "https://talloween.github.io/graveyardbot/",
+
+            author: {
+                name: "Moderation assistant",
+                icon_url: message.client.user.avatarURL(),
+                url: "https://talloween.github.io/graveyardbot/",
+            },
+
+            fields: [],
+
+            footer: {
+                text: "Powered by graveyard",
+            },
+
+            timestamp: new Date(),
+        };
+
+        const userObject = {
+            "Badge": userInDb.badge,
+
+            "Username": userInDiscord.username,
+
+            "Account created on": new Date(userInDiscord.createdAt.toUTCString()),
+
+            "Joined this guild on": new Date(userInGuild.joinedAt.toUTCString()),
+
+            "Nickname": userInGuild.nickname || "No nickname",
+
+            "Custom status": userInDiscord.presence || "No presence",
+
+            "Bannable": userInGuild.bannable,
+
+            "Kickable": userInGuild.kickable,
+
+            "Moderatable": userInGuild.moderatable,
+
+            "Display colour": userInGuild.displayColor,
+
+            "Display colour in hex code": userInGuild.displayHexColor,
+
+            "User ID": userInDiscord.id
+        };
+
+        for (const key in userObject) {
+            embed.fields.push({
+                name: `${key}`,
+                value: `${userObject[key]}`,
+                inline: true,
+            });
         }
 
-        if (target.bot) {
-            message.channel.send("Shh, bots are private!");
-            return;
-        }
-
-        else {
-            const embed = new MessageEmbed()
-                .setTitle(`Userinfo about ${target.user.tag}`)
-                .setColor(randomColor)
-                .addField(`${user.username}'s badge is:`, `${userInDb.badge || "User does not have a badge."}`)
-                .addField(`${user.username}'s balance is:`, `${userInDb.balance}${gravestone}`)
-                .addField(`${user.username} joined at:`, ` ${new Date(target.joinedTimestamp)}`, true)
-                .addField(`${user.username}'s account was created at:`, ` ${new Date(target.user.createdTimestamp)}`, true)
-                .addField(`${user.username}'s nickname is:`, ` ${target.nickname || "None"}`, true)
-                .addField(`${user.username}'s presence is:`, ` ${target.presence || "No presence"}`, true)
-                .addField(`${user.username}'s role amount is:`, `${target.roles.cache.size - 1}`, true)
-                .addField(`Is ${user.username} bannable:`, `${target.bannable}`, true)
-                .addField(`Is ${user.username} kickable:`, `${target.kickable}`, true)
-                .addField(`Is ${user.username} moderatable: `, `${target.moderatable}`, true)
-                .addField("This was sent in:", `${target.guild}`, true)
-                .addField(`${user.username}'s display colour is:`, `${target.displayColor}`, true)
-                .addField(`${user.username}'s display colour in hexadecimal code is:`, `${target.displayHexColor}`, true)
-                .addField(`${user.username}'s id is:`, `${target.id}`, true)
-                .setImage(target.displayAvatarURL({ format: "png"}));
-                
-            message.channel.send({embeds: [embed]});
-        }
-
+        return message.channel.send({ embeds: [embed] });
     }
 };
