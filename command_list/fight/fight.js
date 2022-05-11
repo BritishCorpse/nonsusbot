@@ -198,20 +198,9 @@ module.exports = {
         async function attackFunction(user, opponent, attack) {
             if (user.mana < attack.cost) return false;
 
-            const power = user.strength + attack.effectiveness;
+            let attackPower = user.strength + attack.effectiveness;
 
-            const defencePower = opponent.defence;
-
-            let attackPower;
-            if (attack.affects === "hp") {
-                attackPower = power - defencePower;
-            }
-
-            else if (power > defencePower) {
-                attackPower = defencePower;
-            } else {
-                attackPower = power - defencePower;
-            }
+            attackPower = attackPower - opponent.defence;
 
             console.log(attackPower);
 
@@ -307,7 +296,7 @@ module.exports = {
             user.mana += 1;
             opponent.mana += 1;
 
-            if (user.hp < 1 || opponent.hp < 1) {
+            if (user.hp <= 1 || opponent.hp <= 1) {
                 await endGame(user, opponent);
                 looping = false;
                 return;
