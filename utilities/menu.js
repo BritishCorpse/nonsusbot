@@ -89,10 +89,7 @@ async function promptOptions(channel, user, promptMessage, options) {
         collector.on("end", () => {
             reject(new Error("no option chosen"));
 
-            rows.forEach(row => {
-                row.components[0].setDisabled(true);
-            });
-            message.edit({components: rows});
+            message.delete();
         });
 
         collector.on("collect", async interaction => {
