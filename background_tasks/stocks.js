@@ -18,7 +18,6 @@ async function doDaily() {
 
         if (upOrDown === 0) {
             const newPrice = Math.round(currentPrice - stockChange);
-            console.log(`-${stockChange}, ${stock.id}, Current Price: ${newPrice}`);
 
             await Stocks.update({ oldPrice: stock.currentPrice}, { where: { id: stock.id }});
             await Stocks.update({ currentPrice: newPrice }, { where: { id: stock.id } });
@@ -26,7 +25,6 @@ async function doDaily() {
 
         else {
             const newPrice = Math.round(currentPrice + stockChange);
-            console.log(`+${stockChange}, ${stock.id}, Current Price: ${newPrice}`);
 
             await Stocks.update({ oldPrice: stock.currentPrice}, { where: { id: stock.id }});
             await Stocks.update({ currentPrice: newPrice }, { where: { id: stock.id } });
