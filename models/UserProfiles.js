@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         hp: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            defaultValue: 10
+            defaultValue: 20
         },
         strength: {
             type: DataTypes.INTEGER,
@@ -49,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
         moveset: {
             type: DataTypes.STRING,
             allowNull: true,
-            defaultValue: "Bite, Punch, Kick, Scream"
+            defaultValue: "Bite, Punch, Kick, Stab"
         },
         special_ability: {
             type: DataTypes.STRING,

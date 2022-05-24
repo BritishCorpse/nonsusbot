@@ -87,16 +87,16 @@ const force = process.argv.includes("--force") || process.argv.includes("-f");
 // Here I present, organised spaghetti code, this is just a base format for the tables to makes sure that everything exists.
 sequelize.sync({ force }).then(async () => {
     const moves = [
-        FightMoves.upsert({ name: "Punch", cost: 1, effectiveness: 1, affect: "hp", accuracy: 100, target: "opponent" }),
-        FightMoves.upsert({ name: "Kick", cost: 2, effectiveness: 2, affect: "hp", accuracy: 100, target: "opponent" }),
-        FightMoves.upsert({ name: "Bite", cost: 4, effectiveness: 6, affect: "hp", accuracy: 100, target: "opponent" }),
-        FightMoves.upsert({ name: "Scream", cost: 1, effectiveness: 3, affect: "defence", accuracy: 100, target: "opponent" }),
-        FightMoves.upsert({ name: "Swing bag", cost: 2, effectiveness: 3, affect: "hp", accuracy: 60, target: "opponent" }),
-        FightMoves.upsert({ name: "Brick throw", cost: 3, effectiveness: 4, affect: "hp", accuracy: 40, target: "opponent" }),
-        FightMoves.upsert({ name: "Complain loudly", cost: 1, effectiveness: 10, affect: "defence", accuracy: 30, target: "opponent" }),
-        FightMoves.upsert({ name: "Misunderstand technology", cost: 0, effectiveness: 1, affect: "defence", accuracy: 100, target: "self" }),
-        FightMoves.upsert({ name: "Do pushups", cost: 1, effectiveness: 1, affect: "strength", accuracy: 100, target: "self" }),
-        FightMoves.upsert({ name: "Poop", cost: 12, effectiveness: 20, affect: "hp", accuracy: 100, target: "opponent" }),
+        FightMoves.upsert({ name: "Punch", cost: 1, power: 1 }),
+        FightMoves.upsert({ name: "Kick", cost: 2, power: 3 }),
+        FightMoves.upsert({ name: "Bite", cost: 4, power: 4 }),
+        FightMoves.upsert({ name: "Stab", cost: 10, power: 9 }),
+        FightMoves.upsert({ name: "Swing bag", cost: 2, power: 3 }),
+        FightMoves.upsert({ name: "Brick throw", cost: 3, power: 2 }),
+        FightMoves.upsert({ name: "Complain loudly", cost: 1, power: 1 }),
+        FightMoves.upsert({ name: "Misunderstand technology", cost: 3, power: 4 }),
+        FightMoves.upsert({ name: "Poop", cost: 12, power: 17 }),   
+        FightMoves.upsert({ name: "Summon Cthulhu", cost: 50, power: 80})
     ];
 
     const stocks = [

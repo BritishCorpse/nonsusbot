@@ -7,6 +7,20 @@ const i18n = require("i18n");
 
 const { Users, CurrencyShop } = require(`${__basedir}/db_objects`);
 
+const errorMessages = {
+    noPlayer: "No player was found!",
+    noMention: "No one was mentioned!",
+    userNotFound: "User was not found!",
+    numberTooLarge: "The number entered is too large!",
+    numberTooSmall: "The number entered is too small!",
+    notANumber: "The input entered is not a number!",
+    noPermissions: "You don't have the permissions for this.",
+    declined: "Your offer was declined!",
+    botsNotAllowed: "Bot's are not allowed!",
+    selfMention: "You can't do this by yourself!",
+    illegalText: "Sorry I can't understand what youre saying. Try something within UNICODE, please.",
+    timeOut: "You ran out of time!"
+};
 
 const descriptionFormats = {
     isempty: not => `is ${not ? "not " : ""}empty`,
@@ -24,6 +38,9 @@ const descriptionFormats = {
     isurl: not => `is ${not ? "not " : ""}a url`,
 };
 
+async function sendErrorMessage(channel, author, message) {
+    return await channel.send(`Sorry, ${author}. ${message}`);
+}
 
 function addPageNumbersToFooter(embed, page, maxPage) {
     return new MessageEmbed(embed).setFooter({text: `(${page}/${maxPage}) ${embed.footer ? embed.footer.text : ""}`});
@@ -609,4 +626,6 @@ module.exports = {
     translateForGuild,
     formatRank,
     formatNumber,
+    sendErrorMessage,
+    errorMessages,
 };

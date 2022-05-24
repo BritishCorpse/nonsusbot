@@ -9,22 +9,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        effectiveness: {
+        power: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        affect: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        }, 
-        accuracy: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        },
-        target: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        }
+
     }, {
         timestamps: false,
     });
