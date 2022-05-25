@@ -36,6 +36,8 @@ const GuildWarns = require("./models/GuildWarns")(sequelize, Sequelize.DataTypes
 const UserProfiles = require("./models/UserProfiles")(sequelize, Sequelize.DataTypes);
 const FightMoves = require("./models/FightMoves")(sequelize, Sequelize.DataTypes);
 
+const GoodBot = require("./models/GoodBot")(sequelize, Sequelize.DataTypes);
+
 UserPortfolio.belongsTo(Stocks, { foreignKey: "share_id", as: "shares" });
 UserItems.belongsTo(CurrencyShop, { foreignKey: "item_id", as: "item" }); // foreignKey sets the key to be used from UserItems to look up in CurrencyShop
 
@@ -141,4 +143,5 @@ module.exports = {
 
     UserProfiles,
     FightMoves,
+    GoodBot
 };

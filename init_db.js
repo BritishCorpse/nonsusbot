@@ -79,6 +79,8 @@ require("./models/UserWarns")(sequelize, Sequelize.DataTypes);
 require("./models/GuildWarns")(sequelize, Sequelize.DataTypes);
 
 require("./models/UserProfiles")(sequelize, Sequelize.DataTypes);
+
+require("./models/GoodBot")(sequelize, Sequelize.DataTypes);
 const FightMoves = require("./models/FightMoves")(sequelize, Sequelize.DataTypes);
 
 const force = process.argv.includes("--force") || process.argv.includes("-f");
