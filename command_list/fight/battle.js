@@ -22,7 +22,7 @@ module.exports = {
 
         const mentionedUser = message.mentions.users.first();
         if (mentionedUser.bot) return await sendErrorMessage(message.channel, message.author, errorMessages.botsNotAllowed);
-        //if (mentionedUser === message.author) return await sendErrorMessage(message.channel, message.author, errorMessages.selfMention);
+        if (mentionedUser === message.author) return await sendErrorMessage(message.channel, message.author, errorMessages.selfMention);
 
         // find both players in the database.
         const playerOne = await UserProfiles.findOne({ where: { user_id: message.author.id } }) || null;
@@ -33,7 +33,7 @@ module.exports = {
         }   
 
         // send the offer in the chat and await for the response
-        const battleOffer = await inputText(message.channel, message.author, `${message.mentions.users.first()} you are challenged to a battle by ${message.author} for ${userBet} ${gravestone}! Will you accept? (yes/no)`, 20).catch(async () => {
+        const battleOffer = await inputText(message.channel, mentionedUser, `${message.mentions.users.first()} you are challenged to a battle by ${message.author} for ${userBet} ${gravestone}! Will you accept? (yes/no)`, 20).catch(async () => {
             return;
         });
 
