@@ -102,22 +102,22 @@ async function isUsernameTaken(username) {
     else return true;
 }
 
-async function endGame(channel, client, winner, loser) {
+async function endGame(channel, client, winner, loser, userBet) {
     const winEmbed = {
         description: `${await client.users.fetch(winner.user_id)} wins the battle!`,
         
         fields: [
             {
                 name: "Prize money (What your opponent lost)",
-                value: `+1000${gravestone}`
+                value: `+${userBet}${gravestone}`
             }
         ],
 
         color: "33a5ff"
     };
 
-    client.currency.add(winner, 1000);
-    client.currency.add(loser, -1000);
+    client.currency.add(winner, userBet);
+    client.currency.add(loser, -userBet);
     
     return channel.send({ embeds: [winEmbed] });
 }
@@ -193,7 +193,7 @@ async function useItem(channel, client, attacker, itemType) {
     return true;
 }
 
-async function doTurn(channel, client, attacker, defender) {
+async function doTurn(channel, client, attacker, defender, userBet) {
     let looping = true;
     while (looping === true) {
         const fightOptionChosen = await promptOptions(channel, await client.users.fetch(attacker.user_id), `${await client.users.fetch(attacker.user_id)}, what will you do?`, [
@@ -203,7 +203,7 @@ async function doTurn(channel, client, attacker, defender) {
             "Forfeit"
         ]).catch(async () => {
             looping = false;
-            await endGame(channel, client, defender, attacker);
+            await endGame(channel, client, defender, attacker, userBet);
             
             return false;
         });
@@ -214,7 +214,7 @@ async function doTurn(channel, client, attacker, defender) {
             if (attack === false) continue;
 
             if (defender.hp <= 0) {
-                await endGame(channel, client, attacker, defender);
+                await endGame(channel, client, attacker, defender, userBet);
 
                 looping = false;
                 //returning false means attacker won
@@ -245,7 +245,7 @@ async function doTurn(channel, client, attacker, defender) {
 
         else if (fightOptionChosen === 3) {
             looping = false;
-            await endGame(channel, client, defender);
+            await endGame(channel, client, defender, userBet);
             
             return false;
         }

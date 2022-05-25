@@ -16,7 +16,7 @@ const errorMessages = {
     notANumber: "The input entered is not a number!",
     noPermissions: "You don't have the permissions for this.",
     declined: "Your offer was declined!",
-    botsNotAllowed: "Bot's are not allowed!",
+    botsNotAllowed: "Bots are not allowed!",
     selfMention: "You can't do this by yourself!",
     illegalText: "Sorry I can't understand what youre saying. Try something within UNICODE, please.",
     timeOut: "You ran out of time!"

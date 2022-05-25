@@ -4,13 +4,22 @@ const { inputText } = require(`${__basedir}/utilities`);
 
 const { errorMessages, sendErrorMessage, makeFightEmbed, doTurn } = require(`${__basedir}/utilities`);
 
+const { gravestone } = require(`${__basedir}/emojis.json`);
+
 module.exports = {
     name: "battle",
     description: "Challenge another player to a battle!",
     usage: [
-        { tag: "user", checks: {isuseridinguild: null}}
+        { tag: "user", checks: {isuseridinguild: null},
+            next: [
+                { tag: "bet", checks: {ispositiveinteger: null}}
+            ]       
+        }
     ],
-    async execute(message) {
+    async execute(message, args) {
+        const userBet = args[1];
+        console.log(userBet);
+
         const mentionedUser = message.mentions.users.first();
         if (mentionedUser.bot) return await sendErrorMessage(message.channel, message.author, errorMessages.botsNotAllowed);
         //if (mentionedUser === message.author) return await sendErrorMessage(message.channel, message.author, errorMessages.selfMention);
@@ -24,7 +33,7 @@ module.exports = {
         }   
 
         // send the offer in the chat and await for the response
-        const battleOffer = await inputText(message.channel, message.author, `${message.mentions.users.first()} you are challenged to a battle by ${message.author}! Will you accept? (yes/no)`, 20).catch(async () => {
+        const battleOffer = await inputText(message.channel, message.author, `${message.mentions.users.first()} you are challenged to a battle by ${message.author} for ${userBet} ${gravestone}! Will you accept? (yes/no)`, 20).catch(async () => {
             return;
         });
 
@@ -47,7 +56,7 @@ module.exports = {
 
         let looping = true;
         while (looping === true) {
-            const attackerMove = await doTurn(message.channel, message.client, attacker, defender); 
+            const attackerMove = await doTurn(message.channel, message.client, attacker, defender, userBet); 
 
             // this means the attacker won
             if (!attackerMove) looping = false;
