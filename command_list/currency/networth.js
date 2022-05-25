@@ -74,7 +74,6 @@ module.exports = {
             if (item.amount === 0) {continue;}
             
             itemsWorth += parseInt(items[i].item.cost * items[i].amount);
-            console.log(itemsWorth);
         }
 
         //Total calculated networth.

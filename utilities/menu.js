@@ -51,7 +51,7 @@ async function inputText(channel, user, promptMessage, maxLength=-1) {
         const messages = await channel.awaitMessages({filter, time: 60000, max: 1, errors: ["time"]});
         
         if (maxLength >= 0 && messages.first().content.length > maxLength) {
-            await channel.send("The message you sent is too long, please try again!");
+            await channel.send("Your message is too long!");
         } else {
             return messages.first().content;
         }
@@ -89,10 +89,7 @@ async function promptOptions(channel, user, promptMessage, options) {
         collector.on("end", () => {
             reject(new Error("no option chosen"));
 
-            rows.forEach(row => {
-                row.components[0].setDisabled(true);
-            });
-            message.edit({components: rows});
+            message.delete();
         });
 
         collector.on("collect", async interaction => {
