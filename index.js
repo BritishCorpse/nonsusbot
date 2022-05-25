@@ -151,7 +151,7 @@ Reflect.defineProperty(client.currency, "add", {
     value: async function add(id, amount) {
         try {
             const newUser = await Users.create({
-                user_id: id,
+                user_id: parseInt(id),
                 balance: amount
             });
 
