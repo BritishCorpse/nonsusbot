@@ -1,17 +1,17 @@
 const { GoodBot } = require("../../db_objects");
 
 module.exports = {
-    name: "goodbot",
-    description: "Give me +1 goodbot rating!",
+    name: "badbot",
+    description: "Give me +1 badbot rating!",
     usage: [],
     async execute(message) {
         const goodbots = await GoodBot.findOne({
             where: {
-                id: 1
+                id: 2
             }
         });
 
-        message.reply(`Thank you! My good bot count is now ${goodbots.goodbots}!`);
+        message.reply(`:( My bad bot count is now ${goodbots.goodbots}.`);
 
         goodbots.goodbots += 1;
         goodbots.save();

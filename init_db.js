@@ -80,7 +80,7 @@ require("./models/GuildWarns")(sequelize, Sequelize.DataTypes);
 
 require("./models/UserProfiles")(sequelize, Sequelize.DataTypes);
 
-require("./models/GoodBot")(sequelize, Sequelize.DataTypes);
+const GoodBot = require("./models/GoodBot")(sequelize, Sequelize.DataTypes);
 const FightMoves = require("./models/FightMoves")(sequelize, Sequelize.DataTypes);
 
 const force = process.argv.includes("--force") || process.argv.includes("-f");
@@ -99,6 +99,11 @@ sequelize.sync({ force }).then(async () => {
         FightMoves.upsert({ name: "Misunderstand technology", cost: 3, power: 4 }),
         FightMoves.upsert({ name: "Poop", cost: 12, power: 17 }),   
         FightMoves.upsert({ name: "Summon Cthulhu", cost: 50, power: 80})
+    ];
+
+    const goodbots = [
+        GoodBot.upsert({ id: 1, goodbots: 1}),
+        GoodBot.upsert({ id: 2, goodbots: 1}),
     ];
 
     const stocks = [
@@ -236,6 +241,7 @@ sequelize.sync({ force }).then(async () => {
     console.log("Currency database synced.");
     await Promise.all(moves);
     console.log("Fight moves updated.");
+    await Promise.all(goodbots);
 
     sequelize.close();
 }).catch(console.error);
