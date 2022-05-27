@@ -11,10 +11,9 @@ module.exports = {
             }
         });
 
-        message.reply(`Thank you! My good bot count is now ${goodbots.goodbots}`);
+        message.reply(`Thank you! My good bot count is now ${goodbots.goodbots}!`);
 
         goodbots.goodbots += 1;
         goodbots.save();
-        
     }
 };

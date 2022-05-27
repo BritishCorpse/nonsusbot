@@ -1,7 +1,7 @@
 const { UserProfiles, FightMoves } = require(`${__basedir}/db_objects`);
 const { MessageActionRow, MessageSelectMenu, MessageEmbed } = require("discord.js");
 
-const { gravestone } = require(`${__basedir}/emojis.json`);
+const { gravestone, healthpotion, manapotion } = require(`${__basedir}/emojis.json`);
 
 async function makeFightEmbed(channel, playerOne, playerTwo, attacker, attackerMove, fightMessage) {
     const embed = new MessageEmbed({
@@ -12,11 +12,11 @@ async function makeFightEmbed(channel, playerOne, playerTwo, attacker, attackerM
         fields: [
             {
                 name: `${playerOne.username}`,
-                value: `HP: ${playerOne.hp} | Mana ${playerOne.mana}`
+                value: `HP: ${playerOne.hp} ${healthpotion} | Mana ${playerOne.mana} ${manapotion}`
             },
             {
                 name: `${playerTwo.username}`,
-                value: `HP: ${playerTwo.hp} | Mana ${playerTwo.mana}`
+                value: `HP: ${playerTwo.hp} ${healthpotion} | Mana ${playerTwo.mana} ${manapotion}`
             },
         ],
 
