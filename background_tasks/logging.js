@@ -142,7 +142,7 @@ module.exports = {
             client.on("messageUpdate", async (oldMessage, newMessage) => {
                 if (!oldMessage.guild) return;
                 //Don't do this if it came from a bot.
-                if (newMessage.author.bot) return;
+                if (oldMessage.author.bot) return;
 
                 let oldContent = oldMessage.cleanContent;
                 let newContent = newMessage.cleanContent;
