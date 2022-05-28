@@ -61,6 +61,8 @@ module.exports = {
     name: "swearfilter",
     async execute(client) {
         client.on("messageCreate", async (message) => {
+            if (!message.guild) return;
+            
             //Check if the server has the profanity filter enabled.
             let profanityFilter;
 
