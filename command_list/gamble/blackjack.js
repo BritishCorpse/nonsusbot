@@ -70,11 +70,15 @@ module.exports = {
                 if (turnHolder.bet < 1) {
                     let tryForBet = true;
                     while (tryForBet === true) {
-                        let userBet = await inputText(message.channel, turnHolder.user, `${turnHolder.user} What will your bet be?`, 30);
+                        let userBet = await inputText(message.channel, turnHolder.user, `${turnHolder.user} What will your bet be?`, 30).catch(() => {
+                            turnHolder.bust = true;
+
+                            tryForBet = false;
+                        });
 
                         if (userBet === "max") userBet = message.client.currency.getBalance(turnHolder.user.id);
 
-                        if (isNaN(userBet) || userBet < 1) continue;
+                        if (isNaN(userBet) || userBet < 1 || userBet === Infinity) continue;
 
                         if (turnHolder.bet > await message.client.currency.getBalance(turnHolder.user.id)) {
                             message.channel.send("You can't bet more than you have!");

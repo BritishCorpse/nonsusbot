@@ -68,7 +68,7 @@ module.exports = {
 
         if (userBet > message.client.currency.getBalance(user.id)) return await sendErrorMessage(errorMessages.notEnoughMoney);
 
-        await message.client.currency.add(user, -userBet);
+        await message.client.currency.add(user.id, -userBet);
 
         const userDiceOne = await throwDice();
         const userDiceTwo = await throwDice();
