@@ -8,7 +8,7 @@ module.exports = {
         const inviteMessage = await message.channel.send({ embeds: [ await makeGameInviteEmbed(message.author, "Blackjack") ] });
         inviteMessage.react("✅");
 
-        const inviteWaitPeriod = 5 * 1000;
+        const inviteWaitPeriod = 25 * 1000;
 
         let playerList;
 
