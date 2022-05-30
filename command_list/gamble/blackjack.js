@@ -18,6 +18,7 @@ module.exports = {
             playerList = await resolveGameInvite(messageReaction);
             playerList = await makePlayerObjectList(message.client, playerList);
 
+            if (playerList.length > 24) return message.channel.send("That's too many people!");
             if (playerList.length < 1) return message.channel.send("No one wants to play? :(");
 
             let inGame = true;
