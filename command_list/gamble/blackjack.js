@@ -8,7 +8,7 @@ module.exports = {
         const inviteMessage = await message.channel.send({ embeds: [ await makeGameInviteEmbed(message.author, "Blackjack") ] });
         inviteMessage.react("✅");
 
-        const inviteWaitPeriod = 30 * 1000;
+        const inviteWaitPeriod = 5 * 1000;
 
         let playerList;
 
@@ -33,6 +33,9 @@ module.exports = {
                 if (moveIteration > playerList.length - 1) {
                     let dealerLoop = true;
                     while (dealerLoop === true) {
+                        setTimeout(() => {
+                        }, 2000);
+
                         const dealerTurn = await doDealerTurn(dealer);
 
                         await gameMessage.edit({ embeds: [ await makeBJEmbed(playerList, dealer) ] });
@@ -66,7 +69,9 @@ module.exports = {
                 if (turnHolder.bet < 1) {
                     let tryForBet = true;
                     while (tryForBet === true) {
-                        const userBet = await inputText(message.channel, turnHolder.user, `${turnHolder.user} What will your bet be?`, 30);
+                        let userBet = await inputText(message.channel, turnHolder.user, `${turnHolder.user} What will your bet be?`, 30);
+
+                        if (userBet === "max") userBet = message.client.currency.getBalance(turnHolder.user.id);
 
                         if (isNaN(userBet) || userBet < 1) continue;
 
