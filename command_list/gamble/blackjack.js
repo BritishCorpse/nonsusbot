@@ -5,8 +5,7 @@ module.exports = {
     description: "Host a game of blackjack!",
     usage: [],
     async execute(message) {
-        let looping = true;
-        while (looping === true) {
+        async function game() {
             const inviteMessage = await message.channel.send({ embeds: [ await makeGameInviteEmbed(message.author, "Blackjack") ] });
             inviteMessage.react("✅");
     
@@ -20,11 +19,8 @@ module.exports = {
                 playerList = await resolveGameInvite(messageReaction);
                 playerList = await makePlayerObjectList(message.client, playerList);
     
-                if (playerList.length < 1) {
-                    looping = false;
-                    return message.channel.send("No one wants to play? :(");
-                }
-
+                if (playerList.length < 1) return message.channel.send("No one wants to play? :(");
+    
                 let inGame = true;
     
                 const dealer = await makeDealer();
@@ -113,8 +109,11 @@ module.exports = {
                     //for testing, disable in real use.
                     //inGame = false;
                 }
+
+                await game();
             }, inviteWaitPeriod);
         }
 
+        await game();
     }
 };
