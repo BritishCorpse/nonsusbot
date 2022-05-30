@@ -3,12 +3,12 @@ const { warningLog } = require(`${__basedir}/utilities`);
 module.exports = {
     name: "m",
     execute (client) {
-        function deleteIfNotM(message) {
+        async function deleteIfNotM(message) {
             // disable DMs
             if (message.guild === null) return;
             
             /* It's getting the channel ID from the serverConfig.json file. */
-            const m_channel_id = client.serverConfig.get(message.guild.id).m_channel_id;
+            const m_channel_id = await message.client.serverConfig.get(message.guild.id).m_channel_id;
         
             if (!m_channel_id) return;
 

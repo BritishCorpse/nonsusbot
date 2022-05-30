@@ -19,7 +19,8 @@ const errorMessages = {
     botsNotAllowed: "Bots are not allowed!",
     selfMention: "You can't do this by yourself!",
     illegalText: "Sorry I can't understand what youre saying. Try something within UNICODE, please.",
-    timeOut: "You ran out of time!"
+    timeOut: "You ran out of time!",
+    notEnoughMoney: "You don't have enough money for that!"
 };
 
 const descriptionFormats = {

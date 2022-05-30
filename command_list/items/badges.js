@@ -3,49 +3,46 @@ const { MessageEmbed } = require("discord.js");
 const { paginateEmbeds } = require(`${__basedir}/utilities`);
 const { Users } = require(`${__basedir}/db_objects`);
 
+function makeEmbed(userInDb, target, color) {
+    return new MessageEmbed().setTitle(`Badge list of: ${userInDb.badge || " "}${target.username}`).setColor(color);
+}
+
 module.exports = {
     name: ["badges"],
     description: "See what badges you currently own!",
 
     usage: [
-
+        { tag: "nothing", checks: {isempty: null} },
+        { tag: "user", checks: {isuseridinguild: null} }
     ],
     async execute(message) {
+        const target = message.mentions.users.first() || message.author;
 
-        const randomColor = Math.floor(Math.random()*16777215).toString(16);
+        const randomColors = ["RED", "GREEN", "BLUE", "YELLOW", "ORANGE", "BLACK", "WHITE"];
+        const randomColor = randomColors[Math.floor(Math.random() * randomColors.length)];
+    
+        const userInDb = await Users.findOne({ where: { user_id: target.id } });
+        const userItems = await getUserItems(target.id);
 
-        const targetUser = message.author;
-
-        const userInDb = await Users.findOne({ where: { user_id: targetUser.id } });
-
-        const items = await getUserItems(targetUser.id);
-
-        let embed;
-
-        const embeds = [];
-
-        function makeEmbed() {
-            return new MessageEmbed().setTitle(`Badge list of: ${userInDb.badge || " "}${targetUser.username}`).setColor(randomColor);
-        }
- 
-        if (items.length === 0) {
-            message.channel.send(`${userInDb.badge || " "}${targetUser.username} has no badges!`);
+        if (userItems.length < 1) {
+            message.channel.send(`${userInDb.badge || ""}${message.author.username} has no badges!`);
             return;
         }
 
-        for (const i in items) {
-            const item = items[i];
+        let embed;
+        const embeds = [];
+
+        for (const i in userItems) {
+            const item = userItems[i];
 
             if (i % 10 === 0) {
-                embed = makeEmbed();
+                embed = makeEmbed(userInDb, target, randomColor);
                 embeds.push(embed);  
             }
 
             if (item.item.category === "Badges") {
                 embed.addField(`${item.item.itemEmoji}${item.item.name}`, `${item.item.itemDescription}`);
             }
-            
-            
         }
 
         paginateEmbeds(message.channel, message.author, embeds);
