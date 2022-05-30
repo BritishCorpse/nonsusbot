@@ -30,7 +30,9 @@ async function gameEnd(client, playerList, dealer) {
 
         fields: [
 
-        ]
+        ],
+
+        color: "RED"
     };
 
     for (let i = 0; i < playerList.length; ++i) {
@@ -133,7 +135,9 @@ async function makeBJEmbed(playerList, dealer) {
     const embed = {
         title: "Blackjack",
 
-        fields: []
+        fields: [],
+        
+        color: "RED"
     };
 
     for (let i = 0; i < playerList.length; ++i) {
