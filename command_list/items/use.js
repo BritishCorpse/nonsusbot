@@ -49,7 +49,6 @@ module.exports = {
             });
         }
 
-
         // Find the item in the curerncyshop.
         const item = await CurrencyShop.findOne({
             where: {
@@ -61,34 +60,17 @@ module.exports = {
 
         if (!item) return message.channel.send("That item doesn't exist.");
 
-
         // Find the item in the users inventory.
         const itemInDb = await UserItems.findOne({
             where: { user_id: message.author.id, item_id: item.id}
         });
         
-        
         // Check if the item is in the inventory.
-        if (!itemInDb) {
+        if (!itemInDb || itemInDb.amount < 1) {
             message.channel.send("You do not own this item!");
             return;
         }
         
-        // Check if amount is a positive integer, to prevent negative integers in the database.
-        if (itemInDb.amount < 1) {
-            message.channel.send("You do not own this item!");
-            return;
-        }
-
-
-        // Remove 1 item from the user.
-        /*
-        itemInDb.amount -= 1;
-        itemInDb.save();
-        */
-        
-        // DO NOT REMOVE THE ITEM HERE REMOVE IT IN THE ELIF CHAIN.
-
         // Usage elif chain :)
         if (item.category === "Food") {
             const scrumptious = scrumptiousnessLevel();

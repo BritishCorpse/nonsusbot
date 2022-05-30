@@ -239,6 +239,7 @@ module.exports = {
                         "Food",
                         "Cats",
                         "Dogs",
+                        "Special",
                         "Back to menu"
                     ]).catch(async () => {
                         await asleepWarning(message.channel, message.author);
@@ -786,9 +787,15 @@ module.exports = {
                         await chooseItem(message.channel, message.author, "Dogs", message.client, message.author);
                     }
 
+                    /* Checking if the user has chosen the number 5. If they have, it will run the
+                    function chooseItem. */
+                    if (buyChoice === 6) {
+                        await chooseItem(message.channel, message.author, "Special", message.client, message.author);
+                    }
+
                     /* It's checking if the user chose the "Back to menu" option. If they did, it'll
                     continue the loop. */
-                    if (buyChoice === 6) {
+                    if (buyChoice === 7) {
                         buyLoop = false;
                         continue;
                     }

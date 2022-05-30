@@ -51,7 +51,7 @@ const client = new Discord.Client({
         Discord.Intents.FLAGS.GUILD_SCHEDULED_EVENTS,
     ],
     partials: ["MESSAGE", "CHANNEL", "REACTION"],      // allows emitting reaction add events on previous messages (needed for self roles)
-    allowedMentions: {parse: []} // make mentions not ping people
+    allowedMentions: { parse: ["users", "roles"] }
 });
 
 client.commands = new Discord.Collection();
@@ -62,7 +62,7 @@ client.currency = new Discord.Collection();
 process.on("unhandledRejection", async error => {
     const { errorLog } = require(`${__basedir}/utilities`);
     // have this here in case of missing permissions, etc.
-    const log = await errorLog([10], `${console.trace(error)}`, "6", "Requires manual review.", "UNHANDLED REJECTION", `${error.toString()}`);
+    const log = await errorLog([10], `${console.trace(error)}`, "6", `${error.type}`, "UNHANDLED REJECTION", `${error.toString()}`);
 
     const errorChannel = await client.channels.fetch("955880094625320980");
 
@@ -151,7 +151,7 @@ Reflect.defineProperty(client.currency, "add", {
     value: async function add(id, amount) {
         try {
             const newUser = await Users.create({
-                user_id: parseInt(id),
+                user_id: id,
                 balance: amount
             });
 

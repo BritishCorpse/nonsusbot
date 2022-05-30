@@ -45,16 +45,21 @@ async function areYouSure(channel, user) {
 
 async function inputText(channel, user, promptMessage, maxLength=-1) {
     while (true) { /* eslint-disable-line no-constant-condition */
-        channel.send(promptMessage);
+        const prompt = await channel.send(promptMessage);
         const filter = message => message.author.id === user.id;
         //const messages = await channel.awaitMessages({filter, time: 2_147_483_647, max: 1, errors: ["time"]});
         const messages = await channel.awaitMessages({filter, time: 60000, max: 1, errors: ["time"]});
         
         if (maxLength >= 0 && messages.first().content.length > maxLength) {
             await channel.send("Your message is too long!");
-        } else {
-            return messages.first().content;
+            continue;
         }
+        
+        setTimeout(() => {
+            messages.first().delete();
+            prompt.delete();
+        }, 1000);
+        return messages.first().content;
     }
 }
 

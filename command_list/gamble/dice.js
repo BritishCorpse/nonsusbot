@@ -1,7 +1,49 @@
 const { MessageEmbed } = require("discord.js");
-const { userHasItem } = require(`${__basedir}/utilities`);
+const { userHasItem, sendErrorMessage, errorMessages } = require(`${__basedir}/utilities`);
 
-const { gravestone } = require(`${__basedir}/emojis.json`);
+const { gravestone, redgembadge } = require(`${__basedir}/emojis.json`);
+
+async function throwDice() {
+    return Math.floor(Math.random() * 6 + 1);
+}
+
+async function gameEmbed(userDiceOne, userDiceTwo, botDiceOne, botDiceTwo) {
+    return new MessageEmbed({
+        title: "A game of dice!",
+
+        fields: [
+            {
+                name: "You rolled!",
+                value: `${userDiceOne}${redgembadge} & ${userDiceTwo}${redgembadge}`
+            },
+
+            {
+                name: "The computer rolled!",
+                value: `${botDiceOne}${redgembadge} & ${botDiceTwo}${redgembadge}`
+            }
+        ],
+
+        color: "GREEN"
+    });
+}
+
+async function endGame(client, channel, author, winLoss, userBet) {
+    if (winLoss === "win") {
+        await channel.send(`You win! +${userBet}${gravestone}`);
+
+        await client.currency.add(author.id, userBet * 2);
+    }
+
+    else if (winLoss === "loss") {
+        await channel.send(`You lose! -${userBet}${gravestone}`);
+    }
+
+    else if (winLoss === "draw") {
+        await channel.send("Its a draw!");
+
+        await client.currency.add(author.id, userBet);
+    }
+}
 
 module.exports = {
     name: ["dice"],
@@ -21,80 +63,26 @@ module.exports = {
             return;
         }
 
-        const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+        const user = message.author;
+        const userBet = args[0];
 
-        // Starting playing dice game.
-        const userBet = Number.parseInt(args[0]);
+        if (userBet > message.client.currency.getBalance(user.id)) return await sendErrorMessage(errorMessages.notEnoughMoney);
 
-        if (userBet === "rules") {
-            const embed = new MessageEmbed()
-                .setTitle("Rules of dice.")
-                .setDescription("The player and computer both roll a six sided die. Whichever party rolls a higher number on the die, wins. The maximum bet for this gamemode is 10 million 💰's.")
-                .setColor(randomColor);
-            
-            message.channel.send({embeds: [embed]});
-            return;
-        } else if (userBet > 1000000000 || userBet <= 0) {
-            message.channel.send("🎲Your bet is too large or invalid.🎲");
-            return;
-        } else if (userBet > message.client.currency.getBalance(message.author.id)) {
-            message.channel.send("🎲You don't have enough money!🎲");
-            return;
-        }
+        await message.client.currency.add(user, -userBet);
 
-        // temporarily take the bet
-        message.client.currency.add(message.author.id, -userBet);
+        const userDiceOne = await throwDice();
+        const userDiceTwo = await throwDice();
 
-        const diceRollComputerOne = Math.floor(Math.random() * 6 + 1);
-        const diceRollComputerTwo = Math.floor(Math.random() * 6 + 1);
-        const diceRollUserOne = Math.floor(Math.random() * 6 + 1);
-        const diceRollUserTwo = Math.floor(Math.random() * 6 + 1);
+        const botDiceOne = await throwDice();
+        const botDiceTwo = await throwDice();
 
-        const computerTotal = diceRollComputerOne + diceRollComputerTwo;
-        const userTotal = diceRollUserOne + diceRollUserTwo;
+        const userTotal = userDiceOne + userDiceTwo;
+        const botTotal = botDiceOne + botDiceTwo;
 
-        /*
-        console.log(computerTotal);
-        console.log(userTotal);
-        console.log("scores");
-        console.log(diceRollComputerOne, diceRollComputerTwo);
-        console.log(diceRollUserOne, diceRollUserTwo);
-        */
+        await message.channel.send({ embeds: [await gameEmbed(userDiceOne, userDiceTwo, botDiceOne, botDiceTwo)] });
 
-        const embed = new MessageEmbed()
-            .setTitle(`${gravestone}A game of dice!${gravestone}`)
-            .setColor(randomColor)
-            .addField("The computer rolls:", `${diceRollComputerOne}🎲 and ${diceRollComputerTwo}🎲`)
-            .addField("You roll:", `${diceRollUserOne}🎲 and ${diceRollUserTwo}🎲`);
-        
-        if (userTotal === computerTotal) {
-            embed.addField("ITS A DRAW! YOU WIN!", `+${userBet}${gravestone}`);
-            message.client.currency.add(message.author.id, userBet * 2);
-
-        } else if (userTotal === 12) {
-            embed.addField("DOUBLE SIXES!", `+${userBet * 2}${gravestone}`);
-            // Here only remove the userBet from the casino and then pull the rest out of the aether.
-            message.client.currency.add("1", -userBet);
-            message.client.currency.add(message.author.id, userBet * 3); // give the bet back + twice the bet
-
-        } else if (userTotal > computerTotal) {
-            embed.addField("YOU WIN!", `+${userBet}${gravestone}`);
-            message.client.currency.add("1", -userBet);
-            message.client.currency.add(message.author.id, userBet * 2);
-
-        } else if (computerTotal > userTotal) {
-            embed.addField("YOU LOSE!", `-${userBet}${gravestone}`);
-            message.client.currency.add("1", userBet); // casino balance
-
-        } else {
-            message.channel.send("I'm not sure what happened.");
-
-            //Give the user their bet back because an error happened.
-            message.client.currency.add(message.author.id, userBet);
-            return;
-
-        }
-
-        message.reply({embeds: [embed]});
+        if (userTotal > botTotal) return await endGame(message.client, message.channel, message.author, "win", userBet);
+        else if (botTotal > userTotal) return await endGame(message.client, message.channel, message.author, "loss", userBet);
+        else return await endGame(message.client, message.channel, message.channel, message.author, "draw", userBet);
     }
 };
