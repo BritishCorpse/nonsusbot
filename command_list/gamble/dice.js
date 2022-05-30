@@ -83,6 +83,6 @@ module.exports = {
 
         if (userTotal > botTotal) return await endGame(message.client, message.channel, message.author, "win", userBet);
         else if (botTotal > userTotal) return await endGame(message.client, message.channel, message.author, "loss", userBet);
-        else return await endGame(message.client, message.channel, message.channel, message.author, "draw", userBet);
+        else return await endGame(message.client, message.channel, message.author, "draw", userBet);
     }
 };
