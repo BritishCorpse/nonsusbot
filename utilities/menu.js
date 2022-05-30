@@ -55,8 +55,10 @@ async function inputText(channel, user, promptMessage, maxLength=-1) {
             continue;
         }
         
-        messages.first().delete();
-        prompt.delete();
+        setTimeout(() => {
+            messages.first().delete();
+            prompt.delete();
+        }, 1000);
         return messages.first().content;
     }
 }
