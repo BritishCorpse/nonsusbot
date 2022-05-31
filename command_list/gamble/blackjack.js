@@ -87,7 +87,8 @@ module.exports = {
 
                         turnHolder.bet = await userBet;
 
-                        //give the user a card
+                        //give the user 2 cards
+                        turnHolder.cards.push(await giveCard());
                         turnHolder.cards.push(await giveCard());
 
                         await gameMessage.edit({ embeds: [ await makeBJEmbed(playerList, dealer) ] });
