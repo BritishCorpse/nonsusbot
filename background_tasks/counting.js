@@ -86,7 +86,14 @@ module.exports = {
 
             // If number is correct.
             if (parseInt(newNumber) === lastNumber + 1) {
-                message.react("👍");
+                if (lastNumber + 1 < 100) {
+                    message.react("👍");
+                } else if (lastNumber + 1 >= 100 && lastNumber + 1 < 500) {
+                    message.react(":ballot_box_with_check:");
+                } else {
+                    message.react("<:spirl:978361372586950666>");
+                }
+ 
                 dbInfo.number += 1;
                 dbInfo.guildCounted += 1;
                 dbInfo.save();
@@ -122,6 +129,22 @@ module.exports = {
             userInDb.amountCounted ++;
             userInDb.countedCorrect ++;
             userInDb.save();
+        });
+
+        client.on("messageDelete", async message => {
+            //These are checks to make sure that messages are being handled in the guild.
+            if (message.author.id === client.id) return;
+            if (message.guild === null) return;
+            if (message.author.bot && !testing) return;
+            if (message.author.bot && testing && message.author.id !== developmentConfig.testing_bot_discord_user_id) return; 
+
+            // Declare what the counting channel is, if it does not exist, or if this is not the counting channel, return.
+            let countingChannel;
+            if (client.serverConfig.get(message.guild.id).counting_channel_id) {
+                countingChannel = await client.channels.fetch(client.serverConfig.get(message.guild.id).counting_channel_id);
+            }
+            
+            if (message.channel !== countingChannel || !countingChannel) return;
         });
 
         //add something here that will check for when someone deletes a message that was already counted, so that they cant trick people into saying the wrong number.

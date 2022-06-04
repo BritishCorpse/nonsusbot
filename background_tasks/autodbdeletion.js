@@ -2,7 +2,7 @@ const { SelfRoleMessages, VerifyMessages } = require(`${__basedir}/db_objects`);
 const { infoLog, errorLog } = require(`${__basedir}/utilities`);
 
 module.exports = {
-    name: "autoroles",
+    name: "autodbdeletion",
     async execute(client) {
         client.on("messageDelete", async (message) => {
             const messageId = message.id;
