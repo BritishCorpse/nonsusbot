@@ -1,7 +1,7 @@
 const { badWords } = require(`${__basedir}/utilities`);
 
 async function containsLink(message) {
-    if (message.content.includes("https:") || message.content.includes("http:")) {  
+    if (message.content.includes("https://") || message.content.includes("http://") || message.content.includes("www.")) {  
         return true;
     }
 
