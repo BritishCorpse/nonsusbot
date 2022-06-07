@@ -23,7 +23,7 @@ const simpleConfigs = {
     "language": "Language",
     "detailed_logging": "In-depth Logging",
     "allow_illegal_names": "Simplify Names",
-    "numbers_in_counting": "Allow Normal Messages In The Counting Channel",
+    "no_nans_in_counting": "Delete any message that is not a number, in the counting channel.",
     "profanity_filter": "Swear word filter",
     "allow_links": "Allow links in chat",
     "max_word_count": "Maximum word count in a message",
@@ -49,7 +49,7 @@ const roleConfigs = [
 const booleanConfigs = [
     "detailed_logging",
     "allow_illegal_names",
-    "numbers_in_counting",
+    "no_nans_in_counting",
     "profanity_filter",
     "allow_links",
 ];
