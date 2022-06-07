@@ -4,16 +4,28 @@
   "description": "Discord Bot",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node update_commands.js && node main.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/talloween/graveyard.git"
   },
-  "author": "talloween/photosfromthenordic",
+  "author": "github: talloween",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/talloween/graveyard/issues"
   },
-  "homepage": "https://github.com/talloween/graveyard#readme"
+  "homepage": "https://github.com/talloween/graveyard#readme",
+  "devDependencies": {
+    "eslint": "^8.17.0"
+  },
+  "dependencies": {
+    "@discordjs/builders": "^0.15.0",
+    "@discordjs/rest": "^0.5.0",
+    "discord-api-types": "^0.33.5",
+    "discord.js": "^13.8.0",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7"
+  }
 }

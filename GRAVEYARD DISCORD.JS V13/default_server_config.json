@@ -1,0 +1,16 @@
+{
+  "log_channel": null,
+  "verification_channel": null,
+  "verification_request_channel": null,
+  "counting_channel": null,
+  "leveling_channel": null,
+  "welcome_channel": null,
+  "goodbye_channel": null,
+  "remove_bad_words": false,
+  "remove_links": false,
+  "detailed_logging": false,
+  "remove_non_numbers_in_the_counting_channel": false,
+  "normalize_non_unicode_names": false,
+  "max_word_count": 10000
+}
+  
