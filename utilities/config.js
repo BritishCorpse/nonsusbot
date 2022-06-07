@@ -77,6 +77,7 @@ const allConfigs = {
     "max_word_count": "Maximum word count in a message",
     "welcome_message": "Welcome message",
     "leave_message": "Leave message",
+    "no_nans_in_counting": "Delete any message that is not a number, in the counting channel.",
 };
 
 async function promptConfig(channel, user) {

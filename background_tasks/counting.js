@@ -21,19 +21,19 @@ module.exports = {
 
             const countedNumber = parseInt(message.content);
 
+            const countingChannel = await client.serverConfig.get(message.guild.id).counting_channel_id || null;
+            console.log(countingChannel);
+            if (countingChannel === null || message.channel.id !== countingChannel) return console.log("This is not the channel you are looking for."); //returns if the config does not exist or if this is not the channel.
+
             const userInCounting = await Users.findOne({ where: { user_id: message.author.id } });
             if (!userInCounting) return await Users.create({ where: { user_id: message.author.id } });
-
-            const countingChannel = await client.serverConfig.get(message.guild.id).counting_channel_id || null;
-            if (countingChannel === null || message.channel.id !== countingChannel) return; //returns if the config does not exist or if this is not the channel.
 
             const guildInCounting = await Counting.findOne({ where: { guildId: message.guild.id } }) || null;
             if (guildInCounting === null) return; // returns if the guild doesnt exist in the database.
 
-            let allowNaNs = await client.serverConfig.get(message.guild.id).numbers_in_counting;
-            if (allowNaNs === null) allowNaNs = true; // allow regular messages if they havent said otherwise.
+            const deleteNaNs = await client.serverConfig.get(message.guild.id).no_nans_in_counting;
 
-            if (allowNaNs === false && isNaN(countedNumber)) return await message.delete(); // delete message if theyre not allowing regular messages.
+            if (deleteNaNs === true && isNaN(countedNumber)) return await message.delete(); // delete message if theyre not allowing regular messages.
             if (isNaN(countedNumber)) return; // returns if the message is not a number.
 
             // passes if they said the incorrect number.
