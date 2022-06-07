@@ -22,8 +22,7 @@ module.exports = {
             const countedNumber = parseInt(message.content);
 
             const countingChannel = await client.serverConfig.get(message.guild.id).counting_channel_id || null;
-            console.log(countingChannel);
-            if (countingChannel === null || message.channel.id !== countingChannel) return console.log("This is not the channel you are looking for."); //returns if the config does not exist or if this is not the channel.
+            if (countingChannel === null || message.channel.id !== countingChannel) return; //returns if the config does not exist or if this is not the channel.
 
             const userInCounting = await Users.findOne({ where: { user_id: message.author.id } });
             if (!userInCounting) return await Users.create({ where: { user_id: message.author.id } });
