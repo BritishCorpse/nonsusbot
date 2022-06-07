@@ -15,6 +15,6 @@
   "allow_illegal_names": "true",
   "no_nans_in_counting": "false",
   "profanity_filter": "false",
-  "allow_links": "true",
+  "link_filter": "true",
   "max_word_count": "10000"
 }

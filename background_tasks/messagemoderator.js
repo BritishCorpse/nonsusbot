@@ -17,7 +17,7 @@ async function containsSwearing(message) {
 } 
 
 async function messageTooLong(message, maxWordCount) {
-    const messageWordCount = message.content.split(" ");
+    const messageWordCount = message.content.split(" ").length;
 
     if (messageWordCount > maxWordCount) {
         return true;
@@ -35,9 +35,9 @@ module.exports = {
             if (message.author.bot) return;
 
             //Check if the server has the profanity filter enabled.
-            const allowLinks = await client.serverConfig.get(message.guild.id).allow_links || null;
+            const linkFilter = await client.serverConfig.get(message.guild.id).link_filter || null;
             
-            if (allowLinks === false) {
+            if (linkFilter === true) {
                 if (await containsLink(message) === true) {
                     message.delete().catch(() => {
                         return;
@@ -63,17 +63,12 @@ module.exports = {
             }
 
             //Check if the server has set a max message length
-            let maxWordLen;
-            if (client.serverConfig.get(message.guild.id).max_word_count) {
-                maxWordLen = await client.serverConfig.get(message.guild.id).max_word_count;
-            } else maxWordLen = null;
+            const maxWordCount = await client.serverConfig.get(message.guild.id).max_word_count || 10000;
 
-            if (maxWordLen !== null) {
-                if (await messageTooLong(message, maxWordLen) === true) {
-                    message.delete().catch(() => {
-    
-                    });
-                }
+            if (await messageTooLong(message, maxWordCount) === true) {
+                message.delete().catch(() => {
+                    return;
+                });
             }
         });
     }
