@@ -7,10 +7,10 @@ const sequelize = new Sequelize("database", "username", "password", {
     storage: "database.sqlite",
 });
 
-const Users = require("./models/Users")(sequelize, Sequelize.DataTypes);
-const CurrencyShop = require("./models/CurrencyShop")(sequelize, Sequelize.DataTypes);
-const UserItems = require("./models/UserItems")(sequelize, Sequelize.DataTypes);
-const Stocks = require("./models/Stocks")(sequelize, Sequelize.DataTypes);
+const users = require("./models/Users")(sequelize, Sequelize.DataTypes);
+const shop = require("./models/CurrencyShop")(sequelize, Sequelize.DataTypes);
+const inventories = require("./models/UserItems")(sequelize, Sequelize.DataTypes);
+const stocks = require("./models/Stocks")(sequelize, Sequelize.DataTypes);
 const UserPortfolio = require("./models/UserPortfolio")(sequelize, Sequelize.DataTypes);
 const Levels = require("./models/Levels")(sequelize, Sequelize.DataTypes);
 const Counting = require("./models/Counting")(sequelize, Sequelize.DataTypes);

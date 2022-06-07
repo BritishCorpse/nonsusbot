@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define("badge", {
+    return sequelize.define("fightMoves", {
         name: {
             type: DataTypes.STRING,
             unique: true,
@@ -9,6 +9,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
+        power: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+
     }, {
         timestamps: false,
     });

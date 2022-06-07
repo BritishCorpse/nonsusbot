@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define("user_profiles", {
-        user_id: {
+    return sequelize.define("fightProfiles", {
+        userId: {
             type: DataTypes.STRING,
             unique: true,
             allowNull: false,
@@ -26,12 +26,12 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: 2
         },
-        health_potions: {
+        healthPotions: {
             type: DataTypes.INTEGER,
             allowNull: true,
             defaultValue: 3
         },
-        mana_potions: {
+        manaPotions: {
             type: DataTypes.INTEGER,
             allowNull: true,
             defaultValue: 3
@@ -51,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
             defaultValue: "Bite, Punch, Kick, Stab"
         },
-        special_ability: {
+        specialAbility: {
             type: DataTypes.STRING,
             allowNull: true,
             defaultValue: "Healer"

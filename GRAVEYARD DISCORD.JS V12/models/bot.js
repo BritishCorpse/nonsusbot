@@ -1,20 +1,19 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define("verify_channels", {
-        guild_id: {
+    return sequelize.define("bot", {
+        goodbots: {
             type: DataTypes.INTEGER,
-            allowNull: false
-        },
-        channel: {
-            type: DataTypes.STRING,
-            //unique: true,
+            unique: false,
             allowNull: false,
+            default: 1,
         },
-        message_id: {
+        badBots: {
             type: DataTypes.INTEGER,
+            unique: false,
             allowNull: false,
-        },
+            default: 1,
+        }
     }, {
         timestamps: false,
     });
+	
 };
- 

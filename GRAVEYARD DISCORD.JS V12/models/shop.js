@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define("currency_shop", {
+    return sequelize.define("shop", {
         name: {
             type: DataTypes.STRING,
             unique: true,
@@ -9,11 +9,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        itemDescription: {
+        description: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        itemEmoji: {
+        emoji: {
             type: DataTypes.STRING,
             allowNull: true,
         },

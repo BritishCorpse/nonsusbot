@@ -1,11 +1,15 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define("self_role_channels", {
-        guild_id: {
+    return sequelize.define("srMessages", {
+        messageId: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            primaryKey: true
+        },
+        channelId: {
             type: DataTypes.STRING,
             allowNull: false
-            //primaryKey: true
         },
-        channel_id: {
+        categoryId: {
             type: DataTypes.STRING,
             allowNull: false
         },

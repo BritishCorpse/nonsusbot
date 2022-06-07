@@ -1,10 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define("verify_questions", {
-        guild_id: {
+    return sequelize.define("verificationRoles", {
+        guildId: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
         },
-        question: {
+        roleId: {
             type: DataTypes.STRING,
             //unique: true,
             allowNull: false,

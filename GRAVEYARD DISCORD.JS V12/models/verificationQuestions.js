@@ -1,18 +1,14 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define("auto_role_roles", {
-        guild_id: {
+    return sequelize.define("verificationQuestions", {
+        guildId: {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        role_id: {
+        question: {
             type: DataTypes.STRING,
             //unique: true,
             allowNull: false,
         },
-        role_name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        }
     }, {
         timestamps: false,
     });

@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define("user_karma", {
-        user_id: {
+    return sequelize.define("karma", {
+        userId: {
             type: DataTypes.STRING,
             unique: false,
             allowNull: false,
@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             unique: false,
             allowNull: true,
+            defaultValue: 0
         }
     }, {
         timestamps: false,

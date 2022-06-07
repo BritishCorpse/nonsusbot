@@ -1,0 +1,19 @@
+{
+  "name": "graveyard-discord.js-v13",
+  "version": "0.0.1",
+  "description": "Discord Bot",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/talloween/graveyard.git"
+  },
+  "author": "talloween/photosfromthenordic",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/talloween/graveyard/issues"
+  },
+  "homepage": "https://github.com/talloween/graveyard#readme"
+}

@@ -1,21 +1,23 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define("fight_moves", {
-        name: {
+    return sequelize.define("suggestionMessages", {
+        messageId: {
             type: DataTypes.STRING,
             unique: true,
             allowNull: false,
+            primaryKey: true,
         },
-        cost: {
-            type: DataTypes.INTEGER,
+        userId: {
+            type: DataTypes.STRING,
+            unique: false,
             allowNull: false,
         },
-        power: {
+        sentAt: {
             type: DataTypes.INTEGER,
+            unique: false,
             allowNull: false,
-        },
-
+        }
     }, {
         timestamps: false,
     });
-	
 };
+ 

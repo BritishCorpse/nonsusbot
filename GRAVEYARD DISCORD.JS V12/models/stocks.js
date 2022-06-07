@@ -7,27 +7,27 @@ module.exports = (sequelize, DataTypes) => {
         },
         name: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
         },
         oldPrice: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
         },
         currentPrice: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
         },
         averageChange: {
             type: DataTypes.INTEGER,
-            allowNull: true
+            allowNull: true,
         },
         lastUpdated: {
             type: DataTypes.STRING,
-            allowNull: true
+            allowNull: true,
         },
         displayName: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
         },
         amountBought: {
             type: DataTypes.INTEGER,

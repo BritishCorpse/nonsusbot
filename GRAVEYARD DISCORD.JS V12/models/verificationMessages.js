@@ -1,10 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define("verify_roles", {
-        guild_id: {
+    return sequelize.define("verificationMessages", {
+        guildId: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: false
         },
-        role_id: {
+        message: {
             type: DataTypes.STRING,
             //unique: true,
             allowNull: false,
@@ -13,4 +13,3 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: false,
     });
 };
- 

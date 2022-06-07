@@ -1,22 +1,21 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define("self_role_roles", {
+    return sequelize.define("srCategories", {
         name: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        emoji: {
+        guildId: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        category_id: {
+        color: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        roleOrder: {
             type: DataTypes.INTEGER,
             allowNull: false
-        },
-        role_id: {
-            type: DataTypes.STRING,
-            //unique: true,
-            allowNull: false,
-        },
+        }
     }, {
         timestamps: false,
     });

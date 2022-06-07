@@ -1,13 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define("goodbot", {
-        goodbots: {
+    return sequelize.define("inventories", {
+        userId: DataTypes.STRING,
+        itemId: DataTypes.INTEGER,
+        amount: {
             type: DataTypes.INTEGER,
-            unique: false,
             allowNull: false,
-            default: 1,
+            defaultValue: 0
         },
     }, {
         timestamps: false,
     });
-	
 };

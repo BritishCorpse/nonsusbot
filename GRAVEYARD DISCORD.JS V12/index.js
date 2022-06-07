@@ -17,7 +17,7 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const i18n = require("i18n");
 
-const { Users/*, CurrencyShop*/ } = require(`${__basedir}/db_objects`);
+const { wallets/*, CurrencyShop*/ } = require(`${__basedir}/db_objects`);
 
 // for common functions
 const {
@@ -150,7 +150,7 @@ Reflect.defineProperty(client.currency, "add", {
     /* eslint-disable-next-line func-name-matching */
     value: async function add(id, amount) {
         try {
-            const newUser = await Users.create({
+            const newUser = await wallets.create({
                 user_id: id,
                 balance: amount
             });
