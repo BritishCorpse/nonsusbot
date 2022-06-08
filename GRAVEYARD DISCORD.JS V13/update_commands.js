@@ -1,5 +1,9 @@
+// Set the base directory to remove relative paths
+global.__basedir = __dirname;
+
 const fs = require("node:fs");
-const path = require("node:path");
+
+const { getCommandCategories } = require("./utilities/commandFunctions.js");
 
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
@@ -7,14 +11,17 @@ const { graveyardID, devServerID, token, development } = require("./graveyard_co
 
 const commands = [];
 
-const commandsPath = path.join(__dirname, "commands");
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith(".js"));
+const categoryFolders = getCommandCategories();
+for (const category of categoryFolders) {
+    const commandFiles = fs.readdirSync(`${__basedir}/commands/${category}`)
+        .filter(commandFile => commandFile.endsWith(".js"));
 
-for (const file of commandFiles) {
-    const filePath = path.join(commandsPath, file);
-    const command = require(filePath);
-
-    commands.push(command.data.toJSON());
+    for (const commandFile of commandFiles) {
+        const command = require(`${__basedir}/commands/${category}/${commandFile}`);
+        command.category = category;
+        
+        commands.push(command.data.toJSON());
+    }
 }
 
 const rest = new REST({ version: "9" }).setToken(token);

@@ -1,9 +1,10 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { saveServerConfig } = require("../utilities/configFunctions");
+const { saveServerConfig } = require(`${__basedir}/utilities/configFunctions`);
 
-const defaultServerConfig = require("../default_server_config.json");
+const defaultServerConfig = require(`${__basedir}/default_server_config.json`);
 
 module.exports = {
+    
     data: new SlashCommandBuilder()
         .setName("config")
         .setDescription("Edit your guild's configs!!")

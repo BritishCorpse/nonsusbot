@@ -2,36 +2,52 @@
 global.__basedir = __dirname;
 
 const fs = require("node:fs");
-const path = require("node:path");
 
 const { Client, Intents, Collection } = require("discord.js");
 const { token } = require("./graveyard_config.json");
 const graveyard = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
-// cool collections
+//
+// Functions that are required in this file
+//
+
+const { 
+    formatBacktick,
+} = require(`${__basedir}/utilities/generalFunctions.js`);
+
+const {
+    getCommandCategories
+} = require(`${__basedir}/utilities/commandFunctions.js`);
+
+//
+// Collections
+//  
+
 graveyard.backgroundTasks = new Collection();
 graveyard.serverConfig = new Collection();
 graveyard.commands = new Collection();
 
 //
-// Command stuff
+// Commands
 //
 
-//declare the commandfiles path and find all the files
-const commandsPath = path.join(__dirname, "commands");
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith(".js"));
+// Load commands from the command_list folder
+const categoryFolders = getCommandCategories();
+for (const category of categoryFolders) {
+    const commandFiles = fs.readdirSync(`${__basedir}/commands/${category}`)
+        .filter(commandFile => commandFile.endsWith(".js"));
 
-//loop through all the files and add it to the collection
-for (const file of commandFiles) {
-    const filePath = path.join(commandsPath, file);
-    const command = require(filePath);
-
-    graveyard.commands.set(command.data.name, command);
+    for (const commandFile of commandFiles) {
+        const command = require(`${__basedir}/commands/${category}/${commandFile}`);
+        command.category = category;
+        graveyard.commands.set(command.data.name, command);
+    }
 }
 
 //
-// Here's all the server config stuff
+// Server configuration
 //
+
 const defaultServerConfig = require("./default_server_config.json");
 const { saveServerConfig } = require("./utilities/configFunctions.js");
 
@@ -59,13 +75,12 @@ async function addNewGuildServerConfigs() {
     });
     // save it to the server_config.json file
     await saveServerConfig(graveyard.serverConfig);
-
-
 }
 
 //
 // Login to discord and update server configurations
 //
+
 graveyard.login(token);
 
 graveyard.on("guildCreate", async () => { await addNewGuildServerConfigs(); });
@@ -83,6 +98,18 @@ graveyard.once("ready", async () => {
 graveyard.on("interactionCreate", async interaction => {
     if (!interaction.isCommand()) return;
 
+    if (!interaction.member.permissionsIn(interaction.channel).has(command.permissions || [])) {
+        const missingPermissions = [];
+        for (const permission of command.permissions) {
+            if (!interaction.member.permissionsIn(interaction.channel).has(permission)) {
+                missingPermissions.push(permission);
+            }
+        }
+
+        await interaction.reply(`You do not have these required permissions in this channel or server: ${missingPermissions.map(formatBacktick).join(", ")}`);
+        return;
+    }
+
     const command = graveyard.commands.get(interaction.commandName);
 
     if (!command) return;
@@ -91,6 +118,6 @@ graveyard.on("interactionCreate", async interaction => {
         await command.execute(interaction);
     } catch (error) {
         console.error(error);
-        await interaction.reply({ content: "An error occured. Please contact support at https://talloween.github.io/graveyardbot/", ephemeral: true });
+        await interaction.reply({ content: "An error occured. Please contact support at https://talloween.github.io/graveyardbot/contact.html", ephemeral: true });
     }
 });
