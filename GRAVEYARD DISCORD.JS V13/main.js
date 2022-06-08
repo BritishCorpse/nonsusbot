@@ -5,7 +5,12 @@ const fs = require("node:fs");
 
 const { Client, Intents, Collection } = require("discord.js");
 const { token } = require("./graveyard_config.json");
-const graveyard = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const graveyard = new Client({ intents: 
+    [
+        Intents.FLAGS.GUILDS,
+        Intents.GUILD_BANS
+    ], allowedMentions: { parse: ["users", "roles"] }
+});
 
 //
 // Functions that are required in this file
@@ -96,11 +101,22 @@ graveyard.once("ready", async () => {
 //
 
 graveyard.on("interactionCreate", async interaction => {
+    //* make sure the interaction is a command, because this only handles commands
     if (!interaction.isCommand()) return;
 
-    if (!interaction.member.permissionsIn(interaction.channel).has(command.permissions || [])) {
+    //* finds the command in the collection
+    // returns if the command is not found
+    const command = graveyard.commands.get(interaction.commandName);
+    if (!command) return;
+
+    //* check if member is a verified developer
+    // if the user is not a developer, just return
+
+    //* check member permissions
+    // if the member is missing permissions, tell them what permissions theyre missing and end the execution
+    if (!interaction.member.permissionsIn(interaction.channel).has(command.requiredUserPermissions || [])) {
         const missingPermissions = [];
-        for (const permission of command.permissions) {
+        for (const permission of command.requiredUserPermissions) {
             if (!interaction.member.permissionsIn(interaction.channel).has(permission)) {
                 missingPermissions.push(permission);
             }
@@ -110,14 +126,12 @@ graveyard.on("interactionCreate", async interaction => {
         return;
     }
 
-    const command = graveyard.commands.get(interaction.commandName);
-
-    if (!command) return;
-
+    //* execute the command
+    // if command execution fails, log the error and send them an ephemeral reply stating to go contact support.
     try {
         await command.execute(interaction);
     } catch (error) {
         console.error(error);
-        await interaction.reply({ content: "An error occured. Please contact support at https://talloween.github.io/graveyardbot/contact.html", ephemeral: true });
+        await interaction.reply({ content: "An error occured. If this error persists, please contact support at https://talloween.github.io/graveyardbot/contact.html", ephemeral: true });
     }
 });
