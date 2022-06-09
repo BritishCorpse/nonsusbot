@@ -7,7 +7,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("ban")
         .setDescription("Ban a user from the guild")
-        .addMemberOption(option => option.setName("member").setDescription("The member to ban from the guild").setRequired(true))
+        .addUserOption(option => option.setName("member").setDescription("The member to ban from the guild").setRequired(true))
         .addIntegerOption(option => option.setName("duration").setDescription("The duration of the ban (no duration = permanent)"))
         .addStringOption(option => option.setName("reason").setDescription("The reason to ban this member")),
 

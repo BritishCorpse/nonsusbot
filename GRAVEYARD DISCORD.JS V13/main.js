@@ -1,19 +1,21 @@
-// Set the base directory to remove relative paths
+// Set the base directory to remove relative paths.
 global.__basedir = __dirname;
+
+// Set the time the bot started for calculating uptime.
+global.startTimestamp = new Date();
 
 const fs = require("node:fs");
 
 const { Client, Intents, Collection } = require("discord.js");
-const { token } = require("./graveyard_config.json");
+const { token } = require(`${__basedir}/configs/graveyard_config.json`);
 const graveyard = new Client({ intents: 
     [
         Intents.FLAGS.GUILDS,
-        Intents.GUILD_BANS
     ], allowedMentions: { parse: ["users", "roles"] }
 });
 
 //
-// Functions that are required in this file
+//! Functions that are required in this file
 //
 
 const { 
@@ -25,15 +27,16 @@ const {
 } = require(`${__basedir}/utilities/commandFunctions.js`);
 
 //
-// Collections
+//! Collections
 //  
 
-graveyard.backgroundTasks = new Collection();
+graveyard.backgroundProcesses = new Collection();
 graveyard.serverConfig = new Collection();
 graveyard.commands = new Collection();
+graveyard.backgroundProcesses = new Collection();
 
 //
-// Commands
+//! Commands
 //
 
 // Load commands from the command_list folder
@@ -50,15 +53,15 @@ for (const category of categoryFolders) {
 }
 
 //
-// Server configuration
+//! Server configuration
 //
 
-const defaultServerConfig = require("./default_server_config.json");
-const { saveServerConfig } = require("./utilities/configFunctions.js");
+const defaultServerConfig = require(`${__basedir}/configs/default_server_config.json`);
+const { saveServerConfig } = require(`${__basedir}/utilities/configFunctions.js`);
 
 let serverConfigJSON;
 try {
-    serverConfigJSON = require("./server_config.json");
+    serverConfigJSON = require(`${__basedir}/server_config.json`);
 } catch (error) {
     if (error.code === "MODULE_NOT_FOUND") {
         serverConfigJSON = {};
@@ -83,7 +86,7 @@ async function addNewGuildServerConfigs() {
 }
 
 //
-// Login to discord and update server configurations
+//! Login to discord and update server configurations
 //
 
 graveyard.login(token);
@@ -97,7 +100,24 @@ graveyard.once("ready", async () => {
 });
 
 //
-// Command execution
+//! Background tasks
+//
+
+//* add all processfiles to the collection
+const processFiles = fs.readdirSync(`${__basedir}/events`).filter(processFile => processFile.endsWith(".js"));
+
+for (const processFile of processFiles) {
+    const backgroundProcess = require(`${__basedir}/events/${processFile}`);
+    graveyard.backgroundProcesses.set(backgroundProcess.name, backgroundProcess);
+}
+
+//* start each background process once
+graveyard.backgroundProcesses.forEach(backgroundProcess => {
+    backgroundProcess.execute(graveyard);
+});
+
+//
+//! Command execution
 //
 
 graveyard.on("interactionCreate", async interaction => {
@@ -123,6 +143,20 @@ graveyard.on("interactionCreate", async interaction => {
         }
 
         await interaction.reply(`You do not have these required permissions in this channel or server: ${missingPermissions.map(formatBacktick).join(", ")}`);
+        return;
+    }
+
+    //* check for bot permissions
+    // if im missing permissions, tell them what permissions im missing and end the execution
+    if (!interaction.guild.me.permissionsIn(interaction.channel).has((command.requiredBotPermissions || []))) {
+        const missingPermissions = [];
+        for (const permission of command.requiredBotPermissions) {
+            if (!interaction.guild.me.permissionsIn(interaction.channel).has(permission)) {
+                missingPermissions.push(permission);
+            }
+        }
+
+        await interaction.reply(`I do not have these required permissions in this channel or server: ${missingPermissions.map(formatBacktick).join(", ")}`);
         return;
     }
 

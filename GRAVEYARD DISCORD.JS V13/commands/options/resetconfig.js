@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
-const defaultServerConfig = require(`${__basedir}/default_server_config.json`);
+const defaultServerConfig = require(`${__basedir}/configs/default_server_config.json`);
 
 const { saveServerConfig } = require(`${__basedir}/utilities/configFunctions`);
 
