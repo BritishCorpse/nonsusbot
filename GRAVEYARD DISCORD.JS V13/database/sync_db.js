@@ -7,7 +7,7 @@ const sequelize = new Sequelize("database", "username", "password", {
     host: "localhost",
     dialect: "sqlite",
     logging: false,
-    storage: "botdatabase.sqlite",
+    storage: "botdatabase.db",
 });
 
 require(`${__basedir}/models/userFinance.js`)(sequelize, Sequelize.DataTypes);

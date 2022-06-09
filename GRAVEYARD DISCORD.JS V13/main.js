@@ -7,6 +7,7 @@ global.startTimestamp = new Date();
 const fs = require("node:fs");
 
 const { Client, Intents, Collection } = require("discord.js");
+const { userFinance } = require("./database/db_objects");
 const { token } = require(`${__basedir}/configs/graveyard_config.json`);
 const graveyard = new Client({ intents: 
     [
@@ -34,6 +35,34 @@ graveyard.backgroundProcesses = new Collection();
 graveyard.serverConfig = new Collection();
 graveyard.commands = new Collection();
 graveyard.backgroundProcesses = new Collection();
+graveyard.currency = new Collection();
+
+//
+//! Currency system methods
+//
+
+Reflect.defineProperty(graveyard.currency, "add", {
+    value: async (id, amount) => {
+        const user = graveyard.currency.get(id);
+
+        if (user) {
+            user.balance += Number(amount);
+            return user.save();
+        }
+
+        const newUser = await userFinance.create({ userId: id, balance: amount });
+        graveyard.currency.set(id, newUser);
+
+        return newUser;
+    },
+});
+
+Reflect.defineProperty(graveyard.currency, "getBalance", {
+    value: id => {
+        const user = graveyard.currency.get(id);
+        return user ? user.balance : 0;
+    },
+});
 
 //
 //! Commands
