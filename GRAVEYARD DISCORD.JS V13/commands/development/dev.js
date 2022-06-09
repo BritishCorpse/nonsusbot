@@ -8,27 +8,27 @@ function calculateGraveyardUptime(date) {
     // eslint-disable-next-line no-undef
     let timeDifferential = date - startTimestamp;
 
-    if (timeDifferential < 1000) return ["in milliseconds", timeDifferential];
+    if (timeDifferential < 1000) return ["in milliseconds", Math.round(timeDifferential)];
 
     //time in seconds
     timeDifferential /= 1000;
 
-    if (timeDifferential < 60) return ["in seconds", timeDifferential];
+    if (timeDifferential < 60) return ["in seconds", Math.round(timeDifferential)];
 
     //time in minutes
     timeDifferential /= 60;
 
-    if (timeDifferential < 60) return ["in minutes", timeDifferential];
+    if (timeDifferential < 60) return ["in minutes", Math.round(timeDifferential)];
 
     //time in hours
     timeDifferential /= 60; 
 
-    if (timeDifferential < 60) return ["in hours", timeDifferential];
+    if (timeDifferential < 60) return ["in hours", Math.round(timeDifferential)];
 
     //time in days
     timeDifferential /= 24; 
 
-    return ["in days", timeDifferential];
+    return ["in days", Math.round(timeDifferential)];
 }
 
 async function calculateCommandAmount() {
