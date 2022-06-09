@@ -7,7 +7,7 @@ global.startTimestamp = new Date();
 const fs = require("node:fs");
 
 const { Client, Intents, Collection } = require("discord.js");
-const { userFinance } = require("./database/db_objects");
+const { userFinance } = require("./db_objects");
 const { token } = require(`${__basedir}/configs/graveyard_config.json`);
 const graveyard = new Client({ intents: 
     [

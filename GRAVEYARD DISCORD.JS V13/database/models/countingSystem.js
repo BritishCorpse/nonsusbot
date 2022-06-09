@@ -20,11 +20,13 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: 0,
             allowNull: false,
         },
-        lastCountedUserID: {
+        lastCounterUserID: {
             type: DataTypes.STRING,
             allowNull: true,
         }
     }, {
         timestamps: false,
+        //makes it so it doesnt set the table to plural
+        freezeTableName: true,
     });
 };

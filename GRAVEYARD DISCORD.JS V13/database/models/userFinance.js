@@ -11,5 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         },
     }, {
         timestamps: false,
+        //makes it so it doesnt set the table to plural
+        freezeTableName: true,
     });
 };

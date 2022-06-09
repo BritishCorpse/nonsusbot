@@ -8,7 +8,7 @@ module.exports = {
         .setDescription("Set a config to be a particular value")
         .addSubcommand(subCommand => 
             subCommand
-                .setName("boolean_configs")
+                .setName("booleans")
                 .setDescription("Set a boolean config")
                 .addStringOption(option =>
                     option
@@ -27,7 +27,7 @@ module.exports = {
         )
         .addSubcommand(subCommand => 
             subCommand
-                .setName("channel_configs")
+                .setName("channels")
                 .setDescription("Set a channel config")
                 .addStringOption(option =>
                     option
@@ -45,7 +45,7 @@ module.exports = {
         )
         .addSubcommand(subCommand => 
             subCommand
-                .setName("number_configs")
+                .setName("numbers")
                 .setDescription("Set a number config")
                 .addStringOption(option =>
                     option
