@@ -12,6 +12,7 @@ const { token } = require(`${__basedir}/configs/graveyard_config.json`);
 const graveyard = new Client({ intents: 
     [
         Intents.FLAGS.GUILDS,
+        Intents.FLAGS.GUILD_MESSAGES,
     ], allowedMentions: { parse: ["users", "roles"] }
 });
 

@@ -10,10 +10,10 @@ module.exports = {
                 .setDescription("The config to view")
                 .setRequired(true)
                 .addChoices(
-                    { name: "Where your will receive logged information about this server", value: "log_channel" },
-                    { name: "Where server members will count n+1 until someone fails and the count is reset", value: "counting_channel" },
-                    { name: "Where a message will be sent every time a user joins the server", value: "welcome_channel" },
-                    { name: "Where a message will be sent every time a user leaves the server", value: "goodbye_channel" },
+                    { name: "Logging Channel", value: "log_channel" },
+                    { name: "Counting Channel", value: "counting_channel" },
+                    { name: "Welcome Channel", value: "welcome_channel" },
+                    { name: "Goodbye Channel", value: "goodbye_channel" },
                     { name: "Remove bad words", value: "remove_bad_words" },
                     { name: "Remove all links in chat", value: "remove_links" },
                     { name: "Detailed logging", value: "detailed_logging" },
@@ -30,6 +30,6 @@ module.exports = {
 
         const writtenConfig = await interaction.client.serverConfig.get(interaction.guild.id)[config];
 
-        await interaction.editReply(`The config \`${config}\` is set to the value ${writtenConfig || "(Not set)"}.`);
+        await interaction.editReply(`The config \`${config}\` is set to the value ${writtenConfig[0] || "(Not set)"}.`);
     }
 };

@@ -37,10 +37,10 @@ module.exports = {
                         .setDescription("The config to reset")
                         .setRequired(true)
                         .addChoices(
-                            { name: "Where your will receive logged information about this server", value: "log_channel" },
-                            { name: "Where server members will count n+1 until someone fails and the count is reset", value: "counting_channel" },
-                            { name: "Where a message will be sent every time a user joins the server", value: "welcome_channel" },
-                            { name: "Where a message will be sent every time a user leaves the server", value: "goodbye_channel" },
+                            { name: "Logging Channel", value: "log_channel" },
+                            { name: "Counting Channel", value: "counting_channel" },
+                            { name: "Welcome Channel", value: "welcome_channel" },
+                            { name: "Goodbye Channel", value: "goodbye_channel" },
                         )
                 )
         )

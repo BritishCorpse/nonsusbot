@@ -35,10 +35,10 @@ module.exports = {
                         .setDescription("The config to edit")
                         .setRequired(true)
                         .addChoices(
-                            { name: "Where your will receive logged information about this server", value: "log_channel" },
-                            { name: "Where server members will count n+1 until someone fails and the count is reset", value: "counting_channel" },
-                            { name: "Where a message will be sent every time a user joins the server", value: "welcome_channel" },
-                            { name: "Where a message will be sent every time a user leaves the server", value: "goodbye_channel" },
+                            { name: "Logging Channel", value: "log_channel" },
+                            { name: "Counting Channel", value: "counting_channel" },
+                            { name: "Welcome Channel", value: "welcome_channel" },
+                            { name: "Goodbye Channel", value: "goodbye_channel" },
                         )
                 )
                 .addChannelOption(option => option.setName("choice").setDescription("Please choose a channel.").setRequired(true))
@@ -67,15 +67,21 @@ module.exports = {
         let newConfig;
 
         if (await interaction.options.getSubcommand() === "boolean_configs") {
-            newConfig = await interaction.options.getBoolean("choice", true);
+            const choice = await interaction.options.getBoolean("choice", true);
+
+            newConfig = [choice, choice];
         }
 
         else if (await interaction.options.getSubcommand() === "channel_configs") {
-            newConfig = await interaction.options.getChannel("choice", true);
+            const channel = interaction.options.getChannel("choice", true);
+
+            newConfig = [`<#${channel.id}>`, channel.id];
         }
 
         else if (await interaction.options.getSubcommand() === "number_configs") {
-            newConfig = await interaction.options.getInteger("choice", true);
+            const choice = await interaction.options.getInteger("choice", true);
+
+            newConfig = [choice, choice];
         }
 
         // set the config
@@ -84,6 +90,6 @@ module.exports = {
         // write it to the file
         await saveServerConfig(interaction.client.serverConfig);
 
-        await interaction.editReply(`Set the config \`${chosenConfig}\` to ${newConfig}.`);
+        await interaction.editReply(`Set the config \`${chosenConfig}\` to ${newConfig[0]}.`);
     }
 };

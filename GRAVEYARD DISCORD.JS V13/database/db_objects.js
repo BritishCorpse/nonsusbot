@@ -1,5 +1,5 @@
 // Set the base directory to remove relative paths
-global.__basedir = __dirname;
+const __basedir = __dirname;
 
 const Sequelize = require("sequelize");
 
