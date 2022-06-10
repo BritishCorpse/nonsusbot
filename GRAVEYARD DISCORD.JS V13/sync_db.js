@@ -7,7 +7,8 @@ const sequelize = new Sequelize("database", "username", "password", {
     storage: "database.db",
 });
 
-require("./database/models/countingSystem.js")(sequelize, Sequelize.DataTypes);
+require("./database/models/guildCount.js")(sequelize, Sequelize.DataTypes);
+require("./database/models/userCount.js")(sequelize, Sequelize.DataTypes);
 
 const force = process.argv.includes("--force") || process.argv.includes("-f");
 

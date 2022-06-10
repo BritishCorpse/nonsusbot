@@ -1,0 +1,15 @@
+1. display all the guilds the user has the "manage_server" permission in
+2. enable/disable commands
+
+3. edit configs
+4. edit user options
+5. view achievements
+6. view guild leaderboard
+7. view counting information
+8. view user information (includes warnings)
+9. moderate members
+10. add aliases to commands
+11. log dashboard actions
+12. track user stats
+13. track server stats
+14. dynamically update command list in dashboard from bot

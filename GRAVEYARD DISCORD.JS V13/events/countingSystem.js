@@ -1,4 +1,4 @@
-const { countingSystem, getCountingGuild } = require(`${__basedir}/db_objects.js`);
+const { countingGuild, getCountingGuild } = require(`${__basedir}/db_objects.js`);
 
 function chooseReactionEmoji(number) {
     if (number >= 9600) return "❤️";
@@ -45,35 +45,38 @@ module.exports = {
 
             //* if the same person counted twice
             // add one to incorrectly counted
+            // also add one incorrectly counted score to the user
             // set who counted last
             // reset the count back to 1
             if (message.author.id === await guild.lastCounterUserID) {
-                await countingSystem.addIncorrectCount(message.guild.id);
-                await countingSystem.setLastCounterUserID(message.guild.id, "no counter");
-                await countingSystem.resetGuildCount(message.guild.id);
+                await countingGuild.addIncorrectCount(message.guild.id, message.author.id);
+                await countingGuild.setLastCounterUserID(message.guild.id, "no counter");
+                await countingGuild.resetGuildCount(message.guild.id);
 
                 return message.channel.send(`${message.author} ruined the count! The number is now: \`1\``);
             }
 
             //* if the number is incorrect
             // add one to incorrectly counted
+            // also add one incorrectly counted score to the user
             // set who counted last
-            // reset the count back to 1
-
+            // reset the count back to 1    
             if (countedNumber !== guild.currentNumber) {
-                await countingSystem.addIncorrectCount(message.guild.id);
-                await countingSystem.setLastCounterUserID(message.guild.id, message.author.id);
-                await countingSystem.resetGuildCount(message.guild.id);
+                await countingGuild.addIncorrectCount(message.guild.id, message.author.id);
+                await countingGuild.setLastCounterUserID(message.guild.id, message.author.id);
+                await countingGuild.resetGuildCount(message.guild.id);
 
                 return message.channel.send(`${message.author} ruined the count! The number is now: \`1\``);
+            } 
             //* if the number is correct
             // add one to correctly counted
+            // also add one correctly counted score to the user
             // increase the number by 1
             // set who counted last
-            } else {
-                await countingSystem.addCorrectCount(message.guild.id);
-                await countingSystem.setLastCounterUserID(message.guild.id, message.author.id);
-                await countingSystem.addOneToGuildCount(message.guild.id);
+            else {
+                await countingGuild.addCorrectCount(message.guild.id, message.author.id);
+                await countingGuild.setLastCounterUserID(message.guild.id, message.author.id);
+                await countingGuild.addOneToGuildCount(message.guild.id);
 
                 await message.react(chooseReactionEmoji(guild.currentNumber));
             }

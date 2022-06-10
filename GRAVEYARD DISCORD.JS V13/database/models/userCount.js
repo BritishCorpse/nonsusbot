@@ -1,13 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define("countingSystem", {
-        guildId: {
+    return sequelize.define("userCount", {
+        userId: {
             type: DataTypes.STRING,
             primaryKey: true,
-            allowNull: false,
-        },
-        currentNumber: {
-            type: DataTypes.INTEGER,
-            defaultValue: 0,
             allowNull: false,
         },
         incorrectlyCounted: {
@@ -20,10 +15,6 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: 0,
             allowNull: false,
         },
-        lastCounterUserID: {
-            type: DataTypes.STRING,
-            allowNull: true,
-        }
     }, {
         timestamps: false,
         //makes it so it doesnt set the table to plural
