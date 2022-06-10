@@ -16,3 +16,8 @@ node_modules
 *.sqlite
 server_config.json
 logs
+
+# Files create when running the python dashboard api script
+venv
+*.pyc
+__pycache__
