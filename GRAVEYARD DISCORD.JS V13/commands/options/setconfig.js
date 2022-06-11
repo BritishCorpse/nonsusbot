@@ -64,21 +64,21 @@ module.exports = {
 
         const chosenConfig = await interaction.options.getString("config", true);
 
-        let newConfig;
+        let newConfig = ["test"];
 
-        if (await interaction.options.getSubcommand() === "boolean_configs") {
+        if (await interaction.options.getSubcommand() === "booleans") {
             const choice = await interaction.options.getBoolean("choice", true);
 
             newConfig = [choice, choice];
         }
 
-        else if (await interaction.options.getSubcommand() === "channel_configs") {
+        else if (await interaction.options.getSubcommand() === "channels") {
             const channel = interaction.options.getChannel("choice", true);
 
             newConfig = [`<#${channel.id}>`, channel.id];
         }
 
-        else if (await interaction.options.getSubcommand() === "number_configs") {
+        else if (await interaction.options.getSubcommand() === "numbers") {
             const choice = await interaction.options.getInteger("choice", true);
 
             newConfig = [choice, choice];
