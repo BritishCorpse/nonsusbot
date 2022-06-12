@@ -1,0 +1,61 @@
+{
+    "00001": {
+        "local-id": 1,
+        "name": "Keyboard Warrior",
+        "description": "Send a million messages.",
+        "tier": "Legendary",
+        "requisite": {
+            "type": "message",
+            "amount": 1000000
+        },
+        "reward": {
+            "type": "coin",
+            "amount": 100000000000
+        }
+    },
+    "00002": {
+        "name": "Big Spender",
+        "description": "Spend a million coins.",
+        "tier": "Common",
+        "requisite": {
+            "type": "coin",
+            "negative": true,
+            "amount": 1000000
+        },
+        "reward": null
+    }, 
+    "00003": {
+        "name": "Big Money Man",
+        "description": "Earn a billion coins.",
+        "tier": "Common",
+        "requisite": {
+            "type": "coin",
+            "negative": false,
+            "amount": 1000000000
+        }, 
+        "reward": null
+    },
+    "00004": {
+        "name": "Badge Of Honour",
+        "description": "Given to a lucky few recognised by the official Development Team.",
+        "tier": "Hidden",
+        "requisite": null,
+        "reward": null
+    },
+    "00005": {
+        "name": "And so it begins..",
+        "description": "Given for the first time you run a command.",
+        "tier": "Common",
+        "requisite": {
+            "type": "command",
+            "first-time": true
+        },
+        "reward": {
+            "type": "coin",
+            "amount": 100000000000
+        }
+    },
+    "00006": {
+
+    }
+}

@@ -37,6 +37,7 @@ graveyard.serverConfig = new Collection();
 graveyard.commands = new Collection();
 graveyard.backgroundProcesses = new Collection();
 graveyard.currency = new Collection();
+graveyard.achievements = new Collection();
 
 //
 //! Currency system methods
@@ -81,6 +82,14 @@ for (const category of categoryFolders) {
         graveyard.commands.set(command.data.name, command);
     }
 }
+
+//
+//! Achievements
+//
+
+const achievementList = require(`${__basedir}/configs/achievements`);
+
+let 
 
 //
 //! Server configuration
