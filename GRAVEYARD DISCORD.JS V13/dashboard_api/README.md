@@ -1,6 +1,6 @@
 # Dashboard API
 
-This script must be run separately from the bot. The bot just reads the JSON file. 
+This script must be run separately from the bot. The bot will talk to this process.
 
 Python 3 is required to run this script.
 
@@ -24,7 +24,13 @@ venv/bin/activate.bat
 pip install -r requirements.txt
 ```
 
-### 
+## Run
+
+To run the script, run this (making sure the virtual environment is activated):
+
+```py
+uvicorn main:app
+```
 
 ## Unsetup
 
