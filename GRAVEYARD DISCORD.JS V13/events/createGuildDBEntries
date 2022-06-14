@@ -1,0 +1,20 @@
+const { guildCount } = require("../db_objects");
+
+module.exports = {
+    name: "botlogs",
+    execute(graveyard) {
+        //  
+        //! Create database entries 
+        //* creates database entries for the guild that we just joined
+        // this is done so that there isn't a need to check if a guild exists in for example the counting system. since we already know the guild exists, we can just go ahead and get it.
+        //
+        // TODO: do this automatically, but for users. every time a user joins the server, just do all this, but for them.
+        
+        graveyard.on("guildCreate", async guild=> {
+            //* counting stuff
+            await guildCount.create({ guildId: guild.id });
+
+            
+        });
+    }
+};

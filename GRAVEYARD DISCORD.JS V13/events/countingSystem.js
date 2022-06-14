@@ -1,4 +1,4 @@
-const { countingGuild, getCountingGuild } = require(`${__basedir}/db_objects.js`);
+const { guildCount, getCountingGuild } = require(`${__basedir}/db_objects.js`);
 
 function chooseReactionEmoji(number) {
     if (number >= 9600) return "❤️";
@@ -49,9 +49,9 @@ module.exports = {
             // set who counted last
             // reset the count back to 1
             if (message.author.id === await guild.lastCounterUserID) {
-                await countingGuild.addIncorrectCount(message.guild.id, message.author.id);
-                await countingGuild.setLastCounterUserID(message.guild.id, "no counter");
-                await countingGuild.resetGuildCount(message.guild.id);
+                await guildCount.addIncorrectCount(message.guild.id, message.author.id);
+                await guildCount.setLastCounterUserID(message.guild.id, message.author.id);
+                await guildCount.resetGuildCount(message.guild.id);
 
                 return message.channel.send(`${message.author} ruined the count! The number is now: \`1\``);
             }
@@ -62,9 +62,9 @@ module.exports = {
             // set who counted last
             // reset the count back to 1    
             if (countedNumber !== guild.currentNumber) {
-                await countingGuild.addIncorrectCount(message.guild.id, message.author.id);
-                await countingGuild.setLastCounterUserID(message.guild.id, message.author.id);
-                await countingGuild.resetGuildCount(message.guild.id);
+                await guildCount.addIncorrectCount(message.guild.id, message.author.id);
+                await guildCount.setLastCounterUserID(message.guild.id, message.author.id);
+                await guildCount.resetGuildCount(message.guild.id);
 
                 return message.channel.send(`${message.author} ruined the count! The number is now: \`1\``);
             } 
@@ -74,9 +74,9 @@ module.exports = {
             // increase the number by 1
             // set who counted last
             else {
-                await countingGuild.addCorrectCount(message.guild.id, message.author.id);
-                await countingGuild.setLastCounterUserID(message.guild.id, message.author.id);
-                await countingGuild.addOneToGuildCount(message.guild.id);
+                await guildCount.addCorrectCount(message.guild.id, message.author.id);
+                await guildCount.setLastCounterUserID(message.guild.id, message.author.id);
+                await guildCount.addOneToGuildCount(message.guild.id);
 
                 await message.react(chooseReactionEmoji(guild.currentNumber));
             }

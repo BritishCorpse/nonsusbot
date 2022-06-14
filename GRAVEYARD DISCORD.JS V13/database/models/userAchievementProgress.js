@@ -4,12 +4,22 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        sentMessagesTotal: {
+        commandsUsed: {
             type: DataTypes.INTEGER,
             allowNull: false,
             defaultValue: 1,
         },
-        moneyEarned: {
+        coinsSpent: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0,
+        },
+        coinsEarned: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0,
+        },
+        numbersCounted: {
             type: DataTypes.INTEGER,
             allowNull: false,
             defaultValue: 0,

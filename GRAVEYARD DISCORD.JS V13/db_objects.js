@@ -11,10 +11,10 @@ const guildCount = require("./database/models/guildCount.js")(sequelize, Sequeli
 const userCount = require("./database/models/userCount.js")(sequelize, Sequelize.DataTypes);
 
 async function getCountingGuild(guildId) {
-    const guild = guildCount.findOne({ where: { guildId: guildId } }) || null;
+    const guild = await guildCount.findOne({ where: { guildId: guildId } }) || null;
 
     if (guild === null) {
-        const guild = guildCount.create({ guildId: guildId });
+        const guild = await guildCount.create({ guildId: guildId });
 
         return guild;
     }
@@ -23,10 +23,10 @@ async function getCountingGuild(guildId) {
 }
 
 async function getCountingUser(userId) {
-    const user = userCount.findOne({ where: { guildId: userId } }) || null;
+    const user = await userCount.findOne({ where: { userId: userId } }) || null;
 
     if (user === null) {
-        const user = userCount.create({ guildId: userId });
+        const user = await userCount.create({ userId: userId });
 
         return user;
     }

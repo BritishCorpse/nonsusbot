@@ -2,10 +2,10 @@
     "00001": {
         "local-id": 1,
         "name": "Keyboard Warrior",
-        "description": "Send a million messages.",
+        "description": "Use commands a million times.",
         "tier": "Legendary",
         "requisite": {
-            "type": "message",
+            "type": "commandsUsed",
             "amount": 1000000
         },
         "reward": {
@@ -18,8 +18,7 @@
         "description": "Spend a million coins.",
         "tier": "Common",
         "requisite": {
-            "type": "coin",
-            "negative": true,
+            "type": "coinsSpent",
             "amount": 1000000
         },
         "reward": null
@@ -29,8 +28,7 @@
         "description": "Earn a billion coins.",
         "tier": "Common",
         "requisite": {
-            "type": "coin",
-            "negative": false,
+            "type": "coinsEarned",
             "amount": 1000000000
         }, 
         "reward": null
@@ -47,15 +45,45 @@
         "description": "Given for the first time you run a command.",
         "tier": "Common",
         "requisite": {
-            "type": "command",
-            "first-time": true
+            "type": "commandsUsed",
+            "amount": 1
         },
         "reward": {
             "type": "coin",
-            "amount": 100000000000
+            "amount": 100
         }
     },
     "00006": {
-
+        "name": "Mathematician",
+        "description": "Count a thousand numbers.",
+        "tier": "Uncommon",
+        "requisite": {
+            "type": "numbersCounted",
+            "amount": 1000
+        },
+        "reward": {
+            "type": "coin",
+            "amount": 1000
+        }
+    },
+    "00007": {
+        "name": "Cookie muncher",
+        "description": "Eat a hundred cookies.",
+        "tier": "Common",
+        "requisite": {
+            "type": "cookiesAte",
+            "amount": 100
+        },
+        "reward": {
+            "type": "coin",
+            "amount": 1000
+        }
+    },
+    "99999": {
+        "name": "The Satan's Pit",
+        "description": "Get sucked in to a black hole",
+        "tier": "Hidden", 
+        "requisite": null,
+        "reward": null
     }
 }

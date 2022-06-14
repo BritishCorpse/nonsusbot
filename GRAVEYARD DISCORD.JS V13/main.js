@@ -87,9 +87,6 @@ for (const category of categoryFolders) {
 //! Achievements
 //
 
-const achievementList = require(`${__basedir}/configs/achievements`);
-
-let 
 
 //
 //! Server configuration
