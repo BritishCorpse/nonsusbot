@@ -47,7 +47,7 @@ def graphql_playground():
 @app.route('/api/graphql', methods=['POST'])
 def graphql_server():
     
-    # Make sure they are authenticated first
+    # TODO: Make sure they are authenticated first
     #print(request.cookies.get('session_id'))
     #print(request.cookies)
 
