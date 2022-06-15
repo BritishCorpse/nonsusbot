@@ -1,11 +1,8 @@
 const fs = require("fs");
 
 async function sendError(error) {
-    const date = new Date().toUTCString();
-
-    fs.writeFile(`${date}`, error, function (err) {
-        if (err) throw err;
-        console.log(`\nAn error occured. Check the file ${date}.txt in the logs folder.\n`);
+    fs.appendFile("./errors.txt", `\n${new Date().toUTCString()} ${error.name} ${error.message}`, function () {
+        console.log("An error occured.");
     }); 
 }
 

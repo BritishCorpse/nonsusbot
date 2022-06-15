@@ -19,14 +19,11 @@ const graveyard = new Client({ intents:
 //
 //! Functions that are required in this file
 //
+const { sendError } = require(`${__basedir}/utilities/sendError.js`);
 
-const { 
-    formatBacktick,
-} = require(`${__basedir}/utilities/generalFunctions.js`);
+const { formatBacktick } = require(`${__basedir}/utilities/generalFunctions.js`);
 
-const {
-    getCommandCategories
-} = require(`${__basedir}/utilities/commandFunctions.js`);
+const { getCommandCategories } = require(`${__basedir}/utilities/commandFunctions.js`);
 
 //
 //! Collections
@@ -151,6 +148,15 @@ for (const processFile of processFiles) {
 graveyard.backgroundProcesses.forEach(backgroundProcess => {
     backgroundProcess.execute(graveyard);
 });
+
+//
+//! Error handling
+//
+
+process.on("unhandledRejection", async error => {
+    await sendError(error);
+});
+
 
 //
 //! Command execution

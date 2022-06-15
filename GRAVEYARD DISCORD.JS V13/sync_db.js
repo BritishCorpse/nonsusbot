@@ -9,6 +9,8 @@ const sequelize = new Sequelize("database", "username", "password", {
 
 require("./database/models/guildCount.js")(sequelize, Sequelize.DataTypes);
 require("./database/models/userCount.js")(sequelize, Sequelize.DataTypes);
+require("./database/models/userCurrency.js")(sequelize, Sequelize.DataTypes);
+require("./database/models/userInformation.js")(sequelize, Sequelize.DataTypes);
 
 const force = process.argv.includes("--force") || process.argv.includes("-f");
 

@@ -4,6 +4,7 @@
 .vscode
 .DS_Store
 gh-md-toc # For making README.md table of contents (https://github.com/ekalinin/github-markdown-toc)
+errors.txt
 
 # Files created by installation
 node_modules

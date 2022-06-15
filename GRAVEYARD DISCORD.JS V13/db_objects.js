@@ -9,6 +9,8 @@ const sequelize = new Sequelize("database", "username", "password", {
 
 const guildCount = require("./database/models/guildCount.js")(sequelize, Sequelize.DataTypes);
 const userCount = require("./database/models/userCount.js")(sequelize, Sequelize.DataTypes);
+const userCurrency = require("./database/models/userCurrency.js")(sequelize, Sequelize.DataTypes);
+const userInformation = require("./database/models/userInformation.js")(sequelize, Sequelize.DataTypes);
 
 async function getCountingGuild(guildId) {
     const guild = await guildCount.findOne({ where: { guildId: guildId } }) || null;
@@ -95,4 +97,10 @@ Reflect.defineProperty(guildCount, "addOneToGuildCount", {
     }
 });
 
-module.exports = { userCount, guildCount, getCountingGuild };
+module.exports = { 
+    userCount, 
+    guildCount, 
+    getCountingGuild,
+    userCurrency,
+    userInformation
+};

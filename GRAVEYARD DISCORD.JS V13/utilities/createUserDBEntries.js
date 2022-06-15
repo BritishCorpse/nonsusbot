@@ -1,4 +1,4 @@
-const { userCount } = require("../db_objects");
+const { userCount, userCurrency, userInformation } = require("../db_objects");
 const { sendError } = require("./sendError");
 
 module.exports = {
@@ -12,6 +12,12 @@ module.exports = {
 
         //* userCount
         await userCount.create({ userId: user.id }).catch(async error => {failedEntries.push("Usercount Entry"); await sendError(error);});
+
+        //* userCurrency
+        await userCurrency.create({ userId: user.id }).catch(async error => {failedEntries.push("Usercurrency Entry"); await sendError(error);});
+
+        //* userInfomation
+        await userInformation.create({ userId: user.id }).catch(async error => {failedEntries.push("Userinformation Entry"); await sendError(error);});
 
         //* send a log informing us that database entries finished creating
         console.log(`User database entries have finished creating at ${new Date()}.`);
