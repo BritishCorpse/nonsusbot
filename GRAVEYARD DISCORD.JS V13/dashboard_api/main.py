@@ -2,7 +2,7 @@ from ariadne import (gql, graphql_sync, make_executable_schema,
                     QueryType, ObjectType)
 from ariadne.constants import PLAYGROUND_HTML
 from dotenv import load_dotenv
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify
 import os
 import requests
 import time
@@ -92,9 +92,16 @@ def discord_oauth_redirect():
             'created_time': round(time.time()), # in seconds
         })
 
-        # make a response that sets the session_id cookie in the user's browser
-        response = make_response('<script defer>window.close();</script>')
-        response.set_cookie('session_id', session_id)
+        # TODO: remove the '*' and replace with the actual URI (security risk) of the target window
+        response = '''
+            <script defer>
+                window.opener.postMessage(
+                    {type: 'discordOAuthLoggedIn', sessionId: '%s'},
+                    '*'
+                );
+                window.close();
+            </script>
+        ''' % session_id
 
         return response, 200
 
