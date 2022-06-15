@@ -2,6 +2,7 @@
 
 import json
 import os
+import uuid
 
 class Sessions:
     def __init__(self, file_path):

@@ -83,6 +83,7 @@ def discord_oauth_redirect():
 
         r = requests.post('https://discord.com/api/v10/oauth2/token', data=data, headers=headers)
 
+        # TODO: handle for this error
         r.raise_for_status() # throws error if status is 4XX
 
         session_id = sessions_manager.create_session({
@@ -92,7 +93,7 @@ def discord_oauth_redirect():
         })
 
         # make a response that sets the session_id cookie in the user's browser
-        response = make_response()
+        response = make_response('<script defer>window.close();</script>')
         response.set_cookie('session_id', session_id)
 
         return response, 200
