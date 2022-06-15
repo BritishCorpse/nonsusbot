@@ -83,7 +83,7 @@ def discord_oauth_redirect():
 
         r = requests.post('https://discord.com/api/v10/oauth2/token', data=data, headers=headers)
 
-        # TODO: handle for this error
+        # TODO: handle for this error (should return an error)
         r.raise_for_status() # throws error if status is 4XX
 
         session_id = sessions_manager.create_session({
