@@ -1,6 +1,6 @@
 {
   "name": "graveyard-discord.js-v13",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Discord Bot",
   "main": "main.js",
   "scripts": {
