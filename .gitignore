@@ -17,6 +17,7 @@ node_modules
 # Files created while running bot
 *.sqlite
 *.db
+database.db
 server_config.json
 logs
 

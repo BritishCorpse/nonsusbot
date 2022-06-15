@@ -23,6 +23,8 @@ const { sendError } = require(`${__basedir}/utilities/sendError.js`);
 
 const { getCommandCategories } = require(`${__basedir}/utilities/commandFunctions.js`);
 
+const { addNewGuildServerConfigs  } = require(`${__basedir}/utilities/configFunctions.js`);
+
 //
 //! Collections
 //  
@@ -63,9 +65,6 @@ for (const category of categoryFolders) {
 //! Server configuration
 //
 
-const defaultServerConfig = require(`${__basedir}/configs/default_server_config.json`);
-const { saveServerConfig } = require(`${__basedir}/utilities/configFunctions.js`);
-
 let serverConfigJSON;
 try {
     serverConfigJSON = require(`${__basedir}/server_config.json`);
@@ -78,19 +77,6 @@ for (const guildId in serverConfigJSON) {
     graveyard.serverConfig.set(guildId, serverConfigJSON[guildId]);
 }
 
-async function addNewGuildServerConfigs() {
-    // add new guilds to the server_config.json file
-    const guilds = await graveyard.guilds.fetch();
-
-    guilds.each(guild => {
-        if (graveyard.serverConfig.get(guild.id) === undefined) {
-            // JSON.parse JSON.stringify makes a deep copy, which is needed to fix a bug where editing one config edits multiple configs because they are the same object
-            graveyard.serverConfig.set(guild.id, JSON.parse(JSON.stringify(defaultServerConfig))); 
-        }
-    });
-    // save it to the server_config.json file
-    await saveServerConfig(graveyard.serverConfig);
-}
 
 //
 //! Login to discord and update server configurations
@@ -98,10 +84,10 @@ async function addNewGuildServerConfigs() {
 
 graveyard.login(token);
 
-graveyard.on("guildCreate", async () => { await addNewGuildServerConfigs(); });
+graveyard.on("guildCreate", async () => {  });
 
 graveyard.once("ready", async () => {
-    await addNewGuildServerConfigs();
+    await addNewGuildServerConfigs(graveyard);
 
     console.log(`Initiated new bot instance at ${new Date().toUTCString()}`);
 });
@@ -135,9 +121,4 @@ process.on("unhandledRejection", sendError);
 //! Command execution
 //
 
-graveyard.on("interactionCreate", async interaction => {
-    //* make sure the interaction is a command, because this only handles commands
-    if (!interaction.isCommand()) return;
-
-
-});
+//* command execution has moved to ./events/commandInteractionCreate.js

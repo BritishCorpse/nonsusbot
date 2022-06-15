@@ -1,4 +1,5 @@
 const fs = require("fs");
+const defaultServerConfig = require(`${__basedir}/configs/default_server_config.json`);
 
 function collectionToJSON(collection) {
     // turns a discord collection to a JSON {key: value} dictionary
@@ -17,6 +18,21 @@ async function saveServerConfig(serverConfig) {
         });
 }
 
+async function addNewGuildServerConfigs(graveyard) {
+    // add new guilds to the server_config.json file
+    const guilds = await graveyard.guilds.fetch();
+
+    guilds.each(guild => {
+        if (graveyard.serverConfig.get(guild.id) === undefined) {
+            // JSON.parse JSON.stringify makes a deep copy, which is needed to fix a bug where editing one config edits multiple configs because they are the same object
+            graveyard.serverConfig.set(guild.id, JSON.parse(JSON.stringify(defaultServerConfig))); 
+        }
+    });
+    // save it to the server_config.json file
+    await saveServerConfig(graveyard.serverConfig);
+}
+
 module.exports = {
-    saveServerConfig
+    saveServerConfig,
+    addNewGuildServerConfigs
 };
