@@ -92,7 +92,7 @@ module.exports = {
             await sendGuildLog(graveyard, interaction);
 
             //* log the command to server logs
-            await log(`${interaction.user.tag} used ${interaction.commandName}`);
+            await log(`${interaction.user.tag} used the command ${interaction.commandName} with the options {${await interaction.options.data.map(option => ` NAME: [${option.name}] VALUE: [${option.value}]`) || "No options"} }`);
 
         });
     }
