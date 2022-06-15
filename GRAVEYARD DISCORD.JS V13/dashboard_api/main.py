@@ -91,7 +91,8 @@ def discord_oauth_redirect():
             'ip': request.remote_addr,
             'created_time': round(time.time()), # in seconds
         })
-
+        
+        # TODO: remove this and use Set-Cookie instead
         # TODO: remove the '*' and replace with the actual URI (security risk) of the target window
         response = '''
             <script defer>
