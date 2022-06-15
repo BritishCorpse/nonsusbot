@@ -7,7 +7,6 @@ global.startTimestamp = new Date();
 const fs = require("node:fs");
 
 const { Client, Intents, Collection } = require("discord.js");
-const { userFinance } = require("./db_objects");
 const { token } = require(`${__basedir}/configs/graveyard_config.json`);
 const graveyard = new Client({ intents: 
     [
@@ -19,9 +18,8 @@ const graveyard = new Client({ intents:
 //
 //! Functions that are required in this file
 //
-const { sendError } = require(`${__basedir}/utilities/sendError.js`);
 
-const { formatBacktick } = require(`${__basedir}/utilities/generalFunctions.js`);
+const { sendError } = require(`${__basedir}/utilities/sendError.js`);
 
 const { getCommandCategories } = require(`${__basedir}/utilities/commandFunctions.js`);
 
@@ -29,7 +27,6 @@ const { getCommandCategories } = require(`${__basedir}/utilities/commandFunction
 //! Collections
 //  
 
-graveyard.backgroundProcesses = new Collection();
 graveyard.serverConfig = new Collection();
 graveyard.commands = new Collection();
 graveyard.backgroundProcesses = new Collection();
@@ -39,29 +36,6 @@ graveyard.achievements = new Collection();
 //
 //! Currency system methods
 //
-
-Reflect.defineProperty(graveyard.currency, "add", {
-    value: async (id, amount) => {
-        const user = graveyard.currency.get(id);
-
-        if (user) {
-            user.balance += Number(amount);
-            return user.save();
-        }
-
-        const newUser = await userFinance.create({ userId: id, balance: amount });
-        graveyard.currency.set(id, newUser);
-
-        return newUser;
-    },
-});
-
-Reflect.defineProperty(graveyard.currency, "getBalance", {
-    value: id => {
-        const user = graveyard.currency.get(id);
-        return user ? user.balance : 0;
-    },
-});
 
 //
 //! Commands
@@ -153,9 +127,8 @@ graveyard.backgroundProcesses.forEach(backgroundProcess => {
 //! Error handling
 //
 
-process.on("unhandledRejection", async error => {
-    await sendError(error);
-});
+// (i know its advanced, but try your best to understand)
+process.on("unhandledRejection", sendError);
 
 
 //
@@ -166,48 +139,5 @@ graveyard.on("interactionCreate", async interaction => {
     //* make sure the interaction is a command, because this only handles commands
     if (!interaction.isCommand()) return;
 
-    //* finds the command in the collection
-    // returns if the command is not found
-    const command = graveyard.commands.get(interaction.commandName);
-    if (!command) return;
 
-    //* check if member is a verified developer
-    // if the user is not a developer, just return
-
-    //* check member permissions
-    // if the member is missing permissions, tell them what permissions theyre missing and end the execution
-    if (!interaction.member.permissionsIn(interaction.channel).has(command.requiredUserPermissions || [])) {
-        const missingPermissions = [];
-        for (const permission of command.requiredUserPermissions) {
-            if (!interaction.member.permissionsIn(interaction.channel).has(permission)) {
-                missingPermissions.push(permission);
-            }
-        }
-
-        await interaction.reply(`You do not have these required permissions in this channel or server: ${missingPermissions.map(formatBacktick).join(", ")}`);
-        return;
-    }
-
-    //* check for bot permissions
-    // if im missing permissions, tell them what permissions im missing and end the execution
-    if (!interaction.guild.me.permissionsIn(interaction.channel).has((command.requiredBotPermissions || []))) {
-        const missingPermissions = [];
-        for (const permission of command.requiredBotPermissions) {
-            if (!interaction.guild.me.permissionsIn(interaction.channel).has(permission)) {
-                missingPermissions.push(permission);
-            }
-        }
-
-        await interaction.reply(`I do not have these required permissions in this channel or server: ${missingPermissions.map(formatBacktick).join(", ")}`);
-        return;
-    }
-
-    //* execute the command
-    // if command execution fails, log the error and send them an ephemeral reply stating to go contact support.
-    try {
-        await command.execute(interaction);
-    } catch (error) {
-        console.error(error);
-        await interaction.reply({ content: "An error occured. If this error persists, please contact support at https://talloween.github.io/graveyardbot/contact.html", ephemeral: true });
-    }
 });

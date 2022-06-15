@@ -14,25 +14,11 @@ const userInformation = require("./database/models/userInformation.js")(sequeliz
 
 async function getCountingGuild(guildId) {
     const guild = await guildCount.findOne({ where: { guildId: guildId } }) || null;
-
-    if (guild === null) {
-        const guild = await guildCount.create({ guildId: guildId });
-
-        return guild;
-    }
-
     return guild;
 }
 
 async function getCountingUser(userId) {
     const user = await userCount.findOne({ where: { userId: userId } }) || null;
-
-    if (user === null) {
-        const user = await userCount.create({ userId: userId });
-
-        return user;
-    }
-
     return user;
 }
 
