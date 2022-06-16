@@ -1,5 +1,5 @@
 # Graveyard
-A general purpose Discord bot.
+A Discord bot created to remove the need of filling a server up with an unnecessary amount of bots.
 
 Table of contents
 =================
@@ -15,81 +15,38 @@ Table of contents
 * [Making new commands](#making-new-commands)
   * [Files](#files)
   * [Properties](#properties)
-  * [Usage](#usage)
-     * [Option](#option)
-        * [Checks](#checks)
-           * [Passes](#passes)
-           * [Not](#not)
-     * [Circular options](#circular-options)
-* [Logging information](#logging-information)
-  * [Different types of logs](#different-types-of-logs)
-  * [Logging etiquette](#logging-etiquette)
+  * 
 ## Setting up
 
-Copy the `config.template.json` file to `config.json` and edit the options.
+Copy the `dev` branch onto your computer.
 
-Edit the `config.json` file to change the bot name, default prefix, discord bot token, and api keys.
-
-Copy the `development_config.template.json` file to `development_config.json` and edit the options.
+Make sure that the token stored in `./configs/graveyard_config.json` is there, and working.
+Also make sure that the JSON key "development" is set to true, and that the keys "graveyardID", and "devServerID" have been set. "graveyardID" is the ID of the development version of Graveyard, and "devServerID" is the guildID of the server that you will be testing Graveyard in.
 
 ## Running
 
-Preferred node version is 16.x, 17.x.
+Install node.js from https://nodejs.org/. Make sure you isntall version 18.x or higher.
 
-Run `npm install` in the main directory to install the dependencies.
+Run `npm install --save` in the main directory to install the dependencies.
 
-Run `npm start` to run the bot using pm2 (will restart after every crash), or `node .` to just run it once.
+Run `npm start` to update the database, and start the bot. 
 
-Run `npm run log` to start the logging server and go to http://127.0.0.1:9001, or run `tail -f logs/*` to have it in your terminal.
+Run `node main.js` to only start the bot. (This may cause bugs)
 
-Run `npm run status` to see the status of the bot's process.
-
-Run `npm stop` to stop running the bot.
-
-Run `node init_db.js --force` to re-initialize the database, to reset the currency system.
+Run `node sync_db.js --force` to reset all database values. Only do this if you know what you're doing.
 
 Run `git clean -dfX` to clean the directory (note that this will reset the database, deleting all users' balances and items, and server specific settings).
 
-## Configuration files
+## Configuration folder
 
-### `config.json`
-
-This is for bot wide configuration (api keys, bot token, bot name, etc.).
-Make sure to put your bot token in the config.json file!
-
-| PROPERTY | TYPE | OPTIONAL | DESCRIPTION |
-| :-: | :-: | :-: | :-: |
-| bot\_name | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | | The name of the bot. |
-| bot\_token | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | | Discord token of the bot. See [Your token](https://discordjs.guide/preparations/setting-up-a-bot-application.html#your-token). |
-| dictionary\_api\_key | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | | Webster's dictionary api key. See [Register for a Developer Account](https://dictionaryapi.com/register/index) (select the Collegiate Dictionary in the API keys). |
-| x\_rapidapi\_key | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | | The rapidapi api key. See [RapidAPI](https://rapidapi.com/auth/sign-up). |
-| very\_ninja\_php\_session_id | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | | The very.ninja PHPSESSID (does not work anymore). |
-
-### `server_config.json` and `default_server_config.json`
-
-This is for server wide configurations (prefixes, etc.).
-
-### `development_config.json`
-
-This is for development options (discord development servers, discord developer users, testing bot configs, etc.).
-
-### `database.sqlite`
-
-This is for the currency system.
-
-### `jest.config.js`
-
-This is for testing the bot. Do not edit.
-
-### `ecosystem.config.js`
-
-This is for running the bot. Do not edit.
+# colors.json
+This file stores the colors used for things like embeds. It is important that we follow a coherent color scheme.
 
 ## Making new commands
 
 ### Files
 
-Each command must be within a folder in `./command_list/` (such as `./command_list/general/help.js`).
+Each command must be within a folder in `./commands/` (such as `./commands/general/help.js`).
 
 ### Properties
 
@@ -101,8 +58,6 @@ Each command must have a module.exports, containing the following properties:
 | description | [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | | The description of the command shown in the help menu. |
 | botPermissions | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)> | ✓ | Bot's discord permissions required to run the command (not including SEND\_MESSAGES). See [Discord.Permissions.FLAGS](https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS). |
 | userPermissions | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)> | ✓ | User's discord permissions required to run the command. See [Discord.Permissions.FLAGS](https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS). |
-| developer | [Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) | ✓ | If true, command is developer only (usable by developers in specified development servers). |
-| usage | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)> | | Defines how a command should be used, with all arguments possible. See [Usage](#usage) |
 | execute | [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)(message: [Discord.Message](https://discord.js.org/#/docs/main/stable/class/Message), args: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)<[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>) => [undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined) | | The function to be run when a user enters a command. |
 
 <details><summary>Example</summary>
@@ -112,47 +67,12 @@ module.exports = {
     name: "command",
     description: "A command that does things.",
     userPermissions: ["ADMINISTRATOR"],
-    
-    usage: [
-        { tag: "number", checks: {isinteger: null} },
-        { tag: "nothing" },
-    ],
-
     execute(message, args) {
         message.channel.send("I did stuff!");
         if (args[0])
             message.channel.send(`You entered a number! ${args[0]}`);
     },
 };
-```
-
-</details>
-
-### Usage
-
-The usage property of a command's module.exports defines the rules for how a command is to be used.
-
-It is an array of options where each option is an [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) that defines a possible route for the argument to pass. See [Option](#option).
-
-If no option passes, the usage is sent in the channel the user sent the command in.
-Descriptions are automatically generated from the usage [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).
-
-If multiple options pass, the `CommandUsageError` error will be thrown.
-
-<details><summary>Example</summary>
-
-```js
-// Different options for whether an argument was given or not.
-[
-    { tag: "something", checks: {isempty: {not: null}} },  // passes if an argument was given
-    { tag: "nothing", checks: {isempty: null} },           // passes if an argument was not given
-]
-
-// Don't do this! It will throw a CommandUsageError because multiple options are valid.
-[
-    { tag: "something", checks: {isempty: {not: null}} },  // passes if an argument was given
-    { tag: "nothing", checks: {} },                        // passes always
-]
 ```
 
 </details>
@@ -268,17 +188,3 @@ It will also set the `circular` property to `true`.
 | option | [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) | | The option to be made infinite. |
 
 Returns: [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).
-
-## Logging information
-
-### Different types of logs
-
-The "tag" of a log is a quick description to easily identify what the log is about.
-The tag should be one of these.
-Guild tags: `GUILD-INFO, GUILD-ERROR, GUILD-UPDATE, GUILD-WARN`
-Client tags: `CLIENT-INFO, CLIENT-ERROR, CLIENT-UPDATE, CLIENT-WARN`
-
-After the tag, create a parentheses after the tag. Inside the parentheses specify the log further using 2-7 words. Eg. `console.log(-----GUILD-INFO(ADDED A ROLE)-----);`
-
-On the next line of the log create an in depth description of the log thats around 10-20 words.
-Finally, add one more console.log(); statement that contains two new lines.
