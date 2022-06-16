@@ -3,6 +3,7 @@ from ariadne import (gql, graphql_sync, make_executable_schema,
 from ariadne.constants import PLAYGROUND_HTML
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify, make_response
+from flask_cors import CORS
 import os
 import requests
 import time
@@ -35,6 +36,9 @@ def resolve_hello(_, info):
 schema = make_executable_schema(type_defs, query)
 
 app = Flask(__name__)
+# TODO: make this CORS more specific (only for graphQL, not all paths) (increase security)
+# this is to stop CORS block on graphQL requests
+CORS(app, resources={'/api/graphql': {'origins': '*'}})
 
 
 @app.route('/api/graphql', methods=['GET'])
