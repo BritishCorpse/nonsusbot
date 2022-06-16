@@ -4,6 +4,6 @@ const { sendError } = require("./sendError");
 module.exports = {
     async execute(graveyard, guild) {
         //* guildCount
-        await guildCount.create({ guildId: guild.id }).catch(async error => {await sendError(error);});
+        await guildCount.destroy({ where: { guildId: guild.id } }).catch(async error => {await sendError(error);});
     }
 };
