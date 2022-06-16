@@ -26,6 +26,6 @@ GRAVEYARD DISCORD.JS V13/dashboard_api/.env
 
 # Files created when running the python dashboard api script
 GRAVEYARD DISCORD.JS V13/dashboard_api/venv
-GRAVEYARD DISCORD.JS V13/dashboard_api/sessions.json
+GRAVEYARD DISCORD.JS V13/dashboard_api/data
 *.pyc
 __pycache__
