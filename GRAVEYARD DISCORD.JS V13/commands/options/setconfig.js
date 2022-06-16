@@ -3,6 +3,9 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const { saveServerConfig } = require(`${__basedir}/utilities/configFunctions`);
 
 module.exports = {
+    requiredUserPermissions: ["MANAGE_SERVER"],
+    requiredBotPermissions: ["MANAGE_SERVER"],
+    
     data: new SlashCommandBuilder()
         .setName("setconfig")
         .setDescription("Set a config to be a particular value")

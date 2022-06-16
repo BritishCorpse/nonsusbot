@@ -1,6 +1,9 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
 module.exports = {
+    requiredUserPermissions: ["MANAGE_SERVER"],
+    requiredBotPermissions: ["MANAGE_SERVER"],
+    
     data: new SlashCommandBuilder()
         .setName("viewconfig")
         .setDescription("View what a config is set to")

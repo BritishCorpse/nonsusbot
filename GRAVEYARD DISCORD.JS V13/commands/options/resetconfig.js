@@ -6,6 +6,9 @@ const { saveServerConfig } = require(`${__basedir}/utilities/configFunctions`);
 
 
 module.exports = {
+    requiredUserPermissions: ["MANAGE_SERVER"],
+    requiredBotPermissions: ["MANAGE_SERVER"],
+
     data: new SlashCommandBuilder()
         .setName("resetconfig")
         .setDescription("Reset a configs value")
