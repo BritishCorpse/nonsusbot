@@ -1,5 +1,5 @@
-const { guildCount } = require("../db_objects");
-const { sendError } = require("./sendError");
+const { guildCount } = require("../../db_objects");
+const { sendError } = require("../../utilities/sendError");
 
 module.exports = {
     async execute(graveyard, guild) {

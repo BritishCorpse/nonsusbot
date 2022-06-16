@@ -20,7 +20,7 @@ module.exports = {
 
             //* creates database entries for the guild that we just joined
             // this is done so that there isn't a need to check if a guild exists in for example the counting system. since we already know the guild exists, we can just go ahead and get it.
-            const createGuildDBEntries = await require(`${__basedir}/utilities/createGuildDBEntries.js`);
+            const createGuildDBEntries = await require("/eventFiles/createGuildDBEntries.js");
             await createGuildDBEntries.execute(graveyard, guild);
 
             //

@@ -7,7 +7,7 @@ module.exports = {
             //* delete database entries for the user that just left.
             //
 
-            const deleteUserDBEntries = await require(`${__basedir}/utilities/deleteUserDBEntries.js`);
+            const deleteUserDBEntries = await require("/eventFiles/deleteUserDBEntries.js");
             await deleteUserDBEntries.execute(graveyard, guildMember);
 
             //

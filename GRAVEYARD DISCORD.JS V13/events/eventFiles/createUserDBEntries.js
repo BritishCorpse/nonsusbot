@@ -1,5 +1,5 @@
-const { userCount, userCurrency, userInformation } = require("../db_objects");
-const { sendError } = require("./sendError");
+const { userCount, userCurrency, userInformation } = require("../../db_objects");
+const { sendError } = require("../../utilities/sendError");
 
 module.exports = {
     async execute(graveyard, user) {

@@ -7,7 +7,7 @@ module.exports = {
             //
 
             //* creates database entries for the user that just joined.
-            const createUserDBEntries = await require(`${__basedir}/utilities/createUserDBEntries.js`);
+            const createUserDBEntries = await require("./eventFiles/createUserDBEntries.js");
             await createUserDBEntries.execute(graveyard, guildMember);
 
             //
