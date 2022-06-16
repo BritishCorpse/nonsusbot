@@ -22,6 +22,30 @@ async function getCountingUser(userId) {
     return user;
 }
 
+async function getCurrencyUser(userId) {
+    const user = await userCurrency.findOne({ where: { userId: userId } }) || null;
+    return user;
+}
+
+Reflect.defineProperty(userCurrency, "addBalance", {
+    value: async (userId, amount) => {
+        const user = await getCurrencyUser(userId);
+
+        user.balance += amount;
+        user.save();
+
+        return;
+    }
+});
+
+Reflect.defineProperty(userCurrency, "getBalance", {
+    value: async (userId) => {
+        const user = await getCurrencyUser(userId);
+
+        return user.balance;
+    }
+});
+
 Reflect.defineProperty(guildCount, "addIncorrectCount", {
     value: async (guildId, userId) => {
         const guild = await getCountingGuild(guildId);
@@ -87,6 +111,7 @@ module.exports = {
     userCount, 
     guildCount, 
     getCountingGuild,
+    getCurrencyUser,
     userCurrency,
     userInformation
 };

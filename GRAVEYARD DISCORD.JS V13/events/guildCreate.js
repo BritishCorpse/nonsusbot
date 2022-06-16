@@ -40,7 +40,7 @@ module.exports = {
                 }, 
                 {
                     name: "Make sure I've got the permissions I need!",
-                    value: "If you wan't me to be able to moderate members, delete messages and so forth, make sure to give me permissions to do so!"
+                    value: "If you want me to be able to moderate members, delete messages and so forth, make sure to give me permissions to do so!"
                 },
                 {
                     name: "Check out our website and Discord server for more information.",

@@ -12,6 +12,8 @@ const graveyard = new Client({ intents:
     [
         Intents.FLAGS.GUILDS, 
         Intents.FLAGS.GUILD_MEMBERS, 
+        Intents.FLAGS.GUILD_MESSAGES,
+        Intents.FLAGS.DIRECT_MESSAGES,
     ], allowedMentions: { parse: ["users", "roles"] }
 
 });
@@ -33,7 +35,6 @@ const { addNewGuildServerConfigs  } = require(`${__basedir}/utilities/configFunc
 graveyard.serverConfig = new Collection();
 graveyard.commands = new Collection();
 graveyard.backgroundProcesses = new Collection();
-graveyard.currency = new Collection();
 graveyard.achievements = new Collection();
 
 //
