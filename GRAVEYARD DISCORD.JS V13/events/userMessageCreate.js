@@ -1,12 +1,12 @@
 const { userCurrency } = require("../db_objects"); 
 
 module.exports = {
-    name: "messageCreate",
+    name: "userMessageCreate",
     execute(graveyard) {
         graveyard.on("messageCreate", async message => {
             //! THIS FILE ONLY HANDLES MESSAGES CREATED BY USERS.
             if (message.author.bot) return;
-            
+
             //
             //! Currency
             //
