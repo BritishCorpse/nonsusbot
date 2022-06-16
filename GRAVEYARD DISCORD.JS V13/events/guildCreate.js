@@ -1,6 +1,7 @@
 const { addNewGuildServerConfigs } = require("../utilities/configFunctions");
 
 const { info } = require("../configs/colors.json");
+const { devServerInviteLink, websiteLink } = require("../configs/development_config.json");
 
 const { makeEmbed } = require("../utilities/generalFunctions");
 
@@ -11,7 +12,7 @@ module.exports = {
     execute(graveyard) {
         graveyard.on("guildCreate", async guild => {
             //* log that we joined a guild
-            await log("I joined a guild");
+            await log(`Joined guild: {NAME: {${guild.name}} ID: {${guild.id}}}`);
             
             //  
             //! Create database entries 
@@ -44,7 +45,7 @@ module.exports = {
                 },
                 {
                     name: "Check out our website and Discord server for more information.",
-                    value: "PUT WEBSITE LINK HERE, PUT DISCORD INVITE HERE"
+                    value: `${devServerInviteLink}, ${websiteLink}`
                 }
             ];
 
