@@ -29,6 +29,7 @@ pip install -r requirements.txt
 To run the script, run this (making sure the virtual environment is activated):
 
 ```py
+cd src
 python3 main.py
 ```
 

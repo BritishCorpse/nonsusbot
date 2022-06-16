@@ -12,7 +12,7 @@ from sessions import Sessions
 
 load_dotenv() # load environment variables from .env
 
-sessions_manager = Sessions('sessions.json')
+sessions_manager = Sessions('../data/sessions.json')
 
 
 # -- GraphQL API under here --
