@@ -13,7 +13,13 @@ const userCurrency = require("./database/models/userCurrency.js")(sequelize, Seq
 const userInformation = require("./database/models/userInformation.js")(sequelize, Sequelize.DataTypes);
 
 async function getCountingGuild(guildId) {
-    const guild = await guildCount.findOne({ where: { guildId: guildId } }) || null;
+    let guild = await guildCount.findOne({ where: { guildId: guildId } }) || null;
+
+    if (guild === null) {
+        await guildCount.create({ guildId: guildId });
+        guild = await guildCount.findOne({ where: { guildId: guildId } });
+    }
+
     return guild;
 }
 
@@ -21,7 +27,8 @@ async function getCountingUser(userId) {
     let user = await userCount.findOne({ where: { userId: userId } }) || null;
 
     if (user === null) {
-        user = await userCount.create({ userId: userId });
+        await userCount.create({ userId: userId });
+        user = await userCount.findOne({ where: { userId: userId } });
     }
 
     return user;
@@ -31,7 +38,8 @@ async function getCurrencyUser(userId) {
     let user = await userCurrency.findOne({ where: { userId: userId } }) || null;
 
     if (user === null) {
-        user = await userCurrency.create({ userId: userId });
+        await userCurrency.create({ userId: userId });
+        user = await userCurrency.findOne({ where: { userId: userId } });
     }
 
     return user;
@@ -121,6 +129,7 @@ module.exports = {
     userCount, 
     guildCount, 
     getCountingGuild,
+    getCountingUser,
     getCurrencyUser,
     userCurrency,
     userInformation

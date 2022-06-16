@@ -23,7 +23,7 @@ module.exports = {
 
             //* if we are in the counting channel, run the countingSystem.js script
             if (message.channel.id === countingChannel) {
-                const deleteUserDBEntries = await require("/eventFiles/countingSystem.js");
+                const deleteUserDBEntries = await require("./eventFiles/countingSystem.js");
                 await deleteUserDBEntries.execute(graveyard, message);
             }
         });

@@ -40,7 +40,7 @@ module.exports = {
 
         //* find the guild in the countingSystem table  
         const guild = await getCountingGuild(message.guild.id);
-
+        
         //* if the same person counted twice
         // add one to incorrectly counted
         // also add one incorrectly counted score to the user
