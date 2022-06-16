@@ -16,6 +16,7 @@ node_modules
 
 # Files created while running bot
 *.sqlite
+*.db
 GRAVEYARD DISCORD.JS V13/database.db
 GRAVEYARD DISCORD.JS V13\database.db
 server_config.json
