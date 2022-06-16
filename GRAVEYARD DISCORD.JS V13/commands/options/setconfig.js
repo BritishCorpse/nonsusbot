@@ -57,6 +57,22 @@ module.exports = {
                         )
                 )
                 .addIntegerOption(option => option.setName("choice").setDescription("Please choose either true or false.").setRequired(true))
+        )
+        .addSubcommand(subCommand =>
+            subCommand
+                .setName("text")
+                .setDescription("Set a text config")
+                .addStringOption(option => 
+                    option
+                        .setName("config")
+                        .setDescription("The config to edit")
+                        .setRequired(true)
+                        .addChoices(
+                            { name: "Welcome message", value: "welcome_message" },
+                            { name: "Goodbye message", value: "goodbye_message"}
+                        )
+                )
+                .addStringOption(option => option.setName("choice").setDescription("Enter the new text.").setRequired(true))
         ),
 
     async execute(interaction) {
@@ -80,6 +96,12 @@ module.exports = {
 
         else if (await interaction.options.getSubcommand() === "numbers") {
             const choice = await interaction.options.getInteger("choice", true);
+
+            newConfig = [choice, choice];
+        }
+
+        else if (await interaction.options.getSubcommand() === "text") {
+            const choice = await interaction.options.getString("choice", true);
 
             newConfig = [choice, choice];
         }

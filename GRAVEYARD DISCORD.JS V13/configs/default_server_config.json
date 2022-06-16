@@ -11,6 +11,8 @@
   "detailed_logging": [null],
   "remove_non_numbers_in_the_counting_channel": [null],
   "normalize_non_unicode_names": [null],
-  "max_word_count": [null]
+  "max_word_count": [null],
+  "welcome_message": [null],
+  "goodbye_message": [null]
 }
   

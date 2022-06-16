@@ -10,9 +10,10 @@ const { Client, Intents, Collection } = require("discord.js");
 const { token } = require(`${__basedir}/configs/graveyard_config.json`);
 const graveyard = new Client({ intents: 
     [
-        Intents.FLAGS.GUILDS,
-        Intents.FLAGS.GUILD_MESSAGES,
+        Intents.FLAGS.GUILDS, 
+        Intents.FLAGS.GUILD_MEMBERS, 
     ], allowedMentions: { parse: ["users", "roles"] }
+
 });
 
 //
@@ -114,7 +115,11 @@ graveyard.backgroundProcesses.forEach(backgroundProcess => {
 //
 
 // (i know its advanced, but try your best to understand)
-process.on("unhandledRejection", sendError);
+process.on("unhandledRejection", async error => {
+    // if (error.type === "DiscordApiError" && error.message === "Missing Access") return;
+
+    await sendError(error);
+});
 
 
 //
