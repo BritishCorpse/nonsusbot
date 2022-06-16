@@ -128,9 +128,9 @@ Reflect.defineProperty(guildCount, "addOneToGuildCount", {
 module.exports = { 
     userCount, 
     guildCount, 
+    userCurrency,
+    userInformation,
     getCountingGuild,
     getCountingUser,
-    getCurrencyUser,
-    userCurrency,
-    userInformation
+    getCurrencyUser
 };
