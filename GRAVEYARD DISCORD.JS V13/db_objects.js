@@ -18,12 +18,22 @@ async function getCountingGuild(guildId) {
 }
 
 async function getCountingUser(userId) {
-    const user = await userCount.findOne({ where: { userId: userId } }) || null;
+    let user = await userCount.findOne({ where: { userId: userId } }) || null;
+
+    if (user === null) {
+        user = await userCount.create({ userId: userId });
+    }
+
     return user;
 }
 
 async function getCurrencyUser(userId) {
-    const user = await userCurrency.findOne({ where: { userId: userId } }) || null;
+    let user = await userCurrency.findOne({ where: { userId: userId } }) || null;
+
+    if (user === null) {
+        user = await userCurrency.create({ userId: userId });
+    }
+
     return user;
 }
 
