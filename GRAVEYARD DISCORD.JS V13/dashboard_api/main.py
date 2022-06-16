@@ -102,8 +102,8 @@ def discord_oauth_redirect():
                 window.close();
             </script>
         ''')
-        response.set_cookie('session-id', httponly=True, secure=True,
-                            samesite='strict')
+        response.set_cookie('session-id', value=session_id, httponly=True,
+                            secure=True, samesite='strict')
 
         return response, 200
 
