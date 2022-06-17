@@ -123,7 +123,7 @@ process.on("unhandledRejection", async error => {
 
     const { development } = require(`${__basedir}/configs/graveyard_config.json`);
     
-    // helps with development
+    //* if we are currently in development, log the entire error
     if (development === true) console.log(error);
 
     await sendError(error);

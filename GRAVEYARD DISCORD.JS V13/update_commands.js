@@ -37,11 +37,9 @@ const rest = new REST({ version: "9" }).setToken(token);
 
 if (development === true) {
     rest.put(Routes.applicationGuildCommands(graveyardID, devServerID), { body: commands })
-        .then(() => log("Registered application commands in the development server."))
-        .catch(console.error);
+        .then(() => log("Registered application commands in the development server."));
 } else {
     rest.put(Routes.applicationCommands(graveyardID), { body: commands })
-        .then(() => log("Registered application commands globally."))
-        .catch(console.error);
+        .then(() => log("Registered application commands globally."));
 }
 

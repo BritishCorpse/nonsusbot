@@ -19,4 +19,4 @@ sequelize.sync({ force }).then(async () => {
     log("Database synced.");
 
     sequelize.close();
-}).catch(console.error);
+});
