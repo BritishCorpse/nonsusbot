@@ -87,8 +87,6 @@ for (const guildId in serverConfigJSON) {
 
 graveyard.login(token);
 
-graveyard.on("guildCreate", async () => {  });
-
 graveyard.once("ready", async () => {
     await addNewGuildServerConfigs(graveyard);
     log("Updated guild server configs.");
