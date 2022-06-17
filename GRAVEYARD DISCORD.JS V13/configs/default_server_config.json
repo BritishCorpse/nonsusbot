@@ -13,6 +13,8 @@
   "normalize_non_unicode_names": [null],
   "max_word_count": [null],
   "welcome_message": [null],
-  "goodbye_message": [null]
+  "goodbye_message": [null],
+  "welcome_image": [null],
+  "goodbye_image": [null]
 }
   

@@ -23,6 +23,10 @@ module.exports = {
                     { name: "Remove non number messages in the counting channel", value: "remove_non_numbers_in_the_counting_channel" },
                     { name: "Normalize usernames that do not match the unicode standard", value: "normalize_non_unicode_names" },
                     { name: "Maximum word count", value: "max_word_count" },
+                    { name: "Welcome message", value: "welcome_message" },
+                    { name: "Goodbye message", value: "goodbye_message" },
+                    { name: "Welcome image URL", value: "welcome_image" },
+                    { name: "Goodbye image URL", value: "goodbye_image" }
                 )
         ),
 

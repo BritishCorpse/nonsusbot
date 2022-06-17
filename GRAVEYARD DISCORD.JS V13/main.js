@@ -7,6 +7,7 @@ global.startTimestamp = new Date();
 const fs = require("node:fs");
 
 const { Client, Intents, Collection } = require("discord.js");
+const { log } = require("./utilities/botLogFunctions");
 const { token } = require(`${__basedir}/configs/graveyard_config.json`);
 const graveyard = new Client({ intents: 
     [
@@ -90,8 +91,9 @@ graveyard.on("guildCreate", async () => {  });
 
 graveyard.once("ready", async () => {
     await addNewGuildServerConfigs(graveyard);
+    log("Updated guild server configs.");
 
-    console.log(`Initiated new bot instance at ${new Date().toUTCString()}`);
+    log("Initiated new bot instance.");
 });
 
 //

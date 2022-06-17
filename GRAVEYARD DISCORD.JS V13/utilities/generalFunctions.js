@@ -4,7 +4,7 @@ function formatBacktick(name) {
     return `\`\`${name}\`\``;
 }
 
-async function makeEmbed(graveyard, title, fields, color) {
+async function makeEmbed(graveyard, title, fields, color, image) {
     return new MessageEmbed({
         title: title,
 
@@ -22,6 +22,10 @@ async function makeEmbed(graveyard, title, fields, color) {
 
         footer: {
             text: "Powered by Mana Potions",
+        },
+
+        image: {
+            url: image,
         },
     });
 }

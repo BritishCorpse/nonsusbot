@@ -1,4 +1,5 @@
 const Sequelize = require("sequelize");
+const { log } = require("./utilities/botLogFunctions.js");
 
 const sequelize = new Sequelize("database", "username", "password", {
     host: "localhost",
@@ -15,7 +16,7 @@ require("./database/models/userInformation.js")(sequelize, Sequelize.DataTypes);
 const force = process.argv.includes("--force") || process.argv.includes("-f");
 
 sequelize.sync({ force }).then(async () => {
-    console.log("Database synced");
+    log("Database synced.");
 
     sequelize.close();
 }).catch(console.error);

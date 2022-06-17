@@ -7,6 +7,7 @@ const { getCommandCategories } = require("./utilities/commandFunctions.js");
 
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
+const { log } = require("./utilities/botLogFunctions.js");
 const { graveyardID, devServerID, token, development } = require(`${__basedir }/configs/graveyard_config.json`);
 
 // these are categories that should not be added into the main bots commands.
@@ -36,11 +37,11 @@ const rest = new REST({ version: "9" }).setToken(token);
 
 if (development === true) {
     rest.put(Routes.applicationGuildCommands(graveyardID, devServerID), { body: commands })
-        .then(() => console.log("Registered application commands in the development server."))
+        .then(() => log("Registered application commands in the development server."))
         .catch(console.error);
 } else {
     rest.put(Routes.applicationCommands(graveyardID), { body: commands })
-        .then(() => console.log("Registered application commands globally."))
+        .then(() => log("Registered application commands globally."))
         .catch(console.error);
 }
 

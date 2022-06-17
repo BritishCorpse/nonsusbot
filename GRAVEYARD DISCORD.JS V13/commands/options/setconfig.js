@@ -72,7 +72,9 @@ module.exports = {
                         .setRequired(true)
                         .addChoices(
                             { name: "Welcome message", value: "welcome_message" },
-                            { name: "Goodbye message", value: "goodbye_message"}
+                            { name: "Goodbye message", value: "goodbye_message"},
+                            { name: "Welcome image URL", value: "welcome_image"},
+                            { name: "Goodbye image URL", value: "goodbye_image"}
                         )
                 )
                 .addStringOption(option => option.setName("choice").setDescription("Enter the new text.").setRequired(true))
