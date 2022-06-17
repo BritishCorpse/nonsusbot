@@ -41,31 +41,20 @@ module.exports = {
         //* find the guild in the countingSystem table  
         const guild = await getCountingGuild(message.guild.id);
         
-        //* if the same person counted twice
-        // add one to incorrectly counted
-        // also add one incorrectly counted score to the user
-        // set who counted last
-        // reset the count back to 1
-        if (message.author.id === await guild.lastCounterUserID) {
-            await guildCount.addIncorrectCount(message.guild.id, message.author.id);
-            await guildCount.setLastCounterUserID(message.guild.id, message.author.id);
-            await guildCount.resetGuildCount(message.guild.id);
-
-            return message.channel.send(`${message.author} ruined the count! The number is now: \`1\``);
-        }
-
         //* if the number is incorrect
         // add one to incorrectly counted
         // also add one incorrectly counted score to the user
         // set who counted last
         // reset the count back to 1    
-        if (countedNumber !== guild.currentNumber) {
+        if (countedNumber !== guild.currentNumber || message.author.id === await guild.lastCounterUserID) {
             await guildCount.addIncorrectCount(message.guild.id, message.author.id);
             await guildCount.setLastCounterUserID(message.guild.id, message.author.id);
             await guildCount.resetGuildCount(message.guild.id);
 
+            await message.react("💔");
             return message.channel.send(`${message.author} ruined the count! The number is now: \`1\``);
         } 
+        
         //* if the number is correct
         // add one to correctly counted
         // also add one correctly counted score to the user
