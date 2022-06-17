@@ -122,7 +122,7 @@ def discord_oauth_redirect():
             'session_access_token_used': False,
         })
         
-        # TODO: remove the '*' and replace with the actual URI (reduce security
+        # TODO: remove the '*' and replace with the actual URI (reduce security)
         #       risk) of the target window
         response = make_response('''
             <script defer>
