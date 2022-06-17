@@ -35,6 +35,24 @@ class Sessions:
             return self.sessions[session_id]
 
         return None
+    
+    def get_session_id_by_session_access_token(self, session_access_token):
+        # get a session_id by a session_access_token, and set the token as used
+
+        for session_id in self.sessions:
+            # don't give the session if the session_access_token was used
+            if 'session_access_token' in self.sessions[session_id] \
+               and not self.sessions[session_id]['session_access_token_used'] \
+               and self.sessions[session_id]['session_access_token'] \
+                   == session_access_token:
+
+                # set it as used
+                self.sessions[session_id]['session_access_token_used'] = True
+                self._write_to_file()
+
+                return session_id
+        
+        return None
 
     def _read_from_file(self):
         with open(self.file_path, 'r') as f:
