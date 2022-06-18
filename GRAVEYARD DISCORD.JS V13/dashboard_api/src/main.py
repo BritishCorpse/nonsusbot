@@ -135,7 +135,7 @@ def discord_oauth_redirect():
         return response, 200
 
     # TODO: create a better error system (with more information)
-    return 'Error', 400
+    return 'Error, no code provided', 400
 
 
 @app.route('/api/auth/discord/getsessionid', methods=['GET'])
@@ -147,7 +147,7 @@ def discord_get_session_id():
         session_id = sessions_manager.get_session_id_by_session_access_token(session_access_token)
 
         if session_id is None:
-            return 'Error', 400
+            return 'Error, session does not exist or session has already been claimed', 400
 
         response = make_response()
         response.set_cookie('session-id', value=session_id, httponly=True,
@@ -155,7 +155,7 @@ def discord_get_session_id():
 
         return response, 200
 
-    return 'Error', 400
+    return 'Error, no session access token provided', 400
 
 
 if __name__ == '__main__':
