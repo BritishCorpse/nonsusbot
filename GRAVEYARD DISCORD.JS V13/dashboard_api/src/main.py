@@ -13,6 +13,9 @@ from sessions import Sessions
 
 load_dotenv() # load environment variables from .env
 
+WEBSITE_URL = 'http://localhost:3000'
+
+
 sessions_manager = Sessions('../data/sessions.json')
 
 
@@ -111,17 +114,23 @@ def discord_oauth_redirect():
             'ip': request.remote_addr,
         })
         
-        # TODO: remove the '*' and replace with the actual URI (reduce security)
+        # TODO: remove the '*' and replace with the actual URI (reduce security
         #       risk) of the target window
+        # the string below needs double curly braces for single curly braces
+        # due to .format
         response = make_response('''
             <script defer>
-                window.opener.postMessage(
-                    {type: 'discordOAuthLoggedIn', sessionAccessToken: '%s'},
-                    '*'
-                );
-                window.close();
+                if (window.opener) {{
+                    window.opener.postMessage(
+                        {{type: 'discordOAuthLoggedIn', sessionAccessToken: '{0}'}},
+                        '{1}'
+                    );
+                    window.close();
+                }} else {{
+                    window.location.replace('{1}?sat={0}');
+                }}
             </script>
-        ''' % session_access_token)
+        '''.format(session_access_token, WEBSITE_URL))
 
         return response, 200
 
@@ -131,8 +140,9 @@ def discord_oauth_redirect():
 
 @app.route('/api/auth/discord/getsessionid', methods=['GET'])
 def discord_get_session_id():
-    if 'token' in request.args:
-        session_access_token = request.args['token']
+    # get the session id with the session access token on the website
+    if 'sat' in request.args:
+        session_access_token = request.args['sat']
 
         session_id = sessions_manager.get_session_id_by_session_access_token(session_access_token)
 

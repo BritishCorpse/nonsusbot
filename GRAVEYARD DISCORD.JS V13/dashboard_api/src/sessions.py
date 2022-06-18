@@ -72,7 +72,7 @@ class Sessions:
                 self._write_to_file()
 
                 return session_id
-        
+
         return None
 
     def _read_from_file(self):
