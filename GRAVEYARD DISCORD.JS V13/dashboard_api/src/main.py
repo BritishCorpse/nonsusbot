@@ -48,15 +48,15 @@ CORS(
     app,
     resources={
         '/api/graphql': {
-            'origins': '*'
+            'origins': 'http://localhost:3000',
+            'supports_credentials': True # required to receive cookies
         },
         '/api/auth/discord/getsessionid': {
             'origins': 'http://localhost:3000',
-            'supports_credentials': True
+            'supports_credentials': True # required to set cookies
         }
     }
 )
-
 
 @app.route('/api/graphql', methods=['GET'])
 def graphql_playground():
@@ -72,7 +72,7 @@ def graphql_server():
     #print(request.cookies.get('session_id'))
     #print(request.cookies)
 
-    # GraphQL queries are always sent as POST
+    # GraphQL queries are sent as POST
     data = request.get_json()
 
     success, result = graphql_sync(schema, data, context_value=request,
