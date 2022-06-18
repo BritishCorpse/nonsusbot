@@ -1,7 +1,5 @@
 const { info } = require(`${__basedir}/configs/colors.json`);
 
-const { websiteLink } = require(`${__basedir}/configs/development_config.json`);
-
 const { formatBacktick } = require(`${__basedir}/utilities/generalFunctions.js`);
 
 const { log } = require(`${__basedir}/utilities/botLogFunctions.js`);
@@ -82,9 +80,7 @@ module.exports = {
 
             //* execute the command
             // if command execution fails, log the error and send them an ephemeral reply stating to go contact support.
-            await command.execute(interaction).catch(async () => {
-                await interaction.reply({ content: `An error occured. Please wait until trying this command again. If this error persists, please contact support at ${websiteLink}/contact.html`, ephemeral: true });
-            });
+            await command.execute(interaction);
 
             //
             //! Logging
