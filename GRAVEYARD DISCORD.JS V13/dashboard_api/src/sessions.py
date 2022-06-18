@@ -2,6 +2,7 @@
 
 import json
 import os
+import time
 import uuid
 
 
@@ -15,7 +16,8 @@ class Sessions:
         self._read_from_file()
 
     def create_session(self, data):
-        # creates a session and returns the session id
+        # creates a session and returns the session access token which can be
+        # used once to get the session id
 
         while True:
             # loop until the session id is unique (probably only runs once)
@@ -24,15 +26,33 @@ class Sessions:
             if session_id not in self.sessions:
                 break
 
-        self.sessions[session_id] = data
+        # TODO: check if the session_access_token is unique
+        session_access_token = str(uuid.UUID(bytes=os.urandom(16)))
+
+        self.sessions[session_id] = {
+            'data': data,
+            # meta data to be used by this class only
+            'meta': {
+                'created_time': round(time.time()),
+                'session_access_token': session_access_token,
+                'session_access_token_used': False,
+            }
+        }
 
         self._write_to_file()
 
-        return session_id
+        return session_access_token
 
-    def get_session(self, session_id):
+    def get_session_data(self, session_id):
         if session_id in self.sessions:
-            return self.sessions[session_id]
+            return self.sessions[session_id]['data']
+
+        return None
+
+    def get_session_meta(self, session_id):
+        # get session metadata
+        if session_id in self.sessions:
+            return self.sessions[session_id]['meta']
 
         return None
     
@@ -40,14 +60,15 @@ class Sessions:
         # get a session_id by a session_access_token, and set the token as used
 
         for session_id in self.sessions:
-            # don't give the session if the session_access_token was used
-            if 'session_access_token' in self.sessions[session_id] \
-               and not self.sessions[session_id]['session_access_token_used'] \
-               and self.sessions[session_id]['session_access_token'] \
-                   == session_access_token:
+            metadata = self.get_session_meta(session_id)
 
-                # set it as used
-                self.sessions[session_id]['session_access_token_used'] = True
+            # don't give the session if the session_access_token was used
+            if 'session_access_token' in metadata \
+               and not metadata['session_access_token_used'] \
+               and metadata['session_access_token'] == session_access_token:
+
+                # set it as used (edit the self.sessions, not the copy of meta)
+                self.sessions[session_id]['meta']['session_access_token_used'] = True
                 self._write_to_file()
 
                 return session_id

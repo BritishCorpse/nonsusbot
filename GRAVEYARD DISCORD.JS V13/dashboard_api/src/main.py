@@ -37,7 +37,7 @@ schema = make_executable_schema(type_defs, query)
 
 app = Flask(__name__)
 
-# TODO: make this CORS more specific (only for graphQL, not all paths)
+# TODO: make this CORS more specific (only for graphQL and oauth, not all paths)
 #       (increase security)
 # TODO: use cross_origin decorators instead of this CORS function
 # this is to stop CORS block on graphQL requests
@@ -106,20 +106,9 @@ def discord_oauth_redirect():
         #       given is invalid
         r.raise_for_status() # throws error if status is 4XX
 
-        # a one time use token to get the session id in a cookie on the website
-        # when fetch /api/auth/discord/getsessionid?token=<insert token here>
-        # this token is sent to the website through a javascript postMessage()
-        session_access_token = os.urandom(32).hex()
-
-        # TODO: move the code for creating the session_access_token TODO
-        #       sessions.py, or move the check for if the token was used
-        #       to this file
-        sessions_manager.create_session({
+        session_access_token = sessions_manager.create_session({
             **r.json(), # access_token, etc.
             'ip': request.remote_addr,
-            'created_time': round(time.time()), # in seconds
-            'session_access_token': session_access_token,
-            'session_access_token_used': False,
         })
         
         # TODO: remove the '*' and replace with the actual URI (reduce security)
@@ -142,10 +131,7 @@ def discord_oauth_redirect():
 
 @app.route('/api/auth/discord/getsessionid', methods=['GET'])
 def discord_get_session_id():
-    os.system('say got the request')
-
     if 'token' in request.args:
-        os.system('say got the token argument')
         session_access_token = request.args['token']
 
         session_id = sessions_manager.get_session_id_by_session_access_token(session_access_token)
