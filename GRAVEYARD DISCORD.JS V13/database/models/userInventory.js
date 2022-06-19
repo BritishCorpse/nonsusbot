@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define("currencyShop", {
+    return sequelize.define("userInventory", {
         userId: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -8,7 +8,10 @@ module.exports = (sequelize, DataTypes) => {
         itemId: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            primaryKey: true
+        },
+        amount: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     }, {
         timestamps: false,

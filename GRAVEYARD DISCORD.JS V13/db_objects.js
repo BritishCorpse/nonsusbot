@@ -49,16 +49,16 @@ async function getCurrencyUser(userId) {
     return user;
 }
 
-async function getInventoryUser(userId) {
-    let user = await userInventory.findOne({ where: { userId: userId } }) || null;
+//
+//! Shop 
+//
 
-    if (user === null) {
-        await userInventory.create({ userId: userId });
-        user = await userInventory.findOne({ where: { userId: userId } });
+Reflect.defineProperty(currencyShop, "getItem", {
+    value: async (itemId) => {
+        return currencyShop.findOne({ where: { itemId: itemId } });
     }
+});
 
-    return user;
-}
 
 //
 //! Inventory
@@ -66,31 +66,25 @@ async function getInventoryUser(userId) {
 
 Reflect.defineProperty(userInventory, "getItems", {
     value: async (userId) => {
-        const user = await getInventoryUser(userId);
-
         return userInventory.findAll({
-            where: { userId: user.userId }
+            where: { userId: userId }
         });
     }
 });
 
 Reflect.defineProperty(userInventory, "getItem", {
     value: async (userId, itemId) => {
-        const user = await getInventoryUser(userId);
-
-        return userInventory.findOne({ where: { itemId: itemId, userId: user.userId } });
+        return userInventory.findOne({ where: { itemId: itemId, userId: userId } });
     }
 });
 
 Reflect.defineProperty(userInventory, "addItem", {
     value: async (userId, itemId, amount) => {
-        const user = await getInventoryUser(userId);
-
-        const item = await userInventory.getItem(user.userId, itemId);
+        const item = await userInventory.getItem(userId, itemId);
 
         if (!item) {
             return userInventory.create({
-                userId: user.userId,
+                userId: userId,
                 itemId: itemId,
                 amount: amount
             });
@@ -201,5 +195,4 @@ module.exports = {
     getCurrencyUser,
     currencyShop, 
     userInventory,
-    getInventoryUser
 };
