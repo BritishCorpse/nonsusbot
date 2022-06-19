@@ -8,9 +8,13 @@ const sequelize = new Sequelize("database", "username", "password", {
 });
 
 const guildCount = require("./database/models/guildCount.js")(sequelize, Sequelize.DataTypes);
+
 const userCount = require("./database/models/userCount.js")(sequelize, Sequelize.DataTypes);
 const userCurrency = require("./database/models/userCurrency.js")(sequelize, Sequelize.DataTypes);
 const userInformation = require("./database/models/userInformation.js")(sequelize, Sequelize.DataTypes);
+const userInventory = require("./database/models/userInventory.js")(sequelize, Sequelize.DataTypes);
+
+const currencyShop = require("./database/models/currencyShop.js")(sequelize, Sequelize.DataTypes);
 
 async function getCountingGuild(guildId) {
     let guild = await guildCount.findOne({ where: { guildId: guildId } }) || null;
@@ -45,6 +49,64 @@ async function getCurrencyUser(userId) {
     return user;
 }
 
+async function getInventoryUser(userId) {
+    let user = await userInventory.findOne({ where: { userId: userId } }) || null;
+
+    if (user === null) {
+        await userInventory.create({ userId: userId });
+        user = await userInventory.findOne({ where: { userId: userId } });
+    }
+
+    return user;
+}
+
+//
+//! Inventory
+//
+
+Reflect.defineProperty(userInventory, "getItems", {
+    value: async (userId) => {
+        const user = await getInventoryUser(userId);
+
+        return userInventory.findAll({
+            where: { userId: user.userId }
+        });
+    }
+});
+
+Reflect.defineProperty(userInventory, "getItem", {
+    value: async (userId, itemId) => {
+        const user = await getInventoryUser(userId);
+
+        return userInventory.findOne({ where: { itemId: itemId, userId: user.userId } });
+    }
+});
+
+Reflect.defineProperty(userInventory, "addItem", {
+    value: async (userId, itemId, amount) => {
+        const user = await getInventoryUser(userId);
+
+        const item = await userInventory.getItem(user.userId, itemId);
+
+        if (!item) {
+            return userInventory.create({
+                userId: user.userId,
+                itemId: itemId,
+                amount: amount
+            });
+        }
+
+        item.amount += amount;
+        item.save();
+
+        return;
+    }
+});
+
+//
+//! Currency
+//
+
 Reflect.defineProperty(userCurrency, "addBalance", {
     value: async (userId, amount) => {
         const user = await getCurrencyUser(userId);
@@ -63,6 +125,10 @@ Reflect.defineProperty(userCurrency, "getBalance", {
         return user.balance;
     }
 });
+
+//
+//! Counting system
+//
 
 Reflect.defineProperty(guildCount, "addIncorrectCount", {
     value: async (guildId, userId) => {
@@ -132,5 +198,8 @@ module.exports = {
     userInformation,
     getCountingGuild,
     getCountingUser,
-    getCurrencyUser
+    getCurrencyUser,
+    currencyShop, 
+    userInventory,
+    getInventoryUser
 };
