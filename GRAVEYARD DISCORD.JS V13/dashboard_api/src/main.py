@@ -4,6 +4,7 @@ from ariadne.constants import PLAYGROUND_HTML
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
+from http.cookies import SimpleCookie # to parse cookies
 import os
 import requests
 import time
@@ -13,7 +14,10 @@ from sessions import Sessions
 
 load_dotenv() # load environment variables from .env
 
-WEBSITE_URL = 'http://localhost:3000'
+# these are all different domains for localhost (for testing cross-site stuff)
+#WEBSITE_URL = 'http://localhost:3000'
+#WEBSITE_URL = 'http://lvh.me:3000'
+WEBSITE_URL = 'http://127.0.0.1:3000'
 
 
 sessions_manager = Sessions('../data/sessions.json')
@@ -32,7 +36,8 @@ query = QueryType()
 
 @query.field('hello')
 def resolve_hello(_, info):
-    user_agent = info.context.headers.get('user-agent', 'guest')
+    user_agent = info.context['request'].headers.get('user-agent', 'guest')
+
     return f'Hello, {user_agent}!'
 
 
@@ -48,11 +53,11 @@ CORS(
     app,
     resources={
         '/api/graphql': {
-            'origins': 'http://localhost:3000',
+            'origins': WEBSITE_URL,
             'supports_credentials': True # required to receive cookies
         },
         '/api/auth/discord/getsessionid': {
-            'origins': 'http://localhost:3000',
+            'origins': WEBSITE_URL,
             'supports_credentials': True # required to set cookies
         }
     }
@@ -67,15 +72,22 @@ def graphql_playground():
 
 @app.route('/api/graphql', methods=['POST'])
 def graphql_server():
-    
     # TODO: Make sure they are authenticated first
-    #print(request.cookies.get('session_id'))
-    #print(request.cookies)
+    # Authentication
+    if 'session-id' not in request.cookies:
+        # TODO: do something when no session is given (error)
+        pass
+    
+    session_id = request.cookies.get('session-id')
+
+    session = sessions_manager.get_session(session_id)
 
     # GraphQL queries are sent as POST
     data = request.get_json()
 
-    success, result = graphql_sync(schema, data, context_value=request,
+    success, result = graphql_sync(schema, data,
+                                   context_value={'request': request,
+                                                  'session': session},
                                    debug=app.debug)
 
     status_code = 200 if success else 400
@@ -150,8 +162,9 @@ def discord_get_session_id():
             return 'Error, session does not exist or session has already been claimed', 400
 
         response = make_response()
+        # same site is none so that it can be sent to the different domain website
         response.set_cookie('session-id', value=session_id, httponly=True,
-                            secure=True, samesite='strict')
+                            secure=True, samesite='none')
 
         return response, 200
 

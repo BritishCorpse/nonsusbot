@@ -43,24 +43,17 @@ class Sessions:
 
         return session_access_token
 
-    def get_session_data(self, session_id):
+    def get_session(self, session_id):
         if session_id in self.sessions:
-            return self.sessions[session_id]['data']
+            return self.sessions[session_id]
 
         return None
 
-    def get_session_meta(self, session_id):
-        # get session metadata
-        if session_id in self.sessions:
-            return self.sessions[session_id]['meta']
-
-        return None
-    
     def get_session_id_by_session_access_token(self, session_access_token):
         # get a session_id by a session_access_token, and set the token as used
 
         for session_id in self.sessions:
-            metadata = self.get_session_meta(session_id)
+            metadata = self.get_session(session_id)['meta']
 
             # don't give the session if the session_access_token was used
             if 'session_access_token' in metadata \
