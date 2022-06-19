@@ -6,6 +6,7 @@
   "leveling_channel": [null],
   "welcome_channel": [null],
   "goodbye_channel": [null],
+  "confession_channel": [null],
   "remove_bad_words": [null],
   "remove_links": [null],
   "detailed_logging": [null],

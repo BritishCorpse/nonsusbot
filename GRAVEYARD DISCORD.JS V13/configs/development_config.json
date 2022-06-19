@@ -1,4 +1,6 @@
 {
-    "devServerInviteLink": "https://discord.gg/UTtj55AtNn",
-    "websiteLink": "https://google.com/"
+    "dev_server_invite_link": "https://discord.gg/UTtj55AtNn",
+    "website_link": "https://google.com/",
+    "dev_server_id": "955522612346359809",
+    "in_development": true
 }

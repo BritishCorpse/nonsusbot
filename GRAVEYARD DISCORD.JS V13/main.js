@@ -120,10 +120,10 @@ graveyard.backgroundProcesses.forEach(backgroundProcess => {
 process.on("unhandledRejection", async error => {
     // if (error.type === "DiscordApiError" && error.message === "Missing Access") return;
 
-    const { development } = require(`${__basedir}/configs/graveyard_config.json`);
+    const { in_development } = require(`${__basedir}/configs/development_config.json`);
     
     //* if we are currently in development, log the entire error
-    if (development === true) console.log(error);
+    if (in_development === true) console.log(error);
 
     await sendError(error);
 });
