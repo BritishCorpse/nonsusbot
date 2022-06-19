@@ -62,6 +62,7 @@ def resolve_user(_, info):
     r = requests.get(f'{DISCORD_API_URL}/users/@me', headers=headers)
 
     # TODO: do something if the request to discord fails
+    r.raise_for_status() # temporary
 
     return r.json()
 
