@@ -19,13 +19,25 @@ const currencyShop = require("./database/models/currencyShop.js")(sequelize, Seq
 
 const force = process.argv.includes("--force") || process.argv.includes("-f");
 
+let shop;
 sequelize.sync({ force }).then(async () => {
-    const shop = [
-        currencyShop.upsert({ itemId: 1000, itemName: "Carrot", itemCost: 100, isAvailableToBuy: true })
+    shop = [
+        await currencyShop.upsert({ itemId: 1000, itemName: "Carrot", itemDescription: "Just a carrot.", itemCost: 100, isAvailableToBuy: true }),
+        await currencyShop.upsert({ itemId: 2000, itemName: "Disguise", itemDescription: "Hide yourself from others for a week!", itemCost: 10000, isAvailableToBuy: true }),
+        await currencyShop.upsert({ itemId: 3000, itemName: "Cat", itemDescription: "What a cute kitty!", itemCost: 3000, isAvailableToBuy: true }),
+        await currencyShop.upsert({ itemId: 4000, itemName: "Dog", itemDescription: "Strong doggie.", itemCost: 3000, isAvailableToBuy: true }),
+        await currencyShop.upsert({ itemid: 999999, itemName: "Illegal item!", itemDescription: "This item is not available to buy!", itemCost: 100000, isAvailableToBuy: false })
     ];
 
     await Promise.all(shop);
-    
+
     log("Database synced.");
+
+
+
     sequelize.close();
 });
+
+module.exports = {
+    shop
+};
