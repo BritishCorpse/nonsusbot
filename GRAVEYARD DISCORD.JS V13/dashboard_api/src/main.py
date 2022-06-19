@@ -76,7 +76,6 @@ app = Flask(__name__)
 
 # Setup Flask CORS
 
-# TODO: use cross_origin decorators instead of this CORS function
 # this is to stop CORS block on graphQL requests
 CORS(
     app,
@@ -93,13 +92,6 @@ CORS(
 )
 
 # Setup GraphQL with Flask
-
-@app.route('/api/graphql', methods=['GET'])
-def graphql_playground():
-    # This will allow clients to explore your API using desktop GraphQL
-    # Playground app. Disable if you dont wan't this.
-    return PLAYGROUND_HTML, 200
-
 
 @app.route('/api/graphql', methods=['POST'])
 def graphql_server():
