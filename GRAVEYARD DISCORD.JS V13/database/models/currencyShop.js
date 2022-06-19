@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
         isAvailableToBuy: {
             type: DataTypes.BOOLEAN,
             allowNull: false
+        }, 
+        itemCategory: {
+            type: DataTypes.STRING,
+            allowNull: false
         }
     }, {
         timestamps: false,
