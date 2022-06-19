@@ -6,14 +6,6 @@ module.exports = {
     name: "guildMemberAdd",
     execute(graveyard) {
         graveyard.on("guildMemberAdd", async guildMember => {
-            //  
-            //! Database entries
-            //
-
-            //* creates database entries for the user that just joined.
-            const createUserDBEntries = await require("./eventFiles/createUserDBEntries.js");
-            await createUserDBEntries.execute(graveyard, guildMember);
-
             //
             //! Welcome message
             //
