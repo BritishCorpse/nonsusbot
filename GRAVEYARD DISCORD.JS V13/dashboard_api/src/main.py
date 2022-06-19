@@ -88,6 +88,10 @@ CORS(
         '/api/auth/discord/getsessionid': {
             'origins': WEBSITE_URL,
             'supports_credentials': True # required to set cookie (session)
+        },
+        '/api/auth/discord/isloggedin': {
+            'origins': WEBSITE_URL,
+            'supports_credentials': True # required to get cookie (session)
         }
     }
 )
@@ -97,17 +101,15 @@ CORS(
 @app.route('/api/graphql', methods=['POST'])
 def graphql_server():
     # Authentication
-    if 'session-id' not in request.cookies:
-        # TODO: do something when no session is given (error)
-        pass
     
     session_id = request.cookies.get('session-id')
 
     session = sessions_manager.get_session(session_id)
 
-    if session is None:
-        # TODO: do something when session is non existant (error)
-        # TODO: do somethig if session is expired (error)
+    if session_id is None or session is None:
+        # TODO: do something when no session-id is given (error)
+        #       or session is non existant
+        # TODO: check if session expired
         # TODO: expire sessions after some time
         pass
 
@@ -196,6 +198,21 @@ def discord_get_session_id():
         return response, 200
 
     return 'Error, no session access token provided', 400
+
+
+@app.route('/api/auth/discord/isloggedin', methods=['GET'])
+def discord_is_logged_in():
+    # TODO: check if session is not expired
+    
+    session_id = request.cookies.get('session-id')
+
+    session = sessions_manager.get_session(session_id)
+
+    if session_id is None or session is None:
+        return 'false', 200
+
+    return 'true', 200
+
 
 
 if __name__ == '__main__':
