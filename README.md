@@ -1,6 +1,8 @@
 # Graveyard
 A Discord bot created to remove the need of filling a server up with an unnecessary amount of bots.
 
+#THIS IS OUT OF DATE
+
 Table of contents
 =================
 
