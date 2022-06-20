@@ -8,10 +8,15 @@ module.exports = {
         .setName("ban")
         .setDescription("Ban a user from the guild")
         .addUserOption(option => option.setName("member").setDescription("The member to ban from the guild").setRequired(true))
-        .addIntegerOption(option => option.setName("duration").setDescription("The duration of the ban (no duration = permanent)"))
-        .addStringOption(option => option.setName("reason").setDescription("The reason to ban this member")),
+        .addStringOption(option => option.setName("reason").setDescription("The reason to ban this member").setRequired(true)),
 
     async execute(interaction) {
-        await interaction.getMember("member").ban(await interaction.getInteger("duration") || "0", await interaction.getString("reason") || "Banned by a moderator.");
-    }
+        const guildMember = await interaction.getMember("member");
+        const reason = await interaction.getString("reason");
+
+        if (guildMember.moderatable === false) return await interaction.reply({ content: "I cannot moderate this member.", ephemeral: true });
+
+        guildMember.ban({ reason: reason });
+
+        await interaction.reply(`Banned ${guildMember} from the guild.`);}
 };
