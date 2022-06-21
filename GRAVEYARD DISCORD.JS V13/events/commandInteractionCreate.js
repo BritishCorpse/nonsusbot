@@ -69,8 +69,6 @@ module.exports = {
                 return await interaction.reply(`You do not have these required permissions in this channel or server: ${isMissingPermissions.map(formatBacktick).join(", ")}`);
             }
 
-            
-
             //* check for bot permissions
             // if im missing permissions, tell them what permissions im missing and end the execution
             const isBotMissingPermissions = await missingPermissions(interaction.guild.me, interaction, command);
@@ -87,10 +85,10 @@ module.exports = {
             //
 
             //* send a log to the guild
-            await sendGuildLog(graveyard, interaction);
+            sendGuildLog(graveyard, interaction);
 
             //* log the command to server logs
-            await log(`In the guild ${interaction.guild.name}, ${interaction.user.tag} used the command ${interaction.commandName} with the options {${await interaction.options.data.map(option => ` NAME: [${option.name}] VALUE: [${option.value}]`) || "No options"} }`);
+            log(`In the guild ${interaction.guild.name}, ${interaction.user.tag} used the command ${interaction.commandName} with the options {${await interaction.options.data.map(option => ` NAME: [${option.name}] VALUE: [${option.value}]`) || "No options"} }`);
 
         });
     }

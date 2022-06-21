@@ -2,6 +2,14 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 
 const { saveServerConfig } = require(`${__basedir}/utilities/configFunctions`);
 
+const getConfigValueAndFormattedReply = {
+    "channels": async options => [`<#${await options.getChannel("choice", true)}>`, await options.getChannel("choice", true).id],
+    "booleans": async options => [`${await options.getBoolean("choice", true)}`, await options.getChannel("choice", true)],
+    "numbers": async options => [`${await options.getInteger("choice", true)}`, await options.getChannel("choice", true)],
+    "text": async options => [`${await options.getString("choice", true)}`, await options.getString("choice", true)],
+    // etc.
+};
+
 module.exports = {
     requiredUserPermissions: ["MANAGE_GUILD"],
     requiredBotPermissions: ["MANAGE_GUILD"],
@@ -83,40 +91,15 @@ module.exports = {
     async execute(interaction) {
         await interaction.deferReply();
 
-        const chosenConfig = await interaction.options.getString("config", true);
-
-        let newConfig = ["test"];
-
-        if (await interaction.options.getSubcommand() === "booleans") {
-            const choice = await interaction.options.getBoolean("choice", true);
-
-            newConfig = [choice, choice];
-        }
-
-        else if (await interaction.options.getSubcommand() === "channels") {
-            const channel = interaction.options.getChannel("choice", true);
-
-            newConfig = [`<#${channel.id}>`, channel.id];
-        }
-
-        else if (await interaction.options.getSubcommand() === "numbers") {
-            const choice = await interaction.options.getInteger("choice", true);
-
-            newConfig = [choice, choice];
-        }
-
-        else if (await interaction.options.getSubcommand() === "text") {
-            const choice = await interaction.options.getString("choice", true);
-
-            newConfig = [choice, choice];
-        }
+        const configType = await interaction.options.getSubcommand();
+        const formattedConfig = getConfigValueAndFormattedReply[configType](interaction.options)[0];
 
         // set the config
-        interaction.client.serverConfig.get(interaction.guild.id)[chosenConfig] = newConfig;
+        interaction.client.serverConfig.get(interaction.guild.id)[chosenConfig] = formattedConfig;
 
         // write it to the file
         await saveServerConfig(interaction.client.serverConfig);
 
-        await interaction.editReply(`Set the config \`${chosenConfig}\` to ${newConfig[0]}.`);
+
     }
 };

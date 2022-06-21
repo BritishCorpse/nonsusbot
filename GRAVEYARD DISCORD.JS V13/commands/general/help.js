@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 
 const { makeEmbed } = require(`${__basedir}/utilities/generalFunctions.js`);
 
-const { websiteLink, devServerLink } = require(`${__basedir}/configs/development_config.json`);
+const { website_link, dev_server_invite_link } = require(`${__basedir}/configs/development_config.json`);
 
 const { info } = require(`${__basedir}/configs/colors.json`);
 
@@ -17,15 +17,15 @@ module.exports = {
         const fields = [
             {
                 name: "Website",
-                value: `${websiteLink}`
+                value: `${website_link}`
             },
             {
                 name: "Support Discord server",
-                value: `${devServerLink}`
+                value: `${dev_server_invite_link}`
             },
             {
                 name: "List of commands",
-                value: `${websiteLink}/commands`
+                value: `${website_link}commands`
             },
             {
                 name: "Got a question?",
