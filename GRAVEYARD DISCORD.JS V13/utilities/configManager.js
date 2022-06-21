@@ -3,19 +3,30 @@ const path = require("path");
 
 
 class ConfigManager {
-    constructor(configFilePath) {
+    constructor(configFilePath, defaultGuildConfigs) {
+        // configFilePath is the JSON file where all the configs are stored
+        // defaultGuildConfigs are the default values for the configs of a 
+        // guild (optional)
+
         // make the path absolute to fix require problems with relative paths
         this.configFilePath = path.resolve(configFilePath);
+
+        this.defaultGuildConfigs = defaultGuildConfigs;
     }
 
     // Public methods
 
     getGuildConfigs(guildId) {
-        // read directly from the file every time, since the file could be
-        // edited by the dashboard or directly by the developers
         const configs = this._readConfigs();
- 
-        return configs[guildId];
+
+        return {
+            // start with the default values in case the guild isn't saved yet
+            // or in case new configs have been added
+            ...this.defaultGuildConfigs,
+            
+            // merge the configs
+            ...configs[guildId]
+        };
     }
 
     updateGuildConfigs(guildId, guildConfigsToUpdate) {
@@ -24,9 +35,14 @@ class ConfigManager {
 
         const configs = this._readConfigs();
 
-        // merge the old values with the new values, prioritizing the new ones
         configs[guildId] = {
+            // start with the default values in case it is adding a new guild
+            ...this.defaultGuildConfigs,
+
+            // merge the old configs if they exist
             ...configs[guildId],
+
+            // merge the new configs
             ...guildConfigsToUpdate
         };
 
