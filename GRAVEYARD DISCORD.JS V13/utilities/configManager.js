@@ -1,9 +1,11 @@
 const fs = require("fs");
+const path = require("path");
 
 
 class ConfigManager {
     constructor(configFilePath) {
-        this.configFilePath = configFilePath;
+        // make the path absolute to fix require problems with relative paths
+        this.configFilePath = path.resolve(configFilePath);
     }
 
     // Public methods
@@ -34,9 +36,18 @@ class ConfigManager {
     // Private methods
 
     _restoreConfigFile() {
-        // fix the config file in case it is missing
-        // TODO: create the file if it is missing, including all directories
-        //       to get to it
+        // fix the config file in case it is missing or empty
+
+        if (!fs.existsSync(this.configFilePath)) {
+            // make all the parent directories for the file
+            fs.mkdirSync(path.dirname(this.configFilePath), {recursive: true});
+
+            fs.writeFileSync(this.configFilePath, "{}");
+        } else if (fs.readFileSync(this.configFilePath).length === 0) {
+            // make it an empty object so that requiring the file still works
+            // if the file is empty
+            fs.writeFileSync(this.configFilePath, "{}");
+        }
     }
 
     _saveConfigs(configs) {
