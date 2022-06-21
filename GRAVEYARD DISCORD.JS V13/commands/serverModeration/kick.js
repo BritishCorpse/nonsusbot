@@ -8,7 +8,7 @@ module.exports = {
         .setName("kick")
         .setDescription("Kick a user from the guild")
         .addUserOption(option => option.setName("member").setDescription("The member to kick from the guild").setRequired(true))
-        .addStringOption(option => option.setName("reason").setDescription("The reason to kick this member")).setRequired(true),
+        .addStringOption(option => option.setName("reason").setDescription("The reason to kick this member").setRequired(true)),
 
     async execute(interaction) {
         const guildMember = await interaction.getMember("member");
