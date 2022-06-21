@@ -6,8 +6,8 @@ const { saveServerConfig } = require(`${__basedir}/utilities/configFunctions`);
 
 
 module.exports = {
-    requiredUserPermissions: ["MANAGE_SERVER"],
-    requiredBotPermissions: ["MANAGE_SERVER"],
+    requiredUserPermissions: ["MANAGE_GUILD"],
+    requiredBotPermissions: ["MANAGE_GUILD"],
 
     data: new SlashCommandBuilder()
         .setName("resetconfig")
