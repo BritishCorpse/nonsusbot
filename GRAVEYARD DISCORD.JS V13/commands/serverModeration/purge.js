@@ -1,8 +1,8 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
 module.exports = {
-    botPermissions: ["MANAGE_MESSAGES"],
-    userPermissions: ["MANAGE_MESSAGES"],
+    requiredBotPermissions: ["MANAGE_MESSAGES"],
+    requiredUserPermissions: ["MANAGE_MESSAGES"],
 
     data: new SlashCommandBuilder()
         .setName("purge")
