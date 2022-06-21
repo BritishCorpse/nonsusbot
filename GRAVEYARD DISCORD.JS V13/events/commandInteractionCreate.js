@@ -65,8 +65,8 @@ module.exports = {
             //* check member permissions
             // if the member is missing permissions, tell them what permissions theyre missing and end the execution
             const isMissingPermissions = await missingPermissions(interaction.member, interaction, command);
-            if (await isMissingPermissions !== false) {
-                await interaction.reply(`You do not have these required permissions in this channel or server: ${isMissingPermissions.map(formatBacktick).join(", ")}`);
+            if (isMissingPermissions !== false) {
+                return await interaction.reply(`You do not have these required permissions in this channel or server: ${isMissingPermissions.map(formatBacktick).join(", ")}`);
             }
 
             
@@ -75,7 +75,7 @@ module.exports = {
             // if im missing permissions, tell them what permissions im missing and end the execution
             const isBotMissingPermissions = await missingPermissions(interaction.guild.me, interaction, command);
             if (isBotMissingPermissions !== false) {
-                await interaction.reply(`I do not have these required permissions in this channel or server: ${isBotMissingPermissions.map(formatBacktick).join(", ")}`);
+                return await interaction.reply(`I do not have these required permissions in this channel or server: ${isBotMissingPermissions.map(formatBacktick).join(", ")}`);
             }
 
             //* execute the command
