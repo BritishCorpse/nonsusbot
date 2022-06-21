@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/talloween/graveyard.git"
+    "url": "git+https://github.com/Graveyard-Dev/graveyard.git"
   },
-  "author": "github: talloween",
+  "author": "github: Graveyard-Dev",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/talloween/graveyard/issues"
+    "url": "https://github.com/Graveyard-Dev/graveyard/issues"
   },
-  "homepage": "https://github.com/talloween/graveyard#readme",
+  "homepage": "https://github.com/Graveyard-Dev/graveyard#readme",
   "devDependencies": {
     "eslint": "^8.17.0"
   },
