@@ -1,49 +1,12 @@
-const { info } = require(`${__basedir}/configs/colors.json`);
+const { sendGuildLog } = require(`${__basedir}/utilities/generalFunctions.js`);
+
+const { create } = require(`${__basedir}/configs/colors.json`);
 
 const { formatBacktick } = require(`${__basedir}/utilities/generalFunctions.js`);
 
 const { log } = require(`${__basedir}/utilities/botLogFunctions.js`);
 
 const { missingPermissions } = require(`${__basedir}/utilities/commandFunctions.js`);
-
-async function sendLog(embed, channel) {
-    await channel.send({ embeds: [embed] });
-}
-
-async function sendGuildLog(graveyard, interaction) {
-    //* we return if detailedlogging is set to false
-    const detailedLogging = await graveyard.serverConfig.get(interaction.guild.id).detailed_logging[1] || null;
-    if (detailedLogging === null || detailedLogging === false) return;
-
-    //* we return if the logchannel isn't defined. 
-    if ((await graveyard.serverConfig.get(interaction.guild.id).log_channel[1] || null) === null) {
-        return;   
-    }
-
-    const logChannel = await graveyard.channels.fetch(await graveyard.serverConfig.get(interaction.guild.id).log_channel[1]);
-
-    const embed = {
-        title: "User iniated an application command.",
-        fields: [
-            {
-                name: "Executor",
-                value: `${await interaction.user.tag}`
-            },
-            {
-                name: "Command name",
-                value: `${await interaction.commandName}`
-            },
-            {
-                name: "Channel",
-                value: `${await interaction.channel}`
-            }
-        ],
-        timestamp: new Date(),
-        color: info
-    };
-
-    await sendLog(embed, logChannel);
-}
 
 module.exports = {
     name: "commandinteractioncreate",
@@ -85,7 +48,22 @@ module.exports = {
             //
 
             //* send a log to the guild
-            sendGuildLog(graveyard, interaction);
+            const fields = [
+                {
+                    name: "User",
+                    value: `${await interaction.user.tag}`
+                },
+                {
+                    name: "Command name",
+                    value: `${await interaction.commandName}`
+                },
+                {
+                    name: "Channel",
+                    value: `${await interaction.channel}`
+                }
+            ];
+
+            await sendGuildLog(graveyard, "A user initiated an application command", fields, create, null, "log_command_interactions", interaction.guild);
 
             //* log the command to server logs
             log(`In the guild ${interaction.guild.name}, ${interaction.user.tag} used the command ${interaction.commandName} with the options {${await interaction.options.data.map(option => ` NAME: [${option.name}] VALUE: [${option.value}]`) || "No options"} }`);

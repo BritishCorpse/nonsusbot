@@ -5,7 +5,7 @@ module.exports = {
     execute(graveyard) {
         graveyard.on("guildRemove", async guild => {
             //* log that we joined a guild
-            await log(`Left guild: {NAME: {${guild.name}} ID: {${guild.id}}}`);
+            log(`Left guild: {NAME: {${guild.name}} ID: {${guild.id}}}`);
             
             //  
             //! Create database entries 
