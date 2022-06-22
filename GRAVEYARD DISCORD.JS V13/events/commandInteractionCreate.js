@@ -63,6 +63,7 @@ module.exports = {
                 }
             ];
 
+            // returns if guild has log_command_interactions not define or set to false
             await sendGuildLog(graveyard, "A user initiated an application command", fields, create, null, "log_command_interactions", interaction.guild);
 
             //* log the command to server logs
