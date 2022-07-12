@@ -42,7 +42,7 @@ module.exports = {
             }
  
             // send the log
-            await sendGuildLog(graveyard, "A message was updated", fields, remove, image, "log_message_updates", newUser.guild);
+            await sendGuildLog(graveyard, "A user was updated", fields, remove, image, "log_user_updates", newUser.guild);
         });
     }
 };

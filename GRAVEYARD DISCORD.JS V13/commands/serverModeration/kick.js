@@ -15,7 +15,7 @@ module.exports = {
 
         if (guildMember.moderatable === false) return await interaction.reply({ content: "I cannot moderate this member.", ephemeral: true });
 
-        guildMember.kick(await interaction.getString("reason"));
+        guildMember.kick([await interaction.getString("reason")]);
 
         await interaction.reply(`Kicked ${guildMember} from the guild.`);
     }

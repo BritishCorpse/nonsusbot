@@ -43,6 +43,8 @@ graveyard.achievements = new Collection();
 //! Currency system methods
 //
 
+// Check db_objects.js
+
 //
 //! Commands
 //
@@ -64,6 +66,7 @@ for (const category of categoryFolders) {
 //! Achievements
 //
 
+// Development is pushed back until after re-release and admin panel.
 
 //
 //! Server configuration

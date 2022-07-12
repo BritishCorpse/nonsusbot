@@ -21,6 +21,12 @@ module.exports = {
             if (goodbyeChannel !== null && goodbyeMessage !== null) {
                 await goodbyeChannel.send({ content: `${guildMember}`, embeds: [await makeEmbed(graveyard, goodbyeMessage, null, info, goodbyeImageURL)]});
             }
+
+            //
+            //! Database deletion 
+            //
+
+            // delete the user from the levels table.
         });
     }
 };
