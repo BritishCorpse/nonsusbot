@@ -18,7 +18,8 @@ module.exports = {
             //! Create database entries 
             //
 
-            // We don't do this, because they're automatically made whenever you call the "get(database table)Guild()" function from db_objects.js
+            // Decided to remove this because its unnecessary. 
+            //Missing database entries are automatically created whenever you call the "get(database table)Guild()" function from db_objects.js
 
             //
             //! Add new guild server configs
@@ -34,7 +35,7 @@ module.exports = {
             const fields = [
                 {
                     name: "Set up configuration!",
-                    value:  "Set up configuration for your Discord server either with /setconfig or with our dashboard!"
+                    value:  "Set up configuration for your Discord server with our dashboard on our website!"
                 }, 
                 {
                     name: "Make sure I've got the permissions I need!",
