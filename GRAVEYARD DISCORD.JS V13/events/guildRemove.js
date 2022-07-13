@@ -12,7 +12,7 @@ module.exports = {
             //
 
             //* deletes database entries from the guild that we left
-            const deleteGuildDBEntries = await require("/eventFiles/deleteGuildDBEntries.js");
+            const deleteGuildDBEntries = await require("./eventFiles/deleteGuildDBEntries.js");
             await deleteGuildDBEntries.execute(graveyard, guild);
         });
     }

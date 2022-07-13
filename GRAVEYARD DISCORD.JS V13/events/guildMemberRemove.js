@@ -2,6 +2,8 @@ const { makeEmbed } = require(`${__basedir}/utilities/generalFunctions.js`);
 
 const { info } = require(`${__basedir}/configs/colors.json`);
 
+const { getCountingUser } = require(`${__basedir}/db_objects.js`);
+
 module.exports = {
     name: "guildMemberRemove",
     execute(graveyard) {
@@ -23,10 +25,12 @@ module.exports = {
             }
 
             //
-            //! Database deletion 
+            //! Database stuff
             //
 
-            // delete the user from the levels table.
+            const countingUser = await getCountingUser(guildMember.id);
+
+            await countingUser.destroy();
         });
     }
 };

@@ -16,6 +16,6 @@ module.exports = {
 
         await interaction.reply(`Deleted ${amount} messages in the ${channel} channel.`);
 
-        return await channel.bulkDelete(amount + 1, true);
+        return await channel.bulkDelete((amount), true);
     },
 };
