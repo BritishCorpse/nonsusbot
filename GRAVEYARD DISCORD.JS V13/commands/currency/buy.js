@@ -20,10 +20,10 @@ for(let i = 0; i < shop.length; ++i) {
 
     const category = item.itemCategory;
 
-    if (category === "foods") foods.push({ name: item.itemName, value: toString(item.itemId)} );
-    if (category === "tools") tools.push({ name: item.itemName, value: toString(item.itemId)} );
-    if (category === "cats") cats.push({ name: item.itemName, value: toString(item.itemId)} );
-    if (category === "dogs") dogs.push({ name: item.itemName, value: toString(item.itemId)} );
+    if (category === "foods") foods.push({ name: item.itemName, value: `${item.itemId}`} );
+    if (category === "tools") tools.push({ name: item.itemName, value: `${item.itemId}`} );
+    if (category === "cats") cats.push({ name: item.itemName, value: `${item.itemId}`} );
+    if (category === "dogs") dogs.push({ name: item.itemName, value: `${item.itemId}`} );
 }
 
 module.exports = {
@@ -122,6 +122,7 @@ module.exports = {
 
         const balance = await userCurrency.getBalance(interaction.user.id);
 
+        //* flags if the user does not have enough money
         if (balance < totalCost) return await interaction.editReply(`You don't have enough ${gravestone}'s for that!`);
 
         //* give the user the item

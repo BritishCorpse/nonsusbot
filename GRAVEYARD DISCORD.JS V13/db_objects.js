@@ -55,7 +55,7 @@ async function getCurrencyUser(userId) {
 
 Reflect.defineProperty(currencyShop, "getItem", {
     value: async (itemId) => {
-        return currencyShop.findOne({ where: { itemId: itemId } });
+        return await currencyShop.findOne({ where: { itemId: itemId } });
     }
 });
 
@@ -66,7 +66,7 @@ Reflect.defineProperty(currencyShop, "getItem", {
 
 Reflect.defineProperty(userInventory, "getItems", {
     value: async (userId) => {
-        return userInventory.findAll({
+        return await userInventory.findAll({
             where: { userId: userId }
         });
     }
@@ -74,7 +74,7 @@ Reflect.defineProperty(userInventory, "getItems", {
 
 Reflect.defineProperty(userInventory, "getItem", {
     value: async (userId, itemId) => {
-        return userInventory.findOne({ where: { itemId: itemId, userId: userId } });
+        return await userInventory.findOne({ where: { itemId: itemId, userId: userId } });
     }
 });
 
