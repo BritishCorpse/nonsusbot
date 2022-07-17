@@ -15,10 +15,12 @@ module.exports = {
         )
     ,
     async execute(interaction) {
+        await interaction.deferReply();
+        
         const amount = await interaction.options.getInteger("amount");
 
         userCurrency.addBalance(await interaction.user.id, amount);
         
-        await interaction.reply(`${amount}${gravestone}'s have been added to the balance of ${await interaction.user}.`);
+        await interaction.editReply(`${amount}${gravestone}'s have been added to the balance of ${await interaction.user}.`);
     },
 };

@@ -40,7 +40,7 @@ module.exports = {
 
             if (item.amount < 1) continue;
 
-            inventoryEmbed.addField(`${item.itemName}: ${item.itemDescription}`, `Owned: ${userItems[i].amount}\nCategory: ${item.itemCategory}\nAvailable for purchase: ${item.isAvailableToBuy}\nCost: ${item.itemCost}${gravestone}`);
+            inventoryEmbed.addField(`${item.itemName}: ${item.itemDescription}`, `Owned: ${userItems[i].amount}\nCategory: ${item.itemCategory}\nCost: ${item.itemCost}${gravestone}`);
         }
 
         //loop through the inventoryembeds array and remove any embeds that don't have any fields
