@@ -16,9 +16,9 @@ module.exports = {
                 .setDescription("Minute/Hour/Day")
                 .setRequired(true)
                 .addChoices(
-                    { name: "Hours", value: "360000" },
+                    { name: "Hours", value: "3600000" },
                     { name: "Minutes", value: "60000" },
-                    { name: "Days", value: "8640000" },
+                    { name: "Days", value: "86400000" },
                 )
         )
         .addStringOption(option => 
