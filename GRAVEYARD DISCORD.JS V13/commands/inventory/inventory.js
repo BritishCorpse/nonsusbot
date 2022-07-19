@@ -17,6 +17,11 @@ module.exports = {
         // get the users items
         const userItems = await userInventory.getItems(interaction.user.id);
 
+        // complain if the user doesn't have any items.
+        if (userItems.length < 1) {
+            return interaction.channel.send("Doesn't seem like you have any items. Sorry!");
+        }
+
         // declare array where we will store our embeds
         const inventoryEmbeds = [];
         
@@ -38,9 +43,22 @@ module.exports = {
                 }
             });
 
+            // we don't delete the item from the users inventory if they sell all of it to reduce disk writing wear and tear.
             if (item.amount < 1) continue;
 
-            inventoryEmbed.addField(`${item.itemName}: ${item.itemDescription}`, `Owned: ${userItems[i].amount}\nCategory: ${item.itemCategory}\nCost: ${item.itemCost}${gravestone}`);
+            // here we check the properties of the item in the inventory, and in the shop
+            // if certain criteria are met, we add special "flags" to the item to be displayed in the embed, eg. "item is not available" 
+            const embedFieldTitle = `${item.itemName}: ${item.itemDescription}`;
+            let embedFieldDescription = "";
+
+            embedFieldDescription += `\nOwned: ${userItems[i].amount}`;
+            embedFieldDescription += `\nCategory: ${item.itemCategory}`;
+            embedFieldDescription += `\nCost: ${item.itemCost}${gravestone}`;
+            
+            if (item.isAvailableToBuy === false) embedFieldDescription += "\n⚠️NOT PURCHASEABLE⚠️";
+            if (item.itemCategory === "developer") embedFieldDescription += /*i have no idea why vscode flags these as invisible*/"\n⚠️DEVELOPER ITEM⚠️";
+            
+            inventoryEmbed.addField(embedFieldTitle, embedFieldDescription);
         }
 
         //loop through the inventoryembeds array and remove any embeds that don't have any fields

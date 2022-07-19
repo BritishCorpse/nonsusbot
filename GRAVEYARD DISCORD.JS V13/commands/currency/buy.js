@@ -11,6 +11,7 @@ const foods = [];
 const tools = [];
 const cats = [];
 const dogs = [];
+const others = [];
 
 for(let i = 0; i < shop.length; ++i) {
     const item = shop[i];
@@ -24,6 +25,7 @@ for(let i = 0; i < shop.length; ++i) {
     if (category === "tools") tools.push({ name: item.itemName, value: `${item.itemId}`} );
     if (category === "cats") cats.push({ name: item.itemName, value: `${item.itemId}`} );
     if (category === "dogs") dogs.push({ name: item.itemName, value: `${item.itemId}`} );
+    if (category === "others") others.push({ name: item.itemName, value: `${item.itemId}`});
 }
 
 module.exports = {
@@ -101,6 +103,26 @@ module.exports = {
                         .setRequired(true)
                         .addChoices(
                             ...dogs
+                        )
+                )
+                .addIntegerOption(option =>
+                    option
+                        .setName("amount")
+                        .setDescription("How many of this item to buy")
+                        .setRequired(true)
+                )
+        )
+        .addSubcommand(subcommand => 
+            subcommand
+                .setName("others")
+                .setDescription("Buy something else")
+                .addStringOption(option =>
+                    option
+                        .setName("item")
+                        .setDescription("The item to buy")
+                        .setRequired(true)
+                        .addChoices(
+                            ...others
                         )
                 )
                 .addIntegerOption(option =>
