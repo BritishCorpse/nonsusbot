@@ -39,7 +39,7 @@ const rest = new REST({ version: "9" }).setToken(token);
 
 if (in_development === true) {
     rest.put(Routes.applicationGuildCommands(bot_id, dev_server_id), { body: commands })
-        .then(() => log("Registered application commands in the in_development server."));
+        .then(() => log("Registered application commands in the development server."));
 } else {
     rest.put(Routes.applicationCommands(bot_id), { body: commands })
         .then(() => log("Registered application commands globally."));
