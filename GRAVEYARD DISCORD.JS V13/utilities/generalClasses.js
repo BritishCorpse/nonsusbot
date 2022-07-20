@@ -48,8 +48,12 @@ class EmbedButtonManager {
     }
 
     // puts the buttons in the message
-    async pushButtons(message) {
-        message.edit({ content: message.content, components: this.actionRows });
+    async pushButtons(message, channel) {
+        if (message === undefined) {
+            channel.send({ components: this.actionRows });
+        } else {
+            message.edit({ components: this.actionRows });
+        }
     }
 
     // after we receive button interactions, we handle them here
@@ -94,8 +98,13 @@ class EmbedButtonManager {
     
     // creates a messageComponentCollector in a provided channel
     // when it receives an interaction, it will call the handleButtonInteractions method
-    async collectButtonPresses(channel, userId, timeLimit, embeds) {
-        const filter = interaction => interaction.user.id === userId;
+    async collectButtonPresses(channel, userId, timeLimit, embeds, message) {
+        // channel: where to wait for the interactions
+        // userId: which user's interactions we're listening for
+        // timeLimit: amount of time in seconds that the user has to not interact for the collector to end
+        // embeds: an array containing multiple embeds
+        // message: the message that has the interactions we're looking for.
+        const filter = interaction => interaction.user.id === userId && interaction.message.id === message.id;
 
         const collector = channel.createMessageComponentCollector({ filter, time: timeLimit * 1000 });
 
@@ -105,10 +114,20 @@ class EmbedButtonManager {
             await this.handleButtonInteractions(interaction, embeds);
         });
 
-        collector.on("end", collected => {
+        collector.on("end", async collected => {
             if (collected.size < 1) {
-                return channel.send("No interactions received.");
+                channel.send("Are you still awake? (No interactions were received)");
             }
+
+            this.actionRows.forEach(row => {
+                row.components.forEach(component => {
+                    component.setDisabled(true);
+                    if (component.type === "BUTTON")
+                        component.setStyle("SECONDARY");
+                });
+            });
+    
+            message.edit({components: this.actionRows});
         });
     }
 }
