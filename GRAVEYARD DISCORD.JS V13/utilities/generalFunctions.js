@@ -55,7 +55,7 @@ async function sendGuildLog(graveyard, title, fields, color, image, logType, gui
     await sendLog(embed, logChannel);
 }
 
-async function paginateEmbeds(channel, allowedUser, embeds, { useDropdown=false, useButtons=true, messageToEdit=null, previousEmoji="<", nextEmoji=">", addPagesInFooter=true, timeout=120000 }={}) {
+async function paginateEmbeds(channel, allowedUser, embeds, { useDropdown=false, useButtons=true, messageToEdit=null, previousEmoji="Previous", nextEmoji="Next", addPagesInFooter=true, timeout=120000 }={}) {
     // Idea from https://www.npmjs.com/package/discord.js-pagination
     // Creates reactions allowing multiple embed pages
 
