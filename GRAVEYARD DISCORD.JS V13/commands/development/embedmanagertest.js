@@ -49,10 +49,10 @@ module.exports = {
         await testClass.addButtons(buttons);
 
         // adds all of the messageComponentRows to the message.
-        await testClass.pushButtons(message);
+        await testClass.pushButtons(message, interaction.channel);
 
         // wait for the user to press a button
-        await testClass.collectButtonPresses(interaction.channel, interaction.user.id, /*provide a time limit in seconds*/60, embeds);
+        await testClass.collectButtonPresses(interaction.channel, interaction.user.id, /*provide a time limit in seconds*/60, embeds, message);
     },
 };
 
