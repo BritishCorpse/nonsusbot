@@ -1,18 +1,21 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { makeEmbed } = require("../../utilities/generalFunctions");
 
-const { paginateEmbeds } = require(`${__basedir}/utilities/generalFunctions.js`);
 const { userInventory, currencyShop } = require(`${__basedir}/db_objects.js`);
 
 const { gravestone } = require(`${__basedir}/configs/emojis.json`);
+
+const { EmbedButtonManager } = require(`${__basedir}/utilities/generalClasses.js`);
+
+const paginator = new EmbedButtonManager;
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("inventory")
         .setDescription("View your inventory"),
-        
+
     async execute(interaction) {
-        await interaction.reply("Opening your inventory...");
+        await interaction.reply({ content: "Opening your inventory..." });
 
         // get the users items
         const userItems = await userInventory.getItems(interaction.user.id);
@@ -54,7 +57,7 @@ module.exports = {
             embedFieldDescription += `\nOwned: ${userItems[i].amount}`;
             embedFieldDescription += `\nCategory: ${item.itemCategory}`;
             embedFieldDescription += `\nCost: ${item.itemCost}${gravestone}`;
-            
+        
             if (item.isAvailableToBuy === false) embedFieldDescription += "\n⚠️NOT PURCHASEABLE⚠️";
             if (item.itemCategory === "developer") embedFieldDescription += /*i have no idea why vscode flags these as invisible*/"\n⚠️DEVELOPER ITEM⚠️";
             
@@ -68,6 +71,38 @@ module.exports = {
             }
         }
 
-        await paginateEmbeds(interaction.channel, interaction.user, inventoryEmbeds);
+        const message = await interaction.channel.send({ embeds: [inventoryEmbeds[0]] });
+
+        const buttons = [
+            {
+                buttonType: "next",
+                buttonText: "Next",
+                buttonStyle: "PRIMARY"
+            },
+            {
+                buttonType: "previous",
+                buttonText: "Back",
+                buttonStyle: "PRIMARY"
+            },
+            {
+                buttonType: "start",
+                buttonText: "Start",
+                buttonStyle: "SECONDARY"
+            },
+            {
+                buttonType: "end",
+                buttonText: "End",
+                buttonStyle: "SECONDARY"
+            }
+        ];
+
+        // adds the buttons to an array with messageComponentrows
+        await paginator.addButtons(buttons);
+
+        // adds all of the messageComponentRows to the message.
+        await paginator.pushButtons(message, interaction.channel);
+
+        // wait for the user to press a button
+        await paginator.collectButtonPresses(interaction.channel, interaction.user.id, /*provide a time limit in seconds*/60, inventoryEmbeds, message);
     },
 };
