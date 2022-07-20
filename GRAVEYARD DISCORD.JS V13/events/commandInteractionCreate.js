@@ -67,7 +67,7 @@ module.exports = {
             await sendGuildLog(graveyard, "A user initiated an application command", fields, create, null, "log_command_interactions", interaction.guild);
 
             //* log the command to server logs
-            log(`In the guild ${interaction.guild.name}, ${interaction.user.tag} used the command ${interaction.commandName} with the options {${await interaction.options.data.map(option => ` NAME: [${option.name}] VALUE: [${option.value}]`) || "No options"} }`);
+            log(`Command {name: "${interaction.commandName}" options: "${await interaction.options.data.map(option => ` NAME: [${option.name}] VALUE: [${option.value}]`) || "No options"}"}`);
 
         });
     }
