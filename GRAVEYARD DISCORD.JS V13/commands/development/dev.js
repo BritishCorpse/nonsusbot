@@ -1,6 +1,8 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { makeEmbed} = require(`${__basedir}/utilities/generalFunctions.js`);
+const { Embed } = require(`${__basedir}/utilities/generalClasses.js`);
 const fs = require("node:fs");
+
+const { info } = require("../../configs/colors.json");
 
 const { getCommandCategories } = require(`${__basedir}/utilities/commandFunctions.js`);
 
@@ -100,6 +102,6 @@ module.exports = {
             });
         }
 
-        await interaction.editReply({ embeds: [ await makeEmbed(interaction.client, "Developer Information", fields, "#00f0f0") ] });
+        await interaction.editReply({ embeds: [new Embed("Developer Information", null, null, fields, null, info)] });
     }
 };

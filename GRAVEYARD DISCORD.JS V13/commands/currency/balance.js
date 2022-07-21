@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 
 const { userCurrency } = require(`${__basedir}/db_objects.js`);
 
-const { makeEmbed } = require(`${__basedir}/utilities/generalFunctions.js`);
+const { Embed } = require(`${__basedir}/utilities/generalClasses.js`);
 
 const { info } = require(`${__basedir}/configs/colors.json`);
 
@@ -31,6 +31,6 @@ module.exports = {
             }
         ];
 
-        await interaction.editReply({ embeds: [await makeEmbed(interaction.client, `${user.username}'s balance.`, fields, info)] });
+        await interaction.editReply({ embeds: [new Embed(`${user.username}'s balance.`, null, null, fields, null, info)] });
     },
 };

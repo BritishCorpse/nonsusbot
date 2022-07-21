@@ -1,11 +1,13 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { makeEmbed } = require("../../utilities/generalFunctions");
+const { ButtonStyle } = require("discord.js");
 
 const { userInventory, currencyShop } = require(`${__basedir}/db_objects.js`);
 
 const { gravestone } = require(`${__basedir}/configs/emojis.json`);
 
-const { EmbedButtonManager } = require(`${__basedir}/utilities/generalClasses.js`);
+const { info } = require(`${__basedir}/configs/colors.json`);
+
+const { EmbedButtonManager, Embed } = require("../../utilities/generalClasses.js");
 
 const paginator = new EmbedButtonManager;
 
@@ -29,12 +31,12 @@ module.exports = {
         const inventoryEmbeds = [];
         
         // declare inventory embed
-        let inventoryEmbed = await makeEmbed(interaction.client, `${interaction.user.username}'s inventory`, null, "BLUE", null);
+        let inventoryEmbed = new Embed(`${interaction.user.username}'s inventory`, null, null, null, null, info);
 
         for (let i = 0; i < userItems.length; ++i) {
             if (i % 10 === 0) {
                 //make new embed
-                inventoryEmbed = await makeEmbed(interaction.client, `${interaction.user.username}'s inventory`, null, "BLUE", null);
+                inventoryEmbed = new Embed(`${interaction.user.username}'s inventory`, null, null, null, null, info);
 
                 //push the embed into the embeds array
                 inventoryEmbeds.push(inventoryEmbed);
@@ -61,12 +63,14 @@ module.exports = {
             if (item.isAvailableToBuy === false) embedFieldDescription += "\n⚠️NOT PURCHASEABLE⚠️";
             if (item.itemCategory === "developer") embedFieldDescription += /*i have no idea why vscode flags these as invisible*/"\n⚠️DEVELOPER ITEM⚠️";
             
-            inventoryEmbed.addField(embedFieldTitle, embedFieldDescription);
+            inventoryEmbed.addFields([
+                { name: embedFieldTitle, value: embedFieldDescription }
+            ]);
         }
 
         //loop through the inventoryembeds array and remove any embeds that don't have any fields
         for (let i = 0; i < inventoryEmbeds.length; ++i) {
-            if (inventoryEmbeds[i].fields.length === 0) {
+            if (inventoryEmbeds[i].data.fields.length === 0) {
                 inventoryEmbeds.splice(inventoryEmbeds[i], 1);
             }
         }
@@ -77,22 +81,22 @@ module.exports = {
             {
                 buttonType: "next",
                 buttonText: "Next",
-                buttonStyle: "PRIMARY"
+                buttonStyle: ButtonStyle.Primary
             },
             {
                 buttonType: "previous",
                 buttonText: "Back",
-                buttonStyle: "PRIMARY"
+                buttonStyle: ButtonStyle.Primary
             },
             {
                 buttonType: "start",
                 buttonText: "Start",
-                buttonStyle: "SECONDARY"
+                buttonStyle: ButtonStyle.Secondary
             },
             {
                 buttonType: "end",
                 buttonText: "End",
-                buttonStyle: "SECONDARY"
+                buttonStyle: ButtonStyle.Secondary
             }
         ];
 

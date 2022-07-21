@@ -1,7 +1,7 @@
 
 // this class replaces the before known "paginateEmbeds" function. 
 
-const { MessageActionRow, MessageButton } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, EmbedBuilder } = require("discord.js");
 const { log } = require("./botLogFunctions");
 
 // you can add buttons and other interactions like dropdown menus to embeds with this.
@@ -29,7 +29,7 @@ class EmbedButtonManager {
 
     // adds some buttons to the list of buttons
     async addButtons(buttons) {
-        const buttonRow = new MessageActionRow();
+        const buttonRow = new ActionRowBuilder();
 
         // button = array of buttons
         buttons.forEach(button => {
@@ -37,7 +37,7 @@ class EmbedButtonManager {
             this.checkButtonType(button.buttonType);
 
             buttonRow.addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId(button.buttonType)
                     .setLabel(button.buttonText)
                     .setStyle(button.buttonStyle),
@@ -140,7 +140,34 @@ class ClassName {
     }
 }
 
+// class for creating embeds
+class Embed {
+    constructor(title, description, footer, fields, image, color) {
+        return new EmbedBuilder({
+            title: title,
+            description: description,
+            footer: footer,
+            fields: fields,
+            image: image,
+            color: color,
+        });
+    }
+
+    addField(field) {
+        this.addFields([field]);
+    }
+
+    send(channel) {
+        channel.send({ embeds: [this] });
+    }
+
+    changeToLogEmbed(logType) {
+        this.setDescription(logType);
+    }
+}
+
 module.exports = {
     ClassName,
-    EmbedButtonManager
+    EmbedButtonManager,
+    Embed
 };

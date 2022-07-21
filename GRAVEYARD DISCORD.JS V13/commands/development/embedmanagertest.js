@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const { ButtonStyle } = require("discord.js");
 const { EmbedButtonManager } = require("../../utilities/generalClasses");
 const { makeEmbed } = require("../../utilities/generalFunctions");
 
@@ -26,22 +27,22 @@ module.exports = {
             {
                 buttonType: "next",
                 buttonText: "Next",
-                buttonStyle: "PRIMARY"
+                buttonStyle: ButtonStyle.Primary
             },
             {
                 buttonType: "previous",
                 buttonText: "Back",
-                buttonStyle: "SECONDARY"
+                buttonStyle: ButtonStyle.Secondary
             },
             {
                 buttonType: "start",
                 buttonText: "Start",
-                buttonStyle: "SUCCESS"
+                buttonStyle: ButtonStyle.Success
             },
             {
                 buttonType: "end",
                 buttonText: "End",
-                buttonStyle: "DANGER"
+                buttonStyle: ButtonStyle.Danger
             }
         ];
 

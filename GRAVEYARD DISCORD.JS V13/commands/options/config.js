@@ -6,6 +6,6 @@ module.exports = {
         .setDescription("Sends a link to the dashboard."),
         
     async execute(interaction) {
-        await interaction.reply(`https://dashboard.graveyardbot.xyz/`);
+        await interaction.reply("https://dashboard.graveyardbot.xyz/");
     },
 };

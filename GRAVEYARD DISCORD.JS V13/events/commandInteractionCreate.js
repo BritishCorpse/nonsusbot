@@ -1,3 +1,5 @@
+const { InteractionType } = require("discord.js");
+
 const { sendGuildLog } = require(`${__basedir}/utilities/generalFunctions.js`);
 
 const { create } = require(`${__basedir}/configs/colors.json`);
@@ -14,7 +16,7 @@ module.exports = {
         graveyard.on("interactionCreate", async interaction => {
             //* only accept command interactions
             // this file only handles command interactions
-            if (!interaction.isCommand()) return;
+            if (interaction.type !== InteractionType.ApplicationCommand) return;
 
             //
             //! Command execution
@@ -28,16 +30,21 @@ module.exports = {
             //* check member permissions
             // if the member is missing permissions, tell them what permissions theyre missing and end the execution
             const isMissingPermissions = await missingPermissions(interaction.member, interaction, command);
-            if (isMissingPermissions !== false) {
+            if (isMissingPermissions === true) {
                 return await interaction.reply(`You do not have these required permissions in this channel or server: ${isMissingPermissions.map(formatBacktick).join(", ")}`);
             }
 
             //* check for bot permissions
             // if im missing permissions, tell them what permissions im missing and end the execution
+            
+            // THIS HAS BEEN DISABLED UNTIL FURTHER NOTICE.
+            // discord v14 has a bug where interaction.guild.me isn't found. therefore we can't check the bots permissions.
+            // when this bug is fixed, the feature will be added back.
+            /*
             const isBotMissingPermissions = await missingPermissions(interaction.guild.me, interaction, command);
-            if (isBotMissingPermissions !== false) {
+            if (isBotMissingPermissions === true) {
                 return await interaction.reply(`I do not have these required permissions in this channel or server: ${isBotMissingPermissions.map(formatBacktick).join(", ")}`);
-            }
+            }*/
 
             //* execute the command
             // if command execution fails, log the error and send them an ephemeral reply stating to go contact support.

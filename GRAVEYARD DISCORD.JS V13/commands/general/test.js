@@ -6,6 +6,6 @@ module.exports = {
         .setDescription("A test command you can use to check that the bot is responding."),
         
     async execute(interaction) {
-        await interaction.reply("Hey it's me!");
+        await interaction.reply("lorem ipsum");
     },
 };

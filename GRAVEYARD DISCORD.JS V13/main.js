@@ -6,16 +6,17 @@ global.startTimestamp = new Date();
 
 const fs = require("node:fs");
 
-const { Client, Intents, Collection } = require("discord.js");
+const { Client, Collection, GatewayIntentBits } = require("discord.js");
 const { log } = require("./utilities/botLogFunctions");
 const { token } = require(`${__basedir}/configs/graveyard_config.json`);
+
 const graveyard = new Client({ intents: 
     [
-        Intents.FLAGS.GUILDS, 
-        Intents.FLAGS.GUILD_MEMBERS, 
-        Intents.FLAGS.GUILD_MESSAGES,
-        Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-        Intents.FLAGS.DIRECT_MESSAGES,
+        GatewayIntentBits.Guilds, 
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.DirectMessages,
     ], allowedMentions: { parse: ["users", "roles"] }
 
 });

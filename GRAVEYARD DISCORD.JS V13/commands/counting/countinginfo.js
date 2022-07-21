@@ -1,9 +1,9 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { getCountingGuild, getCountingUser } = require("../../db_objects");
 
-const { makeEmbed } = require(`${__basedir}/utilities/generalFunctions.js`);
+const { Embed } = require("../../utilities/generalClasses.js");
 
-const { info } = require(`${__basedir}/configs/colors.json`);
+const { info } = require("../../configs/colors.json");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -42,7 +42,7 @@ module.exports = {
                 }
             ];
 
-            await interaction.editReply({ embeds: [await makeEmbed(interaction.client, `${interaction.guild.name}`, fields, info)] });
+            await interaction.editReply({ embeds: [new Embed(`${interaction.guild.name}'s counting info`, null, null, fields, null, info)] });
         }
 
         else if (await interaction.options.getSubcommand() === "user") {
@@ -65,7 +65,7 @@ module.exports = {
                 }
             ];
 
-            await interaction.editReply({ embeds: [await makeEmbed(interaction.client, `${await interaction.options.getUser("user").username}`, fields, info)] });
+            await interaction.editReply({ embeds: [new Embed(`${await interaction.options.getUser("user").username}`, null, null, fields, null, info)] });
         }
     },
 };

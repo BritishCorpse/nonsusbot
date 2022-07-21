@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
-const { makeEmbed } = require(`${__basedir}/utilities/generalFunctions.js`);
+const { Embed } = require(`${__basedir}/utilities/generalClasses.js`);
 
 const { info } = require(`${__basedir}/configs/colors.json`);
 
@@ -30,6 +30,6 @@ module.exports = {
     async execute(interaction) {
         const punchGif = Math.floor(Math.random() * punchGifs.length);
 
-        await interaction.reply({ embeds: [await makeEmbed(interaction.client, `${interaction.user.username} punches ${ await interaction.options.getUser("target").username}!`, null, info, punchGifs[punchGif])] });
+        await interaction.reply({ embeds: [new Embed(`${interaction.user.username} punches ${ await interaction.options.getUser("target").username}!`, null, null, null, punchGifs[punchGif])], info });
     },
 };

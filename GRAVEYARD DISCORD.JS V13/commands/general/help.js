@@ -1,6 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-
-const { makeEmbed } = require(`${__basedir}/utilities/generalFunctions.js`);
+const { Embed } = require("../../utilities/generalClasses");
 
 const { website_link, dev_server_invite_link } = require(`${__basedir}/configs/development_config.json`);
 
@@ -33,6 +32,10 @@ module.exports = {
             }
         ];
 
-        await interaction.editReply({ embeds: [await makeEmbed(interaction.client, "Need help?", fields, info)] });
+        const embed = new Embed("Need help?", "Here's some information which we think is useful for you.", null, fields, null, info);
+
+        console.log(embed);
+
+        await interaction.editReply({ embeds: [embed] });
     },
 };

@@ -16,7 +16,7 @@ module.exports = {
         ),
         
     async execute(interaction) {    
-        await interaction.reply("Starting game!");
+        return await interaction.reply("Feature disabled until further notice.");
 
         //* get the game that the user wants to host
         const game = await interaction.options.getString("game");
