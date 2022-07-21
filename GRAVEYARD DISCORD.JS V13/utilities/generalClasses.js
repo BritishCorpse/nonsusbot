@@ -142,11 +142,16 @@ class ClassName {
 
 // class for creating embeds
 class Embed {
-    constructor(title, description, footer, fields, image, color) {
+    constructor(title, description, footer, fields, image, color, author) {
         return new EmbedBuilder({
+            author: {
+                name: author
+            },
             title: title,
             description: description,
-            footer: footer,
+            footer: {
+                text: `Powered by Mana potions.\n${footer}`,
+            },
             fields: fields,
             image: image,
             color: color,
@@ -157,12 +162,8 @@ class Embed {
         this.addFields([field]);
     }
 
-    send(channel) {
-        channel.send({ embeds: [this] });
-    }
-
     changeToLogEmbed(logType) {
-        this.setDescription(logType);
+        this.setDescription(`${this.data.description + logType}`);
     }
 }
 

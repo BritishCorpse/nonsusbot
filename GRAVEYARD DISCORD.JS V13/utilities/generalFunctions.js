@@ -1,12 +1,7 @@
-const { EmbedBuilder } = require("discord.js");
 const { Embed } = require("./generalClasses");
 
 function formatBacktick(name) {
     return `\`\`${name}\`\``;
-}
-
-function addPageNumbersToFooter(embed, page, maxPage) {
-    return new EmbedBuilder(embed).setFooter({text: `(${page}/${maxPage}) ${embed.footer ? embed.footer.text : ""}`});
 }
 
 async function sendLog(embed, channel) {
@@ -25,7 +20,7 @@ async function sendGuildLog(graveyard, title, fields, color, image, logType, gui
 
     const logChannel = await graveyard.channels.fetch(await graveyard.serverConfig.get(guild.id).log_channel[1]);
 
-    const embed = new Embed(title, null, null, fields, image, color);
+    const embed = new Embed(title, null, logType, fields, image, color, "Logger");
 
     await sendLog(embed, logChannel);
 }
