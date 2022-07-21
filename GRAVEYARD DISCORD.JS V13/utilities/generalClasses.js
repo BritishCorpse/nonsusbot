@@ -150,7 +150,7 @@ class Embed {
             title: title,
             description: description,
             footer: {
-                text: `Powered by Mana potions.\n${footer}`,
+                text: `Powered by Mana potions. ${footer || ""}`,
             },
             fields: fields,
             image: image,
