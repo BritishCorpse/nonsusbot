@@ -1,7 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { ButtonStyle } = require("discord.js");
-const { EmbedButtonManager } = require("../../utilities/generalClasses");
-const { makeEmbed } = require("../../utilities/generalFunctions");
+const { EmbedButtonManager, Embed } = require("../../utilities/generalClasses");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -16,7 +15,7 @@ module.exports = {
         const embeds = [];
 
         for (let i = 1; i < 11; ++i){
-            embeds.push(await makeEmbed(interaction.client, `This is an embed title! Page number is: ${i}`, null, null, null));
+            embeds.push(new Embed(`This is an embed title! Page number is: ${i}`, null, null, null, null, null, null));
         }
 
 

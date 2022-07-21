@@ -1,7 +1,7 @@
 
 // this class replaces the before known "paginateEmbeds" function. 
 
-const { ActionRowBuilder, ButtonBuilder, EmbedBuilder } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, ButtonStyle } = require("discord.js");
 const { log } = require("./botLogFunctions");
 
 // you can add buttons and other interactions like dropdown menus to embeds with this.
@@ -109,7 +109,7 @@ class EmbedButtonManager {
         const collector = channel.createMessageComponentCollector({ filter, time: timeLimit * 1000 });
 
         collector.on("collect", async (interaction) => {
-            if (!interaction.isButton) return log("Skipped interaction which was not a button.");
+            if (!interaction.isButton()) return log("Skipped interaction which was not a button.");
 
             await this.handleButtonInteractions(interaction, embeds);
         });
@@ -122,8 +122,8 @@ class EmbedButtonManager {
             this.actionRows.forEach(row => {
                 row.components.forEach(component => {
                     component.setDisabled(true);
-                    if (component.type === "BUTTON")
-                        component.setStyle("SECONDARY");
+                    if (component.type === "Button")
+                        component.setStyle(ButtonStyle.Secondary);
                 });
             });
     
