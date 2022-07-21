@@ -34,7 +34,7 @@ module.exports = {
         let inventoryEmbed = new Embed(`${interaction.user.username}'s inventory`, null, null, null, null, info);
 
         for (let i = 0; i < userItems.length; ++i) {
-            if (i % 10 === 0) {
+            if (i % 5 === 0) {
                 //make new embed
                 inventoryEmbed = new Embed(`${interaction.user.username}'s inventory`, null, null, null, null, info);
 
