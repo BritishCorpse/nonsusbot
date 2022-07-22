@@ -1,9 +1,0 @@
-{
-  "developer_discord_user_ids": ["", ""],
-  "artist_discord_user_ids": ["", ""],
-  "development_discord_server_ids": ["", ""],
-  "main_bot_discord_user_id": "",
-  "testing_bot_token": "",
-  "testing_discord_server_id": "",
-  "testing_bot_discord_user_id": ""
-}
