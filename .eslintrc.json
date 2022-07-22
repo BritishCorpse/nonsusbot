@@ -30,6 +30,7 @@
         "testing": "writable",
         "__basedir": "writable",
         "__dirname": "readonly",
-        "process": "readonly"
+        "process": "readonly",
+        "log": "writable"
     }
 }

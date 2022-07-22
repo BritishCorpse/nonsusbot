@@ -19,11 +19,11 @@ module.exports = {
             }
         }
 
-        client.on("interactionCreate", () => {
+        client.on("interactionCreate", interaction => {
             processesToExecute.forEach(process => {
                 const processToExecute = require(process);
 
-                processToExecute.execute(client);
+                processToExecute.execute(client, interaction);
             });
         });
     }

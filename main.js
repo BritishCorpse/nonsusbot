@@ -6,7 +6,7 @@ global.__basedir = __dirname;
 const fs = require("fs");
 
 // Function used to format logging.
-const log = function(log) {
+global.log = function(log) {
     const date = new Date();
 
     console.log(`${date.toUTCString()}: ${log}`);
@@ -36,6 +36,17 @@ client.once("ready", async () => {
 client.eventListeners = new Collection();
 client.commands = new Collection();
 
+// Run startup files
+const startupFiles = fs.readdirSync("./startupFiles").filter(file => file.endsWith(".js"));
+
+for (const startupFile of startupFiles) {
+    const file = require(`./startupFiles/${startupFile}`);
+
+    file.execute(client);
+}
+
+
+
 // Start event listeners
 const eventListenerFiles = fs.readdirSync("./eventListeners").filter(file => file.endsWith(".js"));
 
@@ -49,43 +60,4 @@ client.eventListeners.forEach(eventListener => {
     eventListener.execute(client);
 });
 
-/*
-// Read commands from commands folder
-// Push commands data in a JSON format to an array
-const commands = [];
-
-const commandCategories = fs.readdirSync("./commands");
-
-for (const category of commandCategories) {
-    const commandFiles = fs.readdirSync(`./commands/${category}`).filter(commandFile => commandFile.endsWith(".js"));
-
-    for (const commandFile of commandFiles) {
-        const command = require(`./commands/${category}/${commandFile}`);
-        command.category = category;
-
-        client.commands.set(command.data.name, command);
-
-        commands.push(command.data.toJSON());
-    }
-}
-
-// Deploy commands to discord
-const { REST } = require("@discordjs/rest");
-const { Routes } = require("discord-api-types/v9");
-const { bot_id } = require(`${__basedir }/configs/graveyard_config.json`);
-
-//FIX THIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-const { dev_server_id, in_development } = require(`${__basedir}/configs/development_config.json`);
-
-//* loop through all the categories, and push each command in a respective category to the commands array.
-
-const rest = new REST({ version: "9" }).setToken(token);
-
-if (in_development === true) {
-    rest.put(Routes.applicationGuildCommands(bot_id, dev_server_id), { body: commands })
-        .then(() => log("Registered application commands in the development server."));
-} else {
-    rest.put(Routes.applicationCommands(bot_id), { body: commands })
-        .then(() => log("Registered application commands globally."));
-}
-*/
+log("Event listeners started.");

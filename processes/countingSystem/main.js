@@ -1,5 +1,6 @@
 module.exports = {
-    execute(client) {
-        console.log("Yippee!");
+    execute() {
+        // create counting system here.
+        return;
     }
 };
