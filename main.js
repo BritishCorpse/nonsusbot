@@ -1,4 +1,4 @@
-const { token } = require("./resources/botConfigs.json");
+const { token } = require("./sources/botConfigs.json");
 const { Client, GatewayIntentBits, Collection } = require("discord.js");
 
 const fs = require("fs");
@@ -27,7 +27,7 @@ client.login(token);
 
 // Once the client has logged in.
 client.once("ready", async () => {
-    log("Started");
+    log("Started new bot instance.");
 });
 
 // Collections
@@ -47,6 +47,7 @@ client.eventListeners.forEach(eventListener => {
     eventListener.execute(client);
 });
 
+/*
 // Read commands from commands folder
 // Push commands data in a JSON format to an array
 const commands = [];
@@ -85,4 +86,4 @@ if (in_development === true) {
     rest.put(Routes.applicationCommands(bot_id), { body: commands })
         .then(() => log("Registered application commands globally."));
 }
-
+*/
