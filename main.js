@@ -1,6 +1,8 @@
 const { token } = require("./sources/botConfigs.json");
 const { Client, GatewayIntentBits, Collection } = require("discord.js");
 
+global.__basedir = __dirname;
+
 const fs = require("fs");
 
 // Function used to format logging.

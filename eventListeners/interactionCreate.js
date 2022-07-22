@@ -1,7 +1,7 @@
 const fs = require("node:fs");
 
 module.exports = {
-    name: "messageCreate",
+    name: "interactionCreate",
     async execute(client) {
         const processesToExecute = [];
 
@@ -19,7 +19,7 @@ module.exports = {
             }
         }
 
-        client.on("messageCreate", () => {
+        client.on("interactionCreate", () => {
             processesToExecute.forEach(process => {
                 const processToExecute = require(process);
 

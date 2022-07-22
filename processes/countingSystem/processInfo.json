@@ -1,0 +1,6 @@
+{
+    "name": "countingSystem",
+    "description": "Handles messages sent in the counting channel.",
+    "version": "0.0.1",
+    "triggeredBy": "messageCreate"
+}
