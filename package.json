@@ -18,7 +18,8 @@
   "homepage": "https://github.com/Graveyard-Dev/bot#readme",
   "dependencies": {
     "discord.js": "^14.0.3",
-    "eslint": "^8.20.0"
+    "eslint": "^8.20.0",
+    "mongoose": "^6.4.6"
   },
   "description": ""
 }

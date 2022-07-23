@@ -19,11 +19,11 @@ module.exports = {
             }
         }
 
-        client.on("messageCreate", () => {
+        client.on("messageCreate", message => {
             processesToExecute.forEach(process => {
                 const processToExecute = require(process);
 
-                processToExecute.execute(client);
+                processToExecute.execute(message);
             });
         });
     }

@@ -23,7 +23,7 @@ module.exports = {
             processesToExecute.forEach(process => {
                 const processToExecute = require(process);
 
-                processToExecute.execute(client, interaction);
+                processToExecute.execute(interaction);
             });
         });
     }
