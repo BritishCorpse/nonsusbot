@@ -38,12 +38,6 @@ client.once("ready", async () => {
     log("Started new bot instance.");
 });
 
-
-//TODO: CREATE NEW DATABASE SCHEMAS. FOLLOW CODELYONS TUTORIAL.
-//CREATE GUILD CONFIGS TABLE
-
-
-
 // Collections
 client.eventListeners = new Collection();
 client.commands = new Collection();
