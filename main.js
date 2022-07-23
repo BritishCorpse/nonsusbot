@@ -35,6 +35,7 @@ client.once("ready", async () => {
     //ignore the super secret password. it doesn't really matter since no outside devices should be allowed to connect in to the databse since the port is not forwarded.
     await mongoose.connect("mongodb://admin:myadminpassword@192.168.1.115", { keepAlive: true });
 
+    log("Connected to Mongo database.");
     log("Started new bot instance.");
 });
 

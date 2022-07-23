@@ -1,7 +1,6 @@
 module.exports = {
-    execute(message) {
+    execute() {
         // counting system only handles messages sent by users, not bots.
-        if (message.author.bot) return;
 
         // check if message is in the counting channel
 
