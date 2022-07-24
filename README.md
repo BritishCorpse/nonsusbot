@@ -135,6 +135,8 @@ Create a new folder in there with a name of your liking. For this example we wil
 
 ##### Required files
 
+Each process MUST have a folder called `commands`
+
 Navigate in to the folder you just created, and create a file called `processInfo.json`.
 
 In that file you must specify these things.
