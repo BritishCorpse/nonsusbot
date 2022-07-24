@@ -164,7 +164,7 @@
             "consistent": true,
             "minProperties": 4
         }],
-        "object-curly-spacing": ["error", "never"],
+        "object-curly-spacing": ["error", "always"],
         "operator-linebreak": ["error", "before"],
         "rest-spread-spacing": "error",
         "space-before-blocks": "error",
