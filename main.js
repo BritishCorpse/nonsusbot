@@ -7,6 +7,9 @@ global.__basedir = __dirname;
 
 const fs = require("fs");
 
+// Require globalUtilities folder used for sub processes.
+const globalUtilitiesFolder = require(`${__basedir}/globalUtilities`);
+
 // Function used to format logging.
 global.log = function(log) {
     const date = new Date();
@@ -62,7 +65,7 @@ for (const listenerFile of eventListenerFiles) {
 }
 
 client.eventListeners.forEach(eventListener => {
-    eventListener.execute(client);
+    eventListener.execute(client, globalUtilitiesFolder);
 });
 
 log("Event listeners started.");

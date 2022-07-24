@@ -1,5 +1,9 @@
 module.exports = {
-    execute() {
+    execute(message, globalUtilitiesFolder) {
+        const { EmbedManager } = globalUtilitiesFolder;
+
+        console.log(new EmbedManager("piss", null, null, null, null, null));
+    
         // counting system only handles messages sent by users, not bots.
 
         // check if message is in the counting channel
