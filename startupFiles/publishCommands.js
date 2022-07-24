@@ -14,6 +14,8 @@ module.exports = {
         const processes = fs.readdirSync(`${__basedir}/processes`);
         
         for (const process of processes) {
+            if (fs.existsSync(`${__basedir}/processes/${process}/commands`) === false) continue;
+            
             const commandFiles = fs.readdirSync(`${__basedir}/processes/${process}/commands`)
                 .filter(file => file.endsWith("Command.js"));
 

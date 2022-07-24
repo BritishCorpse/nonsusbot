@@ -1,6 +1,0 @@
-{
-    "name": "configSystem",
-    "description": "Handles guild configs.",
-    "version": "0.0.1",
-    "triggeredBy": "guildCreate"
-}
