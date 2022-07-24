@@ -24,6 +24,7 @@ const client = new Client({ intents:
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.MessageContent,
         GatewayIntentBits.DirectMessages,
     ], allowedMentions: { parse: ["users", "roles"] }
 

@@ -1,47 +1,56 @@
-const CountingChannels = require("./databaseSchemaCountingChannel");
+const countingChannel = require("./databaseSchemaCountingChannel");
+
+const countingGuild = require("./databaseSchemaCountingGuild");
 
 module.exports = {
     async execute(message, globalUtilitiesFolder) {
-        // will do once ive finished the database manager :)
-        return;
         if (message.author.bot) return;
 
-        const { EmbedManager } = globalUtilitiesFolder;
+        const { DatabaseManager } = globalUtilitiesFolder;
 
-        const embedManager = new EmbedManager;
+        const databaseManager = new DatabaseManager;
 
-        embedManager.createEmbed("Embed 1", "null1", null, null, null, null, null);
-        embedManager.createEmbed("Embed 2", "null1", null, null, null, null, null);
-    
-        embedManager.addChannel(message.channel);
-        embedManager.addChannel(await message.client.channels.fetch("988026812816826441"));
+        // Try to find the counting channel in the database
+        const channel = await databaseManager.find(countingChannel, {
+            guildId: message.guild.id,
+            channelId: message.channel.id
+        }, false) || null;
 
-        return embedManager.sendEmbeds(embedManager.embeds);
-        
-        // counting system only handles messages sent by users, not bots.
+        // If the channel entry is not defined in the database collection.
+        if (channel === null) return;
 
-        // check if message is in the counting channel
+        // If the channels id does not match the counting channels id
+        if (message.channel.id !== channel.channelId) return;
 
-        // check if message is NaN and if is, check if the guild is allowing them in the counting channel
+        // If message is not a number
+        if (isNaN(message.content)) {
+            if (channel.allowNonNumbers === true) return;
+            else return message.delete();
+        }
 
-        // check the nextNumber entry for the guild, if !== to what the user sent, set the nextNumber back to 1 and add 1 incorrectlyCounted to the user.
-        
-        // if what the user sent is the correct number
-        // add 1 to the users correctlyCounted
-        // add 1 to the guilds nextNumber
+        // Find the guild in the database
+        const guild = await databaseManager.find(countingGuild, {
+            guildId: message.guild.id
+        }, true) || null;
 
-        // react with some emoji
+        // If the number that the user sent isnt the correct one,
+        // of if the last counter was the one whos counting now,
+        // failed the count.
+        // If everything is correct, add one to the count and change the last conter to be the message author
+        if (parseInt(message.content) !== guild.nextNumber || guild.lastCounterId === message.author.id) {
+            guild.nextNumber = 1;
+            guild.lastCounterId = "0",
 
+            await guild.save();
 
-        /*await countingSchema.create({
-            userId: interaction.user.id,
-            guildId: interaction.guild.id,
-        });
+            message.channel.send(`${message.author} ruined the count! The next number is 1.`);
+        } else {
+            guild.nextNumber += 1;
+            guild.lastCounterId = message.author.id;
 
-        const countingUser = await countingSchema.findOne({
-            userId: interaction.user.id
-        });
-        
-        console.log(countingUser);*/
+            await guild.save();
+
+            message.react("🤍");
+        }
     }
 };
