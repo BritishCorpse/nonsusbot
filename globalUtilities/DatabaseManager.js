@@ -3,7 +3,7 @@ class DatabaseManager {
 
     async find(schema, searchParams, createIfNotFound) {
         let databaseEntry = await schema.findOne(
-            searchParams
+            searchParams,
         );
 
         if (databaseEntry === null) {
@@ -11,11 +11,11 @@ class DatabaseManager {
 
             databaseEntry = await schema.create(searchParams);
         }
-        
+
         return databaseEntry;
     }
 }
 
 module.exports = {
-    DatabaseManager
+    DatabaseManager,
 };

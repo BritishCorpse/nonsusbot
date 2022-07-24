@@ -1,4 +1,4 @@
-const {EmbedBuilder} = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 
 // Class that is used by all processes for formatting embeds.
 class EmbedManager {
@@ -43,7 +43,7 @@ class EmbedManager {
     // Sends specified embeds to specified channels.
     sendEmbeds(embeds) {
         for (const channel of this.channels) {
-            channel.send({embeds});
+            channel.send({ embeds });
         }
     }
 

@@ -8,12 +8,12 @@ module.exports = {
 
         const { DatabaseManager } = globalUtilitiesFolder;
 
-        const databaseManager = new DatabaseManager;
+        const databaseManager = new DatabaseManager();
 
         // Try to find the counting channel in the database
         const channel = await databaseManager.find(countingChannel, {
             guildId: message.guild.id,
-            channelId: message.channel.id
+            channelId: message.channel.id,
         }, false) || null;
 
         // If the channel entry is not defined in the database collection.
@@ -25,12 +25,12 @@ module.exports = {
         // If message is not a number
         if (isNaN(message.content)) {
             if (channel.allowNonNumbers === true) return;
-            else return message.delete();
+            return message.delete();
         }
 
         // Find the guild in the database
         const guild = await databaseManager.find(countingGuild, {
-            guildId: message.guild.id
+            guildId: message.guild.id,
         }, true) || null;
 
         // If the number that the user sent isnt the correct one,
@@ -52,5 +52,5 @@ module.exports = {
 
             message.react("🤍");
         }
-    }
+    },
 };

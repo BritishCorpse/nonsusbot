@@ -1,5 +1,5 @@
-const {token} = require("./sources/botConfigs.json");
-const {Client, GatewayIntentBits, Collection} = require("discord.js");
+const { token } = require("./sources/botConfigs.json");
+const { Client, GatewayIntentBits, Collection } = require("discord.js");
 
 const mongoose = require("mongoose");
 
@@ -27,7 +27,7 @@ const client = new Client({
         GatewayIntentBits.GuildMessageReactions,
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.DirectMessages,
-    ], allowedMentions: {parse: ["users", "roles"]},
+    ], allowedMentions: { parse: ["users", "roles"] },
 
 });
 
@@ -40,7 +40,7 @@ client.once("ready", async () => {
 
     // connect to the database
     // ignore the super secret password. it doesn't really matter since no outside devices should be allowed to connect in to the databse since the port is not forwarded.
-    await mongoose.connect("mongodb://admin:myadminpassword@192.168.1.115", {keepAlive: true});
+    await mongoose.connect("mongodb://admin:myadminpassword@192.168.1.115", { keepAlive: true });
 
     log("Connected to Mongo database.");
 });
