@@ -1,5 +1,5 @@
 module.exports = {
-    async execute(guild) {
+    execute(guild) {
         console.log(guild.name);
-    }
+    },
 };
