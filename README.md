@@ -119,6 +119,18 @@ The only notable exception for this is database collection names and class names
 If your code no longer works, or is no longer required, move in to the `legacy` folder located in the root directory of the project.
 We keep legacy code, because sometimes it might contain things we need later on.
 
+### Global utilities
+
+Global utilities are classes stored in the `globalUtilities` folder located at the root of the project.
+
+They are used by most processes, and removing / editing them may cause major errors. Be certain that when editing global utilities that method names, method parameters and constructor parameters stay the same. Make sure that there are no bugs in global utilities when you make a pull request.
+
+#### Creating global utilities
+
+To create a global utility, create file in the `globalUtilities` located at the root of the project. You can name this file whatever, just make sure that you follow our naming rules and that the file ends in `.js`.
+
+Inside the global utility file, create your class and export it using `module.exports`.
+
 ### Processes
 
 The majority of your development will be creating and managing processes.
@@ -134,6 +146,8 @@ Create a new folder in there with a name of your liking. For this example we wil
 #### Creating files
 
 ##### Required files
+
+Each process MUST have a folder called `commands`
 
 Navigate in to the folder you just created, and create a file called `processInfo.json`.
 

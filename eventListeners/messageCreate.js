@@ -2,7 +2,7 @@ const fs = require("node:fs");
 
 module.exports = {
     name: "messageCreate",
-    execute(client) {
+    execute(client, globalUtilitiesFolder) {
         const processesToExecute = [];
 
         const processFolders = fs.readdirSync(`${__basedir}/processes/`);
@@ -23,7 +23,7 @@ module.exports = {
             processesToExecute.forEach(process => {
                 const processToExecute = require(process);
 
-                processToExecute.execute(message);
+                processToExecute.execute(message, globalUtilitiesFolder);
             });
         });
     },
