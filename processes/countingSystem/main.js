@@ -6,18 +6,18 @@ module.exports = {
         return;
         if (message.author.bot) return;
 
-        const { EmbedManager } = globalUtilitiesFolder;
+        const {EmbedManager} = globalUtilitiesFolder;
 
-        const embedManager = new EmbedManager;
+        const embedManager = new EmbedManager();
 
         embedManager.createEmbed("Embed 1", "null1", null, null, null, null, null);
         embedManager.createEmbed("Embed 2", "null1", null, null, null, null, null);
-    
+
         embedManager.addChannel(message.channel);
         embedManager.addChannel(await message.client.channels.fetch("988026812816826441"));
 
         return embedManager.sendEmbeds(embedManager.embeds);
-        
+
         // counting system only handles messages sent by users, not bots.
 
         // check if message is in the counting channel
