@@ -1,8 +1,11 @@
-const { InteractionType } = require("discord.js");
+const {InteractionType} = require("discord.js");
 
 module.exports = {
     async execute(interaction) {
-        if (interaction.type !== InteractionType.ApplicationCommand) return log("Skipped interaction which was not a command.");
+        if (interaction.type !== InteractionType.ApplicationCommand) {
+            log("Skipped interaction which was not a command.");
+            return;
+        }
 
         const command = interaction.client.commands.get(interaction.commandName);
         if (!command) return;
@@ -14,5 +17,5 @@ module.exports = {
         await command.execute(interaction);
 
         log(`${interaction.user.username} used the command ${interaction.commandName}`);
-    }
+    },
 };

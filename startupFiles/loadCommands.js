@@ -1,9 +1,9 @@
 const fs = require("fs");
 
 module.exports = {
-    async execute(client) {
+    execute(client) {
         const processes = fs.readdirSync(`${__basedir}/processes`);
-        
+
         for (const process of processes) {
             const commandFiles = fs.readdirSync(`${__basedir}/processes/${process}/commands`)
                 .filter(file => file.endsWith("Command.js"));
@@ -18,5 +18,5 @@ module.exports = {
         }
 
         log("Added commands to client collection.");
-    }
+    },
 };

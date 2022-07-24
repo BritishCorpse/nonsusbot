@@ -2,7 +2,7 @@ const fs = require("node:fs");
 
 module.exports = {
     name: "messageCreate",
-    async execute(client) {
+    execute(client) {
         const processesToExecute = [];
 
         const processFolders = fs.readdirSync(`${__basedir}/processes/`);
@@ -26,5 +26,5 @@ module.exports = {
                 processToExecute.execute(message);
             });
         });
-    }
+    },
 };

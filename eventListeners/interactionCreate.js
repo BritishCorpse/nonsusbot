@@ -2,7 +2,7 @@ const fs = require("node:fs");
 
 module.exports = {
     name: "interactionCreate",
-    async execute(client) {
+    execute(client) {
         const processesToExecute = [];
 
         const processFolders = fs.readdirSync(`${__basedir}/processes/`);
@@ -26,5 +26,5 @@ module.exports = {
                 processToExecute.execute(interaction);
             });
         });
-    }
+    },
 };
