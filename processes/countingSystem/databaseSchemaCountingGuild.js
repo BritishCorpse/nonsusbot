@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const databaseSchema = new mongoose.Schema({
-    guildId: { type: String, require: true },
+    guildId: {type: String, require: true},
 
     correctlyCounted: { type: Number, require: true, default: 0 },
     incorrectlyCounted: { type: Number, require: true, default: 0 },
@@ -12,5 +12,5 @@ const databaseSchema = new mongoose.Schema({
 });
 
 const model = mongoose.model("CountingGuild", databaseSchema);
- 
+
 module.exports = model;

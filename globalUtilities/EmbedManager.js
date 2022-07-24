@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require("discord.js");
+const {EmbedBuilder} = require("discord.js");
 
 // Class that is used by all processes for formatting embeds.
 class EmbedManager {
@@ -12,26 +12,26 @@ class EmbedManager {
     createEmbed(title, description, fields, footer, image, color, author) {
         this.embeds.push(
             new EmbedBuilder({
-                title: title,
-                description: description,
-                fields: fields,
+                title,
+                description,
+                fields,
                 footer: {
-                    text: "Powered by mana potions" + (footer || "")
+                    text: `Powered by mana potions${footer || ""}`,
                 },
-                image: image,
-                color: color,
+                image,
+                color,
                 author: {
-                    name: author
+                    name: author,
                 },
                 timestamp: new Date().toISOString(),
-            })
-        ); 
+            }),
+        );
     }
 
     // Adds fields to an embed
     addFields(embed, fields) {
         return embed.addFields([
-            fields
+            fields,
         ]);
     }
 
@@ -43,18 +43,18 @@ class EmbedManager {
     // Sends specified embeds to specified channels.
     sendEmbeds(embeds) {
         for (const channel of this.channels) {
-            channel.send({ embeds: embeds });
+            channel.send({embeds});
         }
     }
 
     // Sets the author of an embed
     setAuthor(embed, author) {
         return embed.setAuthor({
-            author
+            author,
         });
     }
 }
 
 module.exports = {
-    EmbedManager
+    EmbedManager,
 };

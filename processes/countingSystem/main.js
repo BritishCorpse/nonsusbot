@@ -39,7 +39,7 @@ module.exports = {
         // If everything is correct, add one to the count and change the last conter to be the message author
         if (parseInt(message.content) !== guild.nextNumber || guild.lastCounterId === message.author.id) {
             guild.nextNumber = 1;
-            guild.lastCounterId = "0",
+            guild.lastCounterId = "0";
 
             await guild.save();
 

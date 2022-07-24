@@ -1,5 +1,5 @@
-const { token } = require("./sources/botConfigs.json");
-const { Client, GatewayIntentBits, Collection } = require("discord.js");
+const {token} = require("./sources/botConfigs.json");
+const {Client, GatewayIntentBits, Collection} = require("discord.js");
 
 const mongoose = require("mongoose");
 
@@ -11,22 +11,23 @@ const fs = require("fs");
 const globalUtilitiesFolder = require(`${__basedir}/globalUtilities`);
 
 // Function used to format logging.
-global.log = function(log) {
+global.log = function (log) {
     const date = new Date();
 
     console.log(`${date.toUTCString()}: ${log}`);
 };
 
 // Create a new client instance
-const client = new Client({ intents: 
+const client = new Client({
+    intents:
     [
-        GatewayIntentBits.Guilds, 
+        GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.GuildMessageReactions,
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.DirectMessages,
-    ], allowedMentions: { parse: ["users", "roles"] }
+    ], allowedMentions: {parse: ["users", "roles"]},
 
 });
 
@@ -37,9 +38,9 @@ client.login(token);
 client.once("ready", async () => {
     log("Started new bot instance.");
 
-    //connect to the database
-    //ignore the super secret password. it doesn't really matter since no outside devices should be allowed to connect in to the databse since the port is not forwarded.
-    await mongoose.connect("mongodb://admin:myadminpassword@192.168.1.115", { keepAlive: true });
+    // connect to the database
+    // ignore the super secret password. it doesn't really matter since no outside devices should be allowed to connect in to the databse since the port is not forwarded.
+    await mongoose.connect("mongodb://admin:myadminpassword@192.168.1.115", {keepAlive: true});
 
     log("Connected to Mongo database.");
 });

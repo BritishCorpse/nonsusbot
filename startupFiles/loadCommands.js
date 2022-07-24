@@ -1,9 +1,9 @@
 const fs = require("fs");
 
 module.exports = {
-    async execute(client) {
+    execute(client) {
         const processes = fs.readdirSync(`${__basedir}/processes`);
-        
+
         for (const process of processes) {
             if (fs.existsSync(`${__basedir}/processes/${process}/commands`) === false) continue;
 
@@ -20,5 +20,5 @@ module.exports = {
         }
 
         log("Added commands to client collection.");
-    }
+    },
 };
