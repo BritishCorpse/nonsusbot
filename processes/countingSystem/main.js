@@ -25,7 +25,9 @@ module.exports = {
         // If message is not a number
         if (isNaN(message.content)) {
             if (channel.allowNonNumbers === true) return;
-            return message.delete();
+            message.delete();
+
+            return;
         }
 
         // Find the guild in the database
