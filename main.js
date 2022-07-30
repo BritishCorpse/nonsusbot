@@ -1,9 +1,16 @@
-const { token } = require("./sources/botConfigs.json");
+global.__basedir = __dirname;
+
+const { token } = require(`${__basedir}/sources/botConfigs.json`);
+const {
+    username: dbUsername,
+    password: dbPassword,
+    host: dbHost,
+    port: dbPort,
+    database: dbDatabase,
+} = require(`${__basedir}/sources/databaseConfigs.json`);
 const { Client, GatewayIntentBits, Collection } = require("discord.js");
 
 const mongoose = require("mongoose");
-
-global.__basedir = __dirname;
 
 const fs = require("fs");
 
@@ -38,9 +45,15 @@ client.login(token);
 client.once("ready", async () => {
     log("Started new bot instance.");
 
-    // connect to the database
-    // ignore the super secret password. it doesn't really matter since no outside devices should be allowed to connect in to the databse since the port is not forwarded.
-    await mongoose.connect("mongodb://admin:myadminpassword@192.168.1.115", { keepAlive: true });
+    // connect to the database (the order of the assignments to dbUrl matter)
+    const dbUrl = new URL("mongodb://");
+    dbUrl.host = dbHost;
+    dbUrl.port = dbPort;
+    dbUrl.pathname = dbDatabase;
+    dbUrl.username = dbUsername;
+    dbUrl.password = dbPassword;
+
+    await mongoose.connect(dbUrl.href, { keepAlive: true });
 
     log("Connected to Mongo database.");
 });
