@@ -1,2 +1,4 @@
-node_modules
-sources
+# Ignore configuration files, except the examples
+sources/*
+!sources/examples/
+
