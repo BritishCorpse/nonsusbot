@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const databaseSchema = new mongoose.Schema({
-    guildId: { type: String, require: true },
+    guildId: { type: String, require: true, immutable: true },
     channelId: { type: String, require: true, unique: true },
     allowNonNumbers: {
         type: Boolean, require: true, unique: false, "default": true,
