@@ -45,6 +45,12 @@ Then run `cd { directory that you just found }` to get into it.
 
 ### Checking files.
 
+
+Create a directory called `sources` at the root of the project directory.
+
+Change your directory to `sources`.
+Once you're in `sources`, look for the example folder. Copy the presets from there, and create corresponding files in the parent folder `sources`. In those files input the relevant information to you.
+
 List the files in your directory again, and then look for a folder called `sources`. 
 Change your directory in to that folder.
 
