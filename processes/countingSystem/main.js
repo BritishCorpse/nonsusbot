@@ -35,10 +35,6 @@ module.exports = {
             guildId: message.guild.id,
         }, true) || null;
 
-        // If the number that the user sent isnt the correct one,
-        // of if the last counter was the one whos counting now,
-        // failed the count.
-        // If everything is correct, add one to the count and change the last conter to be the message author
         if (parseInt(message.content) !== guild.nextNumber || guild.lastCounterId === message.author.id) {
             guild.nextNumber = 1;
             guild.lastCounterId = "0";
