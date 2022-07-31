@@ -19,7 +19,10 @@ const discordSnowflake = {
 
 const databaseSchema = new mongoose.Schema({
     guildId: {
-        type: String, require: true, unique: true, immutable: true,
+        ...discordSnowflake,
+        require: true,
+        unique: true,
+        immutable: true,
     },
 
     // the "configs" object in ANY collection will be treated as a config in the
