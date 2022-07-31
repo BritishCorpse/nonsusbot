@@ -1,6 +1,5 @@
 {
     "name": "countingSystem",
     "description": "Test config system",
-    "version": "0.0.1",
-    "triggeredBy": "messageCreate"
+    "version": "0.0.1"
 }
