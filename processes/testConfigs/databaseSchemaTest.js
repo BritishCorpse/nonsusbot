@@ -11,7 +11,7 @@ const databaseSchema = new mongoose.Schema({
 
     // the "configs" object in ANY collection will be treated as a config in the
     // dashboard
-    configs: {
+    options: {
         messageContent: {
             ...discordMessageContent,
             require: true,
