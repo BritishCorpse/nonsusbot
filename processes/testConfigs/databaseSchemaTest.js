@@ -9,7 +9,7 @@ const discordMessageContent = {
     maxLength: [2000, "Discord message content is too long."],
 };
 
-const snowflake = {
+const discordSnowflake = {
     type: String,
     validate: {
         validator: v => (/\d+/u).test(v),
@@ -31,7 +31,7 @@ const databaseSchema = new mongoose.Schema({
             "default": "Please verify!",
         },
         channelId: {
-            ...snowflake,
+            ...discordSnowflake,
             // just in case two different guilds use the same verification
             // channel (not really possible)
             require: true,
