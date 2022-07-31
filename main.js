@@ -42,21 +42,22 @@ const client = new Client({
 client.login(token);
 
 // Once the client has logged in.
-client.once("ready", async () => {
+client.once("ready", () => {
     log("Started new bot instance.");
-
-    // connect to the database (the order of the assignments to dbUrl matter)
-    const dbUrl = new URL("mongodb://");
-    dbUrl.host = dbHost;
-    dbUrl.port = dbPort;
-    dbUrl.pathname = dbDatabase;
-    dbUrl.username = dbUsername;
-    dbUrl.password = dbPassword;
-
-    await mongoose.connect(dbUrl.href, { keepAlive: true });
-
-    log("Connected to Mongo database.");
 });
+
+// Connect to the database (the order of the assignments to dbUrl matter)
+const dbUrl = new URL("mongodb://");
+dbUrl.host = dbHost;
+dbUrl.port = dbPort;
+dbUrl.pathname = dbDatabase;
+dbUrl.username = dbUsername;
+dbUrl.password = dbPassword;
+
+mongoose.connect(dbUrl.href, { keepAlive: true })
+    .then(() => {
+        log("Connected to Mongo database.");
+    });
 
 // Collections
 client.eventListeners = new Collection();
