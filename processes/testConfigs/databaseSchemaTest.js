@@ -1,21 +1,5 @@
 const mongoose = require("mongoose");
-
-// TODO: move these validators into global utilities
-
-const discordMessageContent = {
-    type: String,
-    // TODO: put the "magic numbers" somewhere as constants (discord minimum and maximum message length)
-    minLength: [1, "Discord message content is too short."],
-    maxLength: [2000, "Discord message content is too long."],
-};
-
-const discordSnowflake = {
-    type: String,
-    validate: {
-        validator: v => (/\d+/u).test(v),
-        message: props => `${props.value} is not a valid Snowflake`,
-    },
-};
+const { discordMessageContent, discordSnowflake } = require(`${__basedir}/globalUtilities`);
 
 const databaseSchema = new mongoose.Schema({
     guildId: {
