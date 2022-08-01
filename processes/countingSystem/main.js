@@ -1,5 +1,3 @@
-const countingChannel = require("./databaseSchemaCountingChannel");
-
 const countingGuild = require("./databaseSchemaCountingGuild");
 
 module.exports = {
@@ -10,30 +8,24 @@ module.exports = {
 
         const databaseManager = new DatabaseManager();
 
-        // Try to find the counting channel in the database
-        const channel = await databaseManager.find(countingChannel, {
-            guildId: message.guild.id,
-            channelId: message.channel.id,
-        }, false) || null;
-
-        // If the channel entry is not defined in the database collection.
-        if (channel === null) return;
-
-        // If the channels id does not match the counting channels id
-        if (message.channel.id !== channel.channelId) return;
-
-        // If message is not a number
-        if (isNaN(message.content)) {
-            if (channel.allowNonNumbers === true) return;
-            message.delete();
-
-            return;
-        }
-
         // Find the guild in the database
         const guild = await databaseManager.find(countingGuild, {
             guildId: message.guild.id,
         }, true) || null;
+
+        // If the channel entry is not defined in the database collection.
+        if (guild.channelId === null) return;
+
+        // If the channels id does not match the counting channels id
+        if (message.channel.id !== guild.channelId) return;
+
+        // If message is not a number
+        if (isNaN(message.content)) {
+            if (guild.allowNonNumbers === true) return;
+            message.delete();
+
+            return;
+        }
 
         if (parseInt(message.content) !== guild.nextNumber || guild.lastCounterId === message.author.id) {
             guild.nextNumber = 1;
