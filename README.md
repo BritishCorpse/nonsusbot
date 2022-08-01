@@ -51,7 +51,7 @@ Create a directory called `sources` at the root of the project directory.
 Change your directory to `sources`.
 Once you're in `sources`, look for the example folder. Copy the presets from there, and create corresponding files in the parent folder `sources`. In those files input the relevant information to you.
 
-List the files in your directory again, and then look for a folder called `sources`. 
+List the files in your directory again, and then look for a folder called `sources`.
 Change your directory in to that folder.
 
 Once you're in `sources`, look for a file called `botConfigs.json`.
@@ -83,7 +83,7 @@ Ensure that it is connecting to an actual database. If you are unsure whether or
 
 Navigate back to your projects root directory.
 
-Run `npm install --save`. 
+Run `npm install --save`.
 
 On Linux you might get an error saying something along the lines of `npm was not found`. This means you will have to install npm separately.
 
@@ -210,7 +210,7 @@ const databaseSchema = new mongoose.Schema({
 });
 
 const model = mongoose.model("CountingUser", databaseSchema);
- 
+
 module.exports = model;
 ```
 
@@ -223,12 +223,40 @@ Here are some basic parameters that you can use when defining keys in a new mong
 `unique, can be: true/false` Whether or not there can be multiple objects in this schema, with the same value of this key.
 `default, can be: anything` If a value isn't defined when creating a new object in this schema, it will use this value.
 
+`globalUtilities` includes schema presets for common discord types (snowflakes, etc.).
+
+###### Guild Configs
+
+To create guild-specific configs for a process, just create a database schema with a name ending in `Config`, and add these keys:
+
+```
+{
+    guildId: {
+        ...discordSnowflake,
+        required: true,
+        immutable: true,
+        unique: true,
+    },
+    options: {
+        // The actual config options.
+        // For example,
+        timeUntilShower: {
+            type: Number,
+            min: 1,
+            max: 100,
+            required: true,
+            "default": 15,
+        }
+    }
+}
+```
+
 ###### Commands
 If you want commands for your process, create a directory called `commands` in the root directory of your process.
 
 Then, to create a command file just create a new file and call it anything, but make sure that the files name ends with `Command.js`. (Case sensitive).
 
-Here's a basic example of what a command looks like. 
+Here's a basic example of what a command looks like.
 
 ```
 const { SlashCommandBuilder } = require("@discordjs/builders");
@@ -237,7 +265,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("test")
         .setDescription("A test command you can use to check that the bot is responding."),
-        
+
     async execute(interaction) {
         await interaction.reply("lorem ipsum");
     }
@@ -248,7 +276,7 @@ Let's break down this file.
 
 We require SlashCommandBuilder from discord.js to create a new command.
 
-We then create a module.exports for the file containing a couple things. 
+We then create a module.exports for the file containing a couple things.
 
 Data, which is the slash command,
 And an async execute() function.
