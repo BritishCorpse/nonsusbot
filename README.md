@@ -99,7 +99,7 @@ If you get warnings whilst running `npm install`, make sure to read them. If it 
 
 ## Running the bot
 
-Run `node .` in the root directory of the project to start the bot.
+Run `npm start` in the root directory of the project to start the bot.
 
 If you see logs in your terminal that look someting like this:
 
