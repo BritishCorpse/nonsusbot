@@ -18,10 +18,10 @@ const fs = require("fs");
 const globalUtilitiesFolder = require(`${__basedir}/globalUtilities`);
 
 // Function used to format logging.
-global.log = function (log) {
+global.log = function (logText) {
     const date = new Date();
 
-    console.log(`${date.toUTCString()}: ${log}`);
+    console.log(`${date.toUTCString()}: ${logText}`);
 };
 
 // Create a new client instance
