@@ -1,6 +1,4 @@
 class DatabaseManager {
-    constructor() { }
-
     async find(schema, searchParams, createIfNotFound) {
         let databaseEntry = await schema.findOne(
             searchParams,
