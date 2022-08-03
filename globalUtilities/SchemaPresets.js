@@ -7,12 +7,22 @@
 }
 */
 
+const minLength = {
+    length: 1,
+    error: "Discord message content is too short.",
+};
+
+const maxLength = {
+    length: 2000,
+    error: "Discord message content is too short.",
+};
+
 module.exports = {
     discordMessageContent: {
         type: String,
         // TODO: put the "magic numbers" somewhere as constants (discord minimum and maximum message length)
-        minLength: [1, "Discord message content is too short."],
-        maxLength: [2000, "Discord message content is too long."],
+        minLength: [minLength.length, minLength.error],
+        maxLength: [maxLength.length, maxLength.error],
     },
     discordSnowflake: {
         type: String,
