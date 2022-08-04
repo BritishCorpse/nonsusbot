@@ -17,7 +17,7 @@ const fs = require("fs");
 // Require globalUtilities folder used for sub processes.
 const globalUtilitiesFolder = require(`${__basedir}/globalUtilities`);
 
-// Function used to format logging.
+// Function used to format and log information to the console.
 global.log = function (logText) {
     const date = new Date();
 
