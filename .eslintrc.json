@@ -17,7 +17,6 @@
         "no-var": "error",
         "no-tabs": "error",
         "camelcase": "error",
-        "linebreak-style": "error",
         "prefer-const": ["error", {
             "destructuring": "any"
         }],
