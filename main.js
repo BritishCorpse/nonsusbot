@@ -60,7 +60,6 @@ mongoose.connect(dbUrl.href, { keepAlive: true })
     });
 
 // Collections
-client.eventListeners = new Collection();
 client.commands = new Collection();
 
 client.processes = [];
@@ -80,12 +79,8 @@ const eventListenerFiles = fs.readdirSync("./processEventListeners").filter(file
 for (const listenerFile of eventListenerFiles) {
     const eventListener = require(`./processEventListeners/${listenerFile}`);
 
-    client.eventListeners.set(eventListener.name, eventListener);
-}
-
-client.eventListeners.forEach(eventListener => {
     eventListener.execute(client, globalUtilitiesFolder);
-});
+}
 
 log("Event listeners started.");
 

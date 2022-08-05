@@ -1,8 +1,11 @@
-//const countingGuild = require("./databaseSchemaCountingGuild");
+// const countingGuild = require("./databaseSchemaCountingGuild");
 
 module.exports = {
-    async execute(message, globalUtilitiesFolder) {
+    async execute(data) {
         return;
+        const message = data.content;
+        const globalUtilitiesFolder = data.globalUtilitiesFolder;
+
         if (message.author.bot) return;
 
         const { DatabaseManager } = globalUtilitiesFolder;

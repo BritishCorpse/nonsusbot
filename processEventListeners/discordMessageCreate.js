@@ -1,5 +1,5 @@
 module.exports = {
-    name: "messageCreate",
+    name: "discordMessageCreate",
     execute(client, globalUtilitiesFolder) {
         client.on("messageCreate", message => {
             const { ProcessManager } = globalUtilitiesFolder;
