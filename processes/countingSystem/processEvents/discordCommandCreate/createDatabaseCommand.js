@@ -5,7 +5,9 @@ module.exports = {
         .setName("createdatabase")
         .setDescription("A test command you can use to check that the bot is responding."),
 
-    async execute(interaction) {
+    async execute({ data }) {
+        const interaction = data.content;
+
         await interaction.reply("lorem ipsum");
     },
 };
