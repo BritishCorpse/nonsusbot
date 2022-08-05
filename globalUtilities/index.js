@@ -1,6 +1,5 @@
 const fs = require("fs");
 
-
 const files = fs.readdirSync(`${__basedir}/globalUtilities`)
     .filter(file => file.endsWith(".js") && file !== "index.js");
 
