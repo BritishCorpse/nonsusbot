@@ -20,7 +20,7 @@ const maxLength = {
 module.exports = {
     discordMessageContent: {
         type: String,
-        // TODO: put the "magic numbers" somewhere as constants (discord minimum and maximum message length)
+
         minLength: [minLength.length, minLength.error],
         maxLength: [maxLength.length, maxLength.error],
     },

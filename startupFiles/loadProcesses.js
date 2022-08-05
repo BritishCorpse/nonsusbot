@@ -11,11 +11,14 @@ module.exports = {
                 const eventFolderFiles = fs.readdirSync(`${__basedir}/processes/${process}/processEvents/${processEventFolder}`);
 
                 for (const eventFolderFile of eventFolderFiles) {
-                    client.processes.set(eventFolderFile, processEventFolder);
+                    client.processes.push(
+                        {
+                            path: `${__basedir}/processes/${process}/processEvents/${processEventFolder}/${eventFolderFile}`,
+                            event: processEventFolder,
+                        },
+                    );
                 }
             }
         }
-
-        console.log(client.processes);
     },
 };

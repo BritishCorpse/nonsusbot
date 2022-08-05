@@ -63,7 +63,7 @@ mongoose.connect(dbUrl.href, { keepAlive: true })
 client.eventListeners = new Collection();
 client.commands = new Collection();
 
-client.processes = new Collection();
+client.processes = [];
 
 // Run startup files
 const startupFiles = fs.readdirSync("./startupFiles").filter(file => file.endsWith(".js"));
@@ -88,3 +88,10 @@ client.eventListeners.forEach(eventListener => {
 });
 
 log("Event listeners started.");
+
+// Log all processes.
+const { ProcessManager } = globalUtilitiesFolder;
+
+const processManager = new ProcessManager();
+
+processManager.listProcesses(client);
