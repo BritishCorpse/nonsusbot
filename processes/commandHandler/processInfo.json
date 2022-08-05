@@ -1,6 +1,0 @@
-{
-    "name": "commandHandler",
-    "description": "Dynamically executes slash commands",
-    "version": "0.0.1",
-    "triggeredBy": "interactionCreate"
-}
