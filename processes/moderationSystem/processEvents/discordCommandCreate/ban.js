@@ -10,7 +10,7 @@ module.exports = {
         .addUserOption(option => option
             .setName("user")
             .setRequired(true)
-            .setDescription("the user to ban"))
+            .setDescription("The user to ban"))
         .addBooleanOption(option => option
             .setName("deletemessages")
             .setRequired(true)
