@@ -12,6 +12,12 @@ class DatabaseManager {
 
         return databaseEntry;
     }
+
+    create(schema, params) {
+        return schema.create(
+            params,
+        );
+    }
 }
 
 module.exports = {

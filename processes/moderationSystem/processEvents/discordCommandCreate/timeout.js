@@ -36,6 +36,7 @@ module.exports = {
         const duration = parseInt(await interaction.options.getString("duration"));
 
         memberToTimeout.timeout(duration, reason);
+
         await interaction.editReply(`Timed out ${memberToTimeout}. Duration: ${duration} Reason: \`${reason}\``);
     },
 };

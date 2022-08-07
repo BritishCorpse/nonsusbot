@@ -28,7 +28,8 @@ module.exports = {
         const userToBan = await interaction.options.getMember("user");
         const reason = await interaction.options.getString("reason");
 
-        // userToBan.ban({ reason });
+        userToBan.ban({ reason });
+
         await interaction.editReply(`Banned ${userToBan} from ${interaction.guild.name} for \`${reason}\``);
 
         const databaseManager = new data.globalUtilitiesFolder.DatabaseManager();
