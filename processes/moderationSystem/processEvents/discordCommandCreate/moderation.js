@@ -67,6 +67,15 @@ module.exports = {
                 .setRequired(true)
                 .setDescription("The reason to unban this user")))
 
+        .addSubcommand(command => command
+            .setName("moderationinfo")
+            .setDescription("See moderation info on guild members.")
+            .addUserOption(option => option
+                .setName("user")
+                .setRequired(true)
+                .setDescription("The user to view")),
+        )
+
         .addSubcommandGroup(group => group
             .setName("warn")
             .setDescription("Warning commands")

@@ -42,9 +42,10 @@ module.exports = {
             const userWarnings = await databaseManager.findAll(guildMemberWarnings, {
                 guildId: interaction.guild.id,
                 userId: await interaction.options.getUser("user").id,
-            }, false) || null;
+            }, false);
 
-            if (userWarnings === null) {
+            // eslint-disable-next-line no-magic-numbers
+            if (!userWarnings || userWarnings.length < 1) {
                 return interaction.editReply("This user does not have any warnings.");
             }
 
