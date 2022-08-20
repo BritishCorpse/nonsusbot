@@ -3,3 +3,4 @@ node_modules/
 # Ignore configuration files, except the examples
 sources/*
 !sources/examples/
+!sources/colours.json

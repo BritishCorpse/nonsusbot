@@ -1,0 +1,31 @@
+{
+    "warning": {
+        "decimal": 16767232,
+        "hexadecimal": "ffd900",
+        "rgb": "255, 217, 0"
+    },
+
+    "update": {
+        "decimal": 65514,
+        "hexadecimal": "00ffea",
+        "rgb": "0, 255, 234"
+    },
+
+    "delete": {
+        "decimal": 11863082,
+        "hexadecimal": "b5042a",
+        "rgb": "181, 4, 42"
+    },
+
+    "special": {
+        "decimal": 9896168,
+        "hexadecimal": "9700e8",
+        "rgb": "151, 0, 232"
+    },
+
+    "info": {
+        "decimal": 37864,
+        "hexadecimal": "0093e8",
+        "rgb": "0, 147, 232"
+    }
+}
