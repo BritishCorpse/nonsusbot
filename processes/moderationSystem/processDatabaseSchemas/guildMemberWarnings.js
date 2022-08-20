@@ -18,6 +18,6 @@ const databaseSchema = new mongoose.Schema({
     },
 });
 
-const model = mongoose.model("GuildModerationHistories", databaseSchema);
+const model = mongoose.model("GuildMemberWarnings", databaseSchema);
 
 module.exports = model;

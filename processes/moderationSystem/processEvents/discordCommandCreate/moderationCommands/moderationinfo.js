@@ -1,18 +1,8 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
-
-const guildMemberModerationHistory = require("../../processDatabaseSchemas/guildMemberModerationHistories");
+const guildMemberModerationHistory = require("../../../processDatabaseSchemas/guildMemberModerationHistories");
 
 module.exports = {
     userPermissions: ["MODERATE_MEMBERS"],
     botPermissions: ["MODERATE_MEMBERS"],
-
-    data: new SlashCommandBuilder()
-        .setName("moderationinfo")
-        .setDescription("See moderation info on guild members.")
-        .addUserOption(option => option
-            .setName("user")
-            .setRequired(true)
-            .setDescription("The user to view")),
 
     async execute({ data }) {
         const interaction = data.content;

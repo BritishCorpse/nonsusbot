@@ -48,6 +48,7 @@ client.once("ready", () => {
 
 // Connect to the database (the order of the assignments to dbUrl matter)
 const dbUrl = new URL("mongodb://");
+
 dbUrl.host = dbHost;
 dbUrl.port = dbPort;
 dbUrl.pathname = dbDatabase;
