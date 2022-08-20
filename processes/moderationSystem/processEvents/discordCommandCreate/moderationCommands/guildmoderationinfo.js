@@ -1,6 +1,8 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
-const guildModerationHistories = require("../../processDatabaseSchemas/guildModerationHistories");
+const guildModerationHistories = require("../../../processDatabaseSchemas/guildModerationHistories");
+
+const { info } = require("../../../../../sources/colours.json");
 
 module.exports = {
     userPermissions: ["MANAGE_GUILD"],
@@ -31,12 +33,8 @@ module.exports = {
             },
         ];
 
-        await embedManager.createEmbed(`${interaction.guild.name}`, null, fields, null, null, "16777215", null);
+        await embedManager.createEmbed(`${interaction.guild.name}`, null, fields, null, null, info.decimal, null);
 
-        await embedManager.addChannel(interaction.channel);
-
-        embedManager.sendEmbeds(embedManager.embeds);
-
-        await interaction.editReply("Here's moderation information about your guild.");
+        await interaction.editReply({ embeds: embedManager.embeds });
     },
 };

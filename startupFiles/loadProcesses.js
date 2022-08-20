@@ -8,7 +8,7 @@ module.exports = {
             const processEventFolders = fs.readdirSync(`${__basedir}/processes/${process}/processEvents`);
 
             for (const processEventFolder of processEventFolders) {
-                const eventFolderFiles = fs.readdirSync(`${__basedir}/processes/${process}/processEvents/${processEventFolder}`);
+                const eventFolderFiles = fs.readdirSync(`${__basedir}/processes/${process}/processEvents/${processEventFolder}`).filter(file => file.endsWith(".js"));
 
                 for (const eventFolderFile of eventFolderFiles) {
                     client.processes.push(

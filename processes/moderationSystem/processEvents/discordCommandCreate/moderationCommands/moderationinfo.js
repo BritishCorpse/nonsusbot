@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
-const guildMemberModerationHistory = require("../../processDatabaseSchemas/guildMemberModerationHistories");
+const guildMemberModerationHistory = require("../../../processDatabaseSchemas/guildMemberModerationHistories");
 
 module.exports = {
     userPermissions: ["MODERATE_MEMBERS"],
