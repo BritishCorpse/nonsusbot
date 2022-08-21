@@ -26,34 +26,14 @@ const databaseSchema = new mongoose.Schema({
             },
 
             durationType: {
-                type: String,
-                validate: {
-                    function(durationType) {
-                        const allowedTypes = ["Second", "Minute", "Hour"];
-
-                        if (!allowedTypes.includes(durationType)) {
-                            return false;
-                        }
-
-                        return true;
-                    },
-
-                    message: props => `${props.value} is invalid!`,
-                },
-
+                type: Number,
                 required: true,
-                "default": "Hour",
+                "default": 3600000,
             },
-        },
-
-        timeoutRoles: {
-            type: Array,
-            required: false,
-            "default": [],
         },
     },
 });
 
-const model = mongoose.model("GuildModerationConfigs", databaseSchema);
+const model = mongoose.model("GuildAutoModerationConfigs", databaseSchema);
 
 module.exports = model;
