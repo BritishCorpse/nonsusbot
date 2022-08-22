@@ -6,7 +6,7 @@ module.exports = {
 
             const processManager = new ProcessManager();
 
-            processManager.executeProcesses(client, "discordMessageCreate", { data: { content: message, client } });
+            processManager.executeProcesses(client, "discordMessageCreate", { data: { content: message, client, globalUtilitiesFolder } });
         });
     },
 };
