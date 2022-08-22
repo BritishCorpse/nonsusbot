@@ -7,7 +7,7 @@ const databaseSchema = new mongoose.Schema({
 
     options: {
         spamFilter: {
-            enabled: {
+            isEnabled: {
                 type: Boolean,
                 required: true,
                 "default": false,

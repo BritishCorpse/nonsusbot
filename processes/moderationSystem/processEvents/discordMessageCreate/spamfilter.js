@@ -1,70 +1,57 @@
 const guildAutoModerationConfigs = require("../../processDatabaseSchemas/guildAutoModerationConfigs");
 
-class SpamFilter {
-    constructor() {
-        this.users = {};
-    }
+const Harvest = require("../../../../globalUtilities/Harvest");
 
-    addUser(userId, guildId) {
-        const userObject = {
-            timeLimit: Date.now() + this.duration,
-            messageCount: 1,
-        };
-
-        this.users[userId + guildId] = userObject;
-    }
-
-    setMessageInterval(messageAmount, duration) {
-        this.messageAmount = messageAmount;
-        this.duration = duration;
-    }
-}
-
-const spamFilter = new SpamFilter();
-
-// eslint-disable-next-line no-magic-numbers
+const harvest = new Harvest();
 
 module.exports = {
     async execute({ data }) {
+        // define stuff passed through from the data object
         const message = data.content;
-
         const databaseManager = new data.globalUtilitiesFolder.DatabaseManager();
 
-        const user = message.author;
-
-        const guildConfigs = await databaseManager.find(guildAutoModerationConfigs, {
+        // find the guild in database
+        const guildInDatabase = await databaseManager.find(guildAutoModerationConfigs, {
             guildId: message.guild.id,
         }, true);
 
-        if (guildConfigs.options.spamFilter.enabled === false) {
+        const spamFilter = guildInDatabase.options.spamFilter;
+
+        // if they have their spam filter disabled
+        if (spamFilter.isEnabled === false) {
             return;
         }
 
-        spamFilter.setMessageInterval(parseInt(guildConfigs.options.spamFilter.messageAmount), parseInt(guildConfigs.options.spamFilter.duration * guildConfigs.options.spamFilter.durationType));
+        // id used to look up data from the harvest class
+        const harvestId = { userId: message.author.id, guildId: message.guild.id };
 
-        let userInSpamFilter = spamFilter.users[user.id + message.guild.id];
+        let harvestedUser = harvest.get(harvestId);
 
-        // if the user doesnt exist, create them
-        if (!userInSpamFilter) {
-            spamFilter.addUser(user.id, message.guild.id);
+        // if the user doesnt exist in the harvest, create them
+        if (!harvestedUser) {
+            const userObject = {
+                timeLimit: Date.now() + (spamFilter.duration * spamFilter.durationType),
+                messageCount: 0,
+            };
 
-            userInSpamFilter = spamFilter.users[user.id + message.guild.id];
+            harvestedUser = harvest.set(harvestId, userObject);
         }
 
-        // check if the message interval has expired
-        if (Date.now() > userInSpamFilter.timeLimit) {
-            userInSpamFilter.timeLimit = Date.now() + spamFilter.duration;
+        // add one to the users messageCount
+        harvestedUser.messageCount++;
 
-            userInSpamFilter.messageCount = 0;
+        // check if the message interval has expired
+        if (Date.now() > harvestedUser.timeLimit) {
+            harvestedUser.timeLimit = Date.now() + spamFilter.duration;
+
+            harvestedUser.messageCount = 1;
+
+            harvest.set(harvestId, harvestedUser);
         }
 
         // check if theyre past their allowed message limit
-        if (userInSpamFilter.messageCount > spamFilter.messageAmount) {
+        if (harvestedUser.messageCount > spamFilter.messageAmount) {
             message.delete();
         }
-
-        userInSpamFilter.messageCount++;
-
-        console.log(userInSpamFilter);
     },
 };
