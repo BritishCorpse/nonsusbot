@@ -14,8 +14,12 @@ class Harvest {
     }
 
     get(id) {
-        console.log(this.crops[id]);
-        return this.crops[id];
+        if (this.crops[id]) {
+            return this.crops[id];
+        }
+
+        return null;
+
     }
 }
 
