@@ -20,6 +20,10 @@ const databaseSchema = new mongoose.Schema({
     timesBanned: {
         type: Number, require: true, "default": 0,
     },
+
+    spamFilterInfractionCount: {
+        type: Number, require: true, "default": 0,
+    },
 });
 
 const model = mongoose.model("GuildMemberModerationHistories", databaseSchema);

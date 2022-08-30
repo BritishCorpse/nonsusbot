@@ -16,19 +16,31 @@ const databaseSchema = new mongoose.Schema({
             messageAmount: {
                 type: Number,
                 required: true,
-                "default": 100,
+                "default": 1000,
             },
 
             duration: {
                 type: Number,
                 required: true,
-                "default": 100,
+                "default": 1,
             },
 
             durationType: {
                 type: Number,
                 required: true,
-                "default": 3600000,
+                "default": 1000,
+            },
+
+            moderateBots: {
+                type: Boolean,
+                required: true,
+                "default": false,
+            },
+
+            punishments: {
+                type: Array,
+                required: true,
+                "default": null,
             },
         },
     },

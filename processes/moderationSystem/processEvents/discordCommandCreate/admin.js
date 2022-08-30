@@ -27,7 +27,7 @@ module.exports = {
         const spamFilterEmbeds = [
             {
                 name: "Enabled?",
-                value: `${spamFilter.enabled}`,
+                value: `${spamFilter.isEnabled}`,
             },
 
             {
