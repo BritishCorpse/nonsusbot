@@ -40,7 +40,7 @@ const databaseSchema = new mongoose.Schema({
             punishments: {
                 type: Array,
                 required: true,
-                "default": null,
+                "default": ["warn"],
             },
         },
     },

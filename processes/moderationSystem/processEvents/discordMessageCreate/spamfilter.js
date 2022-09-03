@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 /* eslint-disable object-shorthand */
 const guildAutoModerationConfigs = require("../../processDatabaseSchemas/guildAutoModerationConfigs");
 const guildMemberModerationHistories = require("../../processDatabaseSchemas/guildMemberModerationHistories");
@@ -20,14 +21,10 @@ module.exports = {
         const spamFilter = guildInDatabase.options.spamFilter;
 
         // if they have their spam filter disabled
-        if (spamFilter.isEnabled === false) {
-            return;
-        }
+        if (spamFilter.isEnabled === false) return;
 
         // if the user is a bot and the spam filter doesnt moderate non users
-        if (spamFilter.moderateBots === false && message.author.bot) {
-            return;
-        }
+        if (spamFilter.moderateBots === false && message.author.bot) return;
 
         // id used to look up data from the harvest class
         const harvestId = { userId: message.author.id, guildId: message.guild.id };
@@ -49,7 +46,7 @@ module.exports = {
 
         // check if the message interval has expired
         if (Date.now() > harvestedUser.timeLimit) {
-            harvestedUser.timeLimit = Date.now() + spamFilter.duration;
+            harvestedUser.timeLimit = Date.now() + (spamFilter.duration * spamFilter.durationType);
 
             harvestedUser.messageCount = 1;
 
@@ -58,6 +55,9 @@ module.exports = {
 
         // check if theyre past their allowed message limit
         if (harvestedUser.messageCount > spamFilter.messageAmount) {
+            // delete the message
+            message.delete();
+
             // in the future: add to the guilds logging system
 
             // add one to the users infraction count
@@ -69,39 +69,45 @@ module.exports = {
             userInDatabase.spamFilterInfractionCount++;
             await userInDatabase.save();
 
-            console.log(`User infraction count ${userInDatabase.spamFilterInfractionCount}`);
-
             // issue the appropriate punishment
 
             // offsets the punishment number by 1 so that we can index the punishment array of the spam filter accurately
-            // eslint-disable-next-line no-magic-numbers
             let punishmentNumber = userInDatabase.spamFilterInfractionCount - 1;
 
             // if theres no punishments to issue, we just delete the message
-            // eslint-disable-next-line no-magic-numbers
-            if (spamFilter.punishments.length < 1) {
-                message.delete();
-                return;
+            // eslint-disable-next-line consistent-return
+            if (spamFilter.punishments.length < 1) return console.log("too little punishments");
+
+            // if the punishment number is too far, we set it to be the last punishment in the list.
+            if (spamFilter.punishments.length < punishmentNumber) {
+                punishmentNumber = spamFilter.punishments.length - 1;
             }
 
-            // this prevents us indexing out of range
-            if (punishmentNumber > spamFilter.punishments.length) {
-                punishmentNumber = spamFilter.punishments.length;
-            }
-
+            // this object contains every possible punishment
+            // the reason this is an object is so that we can dynamically call a specific punishment
             const punishments = {
-                kick: function () {
-                    // kick user
+                warn: async function () {
+                    await message.channel.send("yove ben owarned");
                 },
-                warn: function () {
-                    // warn user
+
+                kick: async function () {
+                    await message.member.kick(["Kicked by automoderator."]).catch(error => {
+                        console.error(error);
+                    });
                 },
-                ban: function () {
-                    // ban user
+
+                ban: async function () {
+                    await message.member.ban(["Kicked by automoderator."]).catch(error => {
+                        console.error(error);
+                    });
                 },
             };
 
-            console.log(`Punishments: ${spamFilter.punishments}`);
+            const punishment = spamFilter.punishments[punishmentNumber];
+
+            console.log(punishment);
+
+            await punishments[punishment]();
         }
     },
 };
