@@ -2,6 +2,8 @@
 /* eslint-disable object-shorthand */
 const guildAutoModerationConfigs = require("../../processDatabaseSchemas/guildAutoModerationConfigs");
 const guildMemberModerationHistories = require("../../processDatabaseSchemas/guildMemberModerationHistories");
+const guildMemberWarnings = require("../../processDatabaseSchemas/guildMemberWarnings");
+const guildModerationHistories = require("../../processDatabaseSchemas/guildModerationHistories");
 
 const Harvest = require("../../../../globalUtilities/Harvest");
 
@@ -87,7 +89,26 @@ module.exports = {
             // the reason this is an object is so that we can dynamically call a specific punishment
             const punishments = {
                 warn: async function () {
-                    await message.channel.send("yove ben owarned");
+                    // this increases the warning id by 1
+                    const guildHistories = await databaseManager.find(guildModerationHistories, {
+                        guildId: message.guild.id,
+                    }, true);
+
+                    guildHistories.totalWarnings++;
+                    await guildHistories.save();
+
+                    await databaseManager.create(guildMemberWarnings, {
+                        guildId: message.guild.id,
+                        userId: message.author.id,
+                        reason: "Spamming. ~Automoderator",
+                        warningId: guildHistories.totalWarnings,
+                    }, true);
+
+                    message.channel.send(`${message.author}! You've been warned for: \`Spamming\`.`).then(m => {
+                        setTimeout(() => {
+                            m.delete();
+                        }, 2000);
+                    });
                 },
 
                 kick: async function () {
