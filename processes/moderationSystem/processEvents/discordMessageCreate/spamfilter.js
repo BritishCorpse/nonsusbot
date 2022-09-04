@@ -22,10 +22,7 @@ module.exports = {
 
         const spamFilter = guildInDatabase.options.spamFilter;
 
-        // if they have their spam filter disabled
         if (spamFilter.isEnabled === false) return;
-
-        // if the user is a bot and the spam filter doesnt moderate non users
         if (spamFilter.moderateBots === false && message.author.bot) return;
 
         // id used to look up data from the harvest class
@@ -43,7 +40,6 @@ module.exports = {
             harvestedUser = harvest.set(harvestId, userObject);
         }
 
-        // add one to the users messageCount
         harvestedUser.messageCount++;
 
         // check if the message interval has expired
@@ -57,12 +53,10 @@ module.exports = {
 
         // check if theyre past their allowed message limit
         if (harvestedUser.messageCount > spamFilter.messageAmount) {
-            // delete the message
             message.delete();
 
             // in the future: add to the guilds logging system
 
-            // add one to the users infraction count
             const userInDatabase = await databaseManager.find(guildMemberModerationHistories, {
                 guildId: message.guild.id,
                 userId: message.author.id,
@@ -70,8 +64,6 @@ module.exports = {
 
             userInDatabase.spamFilterInfractionCount++;
             await userInDatabase.save();
-
-            // issue the appropriate punishment
 
             // offsets the punishment number by 1 so that we can index the punishment array of the spam filter accurately
             let punishmentNumber = userInDatabase.spamFilterInfractionCount - 1;
