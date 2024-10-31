@@ -1,4 +1,10 @@
 # Graveyard
+## Update 24-10-30
+Hi! This project was an old project of ours, but has long since been abandoned.
+It's now open source, in-case anyone would like to take a look at it.
+
+We apologise for any crude language or NSFW content in the commit history. It was a different time back then.
+
 A Discord bot created to remove the need of filling a server up with an unnecessary amount of bots.
 
 THIS IS OUT OF DATE. DOCUMENTATION WILL BE UPDATED SOON
